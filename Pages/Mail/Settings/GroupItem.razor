@@ -1,0 +1,27 @@
+<li class="group-item">
+    <div class="is-flex is-align-items-center container-group-item">
+        <div class="is-flex-1 is-flex is-align-items-center is-gap-10-y is-pointer">
+            <span class="is_sub1 is-secondary-20 has-text-weight-medium">HEADBOM</span>
+            <span class="is_body2 is-primary-40" @onclick="HandleViewDetail">5 thành viên</span>
+        </div>
+        <span class="icon is-pointer" @onclick="HandleToggleActive">
+            <i class="material-icons-outlined is-error-40">delete</i>
+        </span>
+    </div>
+</li>
+
+
+@code {
+    [Parameter]
+    public EventCallback<bool> HandleToggleActiveModel { get;  set; }
+
+    [Parameter]
+    public EventCallback<string> HandleChangeCurrentAction { get;  set; }
+
+    private void HandleToggleActive () {
+        HandleToggleActiveModel.InvokeAsync(true);
+    }
+    private void HandleViewDetail() {
+        HandleChangeCurrentAction.InvokeAsync("detail");
+    }
+}

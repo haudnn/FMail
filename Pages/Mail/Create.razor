@@ -1,0 +1,355 @@
+@page "/create"
+@layout LayoutMail
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@using Blazored.TextEditor;
+@using Microsoft.AspNetCore.Components
+
+<PageTitle>Cảnh báo bảo mật quan trọng</PageTitle>
+<section class="is-padding-20">
+    <header class="is-flex is-align-items-center is-justify-content-flex-start is-gap-20">
+        <a href="mail" class="is-flex is-align-items-center is-gap-8 is-pointer ">
+            <span class="icon">
+                <i class="material-icons-outlined is-primary-40">arrow_back</i>
+            </span>
+            <span class="is-font-14 is-primary-40 has-text-weight-medium">Trở về</span>
+        </a>
+        <div class="is-flex is-align-items-center is-gap-8 is-pointer">
+            <span class="icon">
+                <i class="material-icons-outlined is-warning-20">star_outline</i>
+            </span>
+            <span class="is-font-14 is-secondary-40">Đánh dấu quan trọng</span>
+        </div>
+        <div class="is-flex is-align-items-center is-gap-8 is-pointer">
+            <span class="icon">
+                <i class="material-icons-outlined is-primary-40">email</i>
+            </span>
+            <span class="is-font-14 is-primary-40">Đánh dấu đã đọc</span>
+        </div>
+        <div class="is-flex is-align-items-center is-gap-8 is-pointer">
+            <span class="icon">
+                <i class="material-icons-outlined is-error-40">label</i>
+            </span>
+            <span class="is-font-14 is-secondary-40 is-secondary-20">Nhãn</span>
+        </div>
+    </header>
+    <main class="create">
+        <div class="is-flex is-flex-direction-column is-gap-10-x is-padding-20-x">
+            <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                <p class="is-secondary-40 is-font-14" style="width: 60px;">To</p>
+                <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
+                    @* Add member *@
+                    <AddMember
+                        toggleActive="@toggleActiveAddMember"
+                        HandleToggleAddMember="ToggleActiveAddMember"
+                        directionDropdown="is-left"
+                        nameDropdown="Thêm người nhận"
+                    />
+
+                    @* Add group *@
+                    <div class="dropdown @(toggleActiveAddGroup ? " is-active" : "" )">
+                        <div class="dropdown-trigger" @onclick='ToggleActiveAddGroup'>
+                            <div class="is-flex is-align-items-center is-pointer">
+                                <span class="icon has-text-white">
+                                    <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+                                </span>
+                                <span class="is-primary-40 is-font-12">Thêm nhóm người nhận</span>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" style="min-width: 350px; min-height: 410px; height: 100%;">
+                            <div class="dropdown-content is-flex is-flex-direction-column"
+                                style="padding: 10px; height: 100%;">
+                                <div class="dropdown-item unhover is-flex is-align-items-center is-justify-content-space-between"
+                                    style="padding: 10px 0;">
+                                    <span class="is_sub2 is-secondary-40">Thêm nhóm người nhận</span>
+                                </div>
+                                <div class="dropdown-item unhover dropdown-header"
+                                    style="padding: 0; padding-bottom: 10px;">
+                                    <ul
+                                        class="is-flex is-align-items-center is-flex-wrap-wrap is-gap-10-y is-padding-top-20">
+                                        <li class="is-flex is-align-items-center is-gap-8-y">
+                                            <span class="icon is-justify-content-start">
+                                                <i
+                                                    class="material-icons-outlined is-secondary-40">remove_circle_outline</i>
+                                            </span>
+                                            <div class="is-flex is-align-items-center is-gap-4">
+                                                <span class="is_sub2 is-secondary-20">Long Vũ</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="dropdown-item unhover is-padding-20-x border-bottom is-flex-1"
+                                    style="border-radius:0 ;">
+                                    <div class="is-flex is-align-items-center is-gap-10-y pb-4">
+                                        <input id="select-all" type="checkbox">
+                                        <label for="select-all" class="is_button is-primary-40 is-pointer">Chọn tất
+                                            cả</label>
+                                    </div>
+                                    <ul class="is-flex is-flex-direction-column is-gap-8-x">
+                                        <li class="is-flex is-align-items-center is-gap-8-y">
+                                            <span class="icon is-justify-content-start">
+                                                <i
+                                                    class="material-icons-outlined is-secondary-40">add_circle_outline</i>
+                                            </span>
+                                            <span class="is_sub2 is-secondary-20">Long Vũ</span>
+                                        </li>
+                                        <li class="is-flex is-align-items-center is-gap-8-y">
+                                            <span class="icon is-justify-content-start">
+                                                <i
+                                                    class="material-icons-outlined is-secondary-40">add_circle_outline</i>
+                                            </span>
+                                            <span class="is_sub2 is-secondary-20">Long Vũ</span>
+                                        </li>
+                                        <li class="is-flex is-align-items-center is-gap-8-y">
+                                            <span class="icon is-justify-content-start">
+                                                <i
+                                                    class="material-icons-outlined is-secondary-40">add_circle_outline</i>
+                                            </span>
+                                            <span class="is_sub2 is-secondary-20">Long Vũ</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div
+                                    class="dropdown-item unhover is-flex is-justify-content-flex-end is-align-content-center is-padding-top-20 is-gap-10-y">
+                                    <div class="wrapper-button primary-btn" style="display: inline-flex">
+                                        <span class="icon has-text-white">
+                                            <i class="material-icons-outlined">done</i>
+                                        </span>
+                                        <span class="has-text-white is-font-12">Cập nhật</span>
+                                    </div>
+                                    <div class="wrapper-button error-btn" style="display: inline-flex">
+                                        <span class="icon has-text-white">
+                                            <i class="material-icons-sharp">close</i>
+                                        </span>
+                                        <span class="has-text-white is-font-12">Hủy</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                @if(!toggleAddCC) {
+                <div class="is-flex is-align-items-center is-justify-content-center is-gap-10-y" style="height: 100%;">
+                    <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">CC</span>
+                    <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">BCC</span>
+                </div>
+                }
+            </div>
+            @if(toggleAddCC) {
+            <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                <p class="is-secondary-40 is-font-14" style="width: 60px;">CC</p>
+                <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
+                    <div class="is-flex is-align-items-center is-pointer">
+                        <span class="icon has-text-white">
+                            <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+                        </span>
+                        <span class="is-primary-40 is-font-12">Thêm người nhận</span>
+                    </div>
+                    <div class="is-flex is-align-items-center is-pointer">
+                        <span class="icon has-text-white">
+                            <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+                        </span>
+                        <span class="is-primary-40 is-font-12">Thêm nhóm người nhận</span>
+                    </div>
+                </div>
+            </div>
+            <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                <p class="is-secondary-40 is-font-14" style="width: 60px;">BCC</p>
+                <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
+                    <div class="is-flex is-align-items-center is-pointer">
+                        <span class="icon has-text-white">
+                            <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+                        </span>
+                        <span class="is-primary-40 is-font-12">Thêm người nhận</span>
+                    </div>
+                    <div class="is-flex is-align-items-center is-pointer">
+                        <span class="icon has-text-white">
+                            <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+                        </span>
+                        <span class="is-primary-40 is-font-12">Thêm nhóm người nhận</span>
+                    </div>
+                </div>
+            </div>
+            }
+            <div class="is-flex is-align-items-center is-gap-10-y">
+                <p class="is-secondary-40 is-font-14" style="width: 60px;">Tiêu đề</p>
+                <textarea placeholder="Tiêu đề thư" class="textarea-mail"></textarea>
+            </div>
+        </div>
+        <div class="create__main-container">
+            <div>
+                <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập nội dung thư">
+                    <EditorContent>
+                    </EditorContent>
+                    <ToolbarContent>
+                        <div class="toolbar-create" style="left: @(Layout.isToggleSideBar ? " 80" : "220" )px">
+                            <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
+                                style="padding: 10px 40px;">
+                                <span class="is-font-14">Gửi</span>
+                            </div>
+                            <div class="is-flex-1">
+                                <span class="ql-formats">
+                                    <select class="ql-font">
+                                        <option value=""></option>
+                                        <option value="serif"></option>
+                                        <option value="monospace"></option>
+                                    </select>
+                                    <select class="ql-header">
+                                        <option selected=""></option>
+                                        <option value="1"></option>
+                                        <option value="2"></option>
+                                        <option value="3"></option>
+                                        <option value="4"></option>
+                                        <option value="5"></option>
+                                    </select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    <button class="ql-strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <select class="ql-color"></select>
+                                    <select class="ql-background"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <span class="ql-align ql-picker ql-icon-picker"></span>
+                                    <select class="ql-align">
+                                        <option selected="selected"></option>
+                                        <option selected="center"></option>
+                                        <option selected="right"></option>
+                                        <option selected="justify"></option>
+                                    </select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                    <button class="ql-indent" value="-1"></button>
+                                    <button class="ql-indent" value="+1"></button>
+                                    <button class="ql-blockquote"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                    <button class="ql-image"></button>
+                                </span>
+                            </div>
+                            <div class="is-flex is-align-items-center is-gap-8">
+                                <div class="wrapper-button is-justify-content-center is-inline-flex"
+                                    style="padding: 9px 10px">
+                                    <span class="icon">
+                                        <i class="material-icons-outlined is-primary-40">mail</i>
+                                    </span>
+                                    <span class="is_body2 is-primary-40">Lưu nháp</span>
+                                </div>
+                                <div class="wrapper-button is-justify-content-center is-inline-flex error-btn"
+                                    style="padding: 9px 10px">
+                                    <span class="icon">
+                                        <i class="material-icons-outlined">close</i>
+                                    </span>
+                                    <span class="is-font-14">Hủy tạo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ToolbarContent>
+                </BlazoredTextEditor>
+                @* <div class="wrapper-button primary-btn is-bg-main is-pointer"
+                    style="display: inline-flex; margin-bottom: 20px;">
+                    <span class="icon has-text-white">
+                        <i class="material-icons-outlined">poll</i>
+                    </span>
+                    <span class="has-text-white is-font-12">Tạo khảo sát</span>
+                </div> *@
+                <PollComponent />
+            </div>
+        </div>
+        <div class="is-padding-top-20" style="padding-bottom: 100px;">
+            <div class="is-flex is-align-items-center is-gap-10-y">
+                <span>Chữ ký:</span>
+                <div class="dropdown click @(toggleActiveSign ? " is-active" : "" )">
+                    <div class="dropdown-trigger is-hover drop-border" @onclick='ToggleActiveSign'>
+                        <div class=" is-flex is-align-items-center">
+                            <span class="is-secondary-20 is-font-14">Chữ ký 1</span>
+                            <span class="icon">
+                                <i class="material-icons-sharp read">arrow_drop_down</i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu" style="min-width: 185px;">
+                        <div class="dropdown-content" style="padding: 10px;">
+                            <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                                <span class="icon"></span>
+                                <span class="is_body2">Không có chữ ký</span>
+                            </div>
+                            <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                                <span class="icon">
+                                    <i class="material-icons-sharp is_body2">done</i>
+                                </span>
+                                <span class="is_body2">Chữ ký 1</span>
+                            </div>
+                            <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                                <span class="icon"></span>
+                                <span class="is_body2">Chữ ký 2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="is_sub2 is-secondary-10 pt-4">
+                <p>-----------------------------------------</p>
+                <p>DOCORP JSC</p>
+                <p>CÔNG TY CỔ PHẦN DOCORP</p>
+                <p>Số 23 Trường Thi 1, Phường Hòa Thuận Tây, Quận Hải Châu, Thành phố Đà Nẵng</p>
+                <p>Phone : 0905.043.312 (Ms Thúy Phượng)</p>
+            </div>
+
+        </div>
+        @* <h3 class="is-secondary-20 is-font-19 mail-text-title">[THÔNG BÁO] LỊCH NGHỈ TẾT DƯƠNG LỊCH 01/01/2023 VÀ TẾT
+            NGUYÊN ĐÁN QUÝ MÃO 2023</h3> *@
+    </main>
+</section>
+@code {
+
+    [CascadingParameter]
+    public LayoutMail Layout { get; set; }
+    BlazoredTextEditor QuillHtml;
+    string QuillHTMLContent;
+    private bool toggleActiveSign = false;
+    private bool toggleActiveAddMember = false;
+    private bool toggleActiveAddGroup = false;
+    private bool toggleAddCC = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+    }
+    public async void GetHTML()
+    {
+        QuillHTMLContent = await this.QuillHtml.GetHTML();
+        StateHasChanged();
+    }
+
+    public async void SetHTML()
+    {
+        string QuillContent =
+        @"<a href='http://BlazorHelpWebsite.com/'>" +
+            "<img src='images/BlazorHelpWebsite.gif' /></a>";
+
+        await this.QuillHtml.LoadHTMLContent(QuillContent);
+        StateHasChanged();
+    }
+    private void ToggleAddCC()
+    {
+        toggleAddCC = true;
+    }
+    private void ToggleActiveSign()
+    {
+        toggleActiveSign = !toggleActiveSign;
+    }
+    private void ToggleActiveAddMember(bool isActiveAddMember){
+        toggleActiveAddMember = isActiveAddMember;
+    }
+    private void ToggleActiveAddGroup() {
+        toggleActiveAddGroup = !toggleActiveAddGroup;
+    }
+}

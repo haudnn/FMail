@@ -1,0 +1,144 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Workdo
+build_property.RootNamespace = Workdo
+build_property.ProjectDir = C:\Conando\WorkdoTemplate\Workdo\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Conando\WorkdoTemplate\Workdo
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Conando/WorkdoTemplate/Workdo/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Blogs/BlogDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmxvZ3NcQmxvZ0RldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Blogs/BlogList.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmxvZ3NcQmxvZ0xpc3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Logout.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/AddMember.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxBZGRNZW1iZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Detail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxEZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Mail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxNYWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/MailHeader.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxNYWlsSGVhZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/MailItem.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxNYWlsSXRlbS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/PollComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxQb2xsQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/QuestionItem.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxRdWVzdGlvbkl0ZW0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Settings/GroupItem.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxTZXR0aW5nc1xHcm91cEl0ZW0ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Settings/ManagerCategory.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxTZXR0aW5nc1xNYW5hZ2VyQ2F0ZWdvcnkucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Settings/ManagerGroup.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxTZXR0aW5nc1xNYW5hZ2VyR3JvdXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Settings/ManagerLabel.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxTZXR0aW5nc1xNYW5hZ2VyTGFiZWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Settings/ManagerSignature.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxTZXR0aW5nc1xNYW5hZ2VyU2lnbmF0dXJlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Settings/MemberItem.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxTZXR0aW5nc1xNZW1iZXJJdGVtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Mail/Settings/Settings.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbFxTZXR0aW5nc1xTZXR0aW5ncy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/_Component.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0NvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Shared/HeaderMain.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEhlYWRlck1haW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Shared/LayoutLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExheW91dExvZ2luLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Shared/LayoutMail.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExheW91dE1haWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Shared/LayoutMain.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExheW91dE1haW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Shared/MailSideBar.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haWxTaWRlQmFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Shared/PopupNoti.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFBvcHVwTm90aS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Shared/Sidebar.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFNpZGViYXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

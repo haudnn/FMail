@@ -1,0 +1,426 @@
+@page "/mail"
+@layout LayoutMail
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@using System.Collections.Generic;
+@using Microsoft.AspNetCore.Components
+<PageTitle>Hòm thư</PageTitle>
+<div>
+    <div class="mail__container">
+        <div class="mail__bar">
+            @switch (Layout.currentSideBarActive)
+            {
+                @* Hộp thư đến *@
+                case 1:
+                            <MailHeader
+                        name="Hộp thư đến"
+                        placehoder="Tiêu đề, nội dung, người gửi"
+                        quantityColumnFirst="6"
+                        quantityColumnSecond="6"
+                        isShowStatus=true
+                        isShowLabel=true
+                            />
+                    break;
+                @* Hộp thư đi *@
+                case 2:
+                            <MailHeader
+                        name="Thư đã gửi"
+                        placehoder="Tiêu đề, nội dung, người nhận"
+                        quantityColumnFirst="6"
+                        quantityColumnSecond="6"
+                        isShowStatus=false
+                        isShowLabel=true
+                            />
+                    break;
+                @* Thư quan trọng *@
+                case 3:
+                            <MailHeader
+                        name="Thư quan trọng"
+                        placehoder="Tiêu đề, nội dung, người gửi, người nhận"
+                        quantityColumnFirst="6"
+                        quantityColumnSecond="6"
+                        isShowStatus=true
+                        isShowLabel=true
+                            />
+                    break;
+                @* Thư nháp *@
+                case 4:
+                            <MailHeader
+                        name="Thư nháp"
+                        placehoder="Tiêu đề, nội dung, người nhận"
+                        quantityColumnFirst="8"
+                        quantityColumnSecond="4"
+                        isShowStatus=false
+                        isShowLabel=false
+                            />
+                    break;
+                @* label *@
+                @* case 5:
+                    <MailHeader
+                        name="Thư theo nhãn"
+                        placehoder="Tiêu đề, nội dung, người gửi"
+                        quantityColumnFirst="6"
+                        quantityColumnSecond="6"
+                        isShowStatus=true
+                        isShowLabel=false
+                    />
+                    break; *@
+                @* Thùng rác *@
+                case 5:
+                    <MailHeader
+                        name="Thùng rác"
+                        placehoder="Tiêu đề, nội dung, người gửi"
+                        quantityColumnFirst="8"
+                        quantityColumnSecond="4"
+                        isShowStatus=false
+                        isShowLabel=false
+                    />
+                    break;
+                default:
+                    break;
+            }
+            @if(Layout.currentSideBarActive == 5) {
+                <div class="mail__content-header error  is-flex is-align-items-center">
+                    <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;">
+                        @if (!isSelectAllChecked)
+                        {
+                            <input id="checkbox-all" type="checkbox" @bind="isSelectAllChecked"
+                            @oninput="HandleSelectAllCheckboxChange">
+                            <label for="checkbox-all" class="is-pointer is_body2 is-secondary-40">Chọn tất cả</label>
+                        }
+                        else
+                        {
+                            <input id="checkbox-all" type="checkbox" @bind="isSelectAllChecked"
+                            @oninput="HandleSelectAllCheckboxChange">
+                            <label for="checkbox-all" class="is-pointer is_body2 is-secondary-40">Hủy chọn tất cả</label>
+                        }
+                    </div>
+                    <div class="is-flex-1 is-flex is-align-items-center is-justify-content-center is-gap-8">
+                        <p class="is_body2 is-secondary-40">Thư trong thùng rác sau 30 ngày sẽ được xóa ra khỏi hệ thống.</p>
+                        <div class="wrapper-button btn-outlined error is-inline-flex ">
+                            <span class="icon">
+                                <i class="material-icons-outlined is-error-40">delete</i>
+                            </span>
+                            <span class="is_caption is-error-40">Dọn dẹp thùng rác</span>
+                        </div>
+                    </div>
+                </div>
+            } else{
+                <div class="mail__content-header is-flex is-align-items-center" style="gap: 0 40px; padding: 0 10px;">
+                    <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;">
+                        @if(!isSelectAllChecked) {
+                        <input id="checkbox-all" type="checkbox" @bind="isSelectAllChecked"
+                            @oninput="HandleSelectAllCheckboxChange">
+                        <label for="checkbox-all" class="is-pointer">Chọn tất cả</label>
+                        }
+                        else {
+                        <input id="checkbox-all" type="checkbox" @bind="isSelectAllChecked"
+                            @oninput="HandleSelectAllCheckboxChange">
+                        <label for="checkbox-all" class="is-pointer is-font-14 is-secondary-40">Hủy chọn tất cả</label>
+                        }
+                    </div>
+                    <div class="is-flex is-align-items-center is-justify-content-space-between"
+                        style="flex:1; width: 100%; ">
+                        <ul class="is-flex is-align-items-center category__list is-flex-1">
+                            @foreach (var item in ListCategory)
+                            {
+                            <li @onclick="() => HandleChangeTabCategory(item.id)"
+                                class="category__item @(currentTabActive == item.id ? " active": "" )">
+                                <span>@item.name</span>
+                            </li>
+                            }
+                            <li class="category__item is-flex-1">
+                            </li>
+                        </ul>
+                        <div class="dropdown is-hoverable is-right category__border-bottom" style="height: 37px ;">
+                            <div class="dropdown-trigger is-flex is-align-items-center is-pointer">
+                                <span class="has-text-weight-medium is-primary-40">Khác
+                                    <span> (+3) </span>
+                                </span>
+                                <span class="icon">
+                                    <i class="material-symbols-outlined is-secondary-10">
+                                        arrow_drop_down
+                                    </i>
+                                </span>
+                            </div>
+                            <div class="dropdown-menu" style="width: 200px">
+                                <div class="dropdown-content px-2">
+                                    <p class="dropdown-item has-text-weight-medium">Danh sách danh mục</p>
+                                    <p class="dropdown-item">Tuyển dụng</p>
+                                    <p class="dropdown-item">Lịch họp</p>
+                                    <p class="dropdown-item">OKRs</p>
+                                    <p class="dropdown-item">Khác</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="mail__content">
+            <div class="mail__items">
+                @{
+                    var index = 1;
+                }
+                @foreach (var item in allItems)
+                {
+                    <MailItem id="@index" OnCheckboxChange="HandleChildCheckboxChange"
+                        IsChecked="@selectedItems.Contains(item)" />
+                    index++;
+                }
+            </div>
+        </div>
+    </div>
+    <div class="mail__footer">
+        @if (@selectedItems.Count > 0)
+        {
+            <div class="mail__footer-actions">
+                <div class="is-flex is-align-items-center" style="gap: 0 8px;">
+                    <input type="checkbox" checked>
+                    <span class="text-color-secondary">@selectedItems.Count thư được chọn</span>
+                </div>
+                <div class="is-flex is-align-items-center" style="gap: 0 10px;">
+                    <div class="is-flex is-align-items-center is-pointer">
+                        <div class="dropdown is-up is-right click @(toggleActiveAction ? " is-active" : "" )">
+                            <div class="dropdown-trigger" @onclick='ToggleActiveAction'>
+                                <span class="icon">
+                                    <i class="material-icons-outlined read">more_vert</i>
+                                </span>
+                                <span class="read">Hành động khác</span>
+                            </div>
+                            <div class="dropdown-menu" style="width: 250px;">
+                                <div class="dropdown-content px-3" style="z-index: 20;">
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined read">drafts</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Đánh dấu đã đọc</span>
+                                    </div>
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined read">drafts</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Đánh dấu chưa đọc</span>
+                                    </div>
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;">
+                                        <span class="icon">
+                                            <i class="material-icons-sharp read">star</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Đánh dấu quan trọng</span>
+                                    </div>
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined read">star_outline</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Đánh dấu không quan trọng</span>
+                                    </div>
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;" @onclick='ToggleActiveLabel'>
+                                        <span class="icon">
+                                            <i class="material-icons-sharp read">label_outline</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Gắn nhãn</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown is-up is-right @(toggleActiveLabel ? " is-active" : "" )">
+                        <div class="dropdown-menu" style="width: 250px; right: 270px; bottom: 50px ;border-radius: 8px;">
+                            <div class="dropdown-content filter-label">
+                                <div class="dropdown__header">Danh sách nhãn</div>
+                                <div style="padding-bottom: 20px;">
+                                    @foreach (var item in ListLabel)
+                                    {
+                                            <div class="dropdown-item filter is-flex is-align-items-center p-0 pb-2">
+                                                <input class="label-checkbox" type="checkbox">
+                                                <span class="icon">
+                                                    <i class="material-symbols-sharp" style="color: @item.color">label</i>
+                                                </span>
+                                                <span class="is_body2 is-secondary-10">@item.name</span>
+                                            </div>
+                                    }
+                                </div>
+                                <div class="is-flex is-align-items-center is-justify-content-flex-end" style="gap: 0 10px;">
+                                    <div class="wrapper-button cancel is-pointer ">
+                                        <span class="is-font-12 is-err-color">Hủy</span>
+                                    </div>
+                                    <div class="wrapper-button is-bg-main is-pointer ">
+                                        <span class="icon has-text-white">
+                                            <i class="material-icons-outlined">check</i>
+                                        </span>
+                                        <span class="has-text-white is-font-12">Cập nhật</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="is-flex is-align-items-center is-pointer mail__footer-drafs">
+                        <span class="icon has-text-white">
+                            <i class="material-icons-outlined">delete</i>
+                        </span>
+                        <span class="has-text-white">Chuyển vào thùng rác</span>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="is-flex is-align-items-center is-justify-content-center">
+                <nav class="pagination is-small" role="navigation" aria-label="pagination">
+                    <ul class="pagination-list">
+                        <li>
+                            <a class="pagination-link is-current" aria-label="Page 1" aria-current="page">1</a>
+                        </li>
+                        <li>
+                            <a class="pagination-link" aria-label="Goto page 2">2</a>
+                        </li>
+                        <li>
+                            <a class="pagination-link" aria-label="Goto page 3">3</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private bool toggleActiveAction = false;
+    private ToggleHelper toggleFilterLabel = new ToggleHelper();
+    private ToggleHelper toggleFilterStatus = new ToggleHelper();
+    private ToggleHelper toggleFilterTime = new ToggleHelper();
+    private void HandleToggleFilterLabel()
+    {
+        toggleFilterLabel.Toggle();
+    }
+    private void HandleToggleFilterStatus()
+    {
+        toggleFilterStatus.Toggle();
+    }
+    private void HandleToggleFilterTime()
+    {
+        toggleFilterTime.Toggle();
+    }
+    private List<LabelModel> ListLabel = new();
+    [CascadingParameter]
+    public LayoutMail Layout { get; set; }
+    public int currentTabActive = 1;
+
+    private void HandleChangeTabCategory(int _id)
+    {
+        currentTabActive = _id;
+    }
+
+    private List<CategoryModel> ListCategory = new();
+
+    protected override void OnInitialized()
+    {
+        Category();
+        Label();
+    }
+    private void Category()
+    {
+        ListCategory = new();
+        ListCategory.Add(new CategoryModel
+            {
+                id = 1,
+                name = "Tất cả"
+            });
+        ListCategory.Add(new CategoryModel
+            {
+                id = 2,
+                name = "Vận hành"
+            });
+        ListCategory.Add(new CategoryModel
+            {
+                id = 3,
+                name = "Nhân sự"
+            });
+        ListCategory.Add(new CategoryModel
+            {
+                id = 4,
+                name = "Kế toán"
+            });
+        ListCategory.Add(new CategoryModel
+            {
+                id = 5,
+                name = "Sales marketing"
+            });
+        ListCategory.Add(new CategoryModel
+            {
+                id = 6,
+                name = "Truyền thông"
+            });
+        ListCategory.Add(new CategoryModel
+            {
+                id = 7,
+                name = "Tổng công ty"
+            });
+
+    }
+    private bool isSelectAllChecked { get; set; } = false;
+    DateTimeOffset? StartDate { get; set; } = DateTime.Today.AddMonths(-1);
+    DateTimeOffset? EndDate { get; set; } = DateTime.Today.AddDays(1).AddTicks(-1);
+    private List<int> selectedItems = new List<int>();
+    // for testing
+    private List<int> allItems = Enumerable.Range(1, 10).ToList();
+    private bool toggleActiveLabel = false;
+    private int countMailItemSelected = 0;
+    private void ToggleActiveAction()
+    {
+        toggleActiveAction = !toggleActiveAction;
+        if (toggleActiveLabel)
+        {
+            toggleActiveLabel = false;
+        }
+    }
+    private void ToggleActiveLabel()
+    {
+        toggleActiveLabel = !toggleActiveLabel;
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+    }
+    private void HandleChildCheckboxChange(SelectedModel selected)
+    {
+        if (selected.isChecked && !selectedItems.Contains(selected.itemId))
+        {
+            selectedItems.Add(selected.itemId);
+        }
+        else if (!selected.isChecked && selectedItems.Contains(selected.itemId))
+        {
+            selectedItems.Remove(selected.itemId);
+        }
+    }
+
+    private void HandleSelectAllCheckboxChange(ChangeEventArgs e)
+    {
+        if ((bool)e.Value)
+        {
+            selectedItems = allItems.ToList();
+        }
+        else
+        {
+            selectedItems.Clear();
+        }
+    }
+
+    private void Label()
+    {
+        ListLabel = new();
+        ListLabel.Add(new LabelModel
+            {
+                id = 1,
+                name = "Nhân sự Conando",
+                color = "#fff962"
+            });
+    }
+}

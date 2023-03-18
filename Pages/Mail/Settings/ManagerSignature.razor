@@ -1,0 +1,128 @@
+<div class="container-manager">
+    <div class="is-mb-20">
+        <span class="is-uppercase is_h6 is-secondary-10">Quản lí chữ ký</span>
+    </div>
+    <div class="columns">
+        <div class="column is-3">
+            <ul class="is-flex is-flex-direction-column is-gap-10-x">
+                <li class="is-flex is-align-items-center is-padding-10 is-pointer signature-item active">
+                    <span class="is_caption is-secondary-10">Mẫu chữ ký 01</span>
+                </li>
+                <li class="is-flex is-align-items-center is-padding-10 is-pointer signature-item">
+                    <span class="is_caption is-secondary-10">Mẫu chữ ký 02</span>
+                </li>
+            </ul>
+            <div class="wrapper-button primary-btn is-justify-content-center is-mt-10">
+                <span class="icon ">
+                    <i class="material-symbols-outlined" style="font-size: 15px;">add</i>
+                </span>
+                <span class="is_caption">Thêm chữ ký mới</span>
+            </div>
+        </div>
+        <div class="column is-9">
+            <div class="name-signature is_body2 is-secondary-20">Mẫu chữ ký 02</div>
+            <div class="container-signature-zone">
+                <BlazoredTextEditor>
+                    <EditorContent>
+                    </EditorContent>
+                    <ToolbarContent>
+                        <div class="toolbar-create signature">
+                            <span class="ql-formats">
+                                <select class="ql-font">
+                                    <option value=""></option>
+                                    <option value="serif"></option>
+                                    <option value="monospace"></option>
+                                </select>
+                                <select class="ql-header">
+                                    <option selected=""></option>
+                                    <option value="1"></option>
+                                    <option value="2"></option>
+                                    <option value="3"></option>
+                                    <option value="4"></option>
+                                    <option value="5"></option>
+                                </select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                <button class="ql-strike"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-color"></select>
+                                <select class="ql-background"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <span class="ql-align ql-picker ql-icon-picker"></span>
+                                <select class="ql-align">
+                                    <option selected="selected"></option>
+                                    <option selected="center"></option>
+                                    <option selected="right"></option>
+                                    <option selected="justify"></option>
+                                </select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                                <button class="ql-indent" value="-1"></button>
+                                <button class="ql-indent" value="+1"></button>
+                                <button class="ql-blockquote"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link"></button>
+                                <button class="ql-image"></button>
+                            </span>
+                        </div>
+                    </ToolbarContent>
+                </BlazoredTextEditor>
+            </div>
+            <div class="is-flex is-align-items-center is-gap-8 is-justify-content-flex-end">
+                <div class="wrapper-button is-justify-content-center is-inline-flex is-pointer">
+                    <span class="icon">
+                        <i class="material-icons-outlined is-primary-40">edit</i>
+                    </span>
+                    <span class="is_caption is-primary-40">Chỉnh sửa</span>
+                </div>
+                <div class="wrapper-button is-justify-content-center is-inline-flex error-btn">
+                    <span class="icon">
+                        <i class="material-icons-outlined">delete</i>
+                    </span>
+                    <span class="is_caption">Xóa</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="is-mb-20">
+            <span class="is-uppercase is_h6 is-secondary-10">Thiết lập chữ ký mặc định</span>
+        </div>
+        <div class="dropdown">
+            <div class="dropdown-trigger is-hover drop-border" style="padding: 4px 12px;">
+                <div class="is-flex is-align-items-center">
+                    <span class="is-secondary-20 is_body2">Mẫu chữ ký 1</span>
+                    <span class="icon">
+                        <i class="material-icons-sharp is-secondary-20">arrow_drop_down</i>
+                    </span>
+                </div>
+            </div>
+            <div class="dropdown-menu" style="min-width: 185px;">
+                <div class="dropdown-content" style="padding: 10px;">
+                    <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                        <span class="icon"></span>
+                        <span class="is_body2">Mẫu chữ ký 01</span>
+                    </div>
+                    <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                        <span class="icon">
+                            <i class="material-icons-sharp is_body2">done</i>
+                        </span>
+                        <span class="is_body2">Mẫu chữ ký 02</span>
+                    </div>
+                    <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                        <span class="icon"></span>
+                        <span class="is_body2">Mẫu chữ ký 03</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

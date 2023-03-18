@@ -1,0 +1,159 @@
+<div class="dropdown @directionDropdown @(toggleActive ? " is-active" : "" )">
+    <div class="dropdown-trigger" @onclick='HandleToggleActive'>
+        <div class="is-flex is-align-items-center is-pointer">
+            <span class="icon has-text-white">
+                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+            </span>
+            <span class="is-primary-40 is-font-12">@nameDropdown</span>
+        </div>
+    </div>
+    <div class="dropdown-menu" style="min-width: 350px; min-height: 430px">
+        <div class="dropdown-content" style="padding: 10px;">
+            <div class="dropdown-header">
+                <div class="dropdown-item unhover is-flex is-align-items-center is-justify-content-space-between"
+                    style="padding: 10px 0;">
+                    <span class="is_sub2 is-secondary-40">Cập nhật người dùng</span>
+                    <div class="dropdown">
+                        <div class="dropdown-trigger is-hover drop-border" style="padding: 0px 4px;">
+                            <div class=" is-flex is-align-items-center">
+                                <span class="is-secondary-20 is_caption">Tất cả phòng ban</span>
+                                <span class="icon">
+                                    <i class="material-icons-sharp is-secondary-20 is_caption">arrow_drop_down</i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="dropdown-menu" style="min-width: 185px;">
+                            <div class="dropdown-content" style="padding: 10px;">
+                                <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                                    <span class="icon"></span>
+                                    <span class="is_body2">Không có chữ ký</span>
+                                </div>
+                                <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                                    <span class="icon">
+                                        <i class="material-icons-sharp is_body2">done</i>
+                                    </span>
+                                    <span class="is_body2">Chữ ký 1</span>
+                                </div>
+                                <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                                    <span class="icon"></span>
+                                    <span class="is_body2">Chữ ký 2</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown-item unhover" style="padding: 10px 0;">
+                    <div class="search-wrapper">
+                        <input class="search-input" type="text" placeholder="Tìm người dùng...">
+                        <span class="icon">
+                            <i class="material-icons-outlined">search</i>
+                        </span>
+                    </div>
+                </div>
+                <div class="dropdown-item unhover" style="padding: 10px 0;">
+                    <ul class="is-flex is-align-items-center is-flex-wrap-wrap is-gap-10-y">
+                        <li class="is-flex is-align-items-center is-gap-8-y">
+                            <span class="icon is-justify-content-start">
+                                <i class="material-icons-outlined is-secondary-40">remove_circle_outline</i>
+                            </span>
+                            <div class="is-flex is-align-items-center is-gap-4">
+                                <figure class="image is-24x24">
+                                    <img class="is-rounded" src="images/avatar-mail.png">
+                                </figure>
+                                <span class="is_sub2 is-secondary-40">Long Vũ</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="dropdown-item unhover is-padding-20-x border-bottom" style="border-radius:0 ;">
+                <div class="is-flex is-align-items-center is-gap-10-y pb-4">
+                    <input id="select-all" type="checkbox">
+                    <label for="select-all" class="is_button is-primary-40 is-pointer">Chọn tất
+                        cả</label>
+                </div>
+                <ul class="is-flex is-flex-direction-column is-gap-10-x">
+                    <li class="is-flex is-align-items-center is-gap-8-y">
+                        <span class="icon is-justify-content-start">
+                            <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
+                        </span>
+                        <div class="is-flex is-align-items-center is-gap-4">
+                            <figure class="image is-24x24">
+                                <img class="is-rounded" src="images/avatar-mail.png">
+                            </figure>
+                            <span class="is_sub2 is-secondary-40">Long Vũ</span>
+                        </div>
+                    </li>
+                    <li class="is-flex is-align-items-center is-gap-8-y">
+                        <span class="icon is-justify-content-start">
+                            <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
+                        </span>
+                        <div class="is-flex is-align-items-center is-gap-4">
+                            <figure class="image is-24x24">
+                                <img class="is-rounded" src="images/avatar-mail.png">
+                            </figure>
+                            <span class="is_sub2 is-secondary-40">Long Vũ</span>
+                        </div>
+                    </li>
+                    <li class="is-flex is-align-items-center is-gap-8-y">
+                        <span class="icon is-justify-content-start">
+                            <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
+                        </span>
+                        <div class="is-flex is-align-items-center is-gap-4">
+                            <figure class="image is-24x24">
+                                <img class="is-rounded" src="images/avatar-mail.png">
+                            </figure>
+                            <span class="is_sub2 is-secondary-40">Long Vũ</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div
+                class="dropdown-item unhover is-flex is-justify-content-flex-end is-align-content-center is-padding-top-20 is-gap-10-y">
+                <div class="wrapper-button primary-btn" style="display: inline-flex">
+                    <span class="icon has-text-white">
+                        <i class="material-icons-outlined">done</i>
+                    </span>
+                    <span class="has-text-white is-font-12">Cập nhật</span>
+                </div>
+                <div class="wrapper-button error-btn" style="display: inline-flex">
+                    <span class="icon has-text-white">
+                        <i class="material-icons-sharp">close</i>
+                    </span>
+                    <span class="has-text-white is-font-12">Hủy</span>
+                </div>
+            </div>
+            @* <div class="dropdown-item unhover is-flex is-align-items-center is-gap-4">
+                <span class="icon"></span>
+                <span class="is_body2">Không có chữ ký</span>
+            </div>
+            <div class="dropdown-item unhover is-flex is-align-items-center is-gap-4">
+                <span class="icon">
+                    <i class="material-icons-sharp is_body2">done</i>
+                </span>
+                <span class="is_body2">Chữ ký 1</span>
+            </div>
+            <div class="dropdown-item unhover is-flex is-align-items-center is-gap-4">
+                <span class="icon"></span>
+                <span class="is_body2">Chữ ký 2</span>
+            </div> *@
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string directionDropdown {get; set;}
+    [Parameter]
+    public string nameDropdown {get; set;}
+    [Parameter]
+    public bool toggleActive { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> HandleToggleAddMember { get;  set; }
+
+    private void HandleToggleActive () {
+        HandleToggleAddMember.InvokeAsync(!toggleActive);
+    }
+}

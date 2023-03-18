@@ -1,0 +1,33 @@
+@page "/home"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+
+<PageTitle>Trang chủ</PageTitle>
+
+<section class="p-4">
+  <div class="card p-5">
+    <h1 class="title is-5 has-text-info">
+      Workdo Home Page
+    </h1>
+    <div class="py-6">
+      Đây là đoạn nội dung mẫu để kiểm tra giao diện, bạn có thể thay đổi trong phần quản trị của website.
+    </div>
+    <_Component data="@testName" OnUpdate="UpdateComponent" />
+    <div>@testName</div>
+  </div>
+</section>
+
+@code {
+  [CascadingParameter]
+  public LayoutMain Layout { get; set; }
+  private string testName = "test nhé";
+
+  private async Task UpdateComponent(string data)
+  {
+    testName = data;
+    if(string.IsNullOrEmpty(data))
+      await JSRuntime.InvokeVoidAsync("tagline", false, testName);
+    else
+      await JSRuntime.InvokeVoidAsync("tagline", true, testName);
+  }
+}

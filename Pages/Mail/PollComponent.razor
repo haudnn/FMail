@@ -1,0 +1,235 @@
+
+<div class="pb-5">
+    @* Header Poll *@
+    <div class="is-flex is-align-items-center" style="gap: 0 20px">
+        <div class="search-wrapper poll">
+            <span class="icon">
+                <i class="material-icons-outlined">edit</i>
+            </span>
+            <input class="search-input poll" type="text" placeholder="Nhập tiêu đề khảo sát">
+        </div>
+        <div class="is-flex is-align-items-center" style="gap: 0 20px">
+            <span class="is_body2 is-secondary-40">Thời gian kết thúc: </span>
+            <div class="is-flex is-align-items-center is-gap-4">
+                <div class="is-flex is-align-items-center">
+                    <span class="icon">
+                        <i class="material-icons-outlined is-secondary-10">calendar_today</i>
+                    </span>
+                    <div class="poll-date-picker">
+                        <DateRangePicker SingleDatePicker="true" placeholder="dd/mm/yyyy" />
+                    </div>
+                </div>
+                <div class="is-flex is-align-items-center">
+                    <span class="icon">
+                        <i class="material-icons-outlined is-secondary-10">schedule</i>
+                    </span>
+                    <div class="poll-date-picker">
+                        <DateRangePicker SingleDatePicker="true" placeholder="hh:mm" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* Content *@
+    <div class="poll__content">
+        <ul class="is-flex is-flex-direction-column" style="gap: 20px 0">
+            <li>
+                @* question *@
+                <div class="is-flex is-align-items-center is-gap-8">
+                    <span class="is_sub2">1.</span>
+                    <div class="search-wrapper question">
+                        <input class="search-input question" type="text" placeholder="Nhập câu hỏi">
+                    </div>
+                    <div class="wrapper-button is-justify-content-center is-inline-flex error-btn" style="padding: 7px">
+                        <span class="icon">
+                            <i class="material-icons-outlined">delete</i>
+                        </span>
+                        <span class="is_button">Xóa câu hỏi</span>
+                    </div>
+                </div>
+                <div class="is-margin-tb-15 is-flex is-align-items-center is-gap-10-y">
+                    <label class="is_body2 is-secondary-40">Loại khảo sát: </label>
+                    <div class="control is-flex is-align-items-center">
+                        <label class="radio is_body2 is-secondary-20">
+                            <input type="radio" name="answer">
+                            Một đáp án
+                        </label>
+                        <label class="radio is_body2 is-secondary-20">
+                            <input type="radio" name="answer">
+                            Nhiều đáp án
+                        </label>
+                    </div>
+                </div>
+                <ul class="is-flex is-flex-direction-column" style="gap: 15px 0">
+                    @foreach (var item in optionsField)
+                    {
+                        <li class="is-flex is-align-items-center is-gap-20" >
+                            <span class="icon">
+                                <i class="material-icons-outlined">drag_indicator</i>
+                            </span>
+                            <div class="control is-flex-1">
+                                <label class="checkbox is_body2 is-secondary-20 is-flex">
+                                    <input type="checkbox" name="answer">
+                                    <div class="search-wrapper question">
+                                        <input class="search-input question" type="text" placeholder="Lựa chọn @(@item + 1)">
+                                    </div>
+                                </label>
+                            </div>
+                            <span class="icon is-pointer" @onclick="() => HandleDeleteOption(item)">
+                                <i class="material-icons-outlined is-error-40">delete</i>
+                            </span>
+                        </li>
+                    } 
+                </ul>
+                <div class="is-flex is-align-items-center is-pointer is-padding-top-20" @onclick="HandleAddOption">
+                    <span class="icon">
+                        <i class="material-icons-outlined  is-primary-40">add</i>
+                    </span>
+                    <span class="is_button is-primary-40">Thêm tùy chọn</span>
+                </div>
+            </li>
+        </ul>
+        <div class="is-flex is-align-items-center is-pointer is-padding-top-20 is-justify-content-center">
+            <span class="icon">
+                <i class="material-icons-outlined  is-primary-40">add</i>
+            </span>
+            <span class="is_button is-primary-40">Thêm câu hỏi</span>
+        </div>
+    </div>
+    @* Footer *@
+    <div class="dropdown-item unhover is-flex is-align-content-center is-padding-top-20 is-gap-10-y">
+        <div class="wrapper-button primary-btn" style="display: inline-flex;">
+            <span class="icon has-text-white">
+                <i class="material-icons-outlined">done</i>
+            </span>
+            <span class="is_caption">Cập nhật</span>
+        </div>
+        <div class="wrapper-button" style="display: inline-flex">
+            <span class="icon is-error-40">
+                <i class="material-icons-outlined">cancel</i>
+            </span>
+            <span class="is_caption is-error-40">Hủy</span>
+        </div>
+    </div>
+</div>
+
+<div class="pb-5">
+    @* Header Poll *@
+    <div class="is-flex is-align-items-center" style="gap: 0 20px">
+        <p class="is-flex-1 is-uppercase is-secondary-10 is_typhography">Khảo sát ý kiến nhân viên vào dịp tết nguyên
+            đán</p>
+        <div class="is-flex is-align-items-center" style="gap: 0 20px">
+            <div class="is-flex is-align-items-center">
+                <span class="icon is-secondary-40 is_body2">
+                    <i class="material-icons-outlined ">info</i>
+                </span>
+                <span class="is_body2 is-secondary-40">Thời gian kết thúc: </span>
+            </div>
+            <div class="is-flex is-align-items-center is-gap-4">
+                <div class="is-flex is-align-items-center">
+                    <span class="icon">
+                        <i class="material-icons-outlined is-secondary-10">calendar_today</i>
+                    </span>
+                    <span class="is_caption is-black">02/02/2023</span>
+                </div>
+                <div class="is-flex is-align-items-center">
+                    <span class="icon">
+                        <i class="material-icons-outlined is-secondary-10">schedule</i>
+                    </span>
+                    <span class="is_caption is-black">16:30</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* Content *@
+    <div class="poll__content">
+        <ul class="is-flex is-flex-direction-column" style="gap: 20px 0">
+            <li>
+                <div class="is-flex is-align-items-center is-gap-8">
+                    <span class="is_sub2">1.</span>
+                    <p class="is_sub2 is-secondary-20">Bạn muốn tham dự End Year Party vào thời điểm nào?</p>
+                </div>
+                <div class="control is-mt-10 is-flex is-flex-direction-column is-gap-10-x">
+                    <label class="is-flex is-align-items-center is-gap-4">
+                        <input type="radio" name="answer">
+                        24 tháng chạp
+                    </label>
+                    <label class="is-flex is-align-items-center is-gap-4">
+                        <input type="radio" name="answer">
+                        25 tháng chạp
+                    </label>
+                </div>
+            </li>
+            <li>
+                <div class="is-flex is-align-items-center is-gap-8">
+                    <span class="is_sub2">2.</span>
+                    <p class="is_sub2 is-secondary-20">Phần thưởng Tết bạn muốn nhận là gì?</p>
+                </div>
+                <div class="control is-mt-10 is-flex is-flex-direction-column is-gap-10-x">
+                    <label class="is-flex is-align-items-center is-gap-4">
+                        <input type="checkbox" name="answer">
+                        Tiền mặt
+                    </label>
+                    <label class="is-flex is-align-items-center is-gap-4">
+                        <input type="checkbox" name="answer">
+                        Hiện vật
+                    </label>
+                </div>
+            </li>
+        </ul>
+    </div>
+    @* Footer *@
+    <div class="wrapper-button primary-btn" style="display: inline-flex;">
+        <span class="icon">
+            <i class="material-icons-outlined">edit</i>
+        </span>
+        <span class="is_caption">Chỉnh sửa</span>
+    </div>
+</div>
+
+@code {
+    private List<int> optionsField = new List<int>() { 0 };
+    private List<QuestionModel> questions = new List<QuestionModel>(); 
+    string newQuestionName = "";
+    int newQuestionType = 1;
+    private void AddQuestion()
+    {
+        var question = new QuestionModel
+        {
+            name = newQuestionName,
+            typeOfQuestion = newQuestionType,
+            optionsList = new List<OptionModel>()
+        };
+        questions.Add(question);
+        newQuestionName = "";
+        newQuestionType = 1;
+    }
+
+    void AddOption(QuestionModel question)
+    {
+        question.optionsList.Add(new OptionModel { name = "" });
+    }
+
+    void RemoveOption(QuestionModel question, OptionModel option)
+    {
+        question.optionsList.Remove(option);
+    }
+
+    // private List<int> questions = new List<int>() { 0 };
+    public void HandleAddOption() { 
+        int newItem = optionsField.Count;
+        optionsField.Add(newItem);
+        StateHasChanged();
+    }
+    public void HandleDeleteOption(int item) {
+        optionsField.Remove(item);
+    }
+
+    @* public void HandleAddQuestion() { 
+        int newItem = questions.Count;
+        questions.Add(newItem);
+    }
+    public void HandleDeleteQuestion(int item) {
+        questions.Remove(item);
+    } *@
+}

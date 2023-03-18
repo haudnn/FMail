@@ -1,0 +1,160 @@
+<div class="columns">
+    <div class="column is-@quantityColumnFirst">
+        <div class="mail__bar-left is-flex is-align-items-center" style="gap: 0 20px;">
+            <p class="mail-title">@name</p>
+            <div class="search-wrapper">
+                <input class="search-input" type="text" placeholder="@placehoder">
+                <span class="icon">
+                    <i class="material-icons-outlined">search</i>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="column is-@quantityColumnSecond">
+        <div class="is-flex is-align-items-center is-full is-justify-content-flex-end" style="gap: 0 20px;">
+                <div class="is-flex is-align-items-center wrapper-calendar">
+                    <div class="container-icon-bg">
+                        <span class="icon">
+                            <i style="font-size: 14px;" class="material-symbols-outlined has-text-white">
+                                calendar_today
+                            </i>
+                        </span>
+                    </div>
+                    <div class="container-datepicker">
+                        <DateRangePicker @bind-StartDate="StartDate" @bind-EndDate="EndDate" />
+                    </div>
+                    <div style="padding-left: 8px;" class="dropdown @(toggleFilterTime.IsToggled ? " is-active" : "" )
+                        is-right">
+                        <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleFilterTime">
+                            <span class="is_body2 is-secondary-20">Thời gian</span>
+                            <span class="icon">
+                                <i class="material-symbols-outlined is-secondary-20">
+                                    arrow_drop_down
+                                </i>
+                            </span>
+                        </div>
+                        <div class="dropdown-menu" style="width: 180px; top: 40px">
+                            <div class="dropdown-content px-2">
+                                <p class="dropdown-item">Mọi lúc</p>
+                                <p class="dropdown-item">Hơn 1 tuần trước</p>
+                                <p class="dropdown-item">Hơn 1 tháng trước</p>
+                                <p class="dropdown-item">Hơn 6 tháng trước</p>
+                                <p class="dropdown-item">Hơn 1 năm trước</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @if(isShowStatus) {
+                <div class="dropdown is-right @(toggleFilterStatus.IsToggled ? " is-active" : "" ) ">
+                    <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleFilterStatus">
+                        <span class="text text-main-color">Trạng thái</span>
+                        <span class="icon material-icons material-symbols-outlined is-flex is-align-items-center">
+                            arrow_drop_down
+                        </span>
+                    </div>
+                    <div class="dropdown-menu" style="width: 180px; top: 40px">
+                        <div class="dropdown-content px-2">
+                            <p class="dropdown-item">Thư đã đọc</p>
+                            <p class="dropdown-item">Thư chưa đọc</p>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if(isShowLabel) {
+                <div class="dropdown is-right @(toggleFilterLabel.IsToggled ? " is-active" : "" )">
+                    <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleFilterLabel">
+                        <span class="text text-main-color">Nhãn</span>
+                        <span class="icon material-icons material-symbols-outlined is-flex is-align-items-center">
+                            arrow_drop_down
+                        </span>
+                    </div>
+                    <div class="dropdown-menu" style="top: 40px">
+                        <div class="dropdown-content filter-label">
+                            <div class="dropdown__header">Nhãn cần lọc</div>
+                            <div style="padding-bottom: 40px;">
+                                @foreach( var item in ListLabel) {
+                                <div class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
+                                    <input class="label-checkbox" type="checkbox">
+                                    <div class="is-flex is-align-items-center">
+                                        <span class="icon">
+                                            <i class="material-symbols-sharp" style="color: @item.color">label</i>
+                                        </span>
+                                        <span class="is_body2 is-secondary-10">@item.name</span>
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                            <div class="is-flex is-align-items-center is-justify-content-flex-start" style="gap: 0 10px;">
+                                <div class="wrapper-button primary-btn" style="padding: 0 4px;">
+                                    <span class="icon">
+                                        <i class="material-icons-outlined">filter_list</i>
+                                    </span>
+                                    <span class="is_caption">Lọc</span>
+                                </div>
+                                <div class="wrapper-button">
+                                    <span class="icon">
+                                        <i class="material-symbols-outlined is-error-40" style="font-size: 14px;">
+                                            cancel
+                                        </i>
+                                    </span>
+                                    <span class="is_caption is-error-40">Hủy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] 
+    public string name { get; set; }
+    [Parameter] 
+    public string quantityColumnFirst { get; set; }
+    [Parameter] 
+    public string quantityColumnSecond { get; set; }
+
+    [Parameter]
+    public bool isShowStatus { get; set; }
+
+    [Parameter]
+    public bool isShowLabel { get; set; }
+
+    [Parameter]
+    public string placehoder { get; set; }
+
+    DateTimeOffset? StartDate { get; set; } = DateTime.Today.AddMonths(-1);
+    DateTimeOffset? EndDate { get; set; } = DateTime.Today.AddDays(1).AddTicks(-1);
+    private ToggleHelper toggleFilterLabel = new ToggleHelper();
+    private ToggleHelper toggleFilterStatus = new ToggleHelper();
+    private ToggleHelper toggleFilterTime = new ToggleHelper();
+    private List<LabelModel> ListLabel = new();
+    protected override void OnInitialized()
+    {
+        Label();
+    }
+    private void HandleToggleFilterLabel()
+    {
+        toggleFilterLabel.Toggle();
+    }
+    private void HandleToggleFilterStatus()
+    {
+        toggleFilterStatus.Toggle();
+    }
+        private void HandleToggleFilterTime()
+    {
+        toggleFilterTime.Toggle();
+    }
+
+        private void Label() {
+        ListLabel = new();
+        ListLabel.Add(new LabelModel
+            {
+                id = 1,
+                name = "Nhân sự Conando",
+                color ="#fff962"
+            });
+    }
+}

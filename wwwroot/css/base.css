@@ -1,0 +1,353 @@
+:root {
+  --form-small: 600px;
+  --form-medium: 1000px;
+  --form-large: 1200px;
+  --form-full: calc(100vw - 40px);
+  --color-extra: #585c7d;
+  --color-bg: #f1f7f7;
+
+  /* Mail */
+  --border-navbar-mail-color: #c0c6dc;
+  /* --navbar-mail-width: 200px; */
+  --icon-mail-hover-color: #ecf0ff;
+  --icon-mail-color: #575e72;
+  --white-color: #ffffff;
+  --header-mail-height: 120px;
+
+  /* label mail color */
+  --label-color--01: #fff962;
+  --label-color--02: #bcb51f;
+  --label-color--03: #ecf0ff;
+  --label-color--04: #575e72;
+  --label-color--05: #ffb4a9;
+  --label-color--06: #3597aa;
+  --label-color--07: #002c70;
+
+  /* color */
+  /* FTTM - Primary */
+
+  --color-primary-10: #001947;
+  --color-primary-20: #002c70;
+  --color-primary-40: #355caa;
+  --color-primary-60: #6b8fe0;
+  --color-primary-80: #aec6ff;
+  --color-primary-95: #ecf0ff;
+
+  /* FTTM - Secondary */
+
+  --color-secondary-10: #141b2c;
+  --color-secondary-20: #293042;
+  --color-secondary-40: #575e72;
+  --color-secondary-60: #8990a5;
+  --color-secondary-80: #c0c6dc;
+  --color-secondary-95: #ecf0ff;
+
+  /* FTTM - Error */
+
+  --color-error-10: #410001;
+  --color-error-20: #680003;
+  --color-error-40: #ba1b1b;
+  --color-error-60: #ff5449;
+  --color-error-80: #ffb4a9;
+  --color-error-95: #ffede9;
+
+  /* FTTM - Warning */
+
+  --color-warning-10: #898416;
+  --color-warning-20: #bcb51f;
+  --color-warning-40: #e8e026;
+  --color-warning-60: #fff962;
+  --color-warning-80: #fdf999;
+  --color-warning-95: #fffdc6;
+
+  /* FTTM - Success */
+
+  --color-success-10: #045438;
+  --color-success-20: #07683c;
+  --color-success-40: #0f913d;
+  --color-success-60: #3dbd5e;
+  --color-success-80: #66de79;
+  --color-success-95: #cef9cc;
+
+  /* FTTM - Neutral */
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-background: #fbfbfb;
+}
+
+/* margin */
+.is-margin-tb-15 {
+  margin: 15px 0;
+}
+.is-mt-10 {
+  margin-top: 10px;
+}
+.is-mb-20 {
+  margin-bottom: 20px;
+}
+/*  padding */
+.is-padding-10 {
+  padding: 10px;
+}
+.is-padding-20 {
+  padding: 20px;
+}
+.is-padding-20-x {
+  padding: 20px 0;
+}
+.is-padding-top-20 {
+  padding-top: 20px;
+}
+.is-padding-10-y {
+  padding: 10px 0;
+}
+
+/* gap */
+.is-gap-8 {
+  gap: 0 8px;
+}
+.is-gap-4 {
+  gap: 0 4px;
+}
+.is-gap-20 {
+  gap: 0 20px;
+}
+.is-gap-10-x {
+  gap: 10px 0;
+}
+.is-gap-10-y {
+  gap: 0 10px;
+}
+/* font-size */
+.is-font-19 {
+  font-size: 19px;
+}
+/* color */
+.is-secondary-10 {
+  color: var(--color-secondary-10);
+}
+.is-secondary-20 {
+  color: var(--color-secondary-20);
+}
+
+.is-secondary-40 {
+  color: var(--color-secondary-40);
+}
+.is-secondary-60 {
+  color: var(--color-secondary-60);
+}
+.is-primary-40 {
+  color: var(--color-primary-40);
+}
+.is-warning-20 {
+  color: var(--color-warning-20);
+}
+.is-error-40 {
+  color: var(--color-error-40);
+}
+.is-error-60 {
+  color: var(--color-error-60);
+}
+.is-black {
+  color: var(--color-black);
+}
+.is-analogous-40 {
+  color: var(--label-color--06);
+}
+.is-bg-secondary-95 {
+  background-color: var(--color-secondary-95);
+}
+/* flex */
+.is-flex-1 {
+  flex: 1;
+}
+/* border */
+.border-bottom {
+  border-bottom: 1px solid var(--color-secondary-95);
+}
+
+/* FTTM - Headline 1 */
+
+.is_h1 {
+  font-weight: 300;
+  font-size: 93px;
+  line-height: 113px;
+  letter-spacing: -1.5px;
+}
+
+/* FTTM - Headline 2 */
+
+.is_h2 {
+  font-weight: 300;
+  font-size: 58px;
+  line-height: 70px;
+  letter-spacing: -0.5px;
+}
+
+/* FTTM - Headline 3 */
+
+.is_h3 {
+  font-weight: 400;
+  font-size: 43px;
+  line-height: 52px;
+}
+
+/* FTTM - Headline 4 */
+
+.is_h4 {
+  font-weight: 400;
+  font-size: 33px;
+  line-height: 40px;
+  letter-spacing: 0.25px;
+}
+
+/* FTTM - Headline 5 */
+
+.is_h5 {
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 28px;
+}
+
+/* FTTM - Headline 6 */
+
+.is_h6 {
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 23px;
+  letter-spacing: 0.15px;
+}
+
+/* FTTM - Subtitle 1 */
+
+.is_sub1 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.15px;
+}
+
+/* FTTM - Subtitle 2 */
+
+.is_sub2 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.1px;
+}
+
+/* FTTM - Body 1 */
+
+.is_body1 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0.5px;
+}
+
+/* FTTM - Body 2 */
+
+.is_body2 {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.25px;
+}
+
+/* FTTM - Placeholder */
+
+.is_placeholder::placeholder {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.25px;
+  opacity: 0.4;
+}
+
+/* FTTM - Button */
+
+.is_button {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 1.25px;
+}
+
+/* FTTM - Caption */
+
+.is_caption {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.4px;
+}
+
+/* FTTM - Overline */
+
+.is_overline {
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.15px;
+}
+
+/* FTTM - Typhography */
+.is_typhography {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.15px;
+}
+.input-container {
+  width: 100%;
+  position: relative;
+}
+.input-zone {
+  background-color: var(--white-color);
+  border-radius: 4px;
+  outline: none;
+  display: block;
+  width: 100%;
+  padding: 10px 10px 10px 60px;
+  border: 1px solid var(--color-secondary-80);
+}
+
+.input-zone::placeholder {
+  font-size: 14px;
+  color: var(--color-secondary-80);
+  font-style: italic;
+}
+.input-icon {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.input-icon.left {
+  left: 30px;
+}
+.input-icon.right {
+  right: 10px;
+}
+.wrapper-icon {
+  padding: 10px;
+}
+.wrapper-icon-24-rounded {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--color-secondary-60);
+}
+.modal.delete-group {
+  border-radius: 16px;
+}
+.modal-card-foot.delete-group {
+  background-color: var(--white-color);
+  border-top: none;
+  justify-content: flex-end;
+}

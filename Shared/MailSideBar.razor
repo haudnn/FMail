@@ -1,0 +1,129 @@
+@inject IJSRuntime JSRuntime
+@inject ProtectedLocalStorage storage
+@inject NavigationManager navigation
+<nav class="mail__sidebar @(navLess ? " is_less" : "" )">
+    <ul class="mail__sidebar-menu top">
+        <li class="mail__sidebar-item is-flex is-align-items-center" @onclick="ToggleSidebar">
+            <span class="icon">
+                <i class="material-icons-outlined">menu</i>
+            </span>
+        </li>
+        <li class="mail__sidebar-add">
+            <a href="create" class="is-flex is-align-items-center is-justify-content-center is-full">
+                <span class="icon">
+                    <i class="material-icons-outlined has-text-white">add</i>
+                </span>
+                <span class="has-text-weight-medium has-text-white">Tạo thư mới</span>
+            </a>
+        </li>
+        @foreach (var item in NavMap)
+        {
+        <li class="mail__sidebar-item is-flex is-align-items-center @(item.Value.active ? "active" : "")" @onclick='() => HandleActiveSidebar(item.Key)'>
+                  <span class="icon">
+                    <i class="material-icons-sharp is-secondary-40">@item.Value.icon</i>
+            </span>
+            <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@item.Value.name</span>
+        </li>
+        }
+    </ul>
+    <ul class="mail__sidebar-menu bottom">
+        <li class="mail__sidebar-item is-flex is-align-items-center">
+            <span class="icon">
+                <i class="material-icons-outlined">arrow_drop_down</i>
+            </span>
+            <span class="is_sub2 is-secondary-40">Nhãn</span>
+        </li>
+        <li class="mail__sidebar-item is-flex is-align-items-center">
+            <span class="icon ">
+                <i class="material-icons-sharp label-color--01">label</i>
+            </span>
+            <span class="is_sub2 is-secondary-40">Nhân sự Docorp</span>
+        </li>
+    </ul>
+    <div class="nav-settings" style="padding-left: 10px;">
+        <a href="settings" class="is-flex is-align-items-center is-justify-content-center ">
+           <span class="icon is_sub2 is-secondary-40">
+                <i class="material-icons-outlined">settings</i>
+            </span>
+            <span class="is_sub2 is-secondary-40">Thiết lập</span>
+        </a>
+
+    </div>
+
+</nav>
+
+@code{
+    [CascadingParameter]
+    public LayoutMail Layout { get; set; }
+
+    [Parameter]
+    public EventCallback<int> HandleActiveTab { get; set; }
+    [Parameter]
+    public EventCallback<bool> HandleToggleSidebarMail { get; set; }
+    private Dictionary<int, NavModel> NavMap = new Dictionary<int, NavModel>();
+    private int currentIndexNavActive;
+    public void HandleActiveSidebar(int id) {
+        if (NavMap.TryGetValue(currentIndexNavActive, out NavModel prevNav)) {
+            prevNav.active = false;
+        }
+        if (NavMap.TryGetValue(id, out NavModel newNav)) {
+            newNav.active = true;
+            currentIndexNavActive = id;
+        }
+        HandleActiveTab.InvokeAsync(currentIndexNavActive);
+    }
+
+    private bool navLess = false;
+    private async Task ToggleSidebar()
+    {
+        navLess = !navLess;
+        await HandleToggleSidebarMail.InvokeAsync(navLess);
+    }
+
+
+
+    protected override void OnInitialized()
+    {
+        Navigation();
+    }
+    private void Navigation() {
+        NavMap.Add(1, new NavModel
+            {
+                id = 1,
+                name = "Thư đã nhận",
+                icon = "inbox",
+                active = true,
+            });
+        NavMap.Add(2, new NavModel
+            {
+                id = 2,
+                name = "Thư đã gửi",
+                icon = "send",
+                active = false,
+            });
+        NavMap.Add(3, new NavModel
+            {
+                id = 3,
+                name = "Thư quan trọng",
+                icon = "star",
+                active = false,
+            });
+        NavMap.Add(4, new NavModel
+            {
+                id = 4,
+                name = "Thư nháp",
+                icon = "drafts",
+                active = false,
+            });
+        NavMap.Add(5,new NavModel
+            {
+                id = 5,
+                name = "Thùng rác ",
+                icon = "delete",
+                active = false,
+            });
+        currentIndexNavActive = NavMap.Keys.First();
+    }
+}
+
+

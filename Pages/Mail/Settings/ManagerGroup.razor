@@ -1,0 +1,169 @@
+@* all group *@
+<div class="container-manager">
+    @switch (nameCurrentAction)
+    {
+    case "static":
+            <div class="is-flex is-align-items-center is-mb-20">
+                <span class="is-flex-1 is-uppercase is_h6 is-secondary-10">Quản lí nhóm</span>
+                <div class="wrapper-button primary-btn" style="display: inline-flex;" @onclick='() => HandleChangeCurrentAction("add")'>
+                    <span class="icon">
+                        <i class="material-icons-outlined">add</i>
+                    </span>
+                    <span class="is_caption">Thêm nhóm</span>
+                </div>
+            </div>
+            <ul class="is-flex is-flex-direction-column">
+                <GroupItem HandleToggleActiveModel="HandleToggleActiveModel"
+                    HandleChangeCurrentAction="HandleChangeCurrentAction" />
+            </ul>
+            <div class="modal delete-group  @(toggleActiveModel ? " is-active" : "" )">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="is_h5 is-primary-40">Xác nhận việc xóa nhóm</p>
+                        <div class="wrapper-icon-24-rounded" @onclick='() => HandleToggleActiveModel(false)'>
+                            <span class="icon">
+                                <i class="material-icons-outlined has-text-white">close</i>
+                            </span>
+                        </div>
+                    </header>
+                    <section class="modal-card-body">
+                        <p class="is-secondary-40 is_body2">Thao tác này sẽ ảnh hưởng đến việc hiển thị danh sách người nhận
+                            thư, bạn có chắc chắn muốn xóa không?</p>
+                    </section>
+                    <footer class="modal-card-foot delete-group">
+                        <div class="wrapper-button" @onclick='() => HandleToggleActiveModel(false)'>
+                            <span class="is_button is-primary-40">Hủy</span>
+                        </div>
+                        <div class="wrapper-button error-btn">
+                            <span class="icon">
+                                <i class="material-icons-outlined has-text-white">delete</i>
+                            </span>
+                            <span class="is_button">Xóa</span>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        break;
+    case "detail":
+            <div class="is-mb-20">
+                <div class="is-flex is-align-items-center is-justify-content-space-between is-mb-20 ">
+                    <div class="wrapper-button btn-outlined" @onclick='() => HandleChangeCurrentAction("static")'>
+                        <span class="icon">
+                            <i class="material-icons-outlined is-secondary-40">arrow_back_ios</i>
+                        </span>
+                        <span class="is_button is-secondary-40">Quay lại</span>
+                    </div>
+                    <AddMember toggleActive="@toggleActiveAddMember" HandleToggleAddMember="ToggleActiveAddMember"
+                        directionDropdown="is-right" nameDropdown="Thêm thành viên" />
+                </div>
+                <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Tên nhóm</p>
+                @if(!isShowEditNameGroup) {
+                    <div class="is-flex is-align-items-center is-gap-4 is-pointer">
+                        <span class="is_sub2 is-secondary-20">Nhóm HEADBOM</span>
+                        <span class="icon" @onclick="HandleToggleShowEditName">
+                            <i class="material-icons-outlined is-primary-40">edit</i>
+                        </span>
+                    </div>
+                }
+                else { 
+                    <div class="is-flex is-align-items-center">
+                        <div class="input-container is-flex-1 is-flex is-align-items-center">
+                            <span class="input-icon left is_body2 is-secondary-60">Nhóm</span>
+                            <input class="input-zone is_body2 is-secondary-20" type="text" value="HEADBOM">
+                        </div>
+                        <div class="is-flex is-align-items-center">
+                            <div class="wrapper-icon is-pointer">
+                                <span class="icon">
+                                    <i class="material-icons-outlined is-primary-40">done</i>
+                                </span>
+                            </div>
+                            <div class="wrapper-icon is-pointer" @onclick="HandleToggleShowEditName">
+                                <span class="icon">
+                                    <i class="material-icons-outlined is-error-60">close</i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div>
+                <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Thành viên</p>
+                <ul class="is-flex is-flex-direction-column">
+                    <MemberItem />
+                </ul>
+            </div>
+        break;
+    case "add":
+            <div>
+                <div class="is-mb-20">
+                    <div class="wrapper-button btn-outlined is-inline-flex" @onclick='() => HandleChangeCurrentAction("static")'>
+                        <span class="icon">
+                            <i class="material-icons-outlined is-secondary-40">arrow_back_ios</i>
+                        </span>
+                        <span class="is_button is-secondary-40">Quay lại</span>
+                    </div>
+                </div>
+                <div class="is-mb-20">
+                    <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Tên nhóm</p>
+                    <div class="input-container is-flex-1 is-flex is-align-items-center">
+                        <span class="input-icon left is_body2 is-secondary-60">Nhóm</span>
+                        <input class="input-zone is_body2 is-secondary-20" type="text" placeholder="Nhập tên nhóm">
+                        <span class="input-icon right">
+                            <i class="material-icons-outlined is-secondary-40">edit</i>
+                        </span>
+                    </div>
+                </div>
+                <div class="is-mb-20">
+                    <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Thành viên</p>
+                    <ul class="is-flex is-flex-direction-column" style="margin-bottom: 5px;">
+                        <MemberItem/>
+                    </ul>
+                    <div style="margin-left: -7px;">
+                        <AddMember 
+                            toggleActive="@toggleActiveAddMember" 
+                            HandleToggleAddMember="ToggleActiveAddMember"
+                            directionDropdown="is-left" 
+                            nameDropdown="Thêm thành viên" 
+                        />
+                    </div>
+                </div>
+                <div class="is-flex is-align-items-center is-justify-content-flex-end is-gap-10-y">
+                    <p class="is_caption is-error-60 is-pointer">Hủy</p>
+                    <div class="wrapper-button primary-btn">
+                        <span class="icon">
+                            <i class="material-icons-outlined">done</i>
+                        </span>
+                        <span class="is_caption">Cập nhật</span>
+                    </div>
+                </div>
+            </div>
+        break;
+    default:
+        break;
+    }
+</div>
+@code {
+    private bool toggleActiveAddMember = false;
+    private bool isShowEditNameGroup = false;
+    public string nameCurrentAction = "static";
+    private bool toggleActiveModel = false;
+
+    private void ToggleActiveAddMember(bool isActiveAddMember)
+    {
+        toggleActiveAddMember = isActiveAddMember;
+    }
+    private void HandleToggleActiveModel(bool isActiveModel)
+    {
+        toggleActiveModel = !toggleActiveModel;
+    }
+    private void HandleToggleShowEditName() { 
+        isShowEditNameGroup = !isShowEditNameGroup;
+    }
+    
+    private void HandleChangeCurrentAction(string nameActionChange)
+    {
+        nameCurrentAction = nameActionChange;
+        StateHasChanged();
+    }
+}
