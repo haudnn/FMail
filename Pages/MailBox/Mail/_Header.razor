@@ -45,7 +45,7 @@
                     </div>
                 </div>
             @if(isShowStatus) {
-                <div class="dropdown is-right @(toggleFilterStatus.IsToggled ? " is-active" : "" ) ">
+                <div class="dropdown is-right @(toggleFilterStatus.IsToggled ? "is-active" : "" ) ">
                     <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleFilterStatus">
                         <span class="text text-main-color">Trạng thái</span>
                         <span class="icon material-icons material-symbols-outlined is-flex is-align-items-center">
@@ -61,7 +61,7 @@
                 </div>
             }
             @if(isShowLabel) {
-                <div class="dropdown is-right @(toggleFilterLabel.IsToggled ? " is-active" : "" )">
+                <div class="dropdown is-right @(toggleFilterLabel.IsToggled ? "is-active" : "" )">
                     <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleFilterLabel">
                         <span class="text text-main-color">Nhãn</span>
                         <span class="icon material-icons material-symbols-outlined is-flex is-align-items-center">

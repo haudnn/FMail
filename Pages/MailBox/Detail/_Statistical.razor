@@ -1,0 +1,136 @@
+<div class="poll__content" style="margin: 0; border-top-left-radius: 0;">
+    <ul class="is-flex is-flex-direction-column" style="gap: 20px 0">
+        <li>
+            <div class="is-flex is-align-items-center is-gap-8">
+                <span class="is_sub2">1.</span>
+                <p class="is_sub2 is-secondary-20">Bạn muốn tham dự End Year Party vào thời điểm
+                    nào?</p>
+            </div>
+            <div class="is-mt-10">
+                <div class="dropdown is-right @(toggleViewUnVote.IsToggled ? "is-active" : "" )">
+                    <div class="dropdown-trigger" @onclick="HandleToggleViewUnVote">   
+                        <div class="is-flex is-align-items-center">
+                            <span class="is_body2 is-secondary-40">Số người chưa thực hiện khảo sát:
+                                <span class="is_sub2 is-secondary-20">12</span>
+                            </span>
+                            <span class="icon">
+                                <i class="material-icons-outlined is-secondary-20">arrow_drop_down</i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu" style="min-width: 90%;">
+                        <DropdownPoll/>
+                    </div>
+                </div>
+                <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding: 10px 20px 0px 20px;">
+                    <li class="is-flex is-align-items-center is-justify-content-space-between">
+                        <span class="is_body2 is-secondary-20 is-flex-1">24 tháng chạp</span>
+                        <div class="is-flex is-align-items-center is-flex-1 is-justify-content-flex-end">
+                            <div class="progress_has_value is-justify-content-flex-end is-gap-10-y">
+                                <div class="dropdown is-right @(toggleViewVote.IsToggled ? "is-active" : "" )">
+                                    <div class="dropdown-trigger" @onclick="HandleToggleViewVote">
+                                       <div class="is-flex is-align-items-center">
+                                            <span class="is_sub2 is-secondary-40">72 lượt bình chọn</span>
+                                            <span class="icon">
+                                                <i class="material-icons-outlined is-secondary-40">arrow_drop_down</i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-menu" style="min-width: 250px;">
+                                        <DropdownPoll/>
+                                    </div>
+                                </div>
+                                <progress class="progress is-small is-link" value="72" max="100"
+                                    style="max-width: 180px;">
+                                </progress>
+                                <span class="is_sub2 is-primary-40">72%</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="is-flex is-align-items-center is-justify-content-space-between">
+                        <span class="is_body2 is-secondary-20 is-flex-1">25 tháng chạp</span>
+                        <div class="is-flex is-align-items-center is-flex-1 is-justify-content-flex-end">
+                            <div class="progress_has_value is-justify-content-flex-end is-gap-10-y">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="is_sub2 is-secondary-40">28 lượt bình chọn</span>
+                                    <span class="icon">
+                                        <i class="material-icons-outlined is-secondary-40">arrow_drop_down</i>
+                                    </span>
+                                </div>
+                                <progress class="progress is-small is-danger" value="72" max="100"
+                                    style="max-width: 180px;">
+                                </progress>
+                                <span class="is_sub2 is-error-40">28%</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <div class="is-flex is-align-items-center is-gap-8">
+                <span class="is_sub2">2.</span>
+                <p class="is_sub2 is-secondary-20">Phần thưởng Tết bạn muốn nhận là gì?</p>
+            </div>
+            <div class="is-mt-10">
+                <div class="is-flex is-align-items-center">
+                    <span class="is_body2 is-secondary-40">Số người chưa thực hiện khảo sát:
+                        <span class="is_sub2 is-secondary-20">05</span>
+                    </span>
+                    <span class="icon">
+                        <i class="material-icons-outlined is-secondary-20">arrow_drop_down</i>
+                    </span>
+                </div>
+                <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding: 10px 20px 0px 20px;">
+                    <li class="is-flex is-align-items-center is-justify-content-space-between">
+                        <span class="is_body2 is-secondary-20 is-flex-1">24 tháng chạp</span>
+                        <div class="is-flex is-align-items-center is-flex-1 is-justify-content-flex-end">
+                            <div class="progress_has_value is-justify-content-flex-end is-gap-10-y">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="is_sub2 is-secondary-40">72 lượt bình chọn</span>
+                                    <span class="icon">
+                                        <i class="material-icons-outlined is-secondary-40">arrow_drop_down</i>
+                                    </span>
+                                </div>
+                                <progress class="progress is-small is-link" value="72" max="100"
+                                    style="max-width: 180px;">
+                                </progress>
+                                <span class="is_sub2 is-primary-40">72%</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="is-flex is-align-items-center is-justify-content-space-between">
+                        <span class="is_body2 is-secondary-20 is-flex-1">25 tháng chạp</span>
+                        <div class="is-flex is-align-items-center is-flex-1 is-justify-content-flex-end">
+                            <div class="progress_has_value is-justify-content-flex-end is-gap-10-y">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="is_sub2 is-secondary-40">28 lượt bình chọn</span>
+                                    <span class="icon">
+                                        <i class="material-icons-outlined is-secondary-40">arrow_drop_down</i>
+                                    </span>
+                                </div>
+                                <progress class="progress is-small is-danger" value="72" max="100"
+                                    style="max-width: 180px;">
+                                </progress>
+                                <span class="is_sub2 is-error-40">28%</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>
+
+@code{ 
+    
+    private ToggleHelper toggleViewVote = new ToggleHelper();
+    private ToggleHelper toggleViewUnVote = new ToggleHelper();
+
+    private void HandleToggleViewVote(){ 
+       toggleViewVote.Toggle();
+    }
+    private void HandleToggleViewUnVote(){
+        toggleViewUnVote.Toggle();
+    }
+}

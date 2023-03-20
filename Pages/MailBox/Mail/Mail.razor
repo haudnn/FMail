@@ -12,7 +12,7 @@
             {
                 @* Hộp thư đến *@
                 case 1:
-                            <MailHeader
+                            <_Header
                         name="Hộp thư đến"
                         placehoder="Tiêu đề, nội dung, người gửi"
                         quantityColumnFirst="6"
@@ -23,7 +23,7 @@
                     break;
                 @* Hộp thư đi *@
                 case 2:
-                            <MailHeader
+                            <_Header
                         name="Thư đã gửi"
                         placehoder="Tiêu đề, nội dung, người nhận"
                         quantityColumnFirst="6"
@@ -34,7 +34,7 @@
                     break;
                 @* Thư quan trọng *@
                 case 3:
-                            <MailHeader
+                            <_Header
                         name="Thư quan trọng"
                         placehoder="Tiêu đề, nội dung, người gửi, người nhận"
                         quantityColumnFirst="6"
@@ -45,7 +45,7 @@
                     break;
                 @* Thư nháp *@
                 case 4:
-                            <MailHeader
+                            <_Header
                         name="Thư nháp"
                         placehoder="Tiêu đề, nội dung, người nhận"
                         quantityColumnFirst="8"
@@ -67,7 +67,7 @@
                     break; *@
                 @* Thùng rác *@
                 case 5:
-                    <MailHeader
+                    <_Header
                         name="Thùng rác"
                         placehoder="Tiêu đề, nội dung, người gửi"
                         quantityColumnFirst="8"
@@ -165,7 +165,7 @@
                 }
                 @foreach (var item in allItems)
                 {
-                    <MailItem id="@index" OnCheckboxChange="HandleChildCheckboxChange"
+                    <_Item id="@index" OnCheckboxChange="HandleChildCheckboxChange"
                         IsChecked="@selectedItems.Contains(item)" />
                     index++;
                 }

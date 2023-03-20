@@ -1,15 +1,15 @@
-<div class="dropdown @directionDropdown @(toggleActive ? " is-active" : "" )">
-    <div class="dropdown-trigger" @onclick='HandleToggleActive'>
+<div class="dropdown @directionDropdown @(toggleViewAdd.IsToggled ? "is-active" : "" )">
+    <div class="dropdown-trigger" @onclick='HandleToggleViewAdd'>
         <div class="is-flex is-align-items-center is-pointer">
             <span class="icon has-text-white">
                 <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
             </span>
-            <span class="is-primary-40 is-font-12">@nameDropdown</span>
+            <span class="is-primary-40 is-font-12">Thêm người nhận</span>
         </div>
     </div>
     <div class="dropdown-menu" style="min-width: 350px; min-height: 430px">
-        <div class="dropdown-content" style="padding: 10px;">
-            <div class="dropdown-header">
+        <div class="dropdown-content is-padding-20">
+            <div class="dropdown-header" style="padding: 0;">
                 <div class="dropdown-item unhover is-flex is-align-items-center is-justify-content-space-between"
                     style="padding: 10px 0;">
                     <span class="is_sub2 is-secondary-40">Cập nhật người dùng</span>
@@ -109,34 +109,20 @@
                 </ul>
             </div>
             <div
-                class="dropdown-item unhover is-flex is-justify-content-flex-end is-align-content-center is-padding-top-20 is-gap-10-y">
+                class=" unhover is-flex is-justify-content-flex-end is-align-content-center is-gap-10-y is-padding-top-20">
                 <div class="wrapper-button primary-btn" style="display: inline-flex">
                     <span class="icon has-text-white">
                         <i class="material-icons-outlined">done</i>
                     </span>
                     <span class="has-text-white is-font-12">Cập nhật</span>
                 </div>
-                <div class="wrapper-button error-btn" style="display: inline-flex">
+                <div class="wrapper-button error-btn" style="display: inline-flex" @onclick='HandleToggleViewAdd'>
                     <span class="icon has-text-white">
                         <i class="material-icons-sharp">close</i>
                     </span>
                     <span class="has-text-white is-font-12">Hủy</span>
                 </div>
             </div>
-            @* <div class="dropdown-item unhover is-flex is-align-items-center is-gap-4">
-                <span class="icon"></span>
-                <span class="is_body2">Không có chữ ký</span>
-            </div>
-            <div class="dropdown-item unhover is-flex is-align-items-center is-gap-4">
-                <span class="icon">
-                    <i class="material-icons-sharp is_body2">done</i>
-                </span>
-                <span class="is_body2">Chữ ký 1</span>
-            </div>
-            <div class="dropdown-item unhover is-flex is-align-items-center is-gap-4">
-                <span class="icon"></span>
-                <span class="is_body2">Chữ ký 2</span>
-            </div> *@
         </div>
     </div>
 </div>
@@ -145,15 +131,9 @@
 
     [Parameter]
     public string directionDropdown {get; set;}
-    [Parameter]
-    public string nameDropdown {get; set;}
-    [Parameter]
-    public bool toggleActive { get; set; }
-
-    [Parameter]
-    public EventCallback<bool> HandleToggleAddMember { get;  set; }
-
-    private void HandleToggleActive () {
-        HandleToggleAddMember.InvokeAsync(!toggleActive);
+    private ToggleHelper toggleViewAdd = new ToggleHelper();
+    private void HandleToggleViewAdd()
+    {
+        toggleViewAdd.Toggle();
     }
 }

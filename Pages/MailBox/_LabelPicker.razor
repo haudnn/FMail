@@ -1,0 +1,51 @@
+<div class="dropdown is-right @(toggleShowDropdown.IsToggled ? " is-active" : "" )">
+    <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleShowDropdown">
+        <span class="text text-main-color">Nhãn</span>
+        <span class="icon material-icons material-symbols-outlined is-flex is-align-items-center">
+            arrow_drop_down
+        </span>
+    </div>
+    <div class="dropdown-menu" style="top: 40px">
+        <div class="dropdown-content filter-label">
+            <div class="dropdown__header">Nhãn cần lọc</div>
+            <ul class="is-flex-1">
+                @foreach( var item in labels) {
+                <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
+                    <input class="label-checkbox" type="checkbox">
+                    <div class="is-flex is-align-items-center" style="gap: 0 5px">
+                        <span class="icon">
+                            <i class="material-symbols-sharp" style="color: @item.color">label</i>
+                        </span>
+                        <span class="is_body2 is-secondary-10">@item.name</span>
+                    </div>
+                </li>
+                }
+            </ul>
+            <div class="is-flex is-align-items-center is-justify-content-flex-start" style="gap: 0 10px;">
+                <div class="wrapper-button primary-btn" style="padding: 0 4px;">
+                    <span class="icon">
+                        <i class="material-icons-outlined">filter_list</i>
+                    </span>
+                    <span class="is_caption">Lọc</span>
+                </div>
+                <div class="wrapper-button">
+                    <span class="icon">
+                        <i class="material-symbols-outlined is-error-40" style="font-size: 14px;">
+                            cancel
+                        </i>
+                    </span>
+                    <span class="is_caption is-error-40">Hủy</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+    private ToggleHelper toggleShowDropdown = new ToggleHelper();
+    [Parameter]
+    private List<LabelModel> labels { get; set; }
+    private void HandleToggleShowDropdown() {
+        toggleShowDropdown.Toggle();
+    }
+}

@@ -10,16 +10,15 @@
     </div>
 </li>
 
-
 @code {
     [Parameter]
-    public EventCallback<bool> HandleToggleActiveModel { get;  set; }
+    public EventCallback<bool> HandleToggleActiveModal { get;  set; }
 
     [Parameter]
     public EventCallback<string> HandleChangeCurrentAction { get;  set; }
 
     private void HandleToggleActive () {
-        HandleToggleActiveModel.InvokeAsync(true);
+        HandleToggleActiveModal.InvokeAsync(true);
     }
     private void HandleViewDetail() {
         HandleChangeCurrentAction.InvokeAsync("detail");

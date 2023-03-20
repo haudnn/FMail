@@ -83,6 +83,9 @@
 .is-mt-10 {
   margin-top: 10px;
 }
+.is-mb-10 {
+  margin-bottom: 10px;
+}
 .is-mb-20 {
   margin-bottom: 20px;
 }
@@ -96,8 +99,14 @@
 .is-padding-20-x {
   padding: 20px 0;
 }
+.is-padding-20-y {
+  padding: 0 20px;
+}
 .is-padding-top-20 {
   padding-top: 20px;
+}
+.is-padding-bottom-20 {
+  padding-bottom: 20px;
 }
 .is-padding-10-y {
   padding: 10px 0;
@@ -350,4 +359,34 @@
   background-color: var(--white-color);
   border-top: none;
   justify-content: flex-end;
+}
+.is-border-y {
+  border-top: 1px solid var(--color-secondary-95);
+  border-bottom: 1px solid var(--color-secondary-95);
+}
+.dots {
+  width: 26px;
+  height: 16px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-95);
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+}
+.container-reply {
+  margin-top: 10px;
+  background-color: var(--color-primary-95);
+  padding: 10px 10px 10px 20px;
+  border-radius: 4px;
+}
+.is-has-borderleft-2 {
+  padding-left: 10px;
+  border-left: 2px solid var(--color-secondary-80);
+}
+.write-zone .create__main-container {
+  border-top: 0;
+}
+.dropdown-menu.is-small {
+  min-width: 124px !important;
 }

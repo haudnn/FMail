@@ -1,0 +1,80 @@
+<div class="is-padding-20-x">
+    <div class="is-flex is-align-items-center" style="gap: 0 12px">
+        <figure class="image is-36x36">
+            <img src="images/avatar-mail.png">
+        </figure>
+        <div class="is-flex is-flex-direction-column" style="gap: 5px 0">
+            <p class="is_sub2 is-secondary-10">@displayName</p>
+            <div class="is-flex is-align-items-center is-gap-20">
+                <div class="dropdown is-left @(toggleViewAllActions.IsToggled ? " is-active" : "" )">
+                    <div class="dropdown-trigger" @onclick="HandleToggleViewAllActions">
+                        <div class="is_flex is-flex-wrap-wrap is-is-gap-10-y">
+                            <div class="is-flex is-align-items-center is-gap-10-y is-pointer">
+                                <div class="is-flex is-align-items-center">
+                                    <span class="icon is-small is-secondary-40">
+                                        <i class="material-icons-outlined">@iconName</i>
+                                    </span>
+                                    <span class="is-secondary-40 is_caption">@actionName</span>
+                                </div>
+                                <span class="icon">
+                                    <i class="material-icons-outlined is_caption">arrow_drop_down</i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu" style="min-width: 220px;">
+                        <div class="dropdown-content is-padding-20 is-flex is-flex-direction-column" style="gap: 10px 0">
+                            <div class="is-flex is-align-items-center is-pointer">
+                                <span class="icon is-secondary-40">
+                                    <i class="material-icons-outlined">reply</i>
+                                </span>
+                                <span class="is-secondary-40 is_sub2">Trả lời</span>
+                            </div>
+                            <div class="is-flex is-align-items-center is-pointer">
+                                <span class="icon is-secondary-40">
+                                    <i class="material-icons-outlined">reply_all</i>
+                                </span>
+                                <span class="is-secondary-40 is_sub2">Trả lời tất cả</span>
+                            </div>
+                            <div class="is-flex is-align-items-center is-pointer">
+                                <span class="icon is-secondary-40">
+                                    <i class="material-icons-outlined">forward</i>
+                                </span>
+                                <span class="is-secondary-40 is_sub2">Chuyển tiếp</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if(isShowTextTo) {
+                    <p class="is_caption is-secondary-40">Đến:</p>
+                }
+                <_AddMember directionDropdown="is-left"/>
+                <_AddGroupMember directionDropdown="is-left"/>
+            </div>
+
+        </div>
+    </div>
+    <div class="write-zone">
+        <MailWriteZone/>
+    </div>
+</div>
+@code {
+    private ToggleHelper toggleViewAllActions = new ToggleHelper();
+    [Parameter]
+    public string currentAction { get; set; }
+    [Parameter]
+    public string iconName { get; set; }
+    [Parameter]
+    public string actionName { get; set; }
+    public List<ReceiverModel> receivers { get; set; }
+    
+    [Parameter]
+    public string displayName { get; set; }
+    [Parameter]
+    public bool isShowTextTo { get; set; }
+
+    private void HandleToggleViewAllActions()
+    {
+        toggleViewAllActions.Toggle();
+    }
+}

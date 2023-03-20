@@ -1,0 +1,51 @@
+<div class="modal delete-group @(toggleActiveModal ? "is-active" : "" )">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="is_h5 is-primary-40">@nameModal</p>
+            <div class="wrapper-icon-24-rounded" @onclick='() => ToggleActiveModal(false)'>
+                <span class="icon">
+                    <i class="material-icons-outlined has-text-white">close</i>
+                </span>
+            </div>
+        </header>
+        <section class="modal-card-body">
+            <p class="is-secondary-40 is_body2">@contentModal</p>
+        </section>
+        <footer class="modal-card-foot delete-group">
+            <div class="wrapper-button" @onclick='() => ToggleActiveModal(false)'>
+                <span class="is_button is-primary-40">Hủy</span>
+            </div>
+            <div class="wrapper-button error-btn" @onclick="HandleConfirmationModal">
+                <span class="icon">
+                    <i class="material-icons-outlined has-text-white">delete</i>
+                </span>
+                <span class="is_button">@contentButton</span>
+            </div>
+        </footer>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string nameModal { get; set; }
+    [Parameter]
+    public string contentModal { get; set; }
+    [Parameter]
+    public string contentButton { get; set; }
+
+    [Parameter] 
+    public bool toggleActiveModal { get; set; }
+    [Parameter]
+    public EventCallback<bool> HandleToggleActiveModal { get; set; }
+
+    [Parameter]
+    public EventCallback HandleConfirmation { get; set; }
+    private void ToggleActiveModal(bool isActiveModal) {
+        HandleToggleActiveModal.InvokeAsync(isActiveModal);
+    }
+    private void HandleConfirmationModal() {
+        HandleConfirmation.InvokeAsync();
+    }
+
+}

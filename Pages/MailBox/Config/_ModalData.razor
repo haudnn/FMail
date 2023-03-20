@@ -1,0 +1,59 @@
+<div class="modal delete-group @(toggleActiveModal ? "is-active" : "" )">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="is_h5 is-primary-40">@nameModal</p>
+            <div class="wrapper-icon-24-rounded" @onclick='() => ToggleActiveModel(false)'>
+                <span class="icon">
+                    <i class="material-icons-outlined has-text-white">close</i>
+                </span>
+            </div>
+        </header>
+        <section class="modal-card-body">
+            <div>
+                <p class="is_body2 is-secondary-20">Tên danh mục *</p>
+                <div class="search-wrapper label-input" style="width: 100%; margin-top: 10px;">
+                    <input class="search-input label-input" @bind=@name type="text" placeholder="Nhập tên danh mục" style="min-height: 36px;">
+                    <span class="icon is-secondary-40">
+                        <i class="material-icons-outlined">edit</i>
+                    </span>
+                </div>
+            </div>
+        </section>
+        <footer class="modal-card-foot delete-group">
+            <div class="wrapper-button" @onclick='() => ToggleActiveModel(false)'>
+                <span class="is_button is-primary-40">Hủy</span>
+            </div>
+            <div class="wrapper-button primary-btn" @onclick="HandleConfirmationModal">
+                <span class="icon">
+                    <i class="material-icons-outlined has-text-white">done</i>
+                </span>
+                <span class="is_button">@contentButton</span>
+            </div>
+        </footer>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string nameModal { get; set; }
+    [Parameter]
+    public string contentButton { get; set; }
+    [Parameter]
+    public string name { get; set; }
+
+    [Parameter] 
+    public bool toggleActiveModal { get; set; }
+    [Parameter]
+    public EventCallback<bool> HandleToggleActiveModal { get; set; }
+
+    [Parameter]
+    public EventCallback HandleConfirmation { get; set; }
+    private void ToggleActiveModel(bool isActiveModel) {
+        HandleToggleActiveModal.InvokeAsync(isActiveModel);
+    }
+    private void HandleConfirmationModal() {
+        HandleConfirmation.InvokeAsync();
+    }
+
+}

@@ -1559,10 +1559,6 @@ button.dropdown-item {
   width: 100%;
 }
 
-.progress_has_value span {
-  font-weight: 600;
-}
-
 .progress_has_value .progress {
   margin: 0px;
   width: calc(100% - 60px);
@@ -3107,7 +3103,10 @@ button.dropdown-item {
   display: flex;
   align-items: center;
 }
-
+.icon.is-small {
+  width: 16px;
+  height: 16px;
+}
 .is-full {
   width: 100%;
   height: 100%;
@@ -3221,8 +3220,9 @@ button.dropdown-item {
 }
 .filter-label {
   padding: 10px !important;
-  width: 250px !important;
-  max-height: 280px !important;
+  min-width: 250px !important;
+  display: flex;
+  flex-direction: column;
 }
 .is-font-12 {
   font-size: 12px;
@@ -3387,7 +3387,7 @@ button.dropdown-item {
 }
 .drop-border {
   border-radius: 4px;
-  border: 1px solid #c0c6dc;
+  border: 1px solid var(--color-secondary-80);
   padding: 9px 10px;
 }
 
@@ -3401,6 +3401,12 @@ button.dropdown-item {
 
 .wrapper-button.error-btn {
   background-color: var(--color-error-60);
+}
+.wrapper-button.error-btn.disable {
+  background-color: var(--color-error-80);
+}
+.wrapper-button.error-btn.disable:hover {
+  background-color: var(--color-error-80);
 }
 .wrapper-button.error-btn:hover {
   background-color: var(--color-error-40);
@@ -3445,6 +3451,9 @@ button.dropdown-item {
   padding: 30px;
   border-radius: 8px;
   border: 1px solid var(--color-secondary-80);
+}
+.container-manager.is-config {
+  min-height: calc(100vh - 56px);
 }
 .container-group-item {
   padding: 7px 0px 7px 10px;
@@ -3553,6 +3562,11 @@ button.dropdown-item {
   border-radius: 10px 10px 0px 0px;
   background-color: #f1f7f7;
   opacity: 0.6;
+  display: block;
+  border: none;
+}
+.wrapper-header-poll.disable {
+  cursor: not-allowed;
 }
 .wrapper-header-poll > span {
   color: var(--color-secondary-60);
@@ -3563,4 +3577,45 @@ button.dropdown-item {
 }
 .wrapper-header-poll.active > span {
   color: var(--color-primary-20);
+}
+.container-cc-list {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex: 1;
+  max-width: 500px;
+}
+.ellipsis-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.container-cc-list li:last-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.stop-survey {
+  color: var(--color-secondary-60) !important;
+}
+.stop-survey span {
+  color: var(--color-secondary-60);
+}
+.stop-survey i {
+  color: var(--color-secondary-60);
+}
+.is-flex-auto {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.is-has-virgule {
+  position: relative;
+  margin-right: 5px;
+}
+.is-has-virgule:not(:last-child)::after {
+  content: ",";
+  position: absolute;
+  width: 2px;
+  height: 2px;
 }
