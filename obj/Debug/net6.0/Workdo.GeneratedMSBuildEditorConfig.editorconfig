@@ -59,8 +59,36 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxEZXRhaWxcX1N1cnZleS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/Mail.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXE1haWwucmF6b3I=
+[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/Drafts.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXERyYWZ0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/Important.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXEltcG9ydGFudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/Inbox.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXEluYm94LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/Label.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXExhYmVsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/Sent.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXFNlbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/Trash.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXFRyYXNoLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/_Actions.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXF9BY3Rpb25zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/_Category.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXF9DYXRlZ29yeS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/_Header.razor]
@@ -69,6 +97,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/_Item.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXF9JdGVtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Mail/_Pagination.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFpbEJveFxNYWlsXF9QYWdpbmF0aW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Conando/WorkdoTemplate/Workdo/Pages/MailBox/Settings/Settings.razor]

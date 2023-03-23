@@ -54,7 +54,7 @@
       Hãy chọn công ty
     </div>
     <div class="field">
-      <a class="icon-text has-text-link" href="/mail">
+      <a class="icon-text has-text-link" href="mail/inbox">
         <span class="icon">
           <i class="material-icons-outlined is-size-5">apartment</i>
         </span>
@@ -109,7 +109,7 @@
     if (user != null)
     {
       await storage.SetAsync("user", user.session);
-      navigation.NavigateTo("mail", true);
+      navigation.NavigateTo("mail/inbox", true);
     }
     else
     {

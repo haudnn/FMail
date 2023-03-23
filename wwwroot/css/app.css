@@ -3058,7 +3058,7 @@ button.dropdown-item {
   left: 24px;
 }
 .mail__content {
-  padding: 20px 20px 0px 20px;
+  padding-top: 20px;
   min-height: calc(100vh - var(--header-mail-height) - 60px);
 }
 .category__list {
@@ -3090,18 +3090,36 @@ button.dropdown-item {
   transition: all 0.1s linear;
   cursor: pointer;
 }
+.unread {
+  color: var(--color-secondary-10);
+}
+.read {
+  color: var(--color-secondary-40);
+}
+.title-drafts.read.drafts {
+  color: var(--color-error-60);
+}
 .mail-item.read {
   background: #fbfbfb;
 }
 .mail-item.unread {
   background-color: var(--white-color);
 }
-.icon.star {
-  color: #bcb51f;
-  width: 14px;
-  height: 14px;
-  display: flex;
-  align-items: center;
+.mail-item.drafts.read {
+  opacity: 0.7;
+}
+.mail-item.drafts.is-selected {
+  opacity: 1;
+}
+.mail-item.drafts.is-selected .title-drafts {
+  color: var(--color-error-60);
+}
+.mail-item.drafts.unread {
+  opacity: 1;
+}
+.icon.star > i {
+  color: var(--color-warning-20);
+  font-size: 14px !important;
 }
 .icon.is-small {
   width: 16px;
@@ -3121,24 +3139,9 @@ button.dropdown-item {
   font-size: 14px;
   font-weight: 400;
 }
-.mail-text--title {
-  font-weight: 500;
-  white-space: nowrap;
-}
-.mail-text--title.source {
-  width: 160px;
-  max-width: 160px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.unread {
-  color: #141b2c;
-}
-.read {
-  color: #575e72;
-}
+/* .read.drafts {
+  color: var(--color-error-60);
+} */
 .mail__item-tag {
   display: flex;
   align-items: center;
@@ -3151,7 +3154,6 @@ button.dropdown-item {
   white-space: nowrap;
 }
 .mail-text--content {
-  max-width: 500px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3162,24 +3164,38 @@ button.dropdown-item {
   justify-content: end;
   width: 80px;
 }
-.files-list {
+.attachments-list {
   margin-top: 10px;
+  gap: 0 10px;
+  display: flex;
+  align-items: center;
 }
-.file-item {
+.attachment-item {
   padding: 5px 12px;
-  border: 1px solid #c0c6dc;
+  border: 1px solid var(--color-secondary-80);
   border-radius: 6px;
   background-color: var(--white-color);
   cursor: pointer;
   min-width: 64px;
   max-width: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0 7px;
+}
+.attachment-item.count {
+  padding: 0;
+  min-width: unset;
+  max-width: unset;
+  width: 32px;
+  height: 32px;
 }
 .tags-list {
   display: flex;
   align-items: center;
   gap: 0 5px;
   justify-content: flex-end;
-  max-width: 240px;
+  /* max-width: 240px; */
 }
 .mail__item-content-text {
   display: flex;
@@ -3194,19 +3210,20 @@ button.dropdown-item {
   justify-content: center;
   border-radius: 5px;
   padding: 5px 10px;
-  background-color: #b6ebf5;
   max-width: 100px;
   min-width: 40px;
+  max-height: 24px;
   cursor: pointer;
 }
 .tag-item > span {
-  color: #3597aa;
-  font-size: 12px;
-  font-weight: 400;
   overflow: hidden;
   max-width: 80px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.tag-item.count {
+  background-color: var(--color-secondary-80);
+  border-radius: 4px;
 }
 .draf {
   background-color: #ffb4a9;
@@ -3277,7 +3294,7 @@ button.dropdown-item {
 .mail__bar {
   background-color: var(--white-color);
   position: sticky;
-  top: 56px;
+  top: 76px;
   max-height: var(--header-mail-height);
   z-index: 10;
 }
@@ -3288,14 +3305,19 @@ button.dropdown-item {
   display: none;
   justify-content: flex-end;
 }
-
+.mail-item:hover {
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
 .mail-item:hover .mail-actions {
   display: flex;
 }
 .mail-item:hover .tags-list {
   display: none;
 }
-
+.mail-item:hover .mail-text--content {
+  max-width: 100% !important;
+}
 .mail-item:hover .mail__item-datetime {
   display: none;
 }
@@ -3325,8 +3347,15 @@ button.dropdown-item {
 }
 .mail__footer {
   background-color: var(--white-color);
-  border-top: 1px solid #c0c6dc;
   padding: 14px 30px 20px 30px;
+}
+.mail__footer.actions {
+  position: sticky;
+  border-top: 1px solid #c0c6dc;
+  background-color: var(--white-color);
+  bottom: 0;
+  right: 20px;
+  left: 20px;
 }
 .mail__sidebar.is_less .mail__main .mail__footer .mail-actions {
   background: #000;
@@ -3335,8 +3364,6 @@ button.dropdown-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky;
-  bottom: 0px;
   background-color: var(--white-color);
 }
 .text-color-secondary {
@@ -3346,6 +3373,10 @@ button.dropdown-item {
   padding: 4px 8px 4px 8px;
   border-radius: 4px;
   background-color: #ff5449;
+}
+.mail__footer-drafs.restore {
+  background-color: var(--white-color);
+  border: 1px solid var(--color-secondary-40);
 }
 .dropdown-item.unhover:hover {
   background-color: unset;
@@ -3494,7 +3525,6 @@ button.dropdown-item {
 .wrapper-label-item {
   gap: 15px 0;
   padding: 3px 8px 3px 10px;
-  background-color: rgba(53, 151, 170, 0.2);
   border-radius: 4px;
 }
 .signature-item.active {
@@ -3531,6 +3561,8 @@ button.dropdown-item {
   max-height: 35px;
   border: 1px solid var(--color-primary-40);
   border-radius: 4px;
+  max-width: 345px;
+  min-width: 345px;
 }
 .container-icon-bg {
   padding: 10px;
@@ -3549,10 +3581,10 @@ button.dropdown-item {
   border-right: 1px solid var(--color-primary-40);
 }
 .container-datepicker > input {
+  display: block;
   border: none;
   outline: none;
-  font-size: 14px;
-  color: var(--color-secondary-40);
+  width: 100%;
 }
 .mail__sidebar.is_less .mail__main .mail__footer {
   left: 200px;
@@ -3618,4 +3650,40 @@ button.dropdown-item {
   position: absolute;
   width: 2px;
   height: 2px;
+}
+.end-date {
+  text-align: right;
+}
+.labels-list {
+  /*;
+  padding: 10px;
+  cursor: pointer;
+   */
+  /* align-items: center;
+  justify-content: center; */
+  display: flex;
+  flex-direction: column;
+  transition: all 0.1s;
+  gap: 10px 0;
+  padding-right: 10px;
+  transition: all 0.1s;
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.label-item {
+  border-radius: 4px;
+  padding: 10px;
+}
+.labels-list::-webkit-scrollbar {
+  width: 5px;
+}
+.labels-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.labels-list::-webkit-scrollbar-thumb {
+  background: var(--color-secondary-40);
+}
+.label-item.label-active {
+  background-color: var(--color-primary-95);
 }

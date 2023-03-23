@@ -390,3 +390,34 @@
 .dropdown-menu.is-small {
   min-width: 124px !important;
 }
+.pagination-link {
+  max-width: 29px !important;
+  height: 35px;
+  padding: 0;
+  border: none;
+}
+.pagination-link.is-current {
+  background-color: var(--color-secondary-40);
+  border: none;
+}
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mw-160 {
+  max-width: 160px;
+}
+.color-picker {
+  position: relative;
+}
+
+.color-picker input[type="color"] {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  width: 0;
+  outline: none;
+  padding: 0;
+  height: 0;
+}

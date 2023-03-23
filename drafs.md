@@ -1,4 +1,5 @@
 @\* <div class="mail-item unread">
+
 <div class="columns">
 <div class="column is-2">
 <div class="is-flex is-align-items-center" style="gap: 0 16px;">
@@ -279,3 +280,99 @@ delete
         </div>
     </div>
 </div> *@
+
+            @* <div class="mail__footer-actions">
+                <div class="is-flex is-align-items-center" style="gap: 0 8px;">
+                    <input type="checkbox" checked>
+                    <span class="text-color-secondary">@selectedItems.Count thư được chọn</span>
+                </div>
+                <div class="is-flex is-align-items-center" style="gap: 0 10px;">
+                    <div class="is-flex is-align-items-center is-pointer">
+                        <div class="dropdown is-up is-right click @(toggleActiveAction ? " is-active" : "" )">
+                            <div class="dropdown-trigger" @onclick='ToggleActiveAction'>
+                                <span class="icon">
+                                    <i class="material-icons-outlined read">more_vert</i>
+                                </span>
+                                <span class="read">Hành động khác</span>
+                            </div>
+                            <div class="dropdown-menu" style="width: 250px;">
+                                <div class="dropdown-content px-3" style="z-index: 20;">
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined read">drafts</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Đánh dấu đã đọc</span>
+                                    </div>
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined read">drafts</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Đánh dấu chưa đọc</span>
+                                    </div>
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;">
+                                        <span class="icon">
+                                            <i class="material-icons-sharp read">star</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Đánh dấu quan trọng</span>
+                                    </div>
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined read">star_outline</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Đánh dấu không quan trọng</span>
+                                    </div>
+                                    <div class="dropdown-item unhover is-flex is-align-items-center"
+                                        style="gap: 0 5px; padding: 5px;" @onclick='ToggleActiveLabel'>
+                                        <span class="icon">
+                                            <i class="material-icons-sharp read">label_outline</i>
+                                        </span>
+                                        <span class="read has-text-weight-medium">Gắn nhãn</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown is-up is-right @(toggleActiveLabel ? " is-active" : "" )">
+                        <div class="dropdown-menu" style="width: 250px; right: 270px; bottom: 50px ;border-radius: 8px;">
+                            <div class="dropdown-content filter-label">
+                                <div class="dropdown__header">Danh sách nhãn</div>
+                                <div style="padding-bottom: 20px;">
+                                    @foreach (var label in labels)
+                                    {
+                                    <div class="dropdown-item filter is-flex is-align-items-center p-0 pb-2">
+                                        <input class="label-checkbox" type="checkbox">
+                                        <span class="icon">
+                                            <i class="material-symbols-sharp" style="color: @label.color">label</i>
+                                        </span>
+                                        <span class="is_body2 is-secondary-10">@label.name</span>
+                                    </div>
+                                    }
+                                </div>
+                                <div class="is-flex is-align-items-center is-justify-content-flex-end" style="gap: 0 10px;">
+                                    <div class="wrapper-button cancel is-pointer ">
+                                        <span class="is-font-12 is-err-color">Hủy</span>
+                                    </div>
+                                    <div class="wrapper-button is-bg-main is-pointer ">
+                                        <span class="icon has-text-white">
+                                            <i class="material-icons-outlined">check</i>
+                                        </span>
+                                        <span class="has-text-white is-font-12">Cập nhật</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="is-flex is-align-items-center is-pointer mail__footer-drafs">
+                        <span class="icon has-text-white">
+                            <i class="material-icons-outlined">delete</i>
+                        </span>
+                        <span class="has-text-white">Chuyển vào thùng rác</span>
+                    </div>
+                </div>
+            </div> *@

@@ -4,63 +4,113 @@
     </div>
     <div class="is-inline-flex is-align-items-center is-gap-4 is-mb-20">
         <div class="search-wrapper label-input">
-            <input class="search-input label-input" type="text" placeholder="Nhập tiêu đề nhãn"
-                style="min-height: 36px;">
+            <input class="search-input label-input" @bind=@labelName type="text" placeholder="Nhập tiêu đề nhãn" style="min-height: 36px;">
         </div>
-        <div class="container-square medium grey">
-            <span class="icon is-secondary-40">
-                <i class="material-symbols-outlined"> palette</i>
-            </span>
+        <div class="color-picker container-square medium grey">
+            <input type="color" id="color-picker-input" @bind=@labelColor @oninput="HandleChangeColor">
+            <label for="color-picker-input" class="icon is-secondary-40 color-picker-icon">
+                <i class="material-symbols-outlined">palette</i>
+            </label>
         </div>
-        <div class="wrapper-button primary-btn" style="display: inline-flex; min-height: 36px;">
-            <span class="icon">
-                <i class="material-icons-outlined">done</i>
-            </span>
-            <span class="is_caption">Tạo nhãn</span>
-        </div>
+        @if(isEditLabel) {
+            <div class="wrapper-button primary-btn" style="display: inline-flex; min-height: 36px;" @onclick="HandelAcceptEdit">
+                <span class="icon">
+                    <i class="material-icons-outlined">done</i>
+                </span>
+                <span class="is_caption">Chấp nhận</span>
+            </div>
+            <div class="wrapper-button" style="display: inline-flex; min-height: 36px;" @onclick="HandelCancelEdit">
+                <span class="icon is-error-40">
+                    <i class="material-icons-outlined">close</i>
+                </span>
+                <span class="is_sub2 is-error-40">Hủy</span>
+            </div>
+        }
+        else{ 
+            <div class="wrapper-button primary-btn" style="display: inline-flex; min-height: 36px;" @onclick="HandelCreateLabel">
+                <span class="icon">
+                    <i class="material-icons-outlined">done</i>
+                </span>
+                <span class="is_caption">Tạo nhãn</span>
+            </div>
+        }  
     </div>
     <div>
         <span class="is-secondary-60 is_caption is-italic">Chọn nhãn để chỉnh sửa</span>
-        <ul class="is-flex is-align-items-center is-gap-10-y is-flex-wrap-wrap" style="margin-top: 5px;">
-            <li class="is-flex is-align-items-center wrapper-label-item">
-                <span class="is_caption is-analogous-40 ">Nhân sự Conando</span>
+        <ul class="is-flex is-align-items-center is-flex-wrap-wrap" style="margin-top: 5px; gap: 10px">
+            @foreach (var label in labels)
+            {
+            <li class="is-flex is-align-items-center wrapper-label-item" style="background-color: @(label.color + "33")">
+                <span class="is_caption" style="color: @label.color;">@label.name</span>
                 <div class="is-flex is-align-items-center">
-                    <span class="icon is-primary-40 is-pointer">
+                    <span class="icon is-primary-40 is-pointer" @onclick="() => HandelEditLabel(label)">
                         <i class="material-symbols-outlined is-font-12" style="font-size: 12px;">edit</i>
                     </span>
-                    <div class="container-square small error">
+                    <div class="container-square small error" @onclick="() => HandelDeleteLabel(label)">
                         <span class="icon has-text-white">
                             <i class="material-icons-outlined">delete</i>
                         </span>
                     </div>
                 </div>
             </li>
-              <li class="is-flex is-align-items-center wrapper-label-item">
-                <span class="is_caption is-analogous-40 ">Nhân sự Conando</span>
-                <div class="is-flex is-align-items-center">
-                    <span class="icon is-primary-40 is-pointer">
-                        <i class="material-symbols-outlined" style="font-size: 12px;">edit</i>
-                    </span>
-                    <div class="container-square small error">
-                        <span class="icon has-text-white">
-                            <i class="material-icons-outlined">delete</i>
-                        </span>
-                    </div>
-                </div>
-            </li>
-              <li class="is-flex is-align-items-center wrapper-label-item">
-                <span class="is_caption is-analogous-40 ">Nhân sự Conando</span>
-                <div class="is-flex is-align-items-center">
-                    <span class="icon is-primary-40 is-pointer">
-                        <i class="material-symbols-outlined is-font-12" style="font-size: 12px;">edit</i>
-                    </span>
-                    <div class="container-square small error">
-                        <span class="icon has-text-white">
-                            <i class="material-icons-outlined">delete</i>
-                        </span>
-                    </div>
-                </div>
-            </li>
+            }
         </ul>
     </div>
 </div>
+
+@code {
+    private List<LabelModel> labels = new();
+    private string labelName { get; set; } = String.Empty;
+    private string labelColor { get; set; } = String.Empty;
+    private bool isEditLabel = false;
+    private LabelModel labelSelected { get; set; }
+    protected override void OnInitialized()
+    {
+        labels = InitDataFakeHelper.InitLabels();
+    }
+    private void HandelEditLabel(LabelModel label) { 
+        labelSelected = label;
+        labelName = label.name;
+        isEditLabel = true;
+    }
+    private void HandelAcceptEdit(){
+        LabelModel labelToUpdate = labels.FirstOrDefault(label => label.id == labelSelected.id);
+        if (labelToUpdate != null)
+        {
+            labelToUpdate.name = labelName;
+        }
+        isEditLabel = false;
+        labelSelected = null;
+        labelName = String.Empty;
+        StateHasChanged();
+    }
+    private void HandelDeleteLabel(LabelModel label) {
+        LabelModel labelToDelete = labels.FirstOrDefault(l => l.id == label.id);
+        if (labelToDelete != null)
+        {
+            labels.Remove(labelToDelete);
+        }
+        StateHasChanged();
+    }
+    private void HandelCancelEdit() { 
+        isEditLabel = false;
+        labelName = String.Empty;
+    }
+    private void HandelCreateLabel() {
+        if( labelName == String.Empty ) { 
+            return;
+        }
+        var label = new LabelModel{ 
+            id = 20,
+            name = labelName,
+            color = labelColor
+        };
+        labels.Add(label);
+        labelName = String.Empty;
+        labelColor = String.Empty;
+        StateHasChanged();
+    }
+    private void HandleChangeColor(ChangeEventArgs e) {
+        labelColor = e.Value.ToString();
+    }
+}

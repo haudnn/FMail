@@ -51,66 +51,60 @@
                     </div>
                 </div>
                 <div class="dropdown-item unhover" style="padding: 10px 0;">
-                    <ul class="is-flex is-align-items-center is-flex-wrap-wrap is-gap-10-y">
-                        <li class="is-flex is-align-items-center is-gap-8-y">
-                            <span class="icon is-justify-content-start">
-                                <i class="material-icons-outlined is-secondary-40">remove_circle_outline</i>
-                            </span>
-                            <div class="is-flex is-align-items-center is-gap-4">
-                                <figure class="image is-24x24">
-                                    <img class="is-rounded" src="images/avatar-mail.png">
-                                </figure>
-                                <span class="is_sub2 is-secondary-40">Long Vũ</span>
-                            </div>
-                        </li>
+                    <ul class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 10px 10px">
+                        @foreach (var member in membersSelected)
+                        {
+                            <li class="is-flex is-align-items-center is-gap-8-y">
+                                <span class="icon is-justify-content-start" @onclick="() => HandlePickedMember(member)">
+                                    <i class="material-icons-outlined is-secondary-40">remove_circle_outline</i>
+                                </span>
+                                <div class="is-flex is-align-items-center is-gap-4">
+                                    <figure class="image is-24x24">
+                                        <img class="is-rounded" src="@member.avatar">
+                                    </figure>
+                                    <span class="is_sub2 is-secondary-40">@member.name</span>
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
             <div class="dropdown-item unhover is-padding-20-x border-bottom" style="border-radius:0 ;">
                 <div class="is-flex is-align-items-center is-gap-10-y pb-4">
-                    <input id="select-all" type="checkbox">
-                    <label for="select-all" class="is_button is-primary-40 is-pointer">Chọn tất
-                        cả</label>
+                    @if(toggleCheckBox.IsToggled) 
+                    {
+                        <span class="icon is-small is-primary-40" @onclick="HandleToggleCheckBox">
+                            <i class="material-icons-outlined">check_box</i>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="icon is-small is-primary-40" @onclick="HandleToggleCheckBox">
+                            <i class="material-icons-outlined">check_box_outline_blank</i>
+                        </span>
+                    }
+                    <span class="is_button is-primary-40 is-pointer">Chọn tất cả</span>
                 </div>
                 <ul class="is-flex is-flex-direction-column is-gap-10-x">
-                    <li class="is-flex is-align-items-center is-gap-8-y">
-                        <span class="icon is-justify-content-start">
-                            <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
-                        </span>
-                        <div class="is-flex is-align-items-center is-gap-4">
-                            <figure class="image is-24x24">
-                                <img class="is-rounded" src="images/avatar-mail.png">
-                            </figure>
-                            <span class="is_sub2 is-secondary-40">Long Vũ</span>
-                        </div>
-                    </li>
-                    <li class="is-flex is-align-items-center is-gap-8-y">
-                        <span class="icon is-justify-content-start">
-                            <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
-                        </span>
-                        <div class="is-flex is-align-items-center is-gap-4">
-                            <figure class="image is-24x24">
-                                <img class="is-rounded" src="images/avatar-mail.png">
-                            </figure>
-                            <span class="is_sub2 is-secondary-40">Long Vũ</span>
-                        </div>
-                    </li>
-                    <li class="is-flex is-align-items-center is-gap-8-y">
-                        <span class="icon is-justify-content-start">
-                            <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
-                        </span>
-                        <div class="is-flex is-align-items-center is-gap-4">
-                            <figure class="image is-24x24">
-                                <img class="is-rounded" src="images/avatar-mail.png">
-                            </figure>
-                            <span class="is_sub2 is-secondary-40">Long Vũ</span>
-                        </div>
-                    </li>
+                    @foreach (var member in members)
+                    {
+                        <li class="is-flex is-align-items-center is-gap-8-y">
+                            <span class="icon is-justify-content-start" @onclick="() => HandlePickedMember(member)">
+                                <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
+                            </span>
+                            <div class="is-flex is-align-items-center is-gap-4">
+                                <figure class="image is-24x24">
+                                    <img class="is-rounded" src="@member.avatar">
+                                </figure>
+                                <span class="is_sub2 is-secondary-40">@member.name</span>
+                            </div>
+                        </li>
+                    }
                 </ul>
             </div>
             <div
-                class=" unhover is-flex is-justify-content-flex-end is-align-content-center is-gap-10-y is-padding-top-20">
-                <div class="wrapper-button primary-btn" style="display: inline-flex">
+                class="unhover is-flex is-justify-content-flex-end is-align-content-center is-gap-10-y is-padding-top-20">
+                <div class="wrapper-button primary-btn" style="display: inline-flex" @onclick="HandleUpdateMembers">
                     <span class="icon has-text-white">
                         <i class="material-icons-outlined">done</i>
                     </span>
@@ -128,12 +122,51 @@
 </div>
 
 @code {
+    [Parameter]
+    public List<MemberModel> members {get; set;}
+
+    public List<MemberModel> membersSelected = new List<MemberModel>();
 
     [Parameter]
     public string directionDropdown {get; set;}
+
+    [Parameter]
+    public EventCallback<List<MemberModel>> HandleSelectedMember { get; set; }
+
     private ToggleHelper toggleViewAdd = new ToggleHelper();
+
+    private ToggleHelper toggleCheckBox = new ToggleHelper();
+
     private void HandleToggleViewAdd()
     {
         toggleViewAdd.Toggle();
+    }
+    private void HandleToggleCheckBox() 
+    {
+        toggleCheckBox.Toggle();
+    }
+
+    private void HandlePickedMember(MemberModel member) {
+        if (!membersSelected.Contains(member))
+        {
+            membersSelected.Add(member);
+            members.Remove(member);
+        }
+        else
+        {
+            membersSelected.Remove(member);
+            members.Add(member);
+        }
+    }
+    private void HandleUpdateMembers() {
+        if(toggleCheckBox.IsToggled){
+            HandleSelectedMember.InvokeAsync(members);
+            members.Clear();
+        }
+        else {
+            HandleSelectedMember.InvokeAsync(membersSelected);
+        }
+        toggleViewAdd.Toggle();
+        membersSelected.Clear();
     }
 }

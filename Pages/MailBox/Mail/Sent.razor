@@ -1,0 +1,146 @@
+@page "/mail/sent"
+@layout LayoutMail
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@using System.Collections.Generic;
+@using Microsoft.AspNetCore.Components
+
+<PageTitle>Hộp thư đi </PageTitle>
+<div>
+    <div class="mail__container">
+            <_Header 
+                name="Thư đã gửi" 
+                placehoder="Tiêu đề, nội dung, người nhận" 
+                quantityColumnFirst="7"
+                quantityColumnSecond="5" 
+                isShowStatus=false 
+                isShowLabel=true
+                labels="@labels" 
+            />
+        <div class="mail__bar">
+            @if(mails.Count > 0) {
+                <div class="mail__content-header is-flex is-align-items-center is-padding-top-20"  style="gap: 0 40px; padding: 0 10px;">
+                    @if(selectedItems.Count > 0) {
+                        @if(isSelectedAll) {
+                            <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="HandleSelectedAllMail">
+                                <span class="icon is-small">
+                                    <i class="material-icons-sharp is-secondary-20">check_box</i>
+                                </span>
+                                <label class="is-pointer is_body2 is-secondary-40">Hủy chọn tất cả</label>
+                            </div>
+                        }
+                        else {
+                            <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="HandleCancelSelectedMail">
+                                <span class="icon is-small" >
+                                    <i class="material-icons-outlined is-secondary-40">indeterminate_check_box</i>
+                                </span>
+                                <label class="is-pointer is_body2 is-secondary-20">Hủy chọn </label>
+                            </div>
+                        }
+                    }
+                    else{ 
+                        <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="HandleSelectedAllMail">
+                            <span class="icon is-small">
+                                <i class="material-icons-sharp is-secondary-40">check_box_outline_blank</i>
+                            </span>
+                            <label class="is-pointer is_body2 is-secondary-40">Chọn tất cả</label>
+                        </div>
+                    }
+                    <div class="is-flex is-align-items-center is-justify-content-space-between is-flex-1" style="width: 100%; ">
+                        <_Category categories="@categorise"/>
+                    </div>
+                </div>
+            }
+        </div>
+        @if(mails.Count > 0) {
+            <div class="mail__content">
+                <div class="mail__items">
+                    @foreach (var mail in mails)
+                    {
+                        <_Item 
+                            id="@mail.id"
+                            from="@mail.from"
+                            body="@mail.body"
+                            isRead="@mail.isRead"
+                            attachments="@mail.attachments"
+                            isImportant="@mail.isImportant"
+                            receivedDate="@mail.receivedDate"
+                            labels="@mail.labels"
+                            subject="@mail.subject"
+                            isChecked="@selectedItems.Contains(mail.id)" 
+                            HandleSelectedMail="HandleSelectedMail"
+                        />
+                    }
+                </div>
+            </div>
+        }
+        else {
+            <p class="is_body2 is-secondary-40 is-flex is-align-items-center is-justify-content-center" style="min-height: calc( 100vh - 115px) ;">
+                Không có thư nào được gửi!<a style="text-decoration: underline;" class="is-primary-40 is-inline-block mx-1" href="create">Gửi</a> thư ngay bây giờ
+            </p>
+        }
+    </div>
+    @if(mails.Count > 0) {
+        <div class="mail__footer @(selectedItems.Count > 0 ? "actions" : "" )">
+            @if (selectedItems.Count > 0)
+            {
+                <_Actions 
+                    labels="labels" 
+                    mailCount="selectedItems.Count" 
+                    HandleCancelSelectedMail="HandleCancelSelectedMail"
+                    HandleTrashMails="HandleTrashMails"
+                    />
+            }
+            else
+            {
+                <_Pagination />
+            }
+        </div>
+    }
+</div>
+
+@code {
+    public List<CategoryModel> categorise = new();
+    private List<LabelModel> labels = new();
+    private List<MailModel> mails = new();
+    protected override void OnInitialized()
+    {
+        categorise = InitDataFakeHelper.InitCategories();
+        labels = InitDataFakeHelper.InitLabels();
+        mails = InitDataFakeHelper.FitterMailsNotDraft();
+    }
+    private bool isSelectedAll  = false;
+    private List<int> selectedItems = new List<int>();
+    private void HandleSelectedAllMail()
+    {
+        if(!isSelectedAll) { 
+            for (int i = 0; i < mails.Count; i++) {
+                selectedItems.Add((int)mails[i].id);
+            }
+        }
+        else {
+            selectedItems.Clear();
+        }
+        isSelectedAll = selectedItems.Count == mails.Count;
+
+    }
+    private void HandleSelectedMail(SelectedModel selected) {
+        if (selected.isChecked && !selectedItems.Contains(selected.itemId))
+        {
+            selectedItems.Add(selected.itemId);
+        }
+        else if (!selected.isChecked && selectedItems.Contains(selected.itemId))
+        {
+            selectedItems.Remove(selected.itemId);
+        }
+        isSelectedAll = selectedItems.Count == mails.Count;
+    }
+    
+    private void HandleCancelSelectedMail() {
+        selectedItems.Clear();
+    }
+    private void HandleTrashMails() {
+        selectedItems.Clear();
+        mails.Clear();
+    }
+}

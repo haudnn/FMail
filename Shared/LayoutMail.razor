@@ -12,8 +12,11 @@
       </aside>
       <section id="content" class="column mail">
         <div class="mail-wrapper">
-           @if(navigation.ToBaseRelativePath(navigation.Uri) == "mail") {
-             <MailSideBar  HandleActiveTab="HandleActiveTab" HandleToggleSidebarMail="HandleToggleSidebarMail"/>
+          @{
+            var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
+          }
+           @if(relativePath.StartsWith("mail/")) {
+             <MailSideBar HandleActiveTab="HandleActiveTab" HandleToggleSidebarMail="HandleToggleSidebarMail"/>
            }
             <div class="mail__main">
                 <HeaderMain />
@@ -34,7 +37,7 @@
   public bool isToggleSideBar;
   public bool isToogleSideBarMail;
   public int currentSideBarActive = 1;
-  
+
   public bool IsMobile = false;
   public int PageSize = 25;
   public long MaxFileSize = 10 * 1024000;

@@ -16,30 +16,40 @@
                 <span class="has-text-weight-medium has-text-white">Tạo thư mới</span>
             </a>
         </li>
-        @foreach (var item in NavMap)
+        @foreach (var item in NavMap.Values)
         {
-        <li class="mail__sidebar-item is-flex is-align-items-center @(item.Value.active ? "active" : "")" @onclick='() => HandleActiveSidebar(item.Key)'>
-                  <span class="icon">
-                    <i class="material-icons-sharp is-secondary-40">@item.Value.icon</i>
-            </span>
-            <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@item.Value.name</span>
+        <li class="mail__sidebar-item is-flex is-align-items-center @(item.active ? "active" : "")">
+            <a href="@item.link" @onclick="(e) => SetActiveNavItem(item)">
+                <span class="icon">
+                    <i class="material-icons-sharp is-secondary-40">@item.icon</i>
+                </span>
+                <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@item.name</span>
+            </a> 
         </li>
         }
     </ul>
-    <ul class="mail__sidebar-menu bottom">
-        <li class="mail__sidebar-item is-flex is-align-items-center">
+    <div>
+        <div class="mail__sidebar-item is-flex is-align-items-center">
             <span class="icon">
                 <i class="material-icons-outlined">arrow_drop_down</i>
             </span>
             <span class="is_sub2 is-secondary-40">Nhãn</span>
-        </li>
-        <li class="mail__sidebar-item is-flex is-align-items-center">
-            <span class="icon ">
-                <i class="material-icons-sharp label-color--01">label</i>
-            </span>
-            <span class="is_sub2 is-secondary-40">Nhân sự Docorp</span>
-        </li>
-    </ul>
+        </div>
+        <ul class="labels-list">
+            @foreach (var label in labels)
+            {
+                <li class="label-item label-active">
+                    <a href="mail/label/@label.id" class="is-flex is-gap-10-y" >
+                        <span class="icon is-small">
+                            <i class="material-icons-sharp" style="color: @label.color">label</i>
+                        </span>
+                        <span class="is_sub2 is-primary-40 ">@label.name</span>
+                    </a>
+                </li>
+            }
+
+        </ul>
+    </div>
     <div class="nav-settings" style="padding-left: 10px;">
         <a href="settings" class="is-flex is-align-items-center is-justify-content-center ">
            <span class="icon is_sub2 is-secondary-40">
@@ -62,29 +72,31 @@
     public EventCallback<bool> HandleToggleSidebarMail { get; set; }
     private Dictionary<int, NavModel> NavMap = new Dictionary<int, NavModel>();
     private int currentIndexNavActive;
-    public void HandleActiveSidebar(int id) {
-        if (NavMap.TryGetValue(currentIndexNavActive, out NavModel prevNav)) {
-            prevNav.active = false;
-        }
-        if (NavMap.TryGetValue(id, out NavModel newNav)) {
-            newNav.active = true;
-            currentIndexNavActive = id;
-        }
-        HandleActiveTab.InvokeAsync(currentIndexNavActive);
-    }
 
     private bool navLess = false;
+    private List<LabelModel> labels = new();
     private async Task ToggleSidebar()
     {
         navLess = !navLess;
         await HandleToggleSidebarMail.InvokeAsync(navLess);
     }
-
-
-
+    private NavModel _prevActiveNavItem;
+    private int labelActive;
     protected override void OnInitialized()
     {
         Navigation();
+        labels = InitDataFakeHelper.InitLabels();
+    }
+    private async Task SetActiveNavItem(NavModel navItem)
+    {
+        var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
+        if (_prevActiveNavItem != null)
+        {
+            _prevActiveNavItem.active = false;
+        }
+        navItem.active = true;
+        _prevActiveNavItem = navItem;
+        await InvokeAsync(StateHasChanged);
     }
     private void Navigation() {
         NavMap.Add(1, new NavModel
@@ -92,13 +104,15 @@
                 id = 1,
                 name = "Thư đã nhận",
                 icon = "inbox",
-                active = true,
+                link = "mail/inbox",
+                active = false,
             });
         NavMap.Add(2, new NavModel
             {
                 id = 2,
                 name = "Thư đã gửi",
                 icon = "send",
+                link = "mail/sent",
                 active = false,
             });
         NavMap.Add(3, new NavModel
@@ -106,6 +120,7 @@
                 id = 3,
                 name = "Thư quan trọng",
                 icon = "star",
+                link = "mail/important",
                 active = false,
             });
         NavMap.Add(4, new NavModel
@@ -113,6 +128,7 @@
                 id = 4,
                 name = "Thư nháp",
                 icon = "drafts",
+                link = "mail/drafts",
                 active = false,
             });
         NavMap.Add(5,new NavModel
@@ -120,9 +136,31 @@
                 id = 5,
                 name = "Thùng rác ",
                 icon = "delete",
+                link = "mail/trash",
                 active = false,
             });
-        currentIndexNavActive = NavMap.Keys.First();
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
+            if(relativePath == "mail/label/") {
+                _prevActiveNavItem = null;
+            }
+            else{ 
+                foreach (var item in NavMap.Values)
+                {
+                    if(item.link == relativePath) { 
+                        item.active = true;
+                        _prevActiveNavItem = item;
+                        return;
+                    }
+                }
+            }
+
+            StateHasChanged();
+        }
     }
 }
 

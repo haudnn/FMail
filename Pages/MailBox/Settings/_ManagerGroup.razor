@@ -13,32 +13,33 @@
                 </div>
             </div>
             <ul class="is-flex is-flex-direction-column">
-                <_GroupItem HandleToggleActiveModal="HandleToggleActiveModal"
-                    HandleChangeCurrentAction="HandleChangeCurrentAction" />
+                @foreach (var group in groups)
+                {
+                    <_GroupItem
+                        id="@group.id"
+                        name="@group.name"
+                        membersCount="@group.members.Count"
+                        HandleViewDetailGroup="HandleViewDetailGroup"
+                        HandleConfirmationDeleteGroup="HandleConfirmationDeleteGroup"
+                    />
+                }
             </ul>
-            <_ModalConfirmation
-                nameModal="Xác nhận việc xóa nhóm"
-                toggleActiveModal="toggleActiveModal"
-                contentButton="Xóa"
-                contentModal="Thao tác này sẽ ảnh hưởng đến việc hiển thị danh sách người nhận thư, bạn có chắc chắn muốn xóa không?"
-                HandleToggleActiveModal="HandleToggleActiveModal"
-            />
         break;
     case "detail":
             <div class="is-mb-20">
                 <div class="is-flex is-align-items-center is-justify-content-space-between is-mb-20 ">
-                    <div class="wrapper-button btn-outlined" @onclick='() => HandleChangeCurrentAction("static")'>
+                    <div class="wrapper-button btn-outlined" @onclick='HandleBackStep'>
                         <span class="icon">
                             <i class="material-icons-outlined is-secondary-40">arrow_back_ios</i>
                         </span>
                         <span class="is_button is-secondary-40">Quay lại</span>
                     </div>
-                     <_AddMember directionDropdown="is-right" />   
+                    <_AddMember members="members" directionDropdown="is-right" HandleSelectedMember="HandleSelectedMember"/>   
                 </div>
                 <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Tên nhóm</p>
                 @if(!isShowEditNameGroup) {
                     <div class="is-flex is-align-items-center is-gap-4 is-pointer">
-                        <span class="is_sub2 is-secondary-20">Nhóm HEADBOM</span>
+                        <span class="is_sub2 is-secondary-20">Nhóm @groupSelected.name</span>
                         <span class="icon" @onclick="HandleToggleShowEditName">
                             <i class="material-icons-outlined is-primary-40">edit</i>
                         </span>
@@ -48,7 +49,7 @@
                     <div class="is-flex is-align-items-center">
                         <div class="input-container is-flex-1 is-flex is-align-items-center">
                             <span class="input-icon left is_body2 is-secondary-60">Nhóm</span>
-                            <input class="input-zone is_body2 is-secondary-20" type="text" value="HEADBOM">
+                            <input class="input-zone is_body2 is-secondary-20" type="text" @bind="@groupSelected.name">
                         </div>
                         <div class="is-flex is-align-items-center">
                             <div class="wrapper-icon is-pointer">
@@ -68,7 +69,14 @@
             <div>
                 <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Thành viên</p>
                 <ul class="is-flex is-flex-direction-column">
-                    <_MemberItem />
+                    @foreach (var member in groupSelected.members)
+                    {
+                        <_MemberItem 
+                            id="@member.id"
+                            avatar="@member.avatar"
+                            name="@member.name"
+                        />
+                    }
                 </ul>
             </div>
         break;
@@ -86,7 +94,7 @@
                     <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Tên nhóm</p>
                     <div class="input-container is-flex-1 is-flex is-align-items-center">
                         <span class="input-icon left is_body2 is-secondary-60">Nhóm</span>
-                        <input class="input-zone is_body2 is-secondary-20" type="text" placeholder="Nhập tên nhóm">
+                        <input class="input-zone is_body2 is-secondary-20" type="text" placeholder="Nhập tên nhóm" @bind="@groupName">
                         <span class="input-icon right">
                             <i class="material-icons-outlined is-secondary-40">edit</i>
                         </span>
@@ -95,15 +103,22 @@
                 <div class="is-mb-20">
                     <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Thành viên</p>
                     <ul class="is-flex is-flex-direction-column" style="margin-bottom: 5px;">
-                        <_MemberItem/>
+                        @foreach (var member in membersSelected)
+                            {
+                                <_MemberItem 
+                                    id="@member.id"
+                                    avatar="@member.avatar"
+                                    name="@member.name"
+                                />
+                            }
                     </ul>
                     <div style="margin-left: -7px;">
-                        <_AddMember directionDropdown="is-left" />
+                        <_AddMember members="members" directionDropdown="is-left" HandleSelectedMember="HandleSelectedMember"/>   
                     </div>
                 </div>
                 <div class="is-flex is-align-items-center is-justify-content-flex-end is-gap-10-y">
-                    <p class="is_caption is-error-60 is-pointer">Hủy</p>
-                    <div class="wrapper-button primary-btn">
+                    <p class="is_caption is-error-60 is-pointer" @onclick='HandleBackStep'>Hủy</p>
+                    <div class="wrapper-button primary-btn" @onclick="HandleCreateGroup">
                         <span class="icon">
                             <i class="material-icons-outlined">done</i>
                         </span>
@@ -117,26 +132,85 @@
     }
 </div>
 @code {
+
+    private string groupName = String.Empty;
     private bool toggleActiveAddMember = false;
+
     private bool isShowEditNameGroup = false;
+
     public string nameCurrentAction = "static";
-    private bool toggleActiveModal = false;
+
+    public GroupModel groupSelected;
+
+    private List<GroupModel> groups = new();
+        
+    private List<MemberModel> members = new();
+
+    private List<MemberModel> membersSelected = new List<MemberModel>();
+
+    protected override void OnInitialized()
+    {
+        groups = InitDataFakeHelper.InitGroups();
+        members = InitDataFakeHelper.InitMembers();
+    }
 
     private void ToggleActiveAddMember(bool isActiveAddMember)
     {
         toggleActiveAddMember = isActiveAddMember;
     }
-    private void HandleToggleActiveModal(bool isActiveModal)
-    {
-        toggleActiveModal = isActiveModal;
-    }
+
+
     private void HandleToggleShowEditName() { 
         isShowEditNameGroup = !isShowEditNameGroup;
     }
-    
+
+    private void HandleViewDetailGroup(string groupId) { 
+        GroupModel findGroup = groups.FirstOrDefault(group => group.id == groupId);
+        if (findGroup  != null)
+        {
+            groupSelected = findGroup;
+            HandleChangeCurrentAction("detail");
+        }
+    }
+
     private void HandleChangeCurrentAction(string nameActionChange)
     {
         nameCurrentAction = nameActionChange;
         StateHasChanged();
+    }
+
+    private void HandleConfirmationDeleteGroup(string groupId){
+        GroupModel groupToDelete = groups.FirstOrDefault(group => group.id == groupId);
+        if (groupToDelete != null)
+        {
+            groups.Remove(groupToDelete);
+        }
+        StateHasChanged();
+    }
+
+    private void HandleSelectedMember(List<MemberModel> membersList) { 
+        List<MemberModel> clonedList = new List<MemberModel>(membersSelected);
+        clonedList.AddRange(membersList);
+        membersSelected = clonedList;
+    }
+    
+
+    private void HandleCreateGroup() {
+        GroupModel groupToCreate = new GroupModel{ 
+            id = "999",
+            name= groupName,
+            members = membersSelected
+        };
+        groups.Add(groupToCreate);
+        groupName = String.Empty;
+        membersSelected = null;
+        HandleChangeCurrentAction("static");
+    }
+    private void HandleBackStep() {
+        isShowEditNameGroup = false;
+        HandleChangeCurrentAction("static");
+    }
+    private void HandleEditGroup() {
+        
     }
 }

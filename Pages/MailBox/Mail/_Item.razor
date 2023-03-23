@@ -1,92 +1,152 @@
-<a href="/inbox/connado-lich-nghi-tet" class="is-block mail-item read @(isChecked ? " is-selected" : "" )">
-
+<div class="mail-item @(isDraft ? "drafts" : "") @(isReadToogle ? "read" : "unread") @(isChecked ? "is-selected" : "" )">
     <div class="columns">
         <div class="column is-2">
             <div class="is-flex is-align-items-center" style="gap: 0 16px; position: relative;">
-                <input type="checkbox" class="mail-checkbox" @bind="isChecked" @oninput="CheckboxChanged">
-                <span class="icon star material-symbols-outlined">
-                    star
-                </span>
-                <span class="mail-text--title source read">Công ty TNHH Conando Công ty TNHH Conando</span>
+                @if (isChecked)
+                {
+                    <span class="icon is-small" @onclick="SelectedMail">
+                        <i class="material-icons-sharp is-secondary-60">check_box</i>
+                    </span>  
+                }
+                else
+                {
+                    <span class="icon is-small" @onclick="SelectedMail">
+                        <i class="material-icons-outlined is-secondary-60">check_box_outline_blank</i>
+                    </span>
+                }
+                @if (isStar)
+                { 
+                    <span class="icon" @onclick="() => HandleStarMail(false)">
+                        <i class="material-icons-sharp is-warning-20">star_purple500</i>
+                    </span>
+                }
+                else
+                { 
+                    <span class="icon star" @onclick="() => HandleStarMail(true)">
+                        <i class="material-symbols-outlined">star</i>
+                    </span>
+                }
+                @if(isDraft) {
+                    <span class="is_sub2 title-drafts text-ellipsis mw-160  @(isReadToogle ? "read" : "unread") drafts">Thư nháp</span>
+                }
+                else{
+                    <span class="is_sub2 text-ellipsis mw-160  @(isReadToogle ? "read" : "unread") ">@from</span>
+                }
+          
             </div>
         </div>
         <div class="column is-10">
             <div class="mail__item-content is-flex is-flex-direction-column">
                 <div class="mail__item-content-top">
-                    <div class="mail__item-content-text">
+                    <a href="/inbox/connado-lich-nghi-tet" class="is-flex mail__item-content-text">
                         <span class="mail__item-tag">KS</span>
                         <div class="is-flex is-align-items-center mail-text read" style="gap: 0 10px;">
-                            <p class="mail-text--title">Placer.ai: Apply Now</p>
+                            <p class="text-ellipsis mw-160  is_sub2 @(isReadToogle ? "read" : "unread")">@subject</p>
                             <span>-</span>
-                            <p class="mail-text--content">You wont regret it. I was amazed at the quality of it. I am
-                                really satisfied with my it.</p>
+                            <p style="max-width: 500px;" class="is_body2 @(isReadToogle ? "read" : "unread") mail-text--content">@body</p>
                         </div>
-                    </div>
+                    </a>
                     <div class="mail-actions">
-                        <span class="icon material-symbols-outlined is-pointer" style="font-size: 16px;">
-                            mail
-                        </span>
-                        <span class="material-symbols-outlined  is-pointer" style="font-size: 16px;">
+                        @if (isReadToogle)
+                        {
+                            <span @onclick="() => HandleToogleReadMail(false)" class="icon material-symbols-outlined is-pointer" style="font-size: 16px;">
+                                drafts
+                            </span>
+                        }
+                        else
+                        { 
+                            <span @onclick="() => HandleToogleReadMail(true)" class="icon material-symbols-outlined is-pointer" style="font-size: 16px;">
+                                mail
+                            </span>
+                        }
+                        <span class="material-symbols-outlined is-pointer" style="font-size: 16px;">
                             delete
                         </span>
                     </div>
-                    <div class="tags-list">
-                        <div class="tag-item">
-                            <span>Nhân sự Conando</span>
-                        </div>
-                        <div class="tag-item">
-                            <span>Nhân sự Conando</span>
-                        </div>
-                        <div class="tag-item">
-                            <span>+3</span>
-                        </div>
-                    </div>
+                    <ul class="tags-list">
+                        @foreach (var label in labels.Take(2))
+                        {
+                            <li style="background-color: @(label.color + "33")" class="tag-item">
+                                <span style="color: @label.color;" class="is_caption">@label.name</span>
+                            </li>
+                        }
+                        @if (labels.Count() > 2)
+                        {
+                            <li class="tag-item count">
+                                <span class="is_sub2 is-secondary-40">+@(labels.Count() - 2)</span>
+                            </li>
+                        }
+                    </ul>
                     <div>
-                        <span class="mail__item-datetime read">08:14</span>
+                        <span class="mail__item-datetime @(isReadToogle ? "read" : "unread")">@receivedDate</span>
                     </div>
                 </div>
-                <div class="files-list is-flex is-align-items-center" style="gap: 0 10px;">
-                    <div class="file-item is-flex is-align-items-center is-justify-content-center" style="gap: 0 7px;">
-                        <img src="images/word-icon.png" alt="word-icon">
-                        <span>Filename.docx</span>
-                    </div>
-                    <div class="file-item is-flex is-align-items-center is-justify-content-center" style="gap: 0 7px;">
-                        <img src="images/exel-icon.png" alt="exel-icon">
-                        <span>Filename.xlsx</span>
-                    </div>
-                </div>
+                <ul class="attachments-list">
+                    @foreach (var attachment in attachments.Take(3))
+                    {
+                        <li class="attachment-item">
+                            <img src="images/word-icon.png" alt="word-icon">
+                            <span>@attachment.name</span>
+                        </li>
+                    }
+                    @if (attachments.Count() > 2)
+                    {
+                        <li class="attachment-item count">
+                            <span class="is_sub2 is-secondary-40">+@(labels.Count() - 3)</span>
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
     </div>
-</a>
-@code { 
+</div>
+@code {
     [Parameter]
     public int id { get; set; }
     [Parameter]
-    public bool isChecked { get; set; }
-
+    public string from { get; set; }
     [Parameter]
-    public EventCallback<SelectedModel> OnCheckboxChange { get; set; }
-    
-
-    private async Task CheckboxChanged ( ChangeEventArgs e) {
-                var selected = new SelectedModel
+    public string subject { get; set; }
+    [Parameter]
+    public string body { get; set; }
+    [Parameter]
+    public string receivedDate { get; set; }
+    [Parameter]
+    public List<AttachmentModel> attachments { get; set; }
+    [Parameter]
+    public List<LabelModel> labels { get; set; }
+    [Parameter]
+    public bool isImportant { get; set; }
+    [Parameter]
+    public bool isRead { get; set; }
+    [Parameter]
+    public bool isChecked { get; set; }
+    [Parameter]
+    public EventCallback<SelectedModel> HandleSelectedMail { get; set; }
+    [Parameter]
+    public bool isDraft { get; set; }
+    public bool isStar { get; set; }
+    public bool isReadToogle { get; set; }
+    protected override void OnInitialized()
+    {
+        isStar  = isImportant;
+        isReadToogle = isRead;
+    }
+    private async Task SelectedMail()
+    {
+        var selected = new SelectedModel
             {
                 isChecked = !isChecked,
                 itemId = id,
-
             };
-        await OnCheckboxChange.InvokeAsync(selected);
+        await HandleSelectedMail.InvokeAsync(selected);
     }
-    @* protected override async Task OnInitializedAsync()
+    private void HandleStarMail(bool isStarMail)
     {
-        await base.OnInitializedAsync();
-        var selected = new SelectedModel
-            {
-                isChecked =  isChecked,
-                itemId = id,
-
-            };
-        await OnCheckboxChange.InvokeAsync(selected);
-    } *@
+        isStar = isStarMail;
+    }
+    private void HandleToogleReadMail(bool isReadMail)
+    {
+        isReadToogle = isReadMail;
+    }  
 }

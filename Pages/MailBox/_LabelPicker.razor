@@ -1,51 +1,89 @@
-<div class="dropdown is-right @(toggleShowDropdown.IsToggled ? " is-active" : "" )">
-    <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleShowDropdown">
-        <span class="text text-main-color">Nhãn</span>
-        <span class="icon material-icons material-symbols-outlined is-flex is-align-items-center">
-            arrow_drop_down
-        </span>
-    </div>
-    <div class="dropdown-menu" style="top: 40px">
+<div class="dropdown is-up is-right @(toggleShowLabels.IsToggled ? " is-active" : "" )">
+    <div class="dropdown-menu" style="width: 250px; right: 270px; bottom: 50px ;border-radius: 8px;">
         <div class="dropdown-content filter-label">
-            <div class="dropdown__header">Nhãn cần lọc</div>
-            <ul class="is-flex-1">
-                @foreach( var item in labels) {
+            <div class="dropdown__header">@title</div>
+            <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding-bottom: 40px;">
+                @foreach (var label in labels)
+                {
                 <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
-                    <input class="label-checkbox" type="checkbox">
-                    <div class="is-flex is-align-items-center" style="gap: 0 5px">
+                    @if(labelsSelected.Contains(label.id)) {
+                    <span class="icon is-small" @onclick="() => HandelToggleIconCheckbox(label.id)">
+                        <i class="material-icons-sharp is-secondary-40">check_box</i>
+                    </span>
+                    }
+                    else {
+                    <span class="icon is-small" @onclick="() => HandelToggleIconCheckbox(label.id)">
+                        <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
+                    </span>
+                    }
+                    <div class="is-flex is-align-items-center">
                         <span class="icon">
-                            <i class="material-symbols-sharp" style="color: @item.color">label</i>
+                            <i class="material-symbols-sharp" style="color: @label.color">label</i>
                         </span>
-                        <span class="is_body2 is-secondary-10">@item.name</span>
+                        <span class="is_body2 is-secondary-10">@label.name</span>
                     </div>
                 </li>
                 }
             </ul>
-            <div class="is-flex is-align-items-center is-justify-content-flex-start" style="gap: 0 10px;">
-                <div class="wrapper-button primary-btn" style="padding: 0 4px;">
-                    <span class="icon">
-                        <i class="material-icons-outlined">filter_list</i>
-                    </span>
-                    <span class="is_caption">Lọc</span>
-                </div>
-                <div class="wrapper-button">
-                    <span class="icon">
-                        <i class="material-symbols-outlined is-error-40" style="font-size: 14px;">
-                            cancel
-                        </i>
-                    </span>
-                    <span class="is_caption is-error-40">Hủy</span>
-                </div>
-            </div>
+            @if(!isShowButtons) {
+                @if(isFilter) { 
+                    <div class="is-flex is-align-items-center is-justify-content-flex-start" style="gap: 0 10px;">
+                        <div class="wrapper-button primary-btn" style="padding: 0 4px;">
+                            <span class="icon">
+                                <i class="material-icons-outlined">filter_list</i>
+                            </span>
+                            <span class="is_caption">Lọc</span>
+                        </div>
+                        <div class="wrapper-button" @onclick="HandelToggleShowLabels">
+                            <span class="icon">
+                                <i class="material-symbols-outlined is-error-40" style="font-size: 14px;">
+                                    cancel
+                                </i>
+                            </span>
+                            <span class="is_caption is-error-40">Hủy</span>
+                        </div>
+                    </div>
+                }
+                else {
+                    <div class="is-flex is-align-items-center is-justify-content-flex-end" style="gap: 0 10px;">
+                        <div class="wrapper-button" @onclick="HandelToggleShowLabels" style="max-height: 24px;">
+                            <span class="is_caption is-error-60">Hủy</span>
+                        </div>
+                        <div class="wrapper-button primary-btn" style="max-height: 24px;">
+                            <span class="icon has-text-white">
+                                <i class="material-icons-outlined">check</i>
+                            </span>
+                            <span class="has-text-white is_caption">Cập nhật</span>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>
 
 @code{
-    private ToggleHelper toggleShowDropdown = new ToggleHelper();
+    private ToggleHelper toggleShowLabels = new ToggleHelper();
+    private List<int> labelsSelected = new List<int>();
     [Parameter]
-    private List<LabelModel> labels { get; set; }
-    private void HandleToggleShowDropdown() {
-        toggleShowDropdown.Toggle();
+    public List<LabelModel> labels { get; set; }
+    [Parameter]
+    public string title { get; set; }
+    [Parameter]
+    public bool isShowButtons { get; set; }
+    [Parameter]
+    public bool isFilter { get; set; }
+    private void HandelToggleIconCheckbox(int id) {
+        if (!labelsSelected.Contains(id))
+        {
+            labelsSelected.Add(id);
+        }
+        else if (labelsSelected.Contains(id))
+        {
+            labelsSelected.Remove(id);
+        }
+    }
+    private void HandelToggleShowLabels() { 
+        toggleShowLabels.Toggle();
     }
 }

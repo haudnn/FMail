@@ -1,0 +1,166 @@
+@page "/mail/trash"
+@layout LayoutMail
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@using System.Collections.Generic;
+@using Microsoft.AspNetCore.Components
+
+<PageTitle>Thùng rác </PageTitle>
+<div>
+    <div class="mail__container">
+        <_Header 
+                name="Thùng rác" 
+                placehoder="Tiêu đề, nội dung, người gửi" 
+                quantityColumnFirst="8"
+                quantityColumnSecond="4" 
+                isShowStatus=false  
+                isShowLabel=false
+        />
+        <div class="mail__bar" style="top: 56px">
+            @if(mails.Count > 0) {
+                <div class="mail__content-header error is-flex is-align-items-center" style="gap: 0 40px; padding: 10px;">
+                    @if(selectedItems.Count > 0) {
+                        @if(isSelectedAll) {
+                            <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="HandleSelectedAllMail">
+                                <span class="icon is-small">
+                                    <i class="material-icons-sharp is-secondary-20">check_box</i>
+                                </span>
+                                <label class="is-pointer is_body2 is-secondary-40">Hủy chọn tất cả</label>
+                            </div>
+                        }
+                        else {
+                            <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="HandleCancelSelectedMail">
+                                <span class="icon is-small">
+                                    <i class="material-icons-outlined is-secondary-40">indeterminate_check_box</i>
+                                </span>
+                                <label class="is-pointer is_body2 is-secondary-20">Hủy chọn </label>
+                            </div>
+                        }
+                    }
+                    else{ 
+                        <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="HandleSelectedAllMail">
+                            <span class="icon is-small">
+                                <i class="material-icons-sharp is-secondary-40">check_box_outline_blank</i>
+                            </span>
+                            <label class="is-pointer is_body2 is-secondary-40">Chọn tất cả</label>
+                        </div>
+                    }
+                    <div class="is-flex-1 is-flex is-align-items-center is-justify-content-center is-gap-8">
+                        <p class="is_body2 is-secondary-40">Thư trong thùng rác sau 30 ngày sẽ được xóa ra khỏi hệ thống.</p>
+                        <div class="wrapper-button btn-outlined error is-inline-flex" @onclick="() => HandleToggleShowModal(true)">
+                            <span class="icon">
+                                <i class="material-icons-outlined is-error-40">delete</i>
+                            </span>
+                            <span class="is_caption is-error-40">Dọn dẹp thùng rác</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+       
+        @if(mails.Count > 0) {
+            <div class="mail__content">
+                <div class="mail__items">
+                    @foreach (var mail in mails)
+                    {
+                        <_Item 
+                            id="@mail.id"
+                            from="@mail.from"
+                            body="@mail.body"
+                            isRead="@mail.isRead"
+                            attachments="@mail.attachments"
+                            isImportant="@mail.isImportant"
+                            receivedDate="@mail.receivedDate"
+                            labels="@mail.labels"
+                            subject="@mail.subject"
+                            isChecked="@selectedItems.Contains(mail.id)" 
+                            HandleSelectedMail="HandleSelectedMail"
+                        />
+                    }
+                </div>
+            </div>
+        }
+        else {
+            <p class="is_body2 is-secondary-40 is-flex is-align-items-center is-justify-content-center" style="min-height: calc( 100vh - 115px) ;">
+                Không có cuộc trò chuyện trong Thùng rác.
+            </p>
+        }
+    </div>
+    @if(mails.Count > 0) {
+        <div class="mail__footer @(selectedItems.Count > 0 ? "actions" : "" )">
+            @if (selectedItems.Count > 0)
+            {
+                <_Actions 
+                    labels="labels" 
+                    mailCount="selectedItems.Count" 
+                    HandleCancelSelectedMail="HandleCancelSelectedMail"
+                    HandleTrashMails="HandleTrashMails"
+                    isTrashMails="true"         
+                    />
+            }
+            else
+            {
+                <_Pagination />
+            }
+        </div>
+    }
+    <_ModalConfirmation
+        nameModal="Xác nhận việc xóa thư"
+        contentButton="Xóa"
+        contentModal="Thao tác này sẽ ảnh hưởng đến tất cả 8 cuộc trò chuyện trong Thùng rác. Bạn có chắc chắn muốn tiếp tục không?"
+        toggleActiveModal="@isShowModal"
+        HandleToggleActiveModal="HandleToggleShowModal"
+        HandleConfirmation="HandleTrashMails"
+    />
+</div>
+
+@code {
+    public List<CategoryModel> categorise = new();
+    private List<LabelModel> labels = new();
+    public bool isShowModal = false;
+    private List<MailModel> mails = new();
+    protected override void OnInitialized()
+    {
+        categorise = InitDataFakeHelper.InitCategories();
+        labels = InitDataFakeHelper.InitLabels();
+        mails = InitDataFakeHelper.FitterMailsNotDraft();
+    }
+    public void HandleToggleShowModal(bool isShow) {
+        isShowModal = isShow;
+    }
+    private bool isSelectedAll  = false;
+    private List<int> selectedItems = new List<int>();
+    private void HandleSelectedAllMail()
+    {
+        if(!isSelectedAll) { 
+            for (int i = 0; i < mails.Count; i++) {
+                selectedItems.Add((int)mails[i].id);
+            }
+        }
+        else {
+            selectedItems.Clear();
+        }
+        isSelectedAll = selectedItems.Count == mails.Count;
+
+    }
+    private void HandleSelectedMail(SelectedModel selected) {
+        if (selected.isChecked && !selectedItems.Contains(selected.itemId))
+        {
+            selectedItems.Add(selected.itemId);
+        }
+        else if (!selected.isChecked && selectedItems.Contains(selected.itemId))
+        {
+            selectedItems.Remove(selected.itemId);
+        }
+        isSelectedAll = selectedItems.Count == mails.Count;
+    }
+
+    private void HandleCancelSelectedMail() {
+        selectedItems.Clear();
+    }
+    private void HandleTrashMails() {
+        selectedItems.Clear();
+        mails.Clear();
+        isShowModal = !isShowModal;
+    }
+}
