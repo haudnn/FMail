@@ -5,10 +5,10 @@
     <p> 2. UI phần tạo mail, tạo poll, chữ ký, view poll </p>
     <p> 3. Thiết lập:  UI, phần quản lí nhóm: xem được tất cả nhóm, tạo nhóm, thêm thành viên, edit nhóm </p>
     <p> 4. Xem chi tiết mail bao gồm: Ui, xem poll, xem thống kê </p>
+<div>_________________________________________________________________________________________________________________</div>
 <strong>Tuần 2: 20/3/2023 - 25/3/2023</strong>
-  <p>_________________________________________________________________________________________________________________</p>
   <h4>Công việc thực hiện được: </h4>
-    <p> 1. Navigation, Hộp thư đến, Hộp thư đi, Hộp thư quan trọng, Thư nháp, Thùng rác, Thư theo nhãn (lọc thư theo nhãn) . </p>
+    <p> 1. Navigation, Hộp thư đến, Hộp thư đi, Hộp thư quan trọng, Thư nháp, Thùng rác, Thư theo nhãn (lọc thư theo nhãn)</p>
     <p> 2. Tạo thư</p>
     <p> 3. Quản lí nhóm: CRUD nhóm, CRUD Member khỏi nhóm</p>
     <p> 4. Quản lí nhãn: CRUD nhãn</p>
@@ -18,6 +18,6 @@
     <p> 8. Tái cấu trúc source code: Mỗi chức năng được đưa vào trong 1 folder, component sẽ có "_" phía trước, các component dùng chung được bỏ ra ngoài</p>
     <p> 9. Tạo được poll</p>
     <p> 10.Trong folder helper có 1 file là: "InitDataFakeHelper.cs" file này dùng để fake data</p>
-    <p> 11. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với MongoDB, các model cần thiêt 
+    <p> 11. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với MongoDB, các model cần thiết 
         <a href="https://drive.google.com/file/d/1UD7hLkSYp1aRRiXFhbsQA_8uThPgP94K/view?usp=sharing">Link here</a>
     </p>
