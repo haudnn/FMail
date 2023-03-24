@@ -2,20 +2,22 @@
      <div class="is-flex is-align-items-center">
          <div class="is-flex-1 is-flex is-align-items-center is-gap-8 is-pointer">
              <figure class="image is-24x24">
-                 <img class="is-rounded" src="@avatar">
+                 <img class="is-rounded" src="@member.avatar">
              </figure>
-             <span class="is_body2 is-secondary-20">@name</span>
+             <span class="is_body2 is-secondary-20">@member.name</span>
          </div>
-         <span class="icon is-pointer">
+         <span class="icon is-pointer" @onclick="HandleDelete">
              <i class="material-icons-outlined is-error-60">delete</i>
          </span>
      </div>
 </li>
 @code { 
     [Parameter]
-    public string id { get; set; }
+    public MemberModel member { get; set; }
     [Parameter]
-    public string name { get; set; }
-    [Parameter]
-    public string avatar { get; set; }
+    public EventCallback<MemberModel> HandleDeleteMember { get; set; }
+    
+    public void HandleDelete() {
+        HandleDeleteMember.InvokeAsync(member);
+    }
 }

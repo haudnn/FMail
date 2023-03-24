@@ -1,0 +1,50 @@
+@* <ul class="is-flex is-align-items-center is-gap-10-y is-justify-content-flex-end is-full">
+    <li class="is-flex is-align-items-center is-pointer">
+        <span class="is_caption is-secondary-40">10:47,</span>
+        <span class="is_caption is-secondary-40">20/2/2023 (1 tiếng trước)</span>
+    </li>
+    <li class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("reply")'>
+        <span class="icon">
+            <i class="material-icons-outlined is-primary-40">reply</i>
+        </span>
+        <span class="is_caption is-primary-40">Trả lời</span>
+    </li>
+    <li class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("reply_all")'>
+        <span class="icon">
+            <i class="material-icons-outlined is-primary-40">reply_all</i>
+        </span>
+        <span class="is_caption is-primary-40">Trả lời tất cả</span>
+    </li>
+    <li class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("forward")'>
+        <span class="icon">
+            <i class="material-icons-outlined is-primary-40">forward</i>
+        </span>
+        <span class="is_caption is-primary-40">Chuyển tiếp</span>
+    </li>
+    <li>
+        <div class="dropdown is-right @(toggleViewButtonAnother.IsToggled ? " is-active" : "" )">
+            <div class="dropdown-trigger is-flex is-align-items-center is-pointer" @onclick="HandleToggleButtonAnother">
+                <span class="icon">
+                    <i class="material-icons-outlined is-primary-40 is_caption">more_vert</i>
+                </span>
+                <span class="is_caption is-primary-40">Khác</span>
+            </div>
+            <div class="dropdown-menu" style="min-width: 240px;">
+                <div class="dropdown-content is-padding-20">
+                    <div class="is-pointer is-flex is-align-items-center is-gap-10-y is-mb-10">
+                        <span class="icon">
+                            <i class="material-icons-outlined is-secondary-40">mail</i>
+                        </span>
+                        <span class="is_sub2 is-secondary-40">Đánh dấu chưa đọc</span>
+                    </div>
+                    <div class="is-pointer is-flex is-align-items-center is-gap-10-y">
+                        <span class="icon">
+                            <i class="material-icons-outlined is-error-40">delete</i>
+                        </span>
+                        <span class="is_sub2 is-error-40">Chuyển vào thùng rác</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+</ul> *@

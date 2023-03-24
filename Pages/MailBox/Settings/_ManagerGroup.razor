@@ -49,10 +49,10 @@
                     <div class="is-flex is-align-items-center">
                         <div class="input-container is-flex-1 is-flex is-align-items-center">
                             <span class="input-icon left is_body2 is-secondary-60">Nhóm</span>
-                            <input class="input-zone is_body2 is-secondary-20" type="text" @bind="@groupSelected.name">
+                            <input class="input-zone is_body2 is-secondary-20" type="text" @bind="@groupName">
                         </div>
                         <div class="is-flex is-align-items-center">
-                            <div class="wrapper-icon is-pointer">
+                            <div class="wrapper-icon is-pointer" @onclick="HandleEditGroup">
                                 <span class="icon">
                                     <i class="material-icons-outlined is-primary-40">done</i>
                                 </span>
@@ -72,9 +72,8 @@
                     @foreach (var member in groupSelected.members)
                     {
                         <_MemberItem 
-                            id="@member.id"
-                            avatar="@member.avatar"
-                            name="@member.name"
+                            member="member"
+                            HandleDeleteMember="HandleDeleteMember"
                         />
                     }
                 </ul>
@@ -83,7 +82,7 @@
     case "add":
             <div>
                 <div class="is-mb-20">
-                    <div class="wrapper-button btn-outlined is-inline-flex" @onclick='() => HandleChangeCurrentAction("static")'>
+                    <div class="wrapper-button btn-outlined is-inline-flex" @onclick='HandleBackStep'>
                         <span class="icon">
                             <i class="material-icons-outlined is-secondary-40">arrow_back_ios</i>
                         </span>
@@ -106,9 +105,8 @@
                         @foreach (var member in membersSelected)
                             {
                                 <_MemberItem 
-                                    id="@member.id"
-                                    avatar="@member.avatar"
-                                    name="@member.name"
+                                    member="member"
+                                    HandleDeleteMember="HandleDeleteMember"
                                 />
                             }
                     </ul>
@@ -142,9 +140,9 @@
 
     public GroupModel groupSelected;
 
-    private List<GroupModel> groups = new();
+    private List<GroupModel> groups = new List<GroupModel>();
         
-    private List<MemberModel> members = new();
+    private List<MemberModel> members = new List<MemberModel>();
 
     private List<MemberModel> membersSelected = new List<MemberModel>();
 
@@ -162,6 +160,7 @@
 
     private void HandleToggleShowEditName() { 
         isShowEditNameGroup = !isShowEditNameGroup;
+        groupName = groupSelected.name;
     }
 
     private void HandleViewDetailGroup(string groupId) { 
@@ -192,9 +191,12 @@
         List<MemberModel> clonedList = new List<MemberModel>(membersSelected);
         clonedList.AddRange(membersList);
         membersSelected = clonedList;
+        if(groupSelected != null) {
+            groupSelected.members.AddRange(membersList);
+        }
+        
     }
     
-
     private void HandleCreateGroup() {
         GroupModel groupToCreate = new GroupModel{ 
             id = "999",
@@ -203,14 +205,38 @@
         };
         groups.Add(groupToCreate);
         groupName = String.Empty;
-        membersSelected = null;
+        membersSelected = new List<MemberModel>();
         HandleChangeCurrentAction("static");
     }
+
     private void HandleBackStep() {
         isShowEditNameGroup = false;
+        groupSelected = null;
+        groupName = String.Empty;
+        membersSelected = new List<MemberModel>();
         HandleChangeCurrentAction("static");
     }
+
+    private void HandleDeleteMember(MemberModel member){
+        // Flow: when user selected group => groupSelected => query id group => find members id => remove
+        // get group id
+        @* MemberModel memberToRemove = groupSelected.members.Find(member => member.id == memberIdToRemove);
+        if (memberToRemove != null)
+        {
+            groupSelected.members.Remove(memberToRemove);
+        } *@
+        if(groupSelected != null) {
+            groupSelected.members.Remove(member);
+        }
+        else {
+            membersSelected.Remove(member);
+        }
+        members.Add(member);
+    }
+
     private void HandleEditGroup() {
-        
+        @* get group id from group selected => update by id *@
+        groupSelected.name = groupName;
+        isShowEditNameGroup = false;
     }
 }

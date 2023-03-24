@@ -1,0 +1,75 @@
+@page "/config/mail"
+@layout LayoutMail
+<div class="is-padding-20">
+    <div class="container-manager is-config">
+        <div class="is-flex is-align-items-center">
+            <p class="is-flex-1 is-uppercase is_h6 is-secondary-20">Cấu hình hộp thư</p>
+            <div class="wrapper-button primary-btn" @onclick="() => HandleToggleShowModalAdd(true)">
+                <span class="icon">
+                    <i class="material-icons-outlined has-text-white">add</i>
+                </span>
+                <span class="has-text-white is_button">Thêm danh mục</span>
+            </div>
+        </div>
+        <p class="is-padding-20-x is_body1 is-secondary-20">Danh sách hạng mục</p>
+        <ul>
+            @foreach (var category in categories)
+            {
+                <_Item  
+                    category="category" 
+                    HandleDeleteCategory="HandleDeleteCategory" 
+                    HandleEditCategory="HandleEditCategory"
+                />
+            }
+
+        </ul>
+    </div>
+    <_ModalData
+        nameModal="Thêm danh mục"
+        contentButton="Cập nhật"
+        toggleActiveModal="@isShowModalAdd"
+        HandleToggleActiveModal="HandleToggleShowModalAdd"
+        categoryName="@categoryName"
+        HandleConfirmation="HandleAddCategory"
+    />
+</div>
+@code{
+    public List<CategoryModel> categories = new List<CategoryModel>();
+
+    public bool isShowModalAdd = false;
+    public string categoryName = String.Empty;
+    public void HandleToggleShowModalAdd(bool isShow) {
+        isShowModalAdd = isShow;
+    }
+
+    protected override void OnInitialized()
+    {
+        categories = InitDataFakeHelper.InitCategories();
+    }
+
+    public void HandleDeleteCategory(CategoryModel categoryDelete){
+        CategoryModel categoryToDelete = categories.FirstOrDefault(category => category.id == categoryDelete.id);
+        if (categoryToDelete != null)
+        {
+            categories.Remove(categoryToDelete);
+        }
+    }
+
+    public void HandleAddCategory(string nameToAdd){
+        CategoryModel categoryToCreate = new CategoryModel{ 
+            id = "999",
+            name = nameToAdd,
+        };
+        categories.Add(categoryToCreate);
+        categoryName = String.Empty;
+        isShowModalAdd = !isShowModalAdd;
+    }
+    public void HandleEditCategory(CategoryModel categoryUpdate) {
+        CategoryModel categoryToUpdate = categories.FirstOrDefault(category => category.id == categoryUpdate.id);
+        if (categoryToUpdate != null)
+        {
+            categoryToUpdate.name = categoryUpdate.name;
+        }
+    }
+
+}

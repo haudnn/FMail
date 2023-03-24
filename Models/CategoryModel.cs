@@ -1,6 +1,6 @@
 namespace Workdo.Models;
 public class CategoryModel
 {
-    public int id;
+    public string id;
     public string name;
 }

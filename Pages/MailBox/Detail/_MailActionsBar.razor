@@ -1,8 +1,8 @@
 @inject IJSRuntime JSRuntime
 <div class="columns">
-    <div class="column is-7">
+    <div class="column is-6">
         <div class="is-flex is-align-items-center is-gap-10-y">
-            <figure class="image is-36x36">
+            <figure class="image is-32x32">
                 <img src="images/avatar-mail.png">
             </figure>
             <div>
@@ -32,7 +32,7 @@
                                 <div class="is-flex is-mb-10">
                                     <span class="is_body2 is-secondary-10 is-block" style="width: 55px;">Đến:</span>
                                     <div class="is-flex-1">
-                                        @foreach (var item in toList)
+                                        @foreach (var item in to)
                                         {
                                             <span class="is-has-virgule is_caption is-secondary-40">@item</span>
                                         }
@@ -41,7 +41,7 @@
                                 <div class="is-flex is-mb-10">
                                     <span class="is_body2 is-secondary-10 is-block" style="width: 55px;">CC:</span>
                                     <div class="is-flex-1">
-                                        @foreach (var item in ccList)
+                                        @foreach (var item in cc)
                                         {  
                                             <span class="is-has-virgule is_caption is-secondary-40">@item</span> 
                                         }
@@ -51,8 +51,7 @@
                                 <div class="is-flex is-align-items-center">
                                     <p class="is_body2 is-secondary-10" style="width: 55px;">Ngày:</p>
                                     <div class="is-flex-1 is-flex is-align-items-center">
-                                        <span class="is_caption is-secondary-40">@time,</span>
-                                        <span class="is_caption is-secondary-40">@dateMonth, @year</span>
+                                        <span class="is_caption is-secondary-40">@sentDate</span>
                                     </div>
                                 </div>
                             </div>
@@ -62,58 +61,8 @@
             </div>
         </div>
     </div>
-    <div class="column is-5">
-        <ul class="is-flex is-align-items-center is-gap-10-y is-justify-content-flex-end is-full">
-            <li class="is-flex is-align-items-center is-pointer">
-                <span class="is_caption is-secondary-40">10:47,</span>
-                <span class="is_caption is-secondary-40">20/2/2023 (1 tiếng trước)</span>
-            </li>
-            <li class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("reply")'>
-                <span class="icon">
-                    <i class="material-icons-outlined is-primary-40">reply</i>
-                </span>
-                <span class="is_caption is-primary-40">Trả lời</span>
-            </li>
-            <li class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("reply_all")'>
-                <span class="icon">
-                    <i class="material-icons-outlined is-primary-40">reply_all</i>
-                </span>
-                <span class="is_caption is-primary-40">Trả lời tất cả</span>
-            </li>
-            <li class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("forward")'>
-                <span class="icon">
-                    <i class="material-icons-outlined is-primary-40">forward</i>
-                </span>
-                <span class="is_caption is-primary-40">Chuyển tiếp</span>
-            </li>
-            <li>
-                <div class="dropdown is-right @(toggleViewButtonAnother.IsToggled ? " is-active" : "" )">
-                    <div class="dropdown-trigger is-flex is-align-items-center is-pointer"
-                        @onclick="HandleToggleButtonAnother">
-                        <span class="icon">
-                            <i class="material-icons-outlined is-primary-40 is_caption">more_vert</i>
-                        </span>
-                        <span class="is_caption is-primary-40">Khác</span>
-                    </div>
-                    <div class="dropdown-menu" style="min-width: 240px;">
-                        <div class="dropdown-content is-padding-20">
-                            <div class="is-pointer is-flex is-align-items-center is-gap-10-y is-mb-10">
-                                <span class="icon">
-                                    <i class="material-icons-outlined is-secondary-40">mail</i>
-                                </span>
-                                <span class="is_sub2 is-secondary-40">Đánh dấu chưa đọc</span>
-                            </div>
-                            <div class="is-pointer is-flex is-align-items-center is-gap-10-y">
-                                <span class="icon">
-                                    <i class="material-icons-outlined is-error-40">delete</i>
-                                </span>
-                                <span class="is_sub2 is-error-40">Chuyển vào thùng rác</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
+    <div class="column is-6">
+        <_ActionMail/>
     </div>
 </div>
 
@@ -123,18 +72,12 @@
     [Parameter]
     public string mailName { get; set; }
     [Parameter]
-    public string time { get; set; }
+    public string sentDate { get; set; }
+    [Parameter]
+    public List<string> to { get; set; }
 
     [Parameter]
-    public string dateMonth { get; set; }
-    [Parameter]
-    public string year { get; set; }
-
-    [Parameter]
-    public List<string> toList { get; set; }
-
-    [Parameter]
-    public List<string> ccList{ get; set; }
+    public List<string> cc { get; set; }
     [Parameter]
     public EventCallback<string> SetCurrentAction { get; set; }
     
@@ -149,8 +92,6 @@
     }
     private async Task HandleClickAction(string actionName){
         await SetCurrentAction.InvokeAsync(actionName);
-        // await JSRuntime.InvokeVoidAsync("scrollTo", 0, document.body.scrollHeight, "smooth");
-        // window.scrollTo({ left: 0, top: document.body.scrollHeight, behavior: "smooth" });
     }
     
 }

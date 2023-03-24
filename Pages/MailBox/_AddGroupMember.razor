@@ -15,46 +15,51 @@
             </div>
             <div class="dropdown-item unhover dropdown-header" style="padding: 0; padding-bottom: 10px;">
                 <ul class="is-flex is-align-items-center is-flex-wrap-wrap is-gap-10-y">
-                    <li class="is-flex is-align-items-center is-gap-8-y">
-                        <span class="icon is-justify-content-start">
-                            <i class="material-icons-outlined is-secondary-40">remove_circle_outline</i>
-                        </span>
-                        <div class="is-flex is-align-items-center is-gap-4">
-                            <span class="is_sub2 is-secondary-20">Long Vũ</span>
-                        </div>
-                    </li>
+                    @foreach (var group in groupsSelected)
+                    {
+                        <li class="is-flex is-align-items-center is-gap-8-y">
+                            <span class="icon is-justify-content-start" @onclick="() => HandlePickedGroup(group)">
+                                <i class="material-icons-outlined is-secondary-40">remove_circle_outline</i>
+                            </span>
+                            <div class="is-flex is-align-items-center is-gap-4">
+                                <span class="is_sub2 is-secondary-20">@group.name</span>
+                            </div>
+                        </li>  
+                    }
+
                 </ul>
             </div>
             <div class="dropdown-item unhover is-padding-20-x border-bottom is-flex-1" style="border-radius:0 ;">
                 <div class="is-flex is-align-items-center is-gap-10-y pb-4">
-                    <input id="select-all" type="checkbox">
-                    <label for="select-all" class="is_button is-primary-40 is-pointer">Chọn tất
-                        cả</label>
+                    @if(toggleCheckBox.IsToggled) 
+                    {
+                        <span class="icon is-small is-primary-40" @onclick="HandleToggleCheckBox">
+                            <i class="material-icons-outlined">check_box</i>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="icon is-small is-primary-40" @onclick="HandleToggleCheckBox">
+                            <i class="material-icons-outlined">check_box_outline_blank</i>
+                        </span>
+                    }
+                    <span class="is_button is-primary-40 is-pointer">Chọn tất cả</span>
                 </div>
                 <ul class="is-flex is-flex-direction-column is-gap-8-x">
-                    <li class="is-flex is-align-items-center is-gap-8-y">
-                        <span class="icon is-justify-content-start">
-                            <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
-                        </span>
-                        <span class="is_sub2 is-secondary-20">Long Vũ</span>
-                    </li>
-                    <li class="is-flex is-align-items-center is-gap-8-y">
-                        <span class="icon is-justify-content-start">
-                            <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
-                        </span>
-                        <span class="is_sub2 is-secondary-20">Long Vũ</span>
-                    </li>
-                    <li class="is-flex is-align-items-center is-gap-8-y">
-                        <span class="icon is-justify-content-start">
-                            <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
-                        </span>
-                        <span class="is_sub2 is-secondary-20">Long Vũ</span>
-                    </li>
+                    @foreach (var group in groups)
+                    {
+                        <li class="is-flex is-align-items-center is-gap-8-y">
+                            <span class="icon is-justify-content-start" @onclick="() => HandlePickedGroup(group)">
+                                <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
+                            </span>
+                            <span class="is_sub2 is-secondary-20">@group.name</span>
+                        </li>
+                    }
                 </ul>
             </div>
             <div
                 class="dropdown-item unhover is-flex is-justify-content-flex-end is-align-content-center is-padding-top-20 is-gap-10-y">
-                <div class="wrapper-button primary-btn" style="display: inline-flex">
+                <div class="wrapper-button primary-btn" style="display: inline-flex"  @onclick="HandleUpdateGroups">
                     <span class="icon has-text-white">
                         <i class="material-icons-outlined">done</i>
                     </span>
@@ -73,9 +78,46 @@
 @code {
     [Parameter]
     public string directionDropdown {get; set;}
+    [Parameter]
+    public List<GroupModel> groups {get; set;} 
+    [Parameter]
+    public EventCallback<List<GroupModel>> HandleSelectedGroup { get; set; }
+    public List<GroupModel> groupsSelected = new List<GroupModel>();
+
     private ToggleHelper toggleViewAdd = new ToggleHelper();
+    private ToggleHelper toggleCheckBox = new ToggleHelper();
     private void HandleToggleViewAdd()
     {
         toggleViewAdd.Toggle();
+    }
+    private void HandleToggleCheckBox() 
+    {
+        toggleCheckBox.Toggle();
+    }
+
+    private void HandlePickedGroup(GroupModel group) {
+        if (!groupsSelected.Contains(group))
+        {
+            groupsSelected.Add(group);
+            groups.Remove(group);
+        }
+        else
+        {
+            groupsSelected.Remove(group);
+            groups.Add(group);
+        }
+    }
+    private void HandleUpdateGroups() {
+        if(toggleCheckBox.IsToggled){
+            HandleSelectedGroup.InvokeAsync(groups);
+            groups.Clear();
+        }
+        else {
+            HandleSelectedGroup.InvokeAsync(groupsSelected);
+        }
+        toggleViewAdd.Toggle();
+        groupsSelected.Clear();
+        toggleCheckBox.Toggle();
+
     }
 }

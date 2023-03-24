@@ -1,7 +1,7 @@
 <ul class="is-flex is-align-items-center category__list is-flex-1">
     @foreach (var category in categories)
     {
-        <li @onclick="() => HandleChangeTabCategory(category.id)"  class="category__item @(currentTabActive == category.id ? "active": "" )">
+        <li @onclick="() => HandleChangeTabCategory(category.id)" class="category__item @(currentTabActive == category.id ? "active": "" )">
             <span>@category.name</span>
         </li>
     }
@@ -32,11 +32,11 @@
 </div>
 
 @code {
-    public int currentTabActive = 1;
+    public string currentTabActive = "1";
     [Parameter]
     public List<CategoryModel> categories {get; set; }
-    private void HandleChangeTabCategory(int _id)
+    private void HandleChangeTabCategory(string id)
     {
-        currentTabActive = _id;
+        currentTabActive = id;
     }
 }

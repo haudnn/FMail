@@ -64,7 +64,7 @@
 
 @code{
     private ToggleHelper toggleShowLabels = new ToggleHelper();
-    private List<int> labelsSelected = new List<int>();
+    private List<string> labelsSelected = new List<string>();
     [Parameter]
     public List<LabelModel> labels { get; set; }
     [Parameter]
@@ -73,12 +73,12 @@
     public bool isShowButtons { get; set; }
     [Parameter]
     public bool isFilter { get; set; }
-    private void HandelToggleIconCheckbox(int id) {
+    private void HandelToggleIconCheckbox(string id) {
         if (!labelsSelected.Contains(id))
         {
             labelsSelected.Add(id);
         }
-        else if (labelsSelected.Contains(id))
+        else
         {
             labelsSelected.Remove(id);
         }

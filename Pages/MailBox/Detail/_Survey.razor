@@ -1,37 +1,35 @@
 <div class="poll__content" style="margin: 0; border-top-left-radius: 0;">
     <ul class="is-flex is-flex-direction-column" style="gap: 20px 0">
-        <li>
-            <div class="is-flex is-align-items-center is-gap-8">
-                <span class="is_sub2">1.</span>
-                <p class="is_sub2 is-secondary-20">Bạn muốn tham dự End Year Party vào thời điểm
-                    nào?</p>
-            </div>
-            <div class="control is-mt-10 is-flex is-flex-direction-column is-gap-10-x">
-                <label class="is-flex is-align-items-center is-gap-4">
-                    <input type="radio" name="answer">
-                    24 tháng chạp
-                </label>
-                <label class="is-flex is-align-items-center is-gap-4">
-                    <input type="radio" name="answer">
-                    25 tháng chạp
-                </label>
-            </div>
-        </li>
-        <li>
-            <div class="is-flex is-align-items-center is-gap-8">
-                <span class="is_sub2">2.</span>
-                <p class="is_sub2 is-secondary-20">Phần thưởng Tết bạn muốn nhận là gì?</p>
-            </div>
-            <div class="control is-mt-10 is-flex is-flex-direction-column is-gap-10-x">
-                <label class="is-flex is-align-items-center is-gap-4">
-                    <input type="checkbox" name="answer">
-                    Tiền mặt
-                </label>
-                <label class="is-flex is-align-items-center is-gap-4">
-                    <input type="checkbox" name="answer">
-                    Hiện vật
-                </label>
-            </div>
-        </li>
+        @{
+            var index = 1;
+        }
+        @foreach (var question in questions)
+        {
+            <li>
+                <div class="is-flex is-align-items-center is-gap-8">
+                    <span class="is_sub2">@index.</span>
+                    <p class="is_sub2 is-secondary-20">@question.text</p>
+                </div>
+                <div class="control is-mt-10 is-flex is-flex-direction-column is-gap-10-x">
+                    @foreach (var choice in question.choices)
+                    {
+                        <label class="is-flex is-align-items-center is-gap-4">
+                            @if(question.isMultipleChoice) {
+                                <input type="checkbox">
+                            }
+                            else{ 
+                                <input type="radio">
+                            }
+                            @choice.text
+                        </label>
+                    }
+                </div>
+            </li>
+            index++;
+        }
     </ul>
 </div>
+@code{
+    [Parameter] 
+    public List<QuestionModel> questions { get; set; }
+}

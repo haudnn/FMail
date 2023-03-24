@@ -3069,6 +3069,9 @@ button.dropdown-item {
   cursor: pointer;
   border-bottom: 2px solid var(--color-primary-95);
   height: 37px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .category__item.active {
   border-bottom: 2px solid var(--color-primary-80);

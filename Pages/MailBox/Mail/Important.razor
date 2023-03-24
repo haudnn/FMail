@@ -64,7 +64,7 @@
                             isRead="@mail.isRead"
                             attachments="@mail.attachments"
                             isImportant="@mail.isImportant"
-                            receivedDate="@mail.receivedDate"
+                            sentDate="@mail.sentDate"
                             labels="@mail.labels"
                             subject="@mail.subject"
                             isChecked="@selectedItems.Contains(mail.id)" 
@@ -110,12 +110,12 @@
         mails = InitDataFakeHelper.FitterMailsImportant();
     }
     private bool isSelectedAll  = false;
-    private List<int> selectedItems = new List<int>();
+    private List<string> selectedItems = new List<string>();
     private void HandleSelectedAllMail()
     {
         if(!isSelectedAll) { 
             for (int i = 0; i < mails.Count; i++) {
-                selectedItems.Add((int)mails[i].id);
+                selectedItems.Add(mails[i].id);
             }
         }
         else {

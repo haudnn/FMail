@@ -1,0 +1,21 @@
+<li class="is-flex is-align-items-center is-gap-20">
+    <span class="icon">
+        <i class="material-icons-outlined">drag_indicator</i>
+    </span>
+    <div class="control is-flex-1">
+        <label class="checkbox is_body2 is-secondary-20 is-flex">
+            <input type="checkbox">
+            <div class="search-wrapper question">
+                <input class="search-input question" @bind-value="choiceName" type="text" placeholder="Lựa chọn @index">
+            </div>
+        </label>
+    </div>
+    @* <span class="icon is-pointer" @onclick="() => HandleDeleteOption(item)">
+        <i class="material-icons-outlined is-error-40">delete</i>
+    </span> *@
+</li>
+@code{
+    public string choiceName = String.Empty;
+    [Parameter]
+    public int index { get;  set;}
+}

@@ -38,12 +38,12 @@
         <ul class="labels-list">
             @foreach (var label in labels)
             {
-                <li class="label-item label-active">
+                <li class="label-item @(label.id == activeLabel ? "label-active" : "")" @onclick="() => HandleActiveLabel(label)">
                     <a href="mail/label/@label.id" class="is-flex is-gap-10-y" >
                         <span class="icon is-small">
                             <i class="material-icons-sharp" style="color: @label.color">label</i>
                         </span>
-                        <span class="is_sub2 is-primary-40 ">@label.name</span>
+                        <span class="is_sub2 @(label.id == activeLabel ? "is-primary-40" : "is-secondary-40") ">@label.name</span>
                     </a>
                 </li>
             }
@@ -161,6 +161,11 @@
 
             StateHasChanged();
         }
+    }
+    public string activeLabel { get; set; }
+
+    private void HandleActiveLabel(LabelModel clickedLabel) { 
+        activeLabel = clickedLabel.id;
     }
 }
 

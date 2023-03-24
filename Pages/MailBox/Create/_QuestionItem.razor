@@ -1,0 +1,77 @@
+<li>
+    <div class="is-flex is-align-items-center is-gap-8">
+        <span class="is_sub2">@questionIndex.</span>
+        <div class="search-wrapper question">
+            <input class="search-input question" type="text" @bind-value="questionName" placeholder="Nhập câu hỏi">
+        </div>
+        <div class="wrapper-button is-justify-content-center is-inline-flex error-btn" style="padding: 7px">
+            <span class="icon">
+                <i class="material-icons-outlined">delete</i>
+            </span>
+            <span class="is_button">Xóa câu hỏi</span>
+        </div>
+    </div>
+    <div class="is-margin-tb-15 is-flex is-align-items-center is-gap-10-y">
+        <label class="is_body2 is-secondary-40">Loại khảo sát: </label>
+        <div class="control is-flex is-align-items-center">
+            <div class="is-flex is-align-items-center">
+                <span class="icon is-secondary-60">
+                    <i class="material-icons-sharp">radio_button_unchecked</i>
+                </span>
+                @* <span class="icon is-secondary-60">
+                    <i class="material-icons-sharp">radio_button_checked</i>
+                </span> *@
+                <span class="radio is_body2 is-secondary-20">
+                    Một đáp án
+                </span>
+            </div>
+            <div>
+                <span class="icon is-secondary-60">
+                    <i class="material-icons-sharp">radio_button_unchecked</i>
+                </span>
+                @* <span class="icon is-secondary-60">
+                    <i class="material-icons-sharp">radio_button_checked</i>
+                </span> *@
+                <span class="radio is_body2 is-secondary-20">
+                    Nhiều đáp án
+                </span>
+            </div>
+        </div>
+    </div>
+    <ul class="is-flex is-flex-direction-column" style="gap: 15px 0">
+        @{
+            var index = 1;
+        }
+        @foreach (var item in choices)
+        {
+            <_ChoiceItem index="index"/>
+            index = index + 1;
+        }
+    </ul>
+    <div class="is-flex is-align-items-center is-pointer is-padding-top-20" @onclick="HandleAddChoice">
+        <span class="icon">
+            <i class="material-icons-outlined is-primary-40">add</i>
+        </span>
+        <span class="is_button is-primary-40">Thêm tùy chọn</span>
+    </div>
+</li>
+@code{ 
+    public string questionName = String.Empty;
+    [Parameter]
+    public int questionIndex { get;  set;}
+    public List<ChoiceModel> choices = new List<ChoiceModel>();
+    protected override async Task OnInitializedAsync()
+    {
+        choices.Add(new ChoiceModel
+        {
+           text = "",
+        });
+    }
+    public void HandleAddChoice()
+    {
+        choices.Add(new ChoiceModel
+        {
+           text = "",
+        });
+    }
+}

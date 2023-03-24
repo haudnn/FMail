@@ -78,7 +78,7 @@
                         }
                     </ul>
                     <div>
-                        <span class="mail__item-datetime @(isReadToogle ? "read" : "unread")">@receivedDate</span>
+                        <span class="mail__item-datetime @(isReadToogle ? "read" : "unread")">@sentDate</span>
                     </div>
                 </div>
                 <ul class="attachments-list">
@@ -102,7 +102,7 @@
 </div>
 @code {
     [Parameter]
-    public int id { get; set; }
+    public string id { get; set; }
     [Parameter]
     public string from { get; set; }
     [Parameter]
@@ -110,7 +110,7 @@
     [Parameter]
     public string body { get; set; }
     [Parameter]
-    public string receivedDate { get; set; }
+    public string sentDate { get; set; }
     [Parameter]
     public List<AttachmentModel> attachments { get; set; }
     [Parameter]

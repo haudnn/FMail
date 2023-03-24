@@ -78,10 +78,14 @@
         if (labelToUpdate != null)
         {
             labelToUpdate.name = labelName;
+            if(labelColor != String.Empty){
+                labelToUpdate.color = labelColor;
+            }
         }
         isEditLabel = false;
         labelSelected = null;
         labelName = String.Empty;
+        labelColor = String.Empty;
         StateHasChanged();
     }
     private void HandelDeleteLabel(LabelModel label) {
@@ -101,7 +105,7 @@
             return;
         }
         var label = new LabelModel{ 
-            id = 20,
+            id = "20",
             name = labelName,
             color = labelColor
         };

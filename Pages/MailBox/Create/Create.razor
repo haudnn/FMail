@@ -5,18 +5,19 @@
 @using Blazored.TextEditor;
 @using Microsoft.AspNetCore.Components
 
-<PageTitle>Cảnh báo bảo mật quan trọng</PageTitle>
+<PageTitle>Tạo thư mới</PageTitle>
 <section class="is-padding-20">
-    <header class="is-flex is-align-items-center is-justify-content-flex-start is-gap-20">
-        <a href="mail" class="is-flex is-align-items-center is-gap-8 is-pointer ">
+
+    <div class="is-flex is-align-items-center is-justify-content-flex-start is-gap-20">
+        <a href="mail/inbox" class="is-flex is-align-items-center is-gap-8 is-pointer ">
             <span class="icon">
                 <i class="material-icons-outlined is-primary-40">arrow_back</i>
             </span>
-            <span class="is-font-14 is-primary-40 has-text-weight-medium">Trở về</span>
+            <span class="is-primary-40 is_button">Trở về</span>
         </a>
         <div class="is-flex is-align-items-center is-gap-10-y">
             <span class="is_body2 is-secondary-40">
-                Danh mục
+                Danh mục:
             </span>
             <div class="dropdown is-right @(toogleShowCategories.IsToggled ? " is-active" : "" )">
                 <div class="dropdown-trigger is-hover drop-border is-flex is-align-items-center" style="padding: 0 8px;" @onclick="HandleShowCategories">
@@ -27,45 +28,132 @@
                 </div>
                 <div class="dropdown-menu is-small">
                     <ul class="dropdown-content" style="padding: 8px">
-                        <li class="dropdown-item" style="padding: 4px 8px;">
-                            <span class="is_caption is-secondary-20">Vận hành</span>
-                        </li>
-                        <li class="dropdown-item" style="padding: 4px 8px;">
-                            <span class="is_caption is-secondary-20">Kế toán</span>
-                        </li>
-                        <li class="dropdown-item" style="padding: 4px 8px;">
-                            <span class="is_caption is-secondary-20">Nhân sự</span>
-                        </li>
-                        <li class="dropdown-item" style="padding: 4px 8px;">
-                            <span class="is_caption is-secondary-20">Marketing</span>
-                        </li>
-                        <li class="dropdown-item" style="padding: 4px 8px;">
-                            <span class="is_caption is-secondary-20">Sản xuất</span>
-                        </li>
+                        @foreach (var category in categories)
+                        {
+                            <li class="dropdown-item" style="padding: 4px 8px;">
+                                <span class="is_caption is-secondary-20">@category.name</span>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </div>
         <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-            <span class="icon">
-                <i class="material-icons-outlined is-warning-20">star_outline</i>
-            </span>
-            <span class="is-font-14 is-secondary-40">Đánh dấu quan trọng</span>
+            @if(isStar) { 
+                <span class="icon" @onclick="() => HandleStarMail(false)">
+                    <i class="material-icons-sharp is-warning-20">star_purple500</i>
+                </span>
+            }
+            else {
+                <span class="icon star" @onclick="() => HandleStarMail(true)">
+                    <i class="material-symbols-outlined">star</i>
+                </span>
+            }
+            <span class="is_body2 is-secondary-40">Đánh dấu quan trọng</span>
         </div>
-        <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-            <span class="icon">
-                <i class="material-icons-outlined is-error-40">label</i>
-            </span>
-            <span class="is-font-14 is-secondary-40 is-secondary-20">Nhãn</span>
+        <div class="dropdown is-left @(toggleShowLabel.IsToggled ? "is-active" : "" )">
+            <div class="dropdown-trigger is-flex is-align-items-center is-gap-8 is-pointer" @onclick="HandelToggleShowLabel">
+                <span class="icon">
+                    <i class="material-icons-outlined is-error-40">label</i>
+                </span>
+                <span class="is_body2 is-secondary-20">Nhãn</span>
+            </div>
+            <div class="dropdown-menu" style="min-width: 250px; min-height: 280px;">
+                <div class="dropdown-content is-padding-10">
+                    <p class="is_sub2 is-secondary-10 is-padding-bottom-20">Danh sách nhãn</p>
+                    <ul class="is-flex is-flex-direction-column is-gap-10-x">
+                        @foreach (var label in labels)
+                        {
+                            <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
+                                @if(labelsSelected.Contains(label)) {
+                                    <span class="icon is-small" @onclick="() => HandelChooseLabel(label)">
+                                        <i class="material-icons-sharp is-secondary-40">check_box</i>
+                                    </span>  
+                                }
+                                else { 
+                                    <span class="icon is-small" @onclick="() => HandelChooseLabel(label)">
+                                        <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
+                                    </span>
+                                }
+                                <div class="is-flex is-align-items-center">
+                                    <span class="icon">
+                                        <i class="material-symbols-sharp" style="color: @label.color; font-size: 12px">label</i>
+                                    </span>
+                                    <span class="is_body2 is-secondary-10">@label.name</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
         </div>
-    </header>
+        <ul class="is-flex is-align-items-center is-gap-8">
+            @foreach (var label in labelsSelected)
+            {
+                <li class="is-flex is-align-items-center is-gap-4" style="border-radius: 5px; padding: 5px ;background-color: @(label.color + "33")">
+                    <span class="is_caption" style="color: @label.color">@label.name</span>
+                    <div class="wrapper-icon-24-rounded is-flex is-align-items-center is-justify-content-center" style="width: 16px; height: 16px;" @onclick="() => HandelChooseLabel(label)">
+                        <span class="icon">
+                            <i class="material-icons-outlined has-text-white" style="font-size: 9px;">close</i>
+                        </span>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
     <main class="create">
         <div class="is-flex is-flex-direction-column is-gap-10-x is-padding-20-x">
             <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
                 <p class="is-secondary-40 is-font-14" style="width: 60px;">To</p>
-                <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
-                    <_AddMember directionDropdown="is-left"/>
-                    <_AddGroupMember directionDropdown="is-left"/>
+                <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
+                    @if(membersSelected.Count > 0) 
+                    {
+                        <ul class="is-flex is-align-items-center is-gap-8">
+                            @foreach (var member in membersSelected)
+                            {
+                            <li class="is-flex is-align-items-center container-to">
+                                <figure class="image is-16x16">
+                                    <img class="is-rounded" src="@member.avatar">
+                                </figure>
+                                <span 
+                                    style="margin: 0px 8px 0px 4px; max-width: 75px; line-height: 16px;" 
+                                    class="is-inline-block text-ellipsis is-secondary-10 is_label2">
+                                    @member.name
+                                </span>
+                                <span class="icon is-pointer" @onclick="() => HandleDeleteMemberSelected(member)">
+                                    <i class="material-icons-outlined is-secondary-10">
+                                        close
+                                    </i>
+                                </span>
+                            </li>
+                            }
+                        </ul>
+                    }
+                    @if(groupsSelected.Count > 0 ) 
+                    {
+                        <ul class="is-flex is-align-items-center is-gap-8">
+                            @foreach (var group in groupsSelected)
+                            {
+                                <li class="is-flex is-align-items-center container-to">
+                                    <span class="is_caption is-secondary-40">Nhóm</span>
+                                    <span 
+                                        style="margin: 0px 8px 0px 4px; max-width: 75px;" 
+                                        class="is-inline-block text-ellipsis is-secondary-10 is_label2">
+                                        @group.name
+                                    </span>
+                                    <span class="icon is-pointer" @onclick="() => HandleDeleteGroupSelected(group)">
+                                        <i class="material-icons-outlined is-secondary-10">
+                                            close
+                                        </i>
+                                    </span>
+                                </li> 
+                            }
+                        </ul>
+                    }
+
+                    <_AddMember members="members" directionDropdown="is-left" HandleSelectedMember="HandleSelectedMember"/>
+                    <_AddGroupMember groups="groups" directionDropdown="is-left" HandleSelectedGroup="HandleSelectedGroup"/>
                 </div>
                 @if(!toggleAddCC) {
                 <div class="is-flex is-align-items-center is-justify-content-center is-gap-10-y" style="height: 100%;">
@@ -74,41 +162,42 @@
                 </div>
                 }
             </div>
-            @if(toggleAddCC) {
-            <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
-                <p class="is-secondary-40 is-font-14" style="width: 60px;">CC</p>
-                <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
-                    <div class="is-flex is-align-items-center is-pointer">
-                        <span class="icon has-text-white">
-                            <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
-                        </span>
-                        <span class="is-primary-40 is-font-12">Thêm người nhận</span>
-                    </div>
-                    <div class="is-flex is-align-items-center is-pointer">
-                        <span class="icon has-text-white">
-                            <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
-                        </span>
-                        <span class="is-primary-40 is-font-12">Thêm nhóm người nhận</span>
-                    </div>
-                </div>
-            </div>
-            <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
-                <p class="is-secondary-40 is-font-14" style="width: 60px;">BCC</p>
-                <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
-                    <div class="is-flex is-align-items-center is-pointer">
-                        <span class="icon has-text-white">
-                            <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
-                        </span>
-                        <span class="is-primary-40 is-font-12">Thêm người nhận</span>
-                    </div>
-                    <div class="is-flex is-align-items-center is-pointer">
-                        <span class="icon has-text-white">
-                            <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
-                        </span>
-                        <span class="is-primary-40 is-font-12">Thêm nhóm người nhận</span>
+            @if(toggleAddCC) 
+            {
+                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                    <p class="is-secondary-40 is-font-14" style="width: 60px;">CC</p>
+                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
+                        <div class="is-flex is-align-items-center is-pointer">
+                            <span class="icon has-text-white">
+                                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+                            </span>
+                            <span class="is-primary-40 is_caption">Thêm người nhận</span>
+                        </div>
+                        <div class="is-flex is-align-items-center is-pointer">
+                            <span class="icon">
+                                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+                            </span>
+                            <span class="is-primary-40 is_caption">Thêm nhóm người nhận</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                    <p class="is-secondary-40 is-font-14" style="width: 60px;">BCC</p>
+                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
+                        <div class="is-flex is-align-items-center is-pointer">
+                            <span class="icon has-text-white">
+                                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+                            </span>
+                            <span class="is-primary-40 is-font-12">Thêm người nhận</span>
+                        </div>
+                        <div class="is-flex is-align-items-center is-pointer">
+                            <span class="icon has-text-white">
+                                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+                            </span>
+                            <span class="is-primary-40 is-font-12">Thêm nhóm người nhận</span>
+                        </div>
+                    </div>
+                </div>
             }
             <div class="is-flex is-align-items-center is-gap-10-y">
                 <p class="is-secondary-40 is-font-14" style="width: 60px;">Tiêu đề</p>
@@ -192,14 +281,24 @@
                         </div>
                     </ToolbarContent>
                 </BlazoredTextEditor>
-                @* <div class="wrapper-button primary-btn is-bg-main is-pointer"
-                    style="display: inline-flex; margin-bottom: 20px;">
-                    <span class="icon has-text-white">
-                        <i class="material-icons-outlined">poll</i>
-                    </span>
-                    <span class="has-text-white is-font-12">Tạo khảo sát</span>
-                </div> *@
-                <_Poll />
+                @if(!toggleCreatePoll.IsToggled) {
+                    <div class="wrapper-button primary-btn is-bg-main is-pointer"
+                        style="display: inline-flex; margin-bottom: 20px;" @onclick="HandleToogleCreatePoll">
+                        <span class="icon has-text-white">
+                            <i class="material-icons-outlined">poll</i>
+                        </span>
+                        <span class="has-text-white is-font-12">Tạo khảo sát</span>
+                    </div>
+                }
+                else{
+                    @if(!isDoneCreatePoll){
+                        <_Poll HandleToogleCreatePoll="HandleToogleCreatePoll" HandelCreatePoll="HandelCreatePoll"/>
+                    }
+                    else{ 
+                        <_ContentPoll/>
+                    }
+                 
+                }
             </div>
         </div>
         <div class="is-padding-top-20" style="padding-bottom: 100px;">
@@ -246,21 +345,42 @@
     </main>
 </section>
 @code {
-
     [CascadingParameter]
     public LayoutMail Layout { get; set; }
     BlazoredTextEditor QuillHtml;
     string QuillHTMLContent;
     private bool toggleActiveSign = false;
+    private bool isDoneCreatePoll = false;
+    public PollModel currentPoll = new PollModel();
+    public List<MemberModel> members { get; set; }  = new List<MemberModel>();
+    private ToggleHelper toggleShowLabel = new ToggleHelper();
+    public ToggleHelper toggleCreatePoll = new ToggleHelper();
+    private bool isStar = false;
     private bool toggleActiveAddMember = false;
     private bool toggleActiveAddGroup = false;
     private bool toggleAddCC = false;
     private ToggleHelper toogleShowCategories = new ToggleHelper();
+    private List<LabelModel> labelsSelected = new List<LabelModel>();
+    private List<MemberModel> membersSelected = new List<MemberModel>();
+    private List<GroupModel> groupsSelected = new List<GroupModel>();
+    public List<CategoryModel> categories = new List<CategoryModel>();
+    public List<LabelModel> labels = new List<LabelModel>();
+    public List<GroupModel> groups = new List<GroupModel>();
+    protected override void OnInitialized()
+    {
+        categories = InitDataFakeHelper.InitCategories();
+        labels = InitDataFakeHelper.InitLabels();
+        members = InitDataFakeHelper.InitMembers();
+        groups = InitDataFakeHelper.InitGroups();
+    }
 
     private void HandleShowCategories() {
         toogleShowCategories.Toggle();
     }
 
+    private void HandleToogleCreatePoll() {
+        toggleCreatePoll.Toggle();
+    }
     protected override async Task OnParametersSetAsync()
     {
     }
@@ -287,10 +407,51 @@
     {
         toggleActiveSign = !toggleActiveSign;
     }
+    private void HandleStarMail(bool isStarMail)
+    {
+        isStar = isStarMail;
+    }
     private void ToggleActiveAddMember(bool isActiveAddMember){
         toggleActiveAddMember = isActiveAddMember;
     }
     private void ToggleActiveAddGroup() {
         toggleActiveAddGroup = !toggleActiveAddGroup;
+    }
+    private void HandelToggleShowLabel() { 
+        toggleShowLabel.Toggle();
+    }
+
+    private void HandelChooseLabel(LabelModel label) {
+        if (labelsSelected.Contains(label))
+        {
+            labelsSelected.Remove(label);
+        }
+        else
+        {
+            labelsSelected.Add(label);
+        }
+    }
+    private void HandleSelectedMember(List<MemberModel> membersList) { 
+        List<MemberModel> clonedList = new List<MemberModel>(membersSelected);
+        clonedList.AddRange(membersList);
+        membersSelected = clonedList;
+    }
+    private void HandleDeleteMemberSelected(MemberModel member) {
+        membersSelected.Remove(member);
+        members.Add(member);
+    }
+
+    private void HandleSelectedGroup(List<GroupModel> groupsList) { 
+        List<GroupModel> clonedList = new List<GroupModel>(groupsSelected);
+        clonedList.AddRange(groupsList);
+        groupsSelected = clonedList;
+    }
+
+    private void HandleDeleteGroupSelected(GroupModel group) {
+        groupsSelected.Remove(group);
+        groups.Add(group);
+    }
+    public void HandelCreatePoll() {
+        isDoneCreatePoll = true;
     }
 }

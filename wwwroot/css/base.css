@@ -245,6 +245,12 @@
   line-height: 17px;
   letter-spacing: 0.1px;
 }
+.is_label2 {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 0.5px;
+}
 
 /* FTTM - Body 1 */
 
@@ -420,4 +426,9 @@
   outline: none;
   padding: 0;
   height: 0;
+}
+.container-to {
+  padding: 0px 9px;
+  border: 1px solid var(--color-secondary-80);
+  border-radius: 100px;
 }

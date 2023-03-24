@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="dropdown-menu" style="min-width: 90%;">
-                        <DropdownPoll/>
+                        <_DropdownPoll/>
                     </div>
                 </div>
                 <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding: 10px 20px 0px 20px;">
@@ -37,7 +37,7 @@
                                         </div>
                                     </div>
                                     <div class="dropdown-menu" style="min-width: 250px;">
-                                        <DropdownPoll/>
+                                         <_DropdownPoll/>
                                     </div>
                                 </div>
                                 <progress class="progress is-small is-link" value="72" max="100"
@@ -124,6 +124,8 @@
 
 @code{ 
     
+    [Parameter] 
+    public List<QuestionModel> questions { get; set; }
     private ToggleHelper toggleViewVote = new ToggleHelper();
     private ToggleHelper toggleViewUnVote = new ToggleHelper();
 

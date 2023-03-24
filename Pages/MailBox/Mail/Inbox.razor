@@ -68,7 +68,7 @@
                     @foreach (var mail in mails)
                     {
                     <_Item id="@mail.id" from="@mail.from" body="@mail.body" isRead="@mail.isRead"
-                        attachments="@mail.attachments" isImportant="@mail.isImportant" receivedDate="@mail.receivedDate"
+                        attachments="@mail.attachments" isImportant="@mail.isImportant" sentDate="@mail.sentDate"
                         labels="@mail.labels" subject="@mail.subject" isChecked="@selectedItems.Contains(mail.id)"
                         HandleSelectedMail="HandleSelectedMail" />
                     }
@@ -84,17 +84,17 @@
         }
     </div>
     @if(mails.Count > 0) {
-    <div class="mail__footer @(selectedItems.Count > 0 ? " actions" : "" )">
-        @if (selectedItems.Count > 0)
-        {
-            <_Actions labels="labels" mailCount="selectedItems.Count" HandleCancelSelectedMail="HandleCancelSelectedMail"
-                HandleTrashMails="HandleTrashMails" />
+        <div class="mail__footer @(selectedItems.Count > 0 ? " actions" : "" )">
+            @if (selectedItems.Count > 0)
+            {
+                <_Actions labels="labels" mailCount="selectedItems.Count" HandleCancelSelectedMail="HandleCancelSelectedMail"
+                    HandleTrashMails="HandleTrashMails" />
+                }
+            else
+            {
+                <_Pagination />
             }
-        else
-        {
-            <_Pagination />
-        }
-    </div>
+        </div>
     }
 </div>
 
@@ -109,12 +109,12 @@
         mails = InitDataFakeHelper.FitterMailsNotDraft();
     }
     private bool isSelectedAll  = false;
-    private List<int> selectedItems = new List<int>();
+    private List<string> selectedItems = new List<string>();
     private void HandleSelectedAllMail()
     {
         if(!isSelectedAll) { 
             for (int i = 0; i < mails.Count; i++) {
-                selectedItems.Add((int)mails[i].id);
+                selectedItems.Add(mails[i].id);
             }
         }
         else {

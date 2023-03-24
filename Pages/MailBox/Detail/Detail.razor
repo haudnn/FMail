@@ -3,74 +3,47 @@
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigation
 @using Microsoft.AspNetCore.Components
+@inject IJSRuntime JSRuntime
 
 <section class="is-padding-20">
-    <header class="is-flex is-align-items-center is-justify-content-space-between">
-        <div class="is-flex is-align-items-center is-gap-20">
-            <a href="mail" class="is-flex is-align-items-center is-gap-8 is-pointer ">
-                <span class="icon">
-                    <i class="material-icons-outlined is-primary-40">arrow_back</i>
-                </span>
-                <span class="is-font-14 is-primary-40 has-text-weight-medium">Trở về</span>
-            </a>
-            <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-                <span class="icon">
-                    <i class="material-icons-outlined is-warning-20">star_outline</i>
-                </span>
-                <span class="is-font-14 is-secondary-40">Đánh dấu quan trọng</span>
-            </div>
-            <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-                <span class="icon">
-                    <i class="material-icons-outlined is-error-40">label</i>
-                </span>
-                <span class="is-font-14 is-secondary-40 is-secondary-20">Nhãn</span>
-            </div>
-        </div>
-        <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-            <span class="icon">
-                <i class="material-icons-outlined is-primary-40">email</i>
-            </span>
-            <span class="is-font-14 is-primary-40">Đánh dấu đã đọc</span>
-        </div>
-    </header>
+    <_Header
+        isImportant="@mail.isImportant"
+        isRead="@mail.isRead"
+        labels="labels"
+    />
+
     <main class="is-padding-top-20">
-        <p class="is-secondary-20 is_h6">[THÔNG BÁO] LỊCH NGHỈ TẾT DƯƠNG LỊCH 01/01/2023 VÀ TẾT NGUYÊN ĐÁN QUÝ MÃO 2023
-        </p>
+        <p class="is-secondary-20 is_h6">@mail.subject</p>
         <div class="is-padding-top-20">
             <_MailActionsBar
-                mailName="<haudn191@gmail.com>"
-                displayName="Hậu Đặng Ngọc"
-                time="9:28"
-                dateMonth="20/03"
-                year="2023"
-                ccList="@ccList"
-                toList="@toList"
+                mailName="@mail.from"
+                displayName="Author Name"
+                sentDate="@mail.sentDate"
+                cc="@mail.cc"
+                to="@mail.to"
                 SetCurrentAction="SetCurrentAction"
             />
         </div>
         <div class="is-padding-top-20" style="margin-left: 40px;">
             <div style="padding-bottom: 20px;">
-                <p>Kính gửi: Toàn thể Nhân sự Công ty TNHH Truyền thông và Công nghệ Conando;
-                    <br /></p>
-                <p>Nhằm mục đích triển khai kịp thời lịch nghỉ Tết Dương lịch 2023 và Tết Nguyên Đán Quý Mão, tạo điều
-                    kiện thuận lợi cho NLĐ chuẩn bị đón Tết, Phòng Nhân sự thông báo đến đến toàn thể nhân sự về lịch nghỉ Tết như sau
-                </p>
+                @mail.body
             </div>
-            @* poll *@
+            @if(mail.isPoll)
+            {
             <div class="is-padding-top-20">
-                @if (isStopSurvey)
-                {
-                                    <div class="is-flex is-align-items-center is-gap-4" style="margin-bottom: 10px;">
-                                        <span class="icon is-small">
-                                            <i class="material-icons-outlined is-error-40">info</i>
-                                        </span>
-                                        <span class="is_sub2 is-error-40">Hiện tại đã dừng khảo sát. Vậy nên bạn chỉ có thể xem thống
-                                            kê.</span>
-                                    </div>
-                }
+                    @if (isStopSurvey)
+                    {
+                        <div class="is-flex is-align-items-center is-gap-4" style="margin-bottom: 10px;">
+                            <span class="icon is-small">
+                                <i class="material-icons-outlined is-error-40">info</i>
+                            </span>
+                            <span class="is_sub2 is-error-40">Hiện tại đã dừng khảo sát. Vậy nên bạn chỉ có thể xem thống kê.</span>
+                        </div>
+                    }
                 <div class="is-flex is-align-items-center" style="gap: 0 20px">
-                    <p class="is-flex-1 is-uppercase is-secondary-10 is_typhography @(isStopSurvey ? " stop-survey" : ""
-                        )">Khảo sát ý kiến nhân viên vào dịp tết nguyên đán</p>
+                    <p class="is-flex-1 is-uppercase is-secondary-10 is_typhography @(isStopSurvey ? " stop-survey" : "" )">
+                        @poll.title
+                    </p>
                     <div class="is-flex is-align-items-center" style="gap: 0 20px">
                         <div class="is-flex is-align-items-center @(isStopSurvey ? " stop-survey" : "" )">
                             <span class="icon is-secondary-40 is_body2">
@@ -83,13 +56,13 @@
                                 <span class="icon">
                                     <i class="material-icons-outlined is-secondary-10">calendar_today</i>
                                 </span>
-                                <span class="is_caption is-black">02/02/2023</span>
+                                <span class="is_caption is-black">@poll.endDate</span>
                             </div>
                             <div class="is-flex is-align-items-center @(isStopSurvey ? " stop-survey" : "" )">
                                 <span class="icon">
                                     <i class="material-icons-outlined is-secondary-10">schedule</i>
                                 </span>
-                                <span class="is_caption is-black">16:30</span>
+                                <span class="is_caption is-black">@poll.endTime</span>
                             </div>
                         </div>
                     </div>
@@ -97,55 +70,61 @@
                 <div class="is-padding-top-20">
                     <div class="is-flex is-align-items-center is-gap-4">
                         <button disabled="@isStopSurvey" class="wrapper-header-poll @(isStopSurvey ? " stop-survey" : ""
-                            ) @(!toggleViewStatistical.IsToggled ? "active" : "" ) is-pointer"
-                            @onclick="HandleToggleViewStatistical">
+                                ) @(!toggleViewStatistical.IsToggled ? "active" : "" ) is-pointer"
+                                @onclick="HandleToggleViewStatistical">
                             <span class="is_sub2">Khảo sát</span>
                         </button>
-                        <button disabled="@isStopSurvey"
-                            class="wrapper-header-poll @(toggleViewStatistical.IsToggled ? " active" : "" ) is-pointer"
-                            @onclick="HandleToggleViewStatistical">
-                            <span class="is_sub2">Thống kê</span>
-                        </button>
+                        @if(mail.author == Layout.User.id) { 
+                            <button 
+                                    disabled="@isStopSurvey"
+                                    class="wrapper-header-poll @(toggleViewStatistical.IsToggled ? " active" : "" ) is-pointer"
+                                    @onclick="HandleToggleViewStatistical">
+                                    <span class="is_sub2">Thống kê</span>
+                            </button>
+                        }
+
                     </div>
-                    @if (!toggleViewStatistical.IsToggled)
-                    {
-                                <_Survey />
-                    }
-                    else
-                    {
-                                <_Statistical />
-                    }
+                        @if (!toggleViewStatistical.IsToggled)
+                        {
+                            <_Survey questions="poll.questions" />
+                        }
+                        else
+                        {  
+                            <_Statistical questions="poll.questions"/>
+                        }
                 </div>
             </div>
-            <div class="is-padding-top-20">
-                <button disabled="@isStopSurvey" style="border: none;"
-                    class="wrapper-button error-btn @(isStopSurvey ? " disable" : "" ) is-inline-flex"
-                    @onclick="() => HandleToggleActiveModal(true)">
-                    <span class="icon">
-                        <i class="material-icons-outlined has-text-white">poll</i>
-                    </span>
-                    <span class="is_caption has-text-white">Dừng khảo sát</span>
-                </button>
-            </div>
-            <_ModalConfirmation 
-                nameModal="Xác nhận việc dừng khảo sát" 
-                toggleActiveModal="toggleActiveModal"
-                contentButton="Dừng khảo sát"
-                contentModal="Khi thực hiện thao tác này, người dùng sẽ không thể thực hiện khảo sát được nữa và bạn sẽ không thể mở lại cuộc khảo sát này . Bạn có chắc chắn muốn tiếp tục không?"
-                HandleToggleActiveModal="HandleToggleActiveModal" 
-                HandleConfirmation="HandleStopSurvey" 
-            />
+            @if(mail.author == Layout.User.id) {
+                <div class="is-padding-top-20">
+                    <button disabled="@isStopSurvey" style="border: none;"
+                        class="wrapper-button error-btn @(isStopSurvey ? " disable" : "" ) is-inline-flex"
+                        @onclick="() => HandleToggleActiveModal(true)">
+                        <span class="icon">
+                            <i class="material-icons-outlined has-text-white">poll</i>
+                        </span>
+                        <span class="is_caption has-text-white">Dừng khảo sát</span>
+                    </button>
+                </div>
+                <_ModalConfirmation 
+                    nameModal="Xác nhận việc dừng khảo sát" 
+                    toggleActiveModal="toggleActiveModal"
+                    contentButton="Dừng khảo sát"
+                    contentModal="Khi thực hiện thao tác này, người dùng sẽ không thể thực hiện khảo sát được nữa và bạn sẽ không thể mở lại cuộc khảo sát này . Bạn có chắc chắn muốn tiếp tục không?"
+                    HandleToggleActiveModal="HandleToggleActiveModal" 
+                    HandleConfirmation="HandleStopSurvey" 
+                />
+            }
+            }
             <div style="padding: 40px 0px 20px 0px">
-                <div class="files-list is-flex is-align-items-center" style="gap: 0 10px;">
-                    <div class="file-item is-flex is-align-items-center is-justify-content-center" style="gap: 0 7px;">
-                        <img src="images/word-icon.png" alt="word-icon">
-                        <span>Filename.docx</span>
-                    </div>
-                    <div class="file-item is-flex is-align-items-center is-justify-content-center" style="gap: 0 7px;">
-                        <img src="images/exel-icon.png" alt="exel-icon">
-                        <span>Filename.xlsx</span>
-                    </div>
-                </div>
+                <ul class="attachments-list mt-0">
+                    @foreach (var attachment in mail.attachments)
+                    {
+                        <li class="attachment-item">
+                            <img src="images/word-icon.png" alt="word-icon">
+                            <span>@attachment.name</span>
+                        </li>
+                    }
+                </ul>
             </div>
             <div class="is_sub2 is-secondary-10 is-padding-bottom-20">
                 <p>-----------------------------------------</p>
@@ -154,204 +133,90 @@
                 <p>Số 23 Trường Thi 1, Phường Hòa Thuận Tây, Quận Hải Châu, Thành phố Đà Nẵng</p>
                 <p>Phone : 0905.043.312 (Ms Thúy Phượng)</p>
             </div>
+            <div class="is-flex is-align-items-center is-gap-10-y ">
+                <div class="wrapper-button btn-outlined">
+                    <span class="icon">
+                        <i class="material-icons-outlined is-secondary-40">reply</i>
+                    </span>
+                    <span class="is_caption is-secondary-40">Trả lời</span>
+                </div>
+                <div class="wrapper-button btn-outlined">
+                    <span class="icon">
+                        <i class="material-icons-outlined is-secondary-40">reply_all</i>
+                    </span>
+                    <span class="is_caption is-secondary-40">Trả lời tất cả</span>
+                </div>
+                <div class="wrapper-button btn-outlined">
+                    <span class="icon">
+                        <i class="material-icons-outlined is-secondary-40">forward</i>
+                    </span>
+                    <span class="is_caption is-secondary-40">Chuyển tiếp</span>
+                </div>
+            </div>
         </div>
+
         @* replies *@
         <div>
             <ul>
-                <li class="is-padding-20-x is-border-y" style="gap: 0 12px">
-                    <div class="columns">
-                        <div class="column is-9">
-                            <div class="is-flex-1 is-flex is-align-items-center is-gap-10-y">
-                                <figure class="image is-36x36">
-                                    <img src="images/avatar-mail.png">
-                                </figure>
-                                <div class="is-flex-auto">
-                                    <p class="is_sub2 is-secondary-10" style="margin-bottom: 5px;">Thảo Hoàng</p>
-                                    <p class="is_caption is-secondary-20 ellipsis-text">Hiện tại tôi không thể tham gia
-                                        tiệc cuối năm vì lý do gia đình. Hy vọng tôi có thể tham dự các
-                                        buổi tiệc sắp tới. Để tránh ảnh hưởng tới sự vận hành của sự kiện, tôi sẽ đề
-                                        xuất một người thay thế.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column is-3">
-                            <div class="is-flex is-align-items-center is-justify-content-flex-end is-full">
-                                <span class="is_caption is-secondary-40">23:30,</span>
-                                <span class="is_caption is-secondary-40">18/2/2023 (2 ngày trước)</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="is-padding-20-x is-border-y" style="gap: 0 12px">
-                    <div class="columns">
-                        <div class="column is-9">
-                            <div class="is-flex-1 is-flex is-align-items-center is-gap-10-y">
-                                <figure class="image is-36x36">
-                                    <img src="images/avatar-mail.png">
-                                </figure>
-                                <div class="is-flex-auto">
-                                    <p class="is_sub2 is-secondary-10" style="margin-bottom: 5px;">Thảo Hoàng</p>
-                                    <p class="is_caption is-secondary-20 ellipsis-text">Hiện tại tôi không thể tham gia
-                                        tiệc cuối năm vì lý do gia đình. Hy vọng tôi có thể tham dự các
-                                        buổi tiệc sắp tới. Để tránh ảnh hưởng tới sự vận hành của sự kiện, tôi sẽ đề
-                                        xuất một người thay thế.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="column is-3">
-                            <div class="is-flex is-align-items-center is-justify-content-flex-end is-full">
-                                <span class="is_caption is-secondary-40">23:30,</span>
-                                <span class="is_caption is-secondary-40">18/2/2023 (2 ngày trước)</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                @* reply but understand here...=> workflow *@
-                <li class="is-padding-20-x is-border-y" style="gap: 0 12px">
-                    <_MailActionsBar
-                        mailName="<haudn191@gmail.com>"
-                        displayName="Hậu Đặng Ngọc"
-                        time="9:28"
-                        dateMonth="20/03"
-                        year="2023"
-                        ccList="@ccList"
-                        toList="@toList"
-                    />
-                    <div style="margin-left: 45px;">
-                        @* mail content *@
-                        <div>
-                            @* content of email *@
-                            <div>
-                                <p>Cảm ơn công ty</p>
-                            </div>
-                            <div class="is-padding-20-x">
-                                <p class="is_sub2 is-secondary-10"> ------------------------------------------------</p>
-                                <p class="is_sub2 is-secondary-10">hhoc.conando</p>
-                                <p class="is_sub2 is-secondary-10">Address: Số 23 Trường Thi 1, Phường Hòa Thuận Tây, Quận Hải Châu, Thành phố Đà Nẵng</p>
-                                <p class="is_sub2 is-secondary-10">Phone : 0905.043.312</p>
-                            </div>
-                            <div>
-                                <div class="dots" @onclick="HandleToogleViewExpand">
-                                    <span class="icon">
-                                        <i class="material-icons-outlined is-secondary-10">more_horiz</i>
-                                    </span>
-                                </div>
-                                @* show all replise before *@
-                                @if (toggleViewExpand.IsToggled)
-                                {
-                                            <div class="container-reply">
-                                                <div class="is-has-borderleft-2" style="padding-bottom: 20px;">
-                                                    <p>Kính gửi: Toàn thể Nhân sự Công ty TNHH Truyền thông và Công nghệ Conando;<br /></p>
-                                                    <p>Nhằm mục đích triển khai kịp thời lịch nghỉ Tết Dương lịch 2023 và Tết Nguyên Đán Quý Mão, tạo điều
-                                                        kiện thuận lợi cho NLĐ chuẩn bị đón Tết, Phòng Nhân sự thông báo đến đến toàn thể nhân sự về lịch nghỉ Tết như sau
-                                                    </p>
-                                                </div>
-                                            </div>
-                                }
-
-                            </div>
-
-                        </div>
-                    </div>
-                </li>
+                
             </ul>
         </div>
 
-        @if (currentAction == "")
-        {
-                    <div class="is-flex is-align-items-center is-gap-10-y is-padding-top-20">
-                        <div class="wrapper-button btn-outlined">
-                            <span class="icon">
-                                <i class="material-icons-outlined is-secondary-40">poll</i>
-                            </span>
-                            <span class="is_caption is-secondary-40">Trả lời</span>
-                        </div>
-                        <div class="wrapper-button btn-outlined">
-                            <span class="icon">
-                                <i class="material-icons-outlined is-secondary-40">poll</i>
-                            </span>
-                            <span class="is_caption is-secondary-40">Trả lời tất cả</span>
-                        </div>
-                        <div class="wrapper-button btn-outlined">
-                            <span class="icon">
-                                <i class="material-icons-outlined is-secondary-40">poll</i>
-                            </span>
-                            <span class="is_caption is-secondary-40">Chuyển tiếp</span>
-                        </div>
-                    </div>
-        }
-        else
-        { 
-                    <div style="margin-left: 45px;">
-                @switch (currentAction)
-                {
-                    case "reply":
-                                                <_MailAction
-                            iconName="reply"
-                            displayName="Đặng Ngọc Hậu"
-                            isShowTextTo=@false
-                            actionName="Trả lời"
-                                                />
-                        break;
-                    case "reply_all":
-                                                <_MailAction
-                            iconName="reply_all"
-                            displayName="Đặng Ngọc Hậu"
-                            isShowTextTo=@false
-                            actionName="Trả lời tất cả"
-                                                />
-                        break;
-                    case "forward":
-                                                <_MailAction
-                            iconName="forward"
-                            displayName="Đặng Ngọc Hậu"
-                            isShowTextTo=@true
-                            actionName="Chuyển tiếp"
-                                                />
-                        break;
-                    default:
-                        break;
-                }   
-
-                    </div>
-        }
-
+        @* actions *@
+        <div style="margin-left: 45px;">
+            @switch (currentAction)
+            {
+                case "reply":
+                    <_MailAction
+                        iconName="reply"
+                        displayName="Đặng Ngọc Hậu"
+                        isShowTextTo=@false
+                        actionName="Trả lời"
+                    />
+                    break;
+                case "reply_all":
+                    <_MailAction
+                        iconName="reply_all"
+                        displayName="Đặng Ngọc Hậu"
+                        isShowTextTo=@false
+                        actionName="Trả lời tất cả"
+                    />
+                    break;
+                case "forward":
+                    <_MailAction
+                        iconName="forward"
+                        displayName="Đặng Ngọc Hậu"
+                        isShowTextTo=@true
+                        actionName="Chuyển tiếp"
+                    />
+                    break;
+                default:
+                    break;
+            }   
+        </div>
     </main>
 
 </section>
 @code {
+
+    [CascadingParameter]
+    public LayoutMail Layout { get; set; }
+
     [Parameter]
     public string? slug { get; set; }
     public string currentAction = String.Empty;
     public bool toggleActiveModal = false;
     private ToggleHelper toggleViewExpand = new ToggleHelper();
+    public MailModel mail = new MailModel();
+    public PollModel poll = new PollModel();
+    public List<LabelModel> labels = new List<LabelModel>();
     public bool isStopSurvey = false;
-    @* for fake data: init CCList and toList *@
-    private List<string> toList = new();
-    private List<string> ccList = new();
 
     protected override void OnInitialized()
     {
-        toList.Add("Dương Tuấn Phong");
-        toList.Add("Nguyễn Đức Hậu");
-        toList.Add("Dương Bảo Bình");
-        toList.Add("Lê Trần My Na");
-        toList.Add("Lê Quốc Việt");
-        toList.Add("Kim Vy");
-        toList.Add("Lê Quốc Việt");
-        toList.Add("Lê Trần My Na");
-
-        ccList.Add("Dương Tuấn Phong");
-        ccList.Add("Dương Tuấn Phong");
-        ccList.Add("Dương Tuấn Phong");
-        ccList.Add("Dương Tuấn Phong");
-        ccList.Add("Dương Tuấn Phong");
-        ccList.Add("Dương Tuấn Phong");
-        ccList.Add("Dương Tuấn Phong");
-        ccList.Add("Dương Tuấn Phong");
-        ccList.Add("Dương Tuấn Phong");
-        ccList.Add("Dương Tuấn Phong");
-        // Navigation(); 
+        mail = InitDataFakeHelper.InitMail();
+        poll = InitDataFakeHelper.InitPoll();
+        labels = InitDataFakeHelper.InitLabels();        
     }
     private ToggleHelper toggleViewStatistical = new ToggleHelper();
     private ToggleHelper toggleViewCC = new ToggleHelper();
@@ -384,7 +249,6 @@
         toggleViewStatistical.Toggle();
         isStopSurvey = true;
     }
-    @* set current action *@
     public void SetCurrentAction(string actionName)
     {
         currentAction = actionName;

@@ -13,7 +13,7 @@
             <div>
                 <p class="is_body2 is-secondary-20">Tên danh mục *</p>
                 <div class="search-wrapper label-input" style="width: 100%; margin-top: 10px;">
-                    <input class="search-input label-input" @bind=@name type="text" placeholder="Nhập tên danh mục" style="min-height: 36px;">
+                    <input class="search-input label-input" @bind=@categoryName type="text" placeholder="Nhập tên danh mục" style="min-height: 36px;">
                     <span class="icon is-secondary-40">
                         <i class="material-icons-outlined">edit</i>
                     </span>
@@ -40,7 +40,7 @@
     [Parameter]
     public string contentButton { get; set; }
     [Parameter]
-    public string name { get; set; }
+    public string categoryName { get; set; }
 
     [Parameter] 
     public bool toggleActiveModal { get; set; }
@@ -48,12 +48,12 @@
     public EventCallback<bool> HandleToggleActiveModal { get; set; }
 
     [Parameter]
-    public EventCallback HandleConfirmation { get; set; }
+    public EventCallback<string> HandleConfirmation{ get; set; }
     private void ToggleActiveModel(bool isActiveModel) {
         HandleToggleActiveModal.InvokeAsync(isActiveModel);
     }
     private void HandleConfirmationModal() {
-        HandleConfirmation.InvokeAsync();
+        HandleConfirmation.InvokeAsync(categoryName);
     }
 
 }

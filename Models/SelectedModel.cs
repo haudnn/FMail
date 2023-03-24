@@ -4,6 +4,6 @@ namespace Workdo.Models
     {
         public bool isChecked { get; set; }
 
-        public int itemId { get; set; }
+        public string itemId { get; set; }
     }
 }
