@@ -19,6 +19,6 @@
     <p> 9. Tái cấu trúc source code: Mỗi chức năng được đưa vào trong 1 folder, component sẽ có "_" phía trước, các component dùng chung được bỏ ra ngoài</p>
     <p> 10. Tạo được poll</p>
     <p> 12.Trong folder helper có 1 file là: "InitDataFakeHelper.cs" file này dùng để fake data</p>
-    <p> 12. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với database, các model 
+    <p> 13. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với database, các model 
         <a href="https://drive.google.com/file/d/1UD7hLkSYp1aRRiXFhbsQA_8uThPgP94K/view?usp=sharing">tại đây</a>
     </p>
