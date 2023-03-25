@@ -13,11 +13,12 @@
     <p> 3. Quản lí nhóm: CRUD nhóm, CRUD Member khỏi nhóm</p>
     <p> 4. Quản lí nhãn: CRUD nhãn</p>
     <p> 5. Quản lí danh mục: Admin có thể CRUD danh mục</p>
-    <p> 6. Chi tiết thư: Check được người nhận, người gửi, trả lời được mail</p>
-    <p> 7. UI gần như bám sát với design</p>
-    <p> 8. Tái cấu trúc source code: Mỗi chức năng được đưa vào trong 1 folder, component sẽ có "_" phía trước, các component dùng chung được bỏ ra ngoài</p>
-    <p> 9. Tạo được poll</p>
-    <p> 10.Trong folder helper có 1 file là: "InitDataFakeHelper.cs" file này dùng để fake data</p>
-    <p> 11. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với MongoDB, các model cần thiết 
-        <a href="https://drive.google.com/file/d/1UD7hLkSYp1aRRiXFhbsQA_8uThPgP94K/view?usp=sharing">Link here</a>
+    <p> 6. Quản lí chữ ký: Set chữ ký mặc định, lấy chữ ký mặc định, tạo chữ ký</p>
+    <p> 7. Chi tiết thư: Check được người nhận, người gửi, trả lời được mail</p>
+    <p> 8. UI gần như bám sát với design</p>
+    <p> 9. Tái cấu trúc source code: Mỗi chức năng được đưa vào trong 1 folder, component sẽ có "_" phía trước, các component dùng chung được bỏ ra ngoài</p>
+    <p> 10. Tạo được poll</p>
+    <p> 12.Trong folder helper có 1 file là: "InitDataFakeHelper.cs" file này dùng để fake data</p>
+    <p> 12. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với database, các model 
+        <a href="https://drive.google.com/file/d/1UD7hLkSYp1aRRiXFhbsQA_8uThPgP94K/view?usp=sharing">tại đây</a>
     </p>

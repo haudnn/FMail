@@ -2,102 +2,120 @@
     <div class="is-mb-20">
         <span class="is-uppercase is_h6 is-secondary-10">Quản lí chữ ký</span>
     </div>
-    <div class="columns">
-        <div class="column is-3">
-            <ul class="is-flex is-flex-direction-column is-gap-10-x">
-                <li class="is-flex is-align-items-center is-padding-10 is-pointer signature-item active">
-                    <span class="is_caption is-secondary-10">Mẫu chữ ký 01</span>
-                </li>
-                <li class="is-flex is-align-items-center is-padding-10 is-pointer signature-item">
-                    <span class="is_caption is-secondary-10">Mẫu chữ ký 02</span>
-                </li>
-            </ul>
-            <div class="wrapper-button primary-btn is-justify-content-center is-mt-10">
-                <span class="icon ">
-                    <i class="material-symbols-outlined" style="font-size: 15px;">add</i>
-                </span>
-                <span class="is_caption">Thêm chữ ký mới</span>
-            </div>
-        </div>
-        <div class="column is-9">
-            <div class="name-signature is_body2 is-secondary-20">Mẫu chữ ký 02</div>
-            <div class="container-signature-zone">
-                <BlazoredTextEditor>
-                    <EditorContent>
-                    </EditorContent>
-                    <ToolbarContent>
-                        <div class="toolbar-create signature">
-                            <span class="ql-formats">
-                                <select class="ql-font">
-                                    <option value=""></option>
-                                    <option value="serif"></option>
-                                    <option value="monospace"></option>
-                                </select>
-                                <select class="ql-header">
-                                    <option selected=""></option>
-                                    <option value="1"></option>
-                                    <option value="2"></option>
-                                    <option value="3"></option>
-                                    <option value="4"></option>
-                                    <option value="5"></option>
-                                </select>
-                            </span>
-                            <span class="ql-formats">
-                                <button class="ql-bold"></button>
-                                <button class="ql-italic"></button>
-                                <button class="ql-underline"></button>
-                                <button class="ql-strike"></button>
-                            </span>
-                            <span class="ql-formats">
-                                <select class="ql-color"></select>
-                                <select class="ql-background"></select>
-                            </span>
-                            <span class="ql-formats">
-                                <span class="ql-align ql-picker ql-icon-picker"></span>
-                                <select class="ql-align">
-                                    <option selected="selected"></option>
-                                    <option selected="center"></option>
-                                    <option selected="right"></option>
-                                    <option selected="justify"></option>
-                                </select>
-                            </span>
-                            <span class="ql-formats">
-                                <button class="ql-list" value="ordered"></button>
-                                <button class="ql-list" value="bullet"></button>
-                                <button class="ql-indent" value="-1"></button>
-                                <button class="ql-indent" value="+1"></button>
-                                <button class="ql-blockquote"></button>
-                            </span>
-                            <span class="ql-formats">
-                                <button class="ql-link"></button>
-                                <button class="ql-image"></button>
-                            </span>
-                        </div>
-                    </ToolbarContent>
-                </BlazoredTextEditor>
-            </div>
-            <div class="is-flex is-align-items-center is-gap-8 is-justify-content-flex-end">
-                <div class="wrapper-button is-justify-content-center is-inline-flex is-pointer">
+    @if(toggleCreateSignature.IsToggled)
+    {
+        <div class="columns">
+            <div class="column is-3">
+                <ul class="is-flex is-flex-direction-column is-gap-10-x">
+                    @foreach (var signature in signatures)
+                    {
+                        <li 
+                            class="is-flex is-align-items-center is-padding-10 is-pointer signature-item @(signatureCurrent.id == signature.id ? "active" : "" )" 
+                            @onclick="() => HandleChooseSignature(signature)">
+                            <span class="is_caption is-secondary-10">@signature.name</span>
+                        </li>
+                    }
+                </ul>
+                <div class="wrapper-button primary-btn is-justify-content-center is-mt-10">
                     <span class="icon">
-                        <i class="material-icons-outlined is-primary-40">edit</i>
+                        <i class="material-symbols-outlined" style="font-size: 15px;">add</i>
                     </span>
-                    <span class="is_caption is-primary-40">Chỉnh sửa</span>
-                </div>
-                <div class="wrapper-button is-justify-content-center is-inline-flex error-btn">
-                    <span class="icon">
-                        <i class="material-icons-outlined">delete</i>
-                    </span>
-                    <span class="is_caption">Xóa</span>
+                    <span class="is_caption">Thêm chữ ký mới</span>
                 </div>
             </div>
+            <div class="column is-9">
+                <div class="input-container is-flex-1 is-flex is-align-items-center" style="margin-bottom: 10px;">
+                    <input style="padding: 10px;" class="input-zone signature is_body2 is-secondary-20" type="text" placeholder="Nhập tên chữ ký" @bind-value="signatureName">
+                </div>
+                <div class="container-signature-zone">
+                    <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập chữ ký">
+                        <EditorContent>
+                        </EditorContent>
+                        <ToolbarContent>
+                            <div class="toolbar-create signature ">
+                                <span class="ql-formats">
+                                    <select class="ql-font bte-content">
+                                        <option value=""></option>
+                                        <option value="serif"></option>
+                                        <option value="monospace"></option>
+                                        <option value="Montserrat"></option>
+                                    </select>
+                                    <select class="ql-header">
+                                        <option selected=""></option>
+                                        <option value="1"></option>
+                                        <option value="2"></option>
+                                        <option value="3"></option>
+                                        <option value="4"></option>
+                                        <option value="5"></option>
+                                    </select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                    <button class="ql-strike"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <select class="ql-color"></select>
+                                    <select class="ql-background"></select>
+                                </span>
+                                <span class="ql-formats">
+                                    <span class="ql-align ql-picker ql-icon-picker"></span>
+                                    <select class="ql-align">
+                                        <option selected="selected"></option>
+                                        <option selected="center"></option>
+                                        <option selected="right"></option>
+                                        <option selected="justify"></option>
+                                    </select>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                    <button class="ql-indent" value="-1"></button>
+                                    <button class="ql-indent" value="+1"></button>
+                                    <button class="ql-blockquote"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-link"></button>
+                                    <button class="ql-image"></button>
+                                </span>
+                            </div>
+                        </ToolbarContent>
+                    </BlazoredTextEditor>
+                </div>
+                <div style="margin-top: 80px;" class="is-flex is-align-items-center is-gap-8 is-justify-content-flex-end">
+                    <div class="wrapper-button is-justify-content-center is-inline-flex">
+                        <span class="icon">
+                            <i class="material-icons-outlined is-primary-40">edit</i>
+                        </span>
+                        <span class="is_caption is-primary-40">Chỉnh sửa</span>
+                    </div>
+                    <div class="wrapper-button is-justify-content-center is-inline-flex error-btn " @onclick="ToggleCreateSignature">
+                        <span class="icon">
+                            <i class="material-icons-outlined">delete</i>
+                        </span>
+                        <span class="is_caption">Xóa</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    }
+    else 
+    { 
+        <div class="wrapper-button primary-btn is-inline-flex is-mb-20" @onclick="ToggleCreateSignature">
+            <span class="icon">
+                <i class="material-icons-outlined">add</i>
+            </span>
+            <span class="is_caption">Tạo chữ ký mới</span>
+        </div>
+    }
+
     <div>
         <div class="is-mb-20">
             <span class="is-uppercase is_h6 is-secondary-10">Thiết lập chữ ký mặc định</span>
         </div>
-        <div class="dropdown">
-            <div class="dropdown-trigger is-hover drop-border" style="padding: 4px 12px;">
+        <div class="dropdown is-up @(toggleSignature.IsToggled ? "is-active" : "" )">
+            <div class="dropdown-trigger is-hover drop-border" style="padding: 4px 12px;" @onclick="ToggleSignature">
                 <div class="is-flex is-align-items-center">
                     <span class="is-secondary-20 is_body2">Mẫu chữ ký 1</span>
                     <span class="icon">
@@ -126,3 +144,30 @@
         </div>
     </div>
 </div>
+@code {
+    BlazoredTextEditor QuillHtml;
+    string QuillHTMLContent;
+    public string signatureName = String.Empty;
+    
+    [Parameter]
+    public List<SignatureModel> signatures { get; set;}
+    private SignatureModel signatureCurrent = new SignatureModel();
+    private ToggleHelper toggleSignature = new ToggleHelper();
+    private ToggleHelper toggleCreateSignature = new ToggleHelper();
+
+    private void ToggleSignature() {
+        toggleSignature.Toggle();
+    }
+
+    private void ToggleCreateSignature() {
+        toggleCreateSignature.Toggle();
+    } 
+
+    private void HandleChooseSignature(SignatureModel signature) {
+        signatureCurrent = signature;
+        signatureName = signature.name;
+        string QuillContent = signature.body;
+        QuillHtml.LoadHTMLContent(QuillContent);
+        StateHasChanged();
+    }
+}

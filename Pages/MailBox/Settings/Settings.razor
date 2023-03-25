@@ -3,8 +3,24 @@
 
 <PageTitle>Thiết lập</PageTitle>
 <section class="is-padding-20 is-flex is-flex-direction-column" style="gap: 20px 0">
-    <_ManagerGroup/>
-    <_ManagerCategory/>
-    <_ManagerLabel/>
-    <_ManagerSignature/>
-</section>  
+    <_ManagerGroup groups="groups" members="members"/>
+    <_ManagerCategory categories="categories"/>
+    <_ManagerLabel labels="labels"/>
+    <_ManagerSignature signatures="signatures" />
+</section> 
+@code {
+    private List<LabelModel> labels = new();
+    private List<CategoryModel> categories = new();
+    private List<GroupModel> groups = new List<GroupModel>();
+    private List<MemberModel> members = new List<MemberModel>();
+    private List<SignatureModel> signatures = new List<SignatureModel>();
+
+    protected override void OnInitialized()
+    {
+        labels = InitDataFakeHelper.InitLabels();
+        categories = InitDataFakeHelper.InitCategories();
+        groups = InitDataFakeHelper.InitGroups();
+        members = InitDataFakeHelper.InitMembers();
+        signatures = InitDataFakeHelper.InitSignatures();
+    }
+}

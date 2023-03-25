@@ -3553,7 +3553,12 @@ button.dropdown-item {
 .container-signature-zone .ql-container.ql-snow {
   background: var(--color-primary-95);
   border-radius: 4px;
-  min-height: 155px !important;
+  height: 155px !important;
+  min-height: unset !important;
+  overflow: unset;
+}
+.container-signature-zone .ql-container.ql-snow .ql-editor{
+  min-height: unset;
 }
 .group-member-item {
   padding: 7px 0px 7px 10px;

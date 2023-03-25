@@ -46,7 +46,7 @@ public class MailModel
     public string category { get; set; }
 
     // summary> Chu ky </summary> 
-    public string signature { get; set; }
+    public SignatureModel signature { get; set; }
 }
 
 public class AttachmentModel

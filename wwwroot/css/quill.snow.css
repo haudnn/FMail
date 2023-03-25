@@ -870,7 +870,7 @@
 }
 .toolbar-create.signature {
   position: absolute;
-  bottom: 0px;
+  bottom: -60px;
   right: 0;
   left: 0;
   width: 100%;

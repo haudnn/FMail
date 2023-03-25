@@ -131,26 +131,17 @@
 </div>
 @code {
 
+    [Parameter]
+    public List<GroupModel> groups { get; set; }
+    [Parameter]
+    public List<MemberModel> members { get; set; }
     private string groupName = String.Empty;
     private bool toggleActiveAddMember = false;
-
     private bool isShowEditNameGroup = false;
-
     public string nameCurrentAction = "static";
-
     public GroupModel groupSelected;
 
-    private List<GroupModel> groups = new List<GroupModel>();
-        
-    private List<MemberModel> members = new List<MemberModel>();
-
     private List<MemberModel> membersSelected = new List<MemberModel>();
-
-    protected override void OnInitialized()
-    {
-        groups = InitDataFakeHelper.InitGroups();
-        members = InitDataFakeHelper.InitMembers();
-    }
 
     private void ToggleActiveAddMember(bool isActiveAddMember)
     {
@@ -220,11 +211,6 @@
     private void HandleDeleteMember(MemberModel member){
         // Flow: when user selected group => groupSelected => query id group => find members id => remove
         // get group id
-        @* MemberModel memberToRemove = groupSelected.members.Find(member => member.id == memberIdToRemove);
-        if (memberToRemove != null)
-        {
-            groupSelected.members.Remove(memberToRemove);
-        } *@
         if(groupSelected != null) {
             groupSelected.members.Remove(member);
         }

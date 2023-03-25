@@ -308,7 +308,10 @@ public class InitDataFakeHelper
                     contentType="application/vnd.ms-excel"
                 },
             },
-            signature = "1",
+            signature = new SignatureModel {
+                id =  "1",
+                body= "Đây là mẫu chữ ký 03. Bạn có thể chỉnh sửa nó!"
+            },
 
         };
         
@@ -422,6 +425,14 @@ public class InitDataFakeHelper
             return new List<MailModel>();
         }
         return filteredMails;
+    }
+
+    public static List<SignatureModel> InitSignatures() {
+        List<SignatureModel> signatures = new List<SignatureModel>();
+        signatures.Add(new SignatureModel { id = "1", name = "Mẫu chữ ký 01" ,body = "Đây là mẫu chữ ký 01. Bạn có thể chỉnh sửa nó!" });
+        signatures.Add(new SignatureModel { id = "2", name = "Mẫu chữ ký 02" ,body = "Đây là mẫu chữ ký 02. Bạn có thể chỉnh sửa nó!" });
+        signatures.Add(new SignatureModel { id = "3", name = "Mẫu chữ ký 03" ,body = "Đây là mẫu chữ ký 03. Bạn có thể chỉnh sửa nó!" });
+        return signatures;
     }
 
 }

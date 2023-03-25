@@ -59,15 +59,12 @@
 </div>
 
 @code {
-    private List<LabelModel> labels = new();
+    [Parameter]
+    public List<LabelModel> labels { get; set; }
     private string labelName { get; set; } = String.Empty;
     private string labelColor { get; set; } = String.Empty;
     private bool isEditLabel = false;
     private LabelModel labelSelected { get; set; }
-    protected override void OnInitialized()
-    {
-        labels = InitDataFakeHelper.InitLabels();
-    }
     private void HandelEditLabel(LabelModel label) { 
         labelSelected = label;
         labelName = label.name;
