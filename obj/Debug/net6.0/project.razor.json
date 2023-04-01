@@ -2406,6 +2406,43 @@
         }
       },
       {
+        "HashCode": -1147356516,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Mail.Sent",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Sent"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Sent",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
+          "Common.TypeNameIdentifier": "Sent"
+        }
+      },
+      {
+        "HashCode": 98213841,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Mail.Sent",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Mail.Sent"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Sent",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
+          "Common.TypeNameIdentifier": "Sent",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
         "HashCode": 595176691,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Inbox",
@@ -2716,43 +2753,6 @@
           "Common.TypeName": "Workdo.Pages.MailBox.Mail._Item",
           "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
           "Common.TypeNameIdentifier": "_Item",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": -1147356516,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Mail.Sent",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Sent"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Sent",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
-          "Common.TypeNameIdentifier": "Sent"
-        }
-      },
-      {
-        "HashCode": 98213841,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Mail.Sent",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Mail.Sent"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Sent",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
-          "Common.TypeNameIdentifier": "Sent",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
