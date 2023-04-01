@@ -9,19 +9,12 @@ using System;
 
 
 public class LabelData {
-    private readonly IMongoClient _client;
-    private readonly IMongoDatabase database;
-    private readonly IMongoCollection<LabelModel> labelCollection;
+    private static IMongoClient _client = ConnectDB.GetClient();
+    private static IMongoDatabase database = _client.GetDatabase("mailbox");
+    private static IMongoCollection<LabelModel> labelCollection = database.GetCollection<LabelModel>("label");
 
-    public LabelData()
-    {
-        var connectDB = new ConnectDB();
-        _client = connectDB.GetClient();
-        database = _client.GetDatabase("mailbox");
-        labelCollection = database.GetCollection<LabelModel>("label");
-    }
 
-    public async Task CreateLabel(LabelModel label)
+    public static async Task CreateLabel(LabelModel label)
     {
         LabelModel labelToCreate = new LabelModel
         {
@@ -34,7 +27,7 @@ public class LabelData {
     }
     
 
-    public async Task<List<LabelModel>> GetAllLabels() 
+    public static async Task<List<LabelModel>> GetAllLabels() 
     {
         List<LabelModel> labels = new List<LabelModel>();
         labels = await labelCollection.Find(_ => true).ToListAsync();
@@ -42,14 +35,14 @@ public class LabelData {
     }
 
 
-    public async Task DeleteLabel(LabelModel label) 
+    public static async Task DeleteLabel(LabelModel label) 
     {
         var filter = Builders<LabelModel>.Filter.Eq(x => x.id, label.id);
         await labelCollection.DeleteOneAsync(filter);
         return;
     }
 
-    public async Task UpdateLabel(LabelModel label)
+    public static async Task UpdateLabel(LabelModel label)
     {
         var filter = Builders<LabelModel>.Filter.Eq(x => x.id, label.id);
         var update = Builders<LabelModel>.Update
@@ -60,7 +53,7 @@ public class LabelData {
     }
 
 
-    public async Task<List<LabelModel>> FindLabelsByIds(List<string> ids)
+    public static async Task<List<LabelModel>> FindLabelsByIds(List<string> ids)
     {
         if (ids == null || ids.Count == 0)
         {

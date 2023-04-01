@@ -225,17 +225,14 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        MailData mailData = new MailData(); 
-        LabelData labelData = new LabelData();
-        mail = await mailData.GetMailById(id);
+        mail = await MailData.GetMailById(id);
         if(mail.pollId != null) { 
-            PollData pollData = new PollData();
-            poll = await pollData.GetPollById(mail.pollId);
+            poll = await PollData.GetPollById(mail.pollId);
             questions= poll.questions;
         }
         author = await UserData.Get(mail.author);
-        labelsSelected  = await labelData.FindLabelsByIds(mail.labels);
-        labels = await labelData.GetAllLabels();
+        labelsSelected  = await LabelData.FindLabelsByIds(mail.labels);
+        labels = await LabelData.GetAllLabels();
         attachments = mail.attachments;
         sentDateFormat = DateTimeHelper.FormatDateTimeDetailView(mail.sentDate);
         membersTo = mail.to;

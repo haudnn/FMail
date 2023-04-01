@@ -52,8 +52,7 @@
 
     public async Task HandleDeleteCategory(CategoryModel categoryDelete)
     {
-        CategoryData categoryData = new CategoryData();
-        await categoryData.DeleteCategory(categoryDelete);
+        await CategoryData.DeleteCategory(categoryDelete);
         await getAllCategories();
         StateHasChanged();
     }
@@ -61,8 +60,7 @@
 
     private async Task getAllCategories() 
     {
-        CategoryData categoryData = new CategoryData();
-        categories = await categoryData.GetAllCategory();
+        categories = await CategoryData.GetAllCategory();
         return;
     }
 
@@ -70,12 +68,12 @@
     {
         bool isValid = await IsValidCategory(nameToAdd);
         if(!isValid) return;
-        CategoryData categoryData = new CategoryData();
+
         CategoryModel categoryToCreate = new CategoryModel{ 
             id = GenerateIDHelper.GenerateID("19012001"),
             name = nameToAdd,
         };
-        await categoryData.CreateCategory(categoryToCreate);
+        await CategoryData.CreateCategory(categoryToCreate);
         categories.Add(categoryToCreate);
         categoryName = String.Empty;
         isShowModalAdd = !isShowModalAdd;
@@ -83,8 +81,7 @@
 
     public async Task HandleUpdateCategory(CategoryModel categoryUpdate) 
     {
-        CategoryData categoryData = new CategoryData();
-        await categoryData.UpdateCategory(categoryUpdate);
+        await CategoryData.UpdateCategory(categoryUpdate);
         await getAllCategories();
         StateHasChanged();
     }

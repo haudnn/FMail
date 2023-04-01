@@ -71,7 +71,6 @@
     private bool isEditLabel = false;
 
 
-
     private void HandelEditLabel(LabelModel label) 
     { 
         labelId = label.id;
@@ -89,9 +88,7 @@
             await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên của nhãn!");
             return;
         }
-        LabelData labelData = new LabelData();
-        
-        await labelData.UpdateLabel(
+        await LabelData.UpdateLabel(
             new LabelModel 
             {
                 id = labelId,
@@ -114,8 +111,7 @@
 
     private async Task HandelDeleteLabel(LabelModel label) 
     {
-        LabelData labelData = new LabelData();
-        await labelData.DeleteLabel(label);
+        await LabelData.DeleteLabel(label);
         LabelModel labelToDelete = labels.FirstOrDefault(l => l.id == label.id);
         labels.Remove(labelToDelete);
         StateHasChanged();
@@ -144,13 +140,12 @@
         {
             labelColor = GenerateColorHelper.RandomColor();
         }
-        LabelData labelData = new LabelData();
         LabelModel labelToCreate = new LabelModel{ 
             id = GenerateIDHelper.GenerateID("19012001"),
             name = labelName,
             color = labelColor
         };
-        await labelData.CreateLabel(labelToCreate);
+        await LabelData.CreateLabel(labelToCreate);
         labels.Add(labelToCreate);
         labelName = String.Empty;
         labelColor = String.Empty;

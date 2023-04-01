@@ -377,15 +377,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        CategoryData categoryData =  new CategoryData();
-        LabelData labelData = new LabelData();
-        GroupData groupData = new GroupData();
-        SignatureData signatureData = new SignatureData();
         
-        categories = await categoryData.GetAllCategory();
-        labels = await labelData.GetAllLabels();
-        groups = await groupData.GetAllGroups();
-        signatures = await signatureData.GetAllSignatures();
+        categories = await CategoryData.GetAllCategory();
+        labels = await LabelData.GetAllLabels();
+        groups = await GroupData.GetAllGroups();
+        signatures = await SignatureData.GetAllSignatures();
         currentCategory = categories.LastOrDefault();
         members = InitDataFakeHelper.InitMembers();
     }
@@ -484,8 +480,7 @@
             toggleActiveSign = !toggleActiveSign;
             return;
         }
-        SignatureData signatureData = new SignatureData();
-        SignatureModel getSignature =  await signatureData.GetSignatureById(signature.id);
+        SignatureModel getSignature =  await SignatureData.GetSignatureById(signature.id);
         currentSignature = signature;
         QuillHTMLContentSignature = getSignature.body;
         toggleActiveSign = !toggleActiveSign;
@@ -645,7 +640,6 @@
         }
         QuillHTMLContent = await QuillHtml.GetHTML();
         string shortBody = await QuillHtml.GetText();
-        MailData mailData = new MailData();
         MailModel mailToCreate = new MailModel
         {
             id = GenerateIDHelper.GenerateID("19012001"),
@@ -666,16 +660,15 @@
             shortBody = shortBody.Length > 50 ? shortBody.Substring(0, 50) : shortBody,
         };
         if(toggleCreatePoll.IsToggled) {
-            PollData pollData = new PollData();
-            bool isCreatedPollSuccess = await pollData.CreatePoll(poll);
+            bool isCreatedPollSuccess = await PollData.CreatePoll(poll);
             if(isCreatedPollSuccess) {
                 mailToCreate.pollId = poll.id;
-                await mailData.CreateMail(mailToCreate);
+                await MailData.CreateMail(mailToCreate);
                 await JSRuntime.InvokeVoidAsync("alert", "Tạo mail thành công!");   
             };
         }
         else {
-            await mailData.CreateMail(mailToCreate);
+            await MailData.CreateMail(mailToCreate);
             await JSRuntime.InvokeVoidAsync("alert", "Tạo mail thành công!");      
         }
         navigation.NavigateTo("/mail/inbox", true);

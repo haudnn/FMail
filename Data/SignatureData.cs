@@ -13,19 +13,13 @@ namespace Workdo.Data;
 
 public class SignatureData
 {
-    private readonly IMongoClient _client;
-    private readonly IMongoDatabase database;
-    private readonly IMongoCollection<SignatureModel> signatureCollection;
-    public SignatureData()
-    {
-        var connectDB = new ConnectDB();
-        _client = connectDB.GetClient();
-        database = _client.GetDatabase("mailbox");
-        signatureCollection = database.GetCollection<SignatureModel>("signature");
-    }
+    private static IMongoClient _client = ConnectDB.GetClient();
+    private static IMongoDatabase database = _client.GetDatabase("mailbox");
+    private static IMongoCollection<SignatureModel> signatureCollection = database.GetCollection<SignatureModel>("signature");
 
 
-    public async Task<bool> CreateSignature(SignatureModel signature) 
+
+    public static async Task<bool> CreateSignature(SignatureModel signature) 
     {
         var isExistSignature = await signatureCollection.Find(x => x.name == signature.name).FirstOrDefaultAsync();
         if (isExistSignature == null)
@@ -37,7 +31,7 @@ public class SignatureData
     }
     
 
-    public async Task<List<SignatureModel>> GetAllSignatures() 
+    public static async Task<List<SignatureModel>> GetAllSignatures() 
     { 
         List<SignatureModel> signatures = new List<SignatureModel>();
         // var sort = Builders<BsonDocument>.Sort.Ascending("createdAt");
@@ -46,7 +40,7 @@ public class SignatureData
     }
 
     
-    public async Task<SignatureModel> GetSignatureById(string id)
+    public static async Task<SignatureModel> GetSignatureById(string id)
     {
         SignatureModel signature = new SignatureModel();
         var isFoundSignature = await signatureCollection.Find(x => x.id == id).FirstOrDefaultAsync();
@@ -57,7 +51,7 @@ public class SignatureData
     }
     
 
-    public async Task DeleteSignature(string id)
+    public static async Task DeleteSignature(string id)
     {
         var filter = Builders<SignatureModel>.Filter.Eq(signature => signature.id, id);
         await signatureCollection.DeleteOneAsync(filter);
@@ -65,7 +59,7 @@ public class SignatureData
     }
 
 
-    public async Task SetDefaultSignature(string signatureId, string userid)
+    public static async Task SetDefaultSignature(string signatureId, string userid)
     {
         var isFoundSignature = await signatureCollection.Find(x => x.id == signatureId).FirstOrDefaultAsync();
         if(isFoundSignature != null) { 
@@ -75,7 +69,7 @@ public class SignatureData
     }
 
 
-    public async Task UpdateSignature(SignatureModel signature) 
+    public static async Task UpdateSignature(SignatureModel signature) 
     {
 
         var filter = Builders<SignatureModel>.Filter.Eq(x => x.id, signature.id);

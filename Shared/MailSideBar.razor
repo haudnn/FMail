@@ -83,8 +83,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        LabelData labelData = new LabelData();
-        labels = await labelData.GetAllLabels();
+        labels = await LabelData.GetAllLabels();
         var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
         currentPath = relativePath;
         Navigation();

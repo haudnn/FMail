@@ -10,21 +10,13 @@ using System.Collections.Generic;
 
 public class GroupData {
 
-    private readonly IMongoClient _client;
-    private readonly IMongoDatabase database;
-    private readonly IMongoCollection<GroupModel> groupCollection;
+    private static IMongoClient _client = ConnectDB.GetClient();
+    private static IMongoDatabase database = _client.GetDatabase("mailbox");
+    private static IMongoCollection<GroupModel> groupCollection = database.GetCollection<GroupModel>("group");
 
 
-    public GroupData()
-    {
-        var connectDB = new ConnectDB();
-        _client = connectDB.GetClient();
-        database = _client.GetDatabase("mailbox");
-        groupCollection = database.GetCollection<GroupModel>("group");
-    }
 
-
-    public async Task<bool> CreateGroup(GroupModel group)
+    public static async Task<bool> CreateGroup(GroupModel group)
     {
         var isExistGroup = await groupCollection.Find(x => x.name == group.name).FirstOrDefaultAsync();
         if( isExistGroup == null ) 
@@ -35,7 +27,7 @@ public class GroupData {
         return false;
     }
 
-    public async Task<List<GroupModel>> GetAllGroups() 
+    public static async Task<List<GroupModel>> GetAllGroups() 
     { 
         List<GroupModel> groups = new List<GroupModel>();
         groups = await groupCollection.Find(_ => true).ToListAsync();
@@ -44,7 +36,7 @@ public class GroupData {
 
 
 
-    public async Task<bool> UpdateGroup(string groupName, string groupId)
+    public static async Task<bool> UpdateGroup(string groupName, string groupId)
     {
         var isExistGroup = await groupCollection.Find(x => x.name ==groupName).FirstOrDefaultAsync();
         if (isExistGroup == null)
@@ -59,7 +51,7 @@ public class GroupData {
     }
 
 
-    public async Task DeleteMember(string groupId, string memberId) 
+    public static async Task DeleteMember(string groupId, string memberId) 
     { 
         var filter = Builders<GroupModel>.Filter.Eq(x => x.id, groupId);
         var update = Builders<GroupModel>.Update.Pull(x => x.members, memberId);
@@ -67,7 +59,7 @@ public class GroupData {
         return;
     }
 
-    public async Task<GroupModelDetail> GetGroupById(string groupId)
+    public static async Task<GroupModelDetail> GetGroupById(string groupId)
     {
         var isFoundGroup = await groupCollection.Find(x => x.id == groupId).FirstOrDefaultAsync();
         List<MemberModel> members = InitDataFakeHelper.GetMembersById(isFoundGroup.members);
@@ -80,14 +72,14 @@ public class GroupData {
     }
 
 
-    public async Task DeleteGroup(string groupId) 
+    public static async Task DeleteGroup(string groupId) 
     {
         var filter = Builders<GroupModel>.Filter.Eq(group => group.id, groupId);
         await groupCollection.DeleteOneAsync(filter);
         return;
     }
 
-    public async Task AddMembers(string groupId, List<string> memberIds)
+    public static async Task AddMembers(string groupId, List<string> memberIds)
     {
         var filter = Builders<GroupModel>.Filter.Eq(x => x.id, groupId);
         var update = Builders<GroupModel>.Update.PushEach(x => x.members, memberIds, position: 0);

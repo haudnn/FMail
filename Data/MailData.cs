@@ -12,23 +12,16 @@ namespace Workdo.Data;
 
 public class MailData 
 {
-    private readonly IMongoClient _client;
-    private readonly IMongoDatabase database;
-    private readonly IMongoCollection<MailModel> mailCollection;
-    private readonly IMongoCollection<LabelModel> labelCollection;
 
-    public MailData()
-    {
-        var connectDB = new ConnectDB();
-        _client = connectDB.GetClient();
-        database = _client.GetDatabase("mailbox");
-        mailCollection = database.GetCollection<MailModel>("mail");
-        labelCollection = database.GetCollection<LabelModel>("label");
-        
-    }
+    private static IMongoClient _client = ConnectDB.GetClient();
+    private static IMongoDatabase database = _client.GetDatabase("mailbox");
+    private static IMongoCollection<MailModel> mailCollection = database.GetCollection<MailModel>("mail");
+    private static IMongoCollection<LabelModel> labelCollection = database.GetCollection<LabelModel>("label");
 
 
-    public async Task CreateMail(MailModel mailToCreate)
+
+
+    public static async Task CreateMail(MailModel mailToCreate)
     {
         await mailCollection.InsertOneAsync(mailToCreate);
         mailToCreate.folder = "inbox";
@@ -45,7 +38,7 @@ public class MailData
     }
 
 
-    public async Task<List<MailModel>> GetAllMailsByFolder(string folderName, string userid, bool isSent)
+    public static async Task<List<MailModel>> GetAllMailsByFolder(string folderName, string userid, bool isSent)
     {
         List<MailModel> mails = new List<MailModel>();
         if(!isSent) 
@@ -74,7 +67,7 @@ public class MailData
 
 
 
-    public async Task<MailModel> GetMailById(string id) 
+    public static async Task<MailModel> GetMailById(string id) 
     {
         MailModel mail = new MailModel();
         var isFoundMail = await mailCollection.Find(x => x.id == id).FirstOrDefaultAsync();
@@ -86,7 +79,7 @@ public class MailData
     }
 
 
-    public async Task ReadMail(string id, bool isRead) 
+    public static async Task ReadMail(string id, bool isRead) 
     {
         var filter = Builders<MailModel>.Filter.Eq(x => x.id, id);
         var update = Builders<MailModel>.Update
@@ -95,5 +88,5 @@ public class MailData
         return;
     }
 
-    public async Task Vote(){}
+    public static async Task Vote(){}
 }

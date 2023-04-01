@@ -145,10 +145,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        LabelData labelData = new LabelData();
         isStar  = isImportant;
         isReadToogle = isRead;
-        labels = await labelData.FindLabelsByIds(labelsIds);
+        labels = await LabelData.FindLabelsByIds(labelsIds);
     }
 
 

@@ -9,20 +9,11 @@ using System.Collections.Generic;
 
 public class CategoryData
 {
-    private readonly IMongoClient _client;
-    private readonly IMongoDatabase database;
-    private readonly IMongoCollection<CategoryModel> categoryCollection;
+    private static IMongoClient _client = ConnectDB.GetClient();
+    private static IMongoDatabase database = _client.GetDatabase("mailbox");
+    private static IMongoCollection<CategoryModel> categoryCollection = database.GetCollection<CategoryModel>("category");
 
-    public CategoryData()
-    {
-        var connectDB = new ConnectDB();
-        _client = connectDB.GetClient();
-        database = _client.GetDatabase("mailbox");
-        categoryCollection = database.GetCollection<CategoryModel>("category");
-    }
-
-
-    public async Task CreateCategory(CategoryModel category)
+    public static async Task CreateCategory(CategoryModel category)
     {
         var maxPosition = await categoryCollection.Find(x => true)
             .SortByDescending(x => x.position)
@@ -41,7 +32,7 @@ public class CategoryData
     }
 
 
-    public async Task<List<CategoryModel>> GetAllCategory() 
+    public static async Task<List<CategoryModel>> GetAllCategory() 
     {
         List<CategoryModel> categories = new List<CategoryModel>();
         categories = await categoryCollection.Find(_ => true).ToListAsync();
@@ -50,14 +41,14 @@ public class CategoryData
 
 
  
-    public async Task DeleteCategory(CategoryModel category) 
+    public static async Task DeleteCategory(CategoryModel category) 
     {
         var filter = Builders<CategoryModel>.Filter.Eq(x => x.id, category.id);
         await categoryCollection.DeleteOneAsync(filter);
         return;
     }
 
-    public async Task UpdateCategory(CategoryModel category) 
+    public static async Task UpdateCategory(CategoryModel category) 
     {
         var filter = Builders<CategoryModel>.Filter.Eq(x => x.id, category.id);
         var update = Builders<CategoryModel>.Update

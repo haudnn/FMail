@@ -126,13 +126,9 @@
         
     protected override async Task OnInitializedAsync()
     {
-        MailData mailData = new MailData();
-        CategoryData categoryData = new CategoryData();
-        LabelData labelData = new LabelData();
-
-        categorise = await categoryData.GetAllCategory();
-        labels = await labelData.GetAllLabels();
-        mails = await mailData.GetAllMailsByFolder("sent", Layout.User.id, true);
+        categorise = await CategoryData.GetAllCategory();
+        labels = await LabelData.GetAllLabels();
+        mails = await MailData.GetAllMailsByFolder("sent", Layout.User.id, true);
     }
 
     private void HandleSelectedAllMail()

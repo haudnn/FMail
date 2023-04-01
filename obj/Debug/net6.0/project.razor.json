@@ -124,43 +124,6 @@
         }
       },
       {
-        "HashCode": -62614020,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Config.Category",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Category"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Config.Category",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Config",
-          "Common.TypeNameIdentifier": "Category"
-        }
-      },
-      {
-        "HashCode": 1634680090,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Config.Category",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Config.Category"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Config.Category",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Config",
-          "Common.TypeNameIdentifier": "Category",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
         "HashCode": 2094260127,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Config._Item",
@@ -413,39 +376,39 @@
         }
       },
       {
-        "HashCode": 709667813,
+        "HashCode": -62614020,
         "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Create.Create",
+        "Name": "Workdo.Pages.MailBox.Config.Category",
         "AssemblyName": "Workdo",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Create"
+            "TagName": "Category"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Create.Create",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Create",
-          "Common.TypeNameIdentifier": "Create"
+          "Common.TypeName": "Workdo.Pages.MailBox.Config.Category",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Config",
+          "Common.TypeNameIdentifier": "Category"
         }
       },
       {
-        "HashCode": -1167980871,
+        "HashCode": 1634680090,
         "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Create.Create",
+        "Name": "Workdo.Pages.MailBox.Config.Category",
         "AssemblyName": "Workdo",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Workdo.Pages.MailBox.Create.Create"
+            "TagName": "Workdo.Pages.MailBox.Config.Category"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Create.Create",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Create",
-          "Common.TypeNameIdentifier": "Create",
+          "Common.TypeName": "Workdo.Pages.MailBox.Config.Category",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Config",
+          "Common.TypeNameIdentifier": "Category",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -1129,61 +1092,39 @@
         }
       },
       {
-        "HashCode": -544517781,
+        "HashCode": 709667813,
         "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail.Detail",
+        "Name": "Workdo.Pages.MailBox.Create.Create",
         "AssemblyName": "Workdo",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Detail"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "id",
-            "TypeName": "System.String",
-            "Metadata": {
-              "Common.PropertyName": "id",
-              "Common.GloballyQualifiedTypeName": "global::System.String"
-            }
+            "TagName": "Create"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail.Detail",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "Detail"
+          "Common.TypeName": "Workdo.Pages.MailBox.Create.Create",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Create",
+          "Common.TypeNameIdentifier": "Create"
         }
       },
       {
-        "HashCode": 168024685,
+        "HashCode": -1167980871,
         "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail.Detail",
+        "Name": "Workdo.Pages.MailBox.Create.Create",
         "AssemblyName": "Workdo",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Workdo.Pages.MailBox.Detail.Detail"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "id",
-            "TypeName": "System.String",
-            "Metadata": {
-              "Common.PropertyName": "id",
-              "Common.GloballyQualifiedTypeName": "global::System.String"
-            }
+            "TagName": "Workdo.Pages.MailBox.Create.Create"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail.Detail",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "Detail",
+          "Common.TypeName": "Workdo.Pages.MailBox.Create.Create",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Create",
+          "Common.TypeNameIdentifier": "Create",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -1838,6 +1779,65 @@
         }
       },
       {
+        "HashCode": -544517781,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail.Detail",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Detail"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "id",
+            "TypeName": "System.String",
+            "Metadata": {
+              "Common.PropertyName": "id",
+              "Common.GloballyQualifiedTypeName": "global::System.String"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail.Detail",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "Detail"
+        }
+      },
+      {
+        "HashCode": 168024685,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail.Detail",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Detail.Detail"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "id",
+            "TypeName": "System.String",
+            "Metadata": {
+              "Common.PropertyName": "id",
+              "Common.GloballyQualifiedTypeName": "global::System.String"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail.Detail",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "Detail",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
         "HashCode": 2084839762,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Drafts",
@@ -1912,43 +1912,6 @@
         }
       },
       {
-        "HashCode": 595176691,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Mail.Inbox",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Inbox"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Inbox",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
-          "Common.TypeNameIdentifier": "Inbox"
-        }
-      },
-      {
-        "HashCode": -1508068371,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Mail.Inbox",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Mail.Inbox"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Inbox",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
-          "Common.TypeNameIdentifier": "Inbox",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
         "HashCode": 1471088034,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Label",
@@ -2004,43 +1967,6 @@
           "Common.TypeName": "Workdo.Pages.MailBox.Mail.Label",
           "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
           "Common.TypeNameIdentifier": "Label",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": -1147356516,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Mail.Sent",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Sent"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Sent",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
-          "Common.TypeNameIdentifier": "Sent"
-        }
-      },
-      {
-        "HashCode": 98213841,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Mail.Sent",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Mail.Sent"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Sent",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
-          "Common.TypeNameIdentifier": "Sent",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -2443,6 +2369,80 @@
         }
       },
       {
+        "HashCode": -527598299,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Mail._Pagination",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "_Pagination"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Mail._Pagination",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
+          "Common.TypeNameIdentifier": "_Pagination"
+        }
+      },
+      {
+        "HashCode": 770388797,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Mail._Pagination",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Mail._Pagination"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Mail._Pagination",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
+          "Common.TypeNameIdentifier": "_Pagination",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 595176691,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Mail.Inbox",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Inbox"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Inbox",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
+          "Common.TypeNameIdentifier": "Inbox"
+        }
+      },
+      {
+        "HashCode": -1508068371,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Mail.Inbox",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Mail.Inbox"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Inbox",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
+          "Common.TypeNameIdentifier": "Inbox",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
         "HashCode": -101731648,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Item",
@@ -2720,76 +2720,39 @@
         }
       },
       {
-        "HashCode": -527598299,
+        "HashCode": -1147356516,
         "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Mail._Pagination",
+        "Name": "Workdo.Pages.MailBox.Mail.Sent",
         "AssemblyName": "Workdo",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "_Pagination"
+            "TagName": "Sent"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Mail._Pagination",
+          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Sent",
           "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
-          "Common.TypeNameIdentifier": "_Pagination"
+          "Common.TypeNameIdentifier": "Sent"
         }
       },
       {
-        "HashCode": 770388797,
+        "HashCode": 98213841,
         "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Mail._Pagination",
+        "Name": "Workdo.Pages.MailBox.Mail.Sent",
         "AssemblyName": "Workdo",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Workdo.Pages.MailBox.Mail._Pagination"
+            "TagName": "Workdo.Pages.MailBox.Mail.Sent"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Mail._Pagination",
+          "Common.TypeName": "Workdo.Pages.MailBox.Mail.Sent",
           "Common.TypeNamespace": "Workdo.Pages.MailBox.Mail",
-          "Common.TypeNameIdentifier": "_Pagination",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": -1720200355,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings.Settings",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Settings"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings.Settings",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "Settings"
-        }
-      },
-      {
-        "HashCode": -464701298,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings.Settings",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Settings.Settings"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings.Settings",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "Settings",
+          "Common.TypeNameIdentifier": "Sent",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -2988,6 +2951,260 @@
         }
       },
       {
+        "HashCode": 168197682,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings._MemberItem",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "_MemberItem"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "member",
+            "TypeName": "Workdo.Models.MemberModel",
+            "Metadata": {
+              "Common.PropertyName": "member",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MemberModel"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "HandleDeleteMember",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.MemberModel>",
+            "Metadata": {
+              "Common.PropertyName": "HandleDeleteMember",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.MemberModel>",
+              "Components.EventCallback": "True"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings._MemberItem",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "_MemberItem"
+        }
+      },
+      {
+        "HashCode": 1706037687,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings._MemberItem",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Settings._MemberItem"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "member",
+            "TypeName": "Workdo.Models.MemberModel",
+            "Metadata": {
+              "Common.PropertyName": "member",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MemberModel"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "HandleDeleteMember",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.MemberModel>",
+            "Metadata": {
+              "Common.PropertyName": "HandleDeleteMember",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.MemberModel>",
+              "Components.EventCallback": "True"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings._MemberItem",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "_MemberItem",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": -1720200355,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings.Settings",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Settings"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings.Settings",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "Settings"
+        }
+      },
+      {
+        "HashCode": -464701298,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings.Settings",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Settings.Settings"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings.Settings",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "Settings",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": -827516135,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings._ManagerSignature",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "_ManagerSignature"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "signatures",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.SignatureModel>",
+            "Metadata": {
+              "Common.PropertyName": "signatures",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.SignatureModel>"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "getAllSignatures",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Collections.Generic.List<Workdo.Models.SignatureModel>>",
+            "Metadata": {
+              "Common.PropertyName": "getAllSignatures",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Collections.Generic.List<global::Workdo.Models.SignatureModel>>",
+              "Components.EventCallback": "True"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerSignature",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "_ManagerSignature"
+        }
+      },
+      {
+        "HashCode": -1729095233,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings._ManagerSignature",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Settings._ManagerSignature"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "signatures",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.SignatureModel>",
+            "Metadata": {
+              "Common.PropertyName": "signatures",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.SignatureModel>"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "getAllSignatures",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Collections.Generic.List<Workdo.Models.SignatureModel>>",
+            "Metadata": {
+              "Common.PropertyName": "getAllSignatures",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Collections.Generic.List<global::Workdo.Models.SignatureModel>>",
+              "Components.EventCallback": "True"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerSignature",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "_ManagerSignature",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 1740183763,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings._ManagerLabel",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "_ManagerLabel"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "labels",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.LabelModel>",
+            "Metadata": {
+              "Common.PropertyName": "labels",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.LabelModel>"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerLabel",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "_ManagerLabel"
+        }
+      },
+      {
+        "HashCode": -1263231146,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings._ManagerLabel",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Settings._ManagerLabel"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "labels",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.LabelModel>",
+            "Metadata": {
+              "Common.PropertyName": "labels",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.LabelModel>"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerLabel",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "_ManagerLabel",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
         "HashCode": 782302751,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._ManagerGroup",
@@ -3081,223 +3298,6 @@
           "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerGroup",
           "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
           "Common.TypeNameIdentifier": "_ManagerGroup",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": 1740183763,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings._ManagerLabel",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "_ManagerLabel"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "labels",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.LabelModel>",
-            "Metadata": {
-              "Common.PropertyName": "labels",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.LabelModel>"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerLabel",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "_ManagerLabel"
-        }
-      },
-      {
-        "HashCode": -1263231146,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings._ManagerLabel",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Settings._ManagerLabel"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "labels",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.LabelModel>",
-            "Metadata": {
-              "Common.PropertyName": "labels",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.LabelModel>"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerLabel",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "_ManagerLabel",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": -827516135,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings._ManagerSignature",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "_ManagerSignature"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "signatures",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.SignatureModel>",
-            "Metadata": {
-              "Common.PropertyName": "signatures",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.SignatureModel>"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "getAllSignatures",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Collections.Generic.List<Workdo.Models.SignatureModel>>",
-            "Metadata": {
-              "Common.PropertyName": "getAllSignatures",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Collections.Generic.List<global::Workdo.Models.SignatureModel>>",
-              "Components.EventCallback": "True"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerSignature",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "_ManagerSignature"
-        }
-      },
-      {
-        "HashCode": -1729095233,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings._ManagerSignature",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Settings._ManagerSignature"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "signatures",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.SignatureModel>",
-            "Metadata": {
-              "Common.PropertyName": "signatures",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.SignatureModel>"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "getAllSignatures",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Collections.Generic.List<Workdo.Models.SignatureModel>>",
-            "Metadata": {
-              "Common.PropertyName": "getAllSignatures",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Collections.Generic.List<global::Workdo.Models.SignatureModel>>",
-              "Components.EventCallback": "True"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerSignature",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "_ManagerSignature",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": 168197682,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings._MemberItem",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "_MemberItem"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "member",
-            "TypeName": "Workdo.Models.MemberModel",
-            "Metadata": {
-              "Common.PropertyName": "member",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MemberModel"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "HandleDeleteMember",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.MemberModel>",
-            "Metadata": {
-              "Common.PropertyName": "HandleDeleteMember",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.MemberModel>",
-              "Components.EventCallback": "True"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings._MemberItem",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "_MemberItem"
-        }
-      },
-      {
-        "HashCode": 1706037687,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings._MemberItem",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Settings._MemberItem"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "member",
-            "TypeName": "Workdo.Models.MemberModel",
-            "Metadata": {
-              "Common.PropertyName": "member",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MemberModel"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "HandleDeleteMember",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.MemberModel>",
-            "Metadata": {
-              "Common.PropertyName": "HandleDeleteMember",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.MemberModel>",
-              "Components.EventCallback": "True"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings._MemberItem",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "_MemberItem",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -3873,43 +3873,6 @@
         }
       },
       {
-        "HashCode": 308970067,
-        "Kind": "Components.Component",
-        "Name": "Workdo.App",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "App"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.App",
-          "Common.TypeNamespace": "Workdo",
-          "Common.TypeNameIdentifier": "App"
-        }
-      },
-      {
-        "HashCode": 1479859307,
-        "Kind": "Components.Component",
-        "Name": "Workdo.App",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.App"
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.App",
-          "Common.TypeNamespace": "Workdo",
-          "Common.TypeNameIdentifier": "App",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
         "HashCode": 826856304,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.HeaderMain",
@@ -4159,87 +4122,6 @@
         }
       },
       {
-        "HashCode": -704654802,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Shared.MailSideBar",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "MailSideBar"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "HandleActiveTab",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Int32>",
-            "Metadata": {
-              "Common.PropertyName": "HandleActiveTab",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Int32>",
-              "Components.EventCallback": "True"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "HandleToggleSidebarMail",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Boolean>",
-            "Metadata": {
-              "Common.PropertyName": "HandleToggleSidebarMail",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Boolean>",
-              "Components.EventCallback": "True"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Shared.MailSideBar",
-          "Common.TypeNamespace": "Workdo.Shared",
-          "Common.TypeNameIdentifier": "MailSideBar"
-        }
-      },
-      {
-        "HashCode": -1830587981,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Shared.MailSideBar",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Shared.MailSideBar"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "HandleActiveTab",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Int32>",
-            "Metadata": {
-              "Common.PropertyName": "HandleActiveTab",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Int32>",
-              "Components.EventCallback": "True"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "HandleToggleSidebarMail",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Boolean>",
-            "Metadata": {
-              "Common.PropertyName": "HandleToggleSidebarMail",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Boolean>",
-              "Components.EventCallback": "True"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Shared.MailSideBar",
-          "Common.TypeNamespace": "Workdo.Shared",
-          "Common.TypeNameIdentifier": "MailSideBar",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
         "HashCode": -247044748,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.PopupNoti",
@@ -4394,6 +4276,124 @@
           "Common.TypeName": "Workdo.Shared.Sidebar",
           "Common.TypeNamespace": "Workdo.Shared",
           "Common.TypeNameIdentifier": "Sidebar",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": -704654802,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Shared.MailSideBar",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "MailSideBar"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "HandleActiveTab",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Int32>",
+            "Metadata": {
+              "Common.PropertyName": "HandleActiveTab",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Int32>",
+              "Components.EventCallback": "True"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "HandleToggleSidebarMail",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Boolean>",
+            "Metadata": {
+              "Common.PropertyName": "HandleToggleSidebarMail",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Boolean>",
+              "Components.EventCallback": "True"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Shared.MailSideBar",
+          "Common.TypeNamespace": "Workdo.Shared",
+          "Common.TypeNameIdentifier": "MailSideBar"
+        }
+      },
+      {
+        "HashCode": -1830587981,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Shared.MailSideBar",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Shared.MailSideBar"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "HandleActiveTab",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Int32>",
+            "Metadata": {
+              "Common.PropertyName": "HandleActiveTab",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Int32>",
+              "Components.EventCallback": "True"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "HandleToggleSidebarMail",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<System.Boolean>",
+            "Metadata": {
+              "Common.PropertyName": "HandleToggleSidebarMail",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::System.Boolean>",
+              "Components.EventCallback": "True"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Shared.MailSideBar",
+          "Common.TypeNamespace": "Workdo.Shared",
+          "Common.TypeNameIdentifier": "MailSideBar",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 308970067,
+        "Kind": "Components.Component",
+        "Name": "Workdo.App",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "App"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.App",
+          "Common.TypeNamespace": "Workdo",
+          "Common.TypeNameIdentifier": "App"
+        }
+      },
+      {
+        "HashCode": 1479859307,
+        "Kind": "Components.Component",
+        "Name": "Workdo.App",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.App"
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.App",
+          "Common.TypeNamespace": "Workdo",
+          "Common.TypeNameIdentifier": "App",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },

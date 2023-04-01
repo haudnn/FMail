@@ -143,14 +143,12 @@
     </div>
 </div>
 @code {
+    [Parameter] public List<SignatureModel> signatures { get; set;}
+    [Parameter] public EventCallback<List<SignatureModel>> getAllSignatures {get; set;}
     BlazoredTextEditor QuillHtml;
     string QuillHTMLContent = String.Empty;
     public string signatureName = String.Empty;
     public bool isEditSignature = false;
-    [Parameter]
-    public List<SignatureModel> signatures { get; set;}
-    [Parameter]
-    public EventCallback<List<SignatureModel>> getAllSignatures {get; set;}
     private SignatureModel signatureCurrent = new SignatureModel();
     private ToggleHelper toggleSignature = new ToggleHelper();
 
@@ -163,8 +161,7 @@
 
     private async Task HandleChooseSignature(SignatureModel signature) 
     {
-        SignatureData signatureData = new SignatureData();
-        SignatureModel getSignature =  await signatureData.GetSignatureById(signature.id);
+        SignatureModel getSignature =  await SignatureData.GetSignatureById(signature.id);
         signatureCurrent = getSignature;
         signatureName = signatureCurrent.name;
         string QuillContent = signatureCurrent.body;
@@ -181,7 +178,6 @@
         {
             return;
         }
-        SignatureData signatureData = new SignatureData();
         QuillHTMLContent = await QuillHtml.GetHTML();
         SignatureModel signatureToCreate = new SignatureModel
         {
@@ -189,7 +185,7 @@
             name = signatureName,
             body = QuillHTMLContent,
         };
-        bool isValidSignatureName = await signatureData.CreateSignature(signatureToCreate);
+        bool isValidSignatureName = await SignatureData.CreateSignature(signatureToCreate);
         if(!isValidSignatureName) 
         {
             await JSRuntime.InvokeVoidAsync("alert", "Tên chữ ký bạn chọn đã tồn tại!");
@@ -206,8 +202,7 @@
 
     private async Task HandleDeleteSignature() 
     { 
-        SignatureData signatureData = new SignatureData();
-        await signatureData.DeleteSignature(signatureCurrent.id);
+        await SignatureData.DeleteSignature(signatureCurrent.id);
         signatureCurrent = new SignatureModel();
         signatureName = String.Empty;
         await QuillHtml.LoadHTMLContent(String.Empty);
@@ -217,7 +212,7 @@
 
 
     private async Task<bool> IsValidSignature() 
-        {
+    {
         if (await QuillHtml.GetHTML() == "<p><br></p>") 
         {
             await JSRuntime.InvokeVoidAsync("alert", "Nội dung chữ ký không được trống!");
@@ -244,7 +239,6 @@
         {
             return;
         }
-        SignatureData signatureData = new SignatureData();
         QuillHTMLContent = await QuillHtml.GetHTML();
         SignatureModel signatureToUpdate = new SignatureModel
         {
@@ -252,7 +246,7 @@
             name = signatureName,
             body = QuillHTMLContent,
         };
-        await signatureData.UpdateSignature(signatureToUpdate);
+        await SignatureData.UpdateSignature(signatureToUpdate);
         signatureCurrent = new SignatureModel();
         signatureName = String.Empty;
         await QuillHtml.LoadHTMLContent(String.Empty);

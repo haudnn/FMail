@@ -133,20 +133,15 @@
 </div>
 @code {
 
-    [Parameter]
-    public List<GroupModel> groups { get; set; }
-    [Parameter]
-    public List<MemberModel> members { get; set; }
-    [Parameter]
-    public EventCallback<List<GroupModel>> getAllGroups { get; set; }
+    [Parameter] public List<GroupModel> groups { get; set; }
+    [Parameter] public List<MemberModel> members { get; set; }
+    [Parameter] public EventCallback<List<GroupModel>> getAllGroups { get; set; }
     private string groupName = String.Empty;
     private bool toggleActiveAddMember = false;
     private bool isShowEditNameGroup = false;
     public string nameCurrentAction = "static";
-    public List<MemberModel> membersUnique = new List<MemberModel>();
-
     public GroupModelDetail groupSelected;
-
+    public List<MemberModel> membersUnique = new List<MemberModel>();
     private List<MemberModel> membersSelected = new List<MemberModel>();
 
 
@@ -165,8 +160,7 @@
 
     private async Task HandleViewDetailGroup(string groupId) 
     {
-        GroupData groupData = new GroupData();
-        GroupModelDetail foundGroup = await groupData.GetGroupById(groupId);
+        GroupModelDetail foundGroup = await GroupData.GetGroupById(groupId);
         groupSelected = foundGroup;
         membersUnique = InitDataFakeHelper.GetMembersUnion(members, foundGroup.members);
         HandleChangeCurrentAction("detail");
@@ -182,8 +176,7 @@
 
     private async Task HandleConfirmationDeleteGroup(string groupId)
     {
-        GroupData groupData = new GroupData();
-        await groupData.DeleteGroup(groupId);
+        await GroupData.DeleteGroup(groupId);
         await getAllGroups.InvokeAsync();
         StateHasChanged();
     }
@@ -197,8 +190,7 @@
         {
             groupSelected.members.AddRange(membersList);
             List<string> members = membersList.Select(m => m.id).ToList(); 
-            GroupData groupData = new GroupData();
-            await groupData.AddMembers(groupSelected.id, members);
+            await GroupData.AddMembers(groupSelected.id, members);
             await getAllGroups.InvokeAsync();
             StateHasChanged();
         }
@@ -214,14 +206,13 @@
         {
             return;
         }
-        GroupData groupData = new GroupData();
         GroupModel groupToCreate = new GroupModel
         { 
             id = GenerateIDHelper.GenerateID("19012001"),
             name= groupName,
             members = members
         };
-        bool isValidGroupName = await groupData.CreateGroup(groupToCreate);
+        bool isValidGroupName = await GroupData.CreateGroup(groupToCreate);
         if(!isValidGroupName) 
         {
             await JSRuntime.InvokeVoidAsync("alert", "Tên nhóm bạn chọn đã tồn tại!");
@@ -248,8 +239,7 @@
     {
         if(groupSelected != null) 
         {
-            GroupData groupData = new GroupData();
-            await groupData.DeleteMember(groupSelected.id, member.id);
+            await GroupData.DeleteMember(groupSelected.id, member.id);
             groupSelected.members.Remove(member);
         }
         else 
@@ -270,9 +260,8 @@
         {
             return;
         }
-        GroupData groupData = new GroupData();
         groupSelected.name = groupName;
-        bool isValidGroupName = await groupData.UpdateGroup(groupName, groupSelected.id);
+        bool isValidGroupName = await GroupData.UpdateGroup(groupName, groupSelected.id);
         if(!isValidGroupName) 
         {
             await JSRuntime.InvokeVoidAsync("alert", "Tên nhóm bạn chọn đã tồn tại!");

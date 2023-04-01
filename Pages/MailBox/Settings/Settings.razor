@@ -24,32 +24,24 @@
 
     protected override async Task OnInitializedAsync ()
     {
-        CategoryData categoryData = new CategoryData();
-        LabelData labelData = new LabelData();
-        SignatureData signatureData = new SignatureData();
-        GroupData groupData = new GroupData();
-
-
-        categories = await categoryData.GetAllCategory();
-        labels = await labelData.GetAllLabels();
-        signatures = await signatureData.GetAllSignatures();
-        groups = await groupData.GetAllGroups();
+        categories = await CategoryData.GetAllCategory();
+        labels = await LabelData.GetAllLabels();
+        signatures = await SignatureData.GetAllSignatures();
+        groups = await GroupData.GetAllGroups();
         members = InitDataFakeHelper.InitMembers();
     }
 
 
     private async Task<List<SignatureModel>> getAllSignatures()
     {
-        SignatureData signatureData = new SignatureData();
-        signatures = await signatureData.GetAllSignatures();
+        signatures = await SignatureData.GetAllSignatures();
         return signatures;
     }
 
 
     private async Task<List<GroupModel>> getAllGroups() 
     {
-        GroupData groupData = new GroupData();
-        groups = await groupData.GetAllGroups();
+        groups = await GroupData.GetAllGroups();
         return groups;
     }
 }
