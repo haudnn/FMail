@@ -75,8 +75,8 @@
 
 @code {
   private bool _loaded = false;
-  private string username = "admin@workdo.com";
-  private string password = "admin@#";
+  private string username = "admin1@gmail.com";
+  private string password = "admin1";
   private UserModel user = null;
 
   protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -108,7 +108,7 @@
     user = await UserData.Login(username, password);
     if (user != null)
     {
-      await storage.SetAsync("user", user.session);
+      await storage.SetAsync("user", user.id);
       navigation.NavigateTo("mail/inbox", true);
     }
     else

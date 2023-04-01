@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "lqbzeJ9rgbMHjB3tOEYi7zTe6oxHzuIJUBgvCMAHN6o=",
+  "Hash": "XSQNW6EK6fJjlnPnT8JKxKyvOqfXotrxMUncbwFFkAg=",
   "Source": "Workdo",
   "BasePath": "_content/Workdo",
   "Mode": "Default",
@@ -918,6 +918,23 @@
       "OriginalItemSpec": "wwwroot\\images\\certificate.png"
     },
     {
+      "Identity": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\images\\conando_original 1.png",
+      "SourceId": "Workdo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\",
+      "BasePath": "_content/Workdo",
+      "RelativePath": "images/conando_original 1.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\conando_original 1.png"
+    },
+    {
       "Identity": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\images\\cover -fastdo.png",
       "SourceId": "Workdo",
       "SourceType": "Discovered",
@@ -969,12 +986,12 @@
       "OriginalItemSpec": "wwwroot\\images\\default.jpg"
     },
     {
-      "Identity": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\images\\exel-icon.png",
+      "Identity": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\images\\excel-icon.png",
       "SourceId": "Workdo",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\",
       "BasePath": "_content/Workdo",
-      "RelativePath": "images/exel-icon.png",
+      "RelativePath": "images/excel-icon.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -983,7 +1000,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\exel-icon.png"
+      "OriginalItemSpec": "wwwroot\\images\\excel-icon.png"
     },
     {
       "Identity": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\images\\favicon.ico",
@@ -1156,6 +1173,23 @@
       "OriginalItemSpec": "wwwroot\\images\\icon-achievement.png"
     },
     {
+      "Identity": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\images\\image-icon.png",
+      "SourceId": "Workdo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\",
+      "BasePath": "_content/Workdo",
+      "RelativePath": "images/image-icon.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\image-icon.png"
+    },
+    {
       "Identity": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\images\\logo.png",
       "SourceId": "Workdo",
       "SourceType": "Discovered",
@@ -1171,6 +1205,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\logo.png"
+    },
+    {
+      "Identity": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\images\\pdf-icon.png",
+      "SourceId": "Workdo",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\",
+      "BasePath": "_content/Workdo",
+      "RelativePath": "images/pdf-icon.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\pdf-icon.png"
     },
     {
       "Identity": "C:\\Conando\\WorkdoTemplate\\Workdo\\wwwroot\\images\\word-icon.png",

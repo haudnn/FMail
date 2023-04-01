@@ -97,7 +97,8 @@
                 </div>
             </div>
         </div>
-        @if(isTrashMails) {
+        @if(isTrashMails) 
+        {
             <div class="is-flex is-align-items-center is-pointer mail__footer-drafs restore">
                 <span class="icon is-secondary-40">
                     <i class="material-icons-outlined">mark_email_read</i>
@@ -111,7 +112,8 @@
                 <span class="has-text-white is_caption">Xóa vĩnh viễn</span>
             </div>
         }
-        else{ 
+        else
+        { 
             <div class="is-flex is-align-items-center is-pointer mail__footer-drafs" @onclick="TrashMails">
                 <span class="icon has-text-white">
                     <i class="material-icons-outlined">delete_forever</i>
@@ -137,14 +139,19 @@
     public EventCallback HandleTrashMails { get; set; }
     [Parameter]
     public bool isTrashMails { get; set; }
-    private void HandelToggleShowAction() { 
+
+    private void HandelToggleShowAction() 
+    { 
         toggleShowAction.Toggle();
         if (toggleShowLabels.IsToggled)
         {
             toggleShowLabels.Toggle();
         }
     }
-    private void HandelToggleIconCheckbox(string id) {
+
+
+    private void HandelToggleIconCheckbox(string id) 
+    {
         if (!labelsSelected.Contains(id))
         {
             labelsSelected.Add(id);
@@ -154,14 +161,23 @@
             labelsSelected.Remove(id);
         }
     }
-    private void HandelToggleShowLabels() { 
+
+
+    private void HandelToggleShowLabels() 
+    { 
         toggleShowLabels.Toggle();
     }
     
-    private void HandleCancleSelect() {
+
+
+    private void HandleCancleSelect() 
+    {
         HandleCancelSelectedMail.InvokeAsync();
     }
-    private void TrashMails() { 
+
+    
+    private void TrashMails() 
+    { 
         HandleTrashMails.InvokeAsync();
     }
 }

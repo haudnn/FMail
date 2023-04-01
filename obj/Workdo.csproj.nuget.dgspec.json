@@ -54,6 +54,10 @@
               "target": "Package",
               "version": "[0.100.0, )"
             },
+            "Faker.Net": {
+              "target": "Package",
+              "version": "[2.0.154, )"
+            },
             "HtmlAgilityPack": {
               "target": "Package",
               "version": "[1.11.45, )"

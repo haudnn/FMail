@@ -7,8 +7,6 @@ public class PollModel
     public string title { get; set; }
     // <summary>Danh sách câu hỏi </summary>  
     public List<QuestionModel> questions { get; set; }
-    // <summary>mail id </summary>
-    public string mail { get; set; }
     // <summary> Thời gian kết thúc poll</summary>
     public string endTime { get; set; }
     // <summary> Ngay kết thúc poll</summary>
@@ -32,4 +30,10 @@ public class ChoiceModel
     public string text { get; set; }
     // <summary> List user vote </summary>  
     public List<MemberModel> voters { get; set; }
+}
+
+public class QuestionChoice
+{
+    public string id { get; set; }
+    public bool isMultipleChoice { get; set; }
 }

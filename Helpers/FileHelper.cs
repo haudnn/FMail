@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Text;
 using Workdo.Data;
 using Workdo.Models;
+using Microsoft.AspNetCore.Components.Forms;
+using System.Linq;
 
 namespace Workdo.Helpers
 {
@@ -13,9 +15,7 @@ namespace Workdo.Helpers
     {
         private static bool isMacOS = Environment.CurrentDirectory.Contains("/");
 
-        /// <summary>
-        /// Lưu file vào hosting
-        /// </summary>
+
         public static async Task<string> SaveFileAsync(StreamContent inputStream, string fileName)
         {
             string folder = "upload\\";
@@ -40,5 +40,45 @@ namespace Workdo.Helpers
 
             return $"/{folder.Replace("\\", "/")}/{rename}";
         }
+
+
+        public static void DeleteFile(string filePath) 
+        {
+            string absoluteFilePath = $"{Environment.CurrentDirectory}/wwwroot{filePath.Replace("/", "\\")}";
+            if (File.Exists(absoluteFilePath))
+            {
+                File.Delete(absoluteFilePath);
+            }
+        }
+
+
+        public static bool IsValidFileType(IBrowserFile file) 
+        {
+            var allowedExtensions = new[] { ".pdf", ".png", ".jpg", ".jpeg", ".doc", ".docx", ".xls", ".xlsx" };
+            var fileExtension = Path.GetExtension(file.Name);
+            return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
+        }
+        
+        public static string GetIconForFileType(string name) 
+        {
+            var extension = Path.GetExtension(name)?.ToLowerInvariant();
+            switch(extension) 
+            {
+                case ".doc":
+                case ".docx":
+                    return "word-icon";
+                case ".pdf":
+                    return "pdf-icon";
+                case ".xls":
+                case ".xlsx":
+                    return "excel-icon";
+                case ".png":
+                case ".jpg":
+                case ".jpeg":
+                    return "image-icon";
+                default:
+                    return "";
+            }
+        } 
     }
 }

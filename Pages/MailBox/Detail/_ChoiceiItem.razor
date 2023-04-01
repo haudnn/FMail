@@ -1,0 +1,32 @@
+<div class="is-flex is-align-items-center is-gap-4">
+    @if(isMultipleChoice) 
+    {
+        <input type="checkbox" name="choice" value="@choice.text">
+    }
+    else
+    { 
+        <span class="icon is-small is-secondary-60 is-pointer" @onclick="() => Vote(choice.id)">
+            <i class="material-icons-sharp">@(idChoice == choice.id ? "radio_button_checked" : "radio_button_unchecked")</i>
+        </span>
+    }
+    @choice.text
+</div>
+
+@code {
+    [Parameter] public ChoiceModel choice { get; set;}
+    [Parameter] public bool isMultipleChoice  { get; set;}
+
+    public string idChoice { get; set; }
+
+    public void Vote(string id) 
+    { 
+        idChoice = id;
+        @* MemberModel member = new MemberModel {
+            id = "123",
+            avatar = "123",
+            email = "ok@gmail.com",
+            name = "test user"
+        }; *@
+    }
+
+}

@@ -1,5 +1,6 @@
 <div class="poll__content" style="margin: 0; border-top-left-radius: 0;">
     <ul class="is-flex is-flex-direction-column" style="gap: 20px 0">
+        
         <li>
             <div class="is-flex is-align-items-center is-gap-8">
                 <span class="is_sub2">1.</span>
@@ -129,10 +130,13 @@
     private ToggleHelper toggleViewVote = new ToggleHelper();
     private ToggleHelper toggleViewUnVote = new ToggleHelper();
 
-    private void HandleToggleViewVote(){ 
+    private void HandleToggleViewVote()
+    { 
        toggleViewVote.Toggle();
     }
-    private void HandleToggleViewUnVote(){
+
+    private void HandleToggleViewUnVote()
+    {
         toggleViewUnVote.Toggle();
     }
 }

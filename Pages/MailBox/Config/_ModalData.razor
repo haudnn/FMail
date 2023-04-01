@@ -49,10 +49,16 @@
 
     [Parameter]
     public EventCallback<string> HandleConfirmation{ get; set; }
-    private void ToggleActiveModel(bool isActiveModel) {
+
+
+    private void ToggleActiveModel(bool isActiveModel) 
+    {
         HandleToggleActiveModal.InvokeAsync(isActiveModel);
     }
-    private void HandleConfirmationModal() {
+
+    
+    private void HandleConfirmationModal() 
+    {
         HandleConfirmation.InvokeAsync(categoryName);
     }
 

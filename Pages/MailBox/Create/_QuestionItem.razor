@@ -2,9 +2,14 @@
     <div class="is-flex is-align-items-center is-gap-8">
         <span class="is_sub2">@questionIndex.</span>
         <div class="search-wrapper question">
-            <input class="search-input question" type="text" @bind-value="questionName" placeholder="Nhập câu hỏi">
+                <input 
+                    class="search-input question" 
+                    @bind="@question.text" 
+                    type="text" 
+                    placeholder="Nhập câu hỏi" 
+                    @oninput="HandleValueChanged">
         </div>
-        <div class="wrapper-button is-justify-content-center is-inline-flex error-btn" style="padding: 7px">
+        <div class="wrapper-button is-justify-content-center is-inline-flex error-btn" style="padding: 7px" @onclick="HandleDeleteQuestion">
             <span class="icon">
                 <i class="material-icons-outlined">delete</i>
             </span>
@@ -15,23 +20,36 @@
         <label class="is_body2 is-secondary-40">Loại khảo sát: </label>
         <div class="control is-flex is-align-items-center">
             <div class="is-flex is-align-items-center">
-                <span class="icon is-secondary-60">
-                    <i class="material-icons-sharp">radio_button_unchecked</i>
-                </span>
-                @* <span class="icon is-secondary-60">
-                    <i class="material-icons-sharp">radio_button_checked</i>
-                </span> *@
+                @if(!isMultipleChoiceClone) 
+                {
+                    <span class="icon is-secondary-60 is-pointer">
+                        <i class="material-icons-sharp">radio_button_checked</i>
+                    </span>
+                }
+                else
+                { 
+                    <span class="icon is-secondary-60 is-pointer" @onclick="() => ToggleMultipleChoice(false)">
+                        <i class="material-icons-sharp">radio_button_unchecked</i>
+                    </span>
+                }
+
                 <span class="radio is_body2 is-secondary-20">
                     Một đáp án
                 </span>
             </div>
             <div>
-                <span class="icon is-secondary-60">
-                    <i class="material-icons-sharp">radio_button_unchecked</i>
-                </span>
-                @* <span class="icon is-secondary-60">
-                    <i class="material-icons-sharp">radio_button_checked</i>
-                </span> *@
+                @if(isMultipleChoiceClone) 
+                {
+                    <span class="icon is-secondary-60 is-pointer">
+                        <i class="material-icons-sharp">radio_button_checked</i>
+                    </span>
+                }
+                else
+                { 
+                    <span class="icon is-secondary-60 is-pointer" @onclick="() => ToggleMultipleChoice(true)">
+                        <i class="material-icons-sharp">radio_button_unchecked</i>
+                    </span>
+                }
                 <span class="radio is_body2 is-secondary-20">
                     Nhiều đáp án
                 </span>
@@ -42,9 +60,15 @@
         @{
             var index = 1;
         }
-        @foreach (var item in choices)
+        @foreach (var item in question.choices)
         {
-            <_ChoiceItem index="index"/>
+            <_ChoiceItem 
+                index="index" 
+                isMultipleChoice="isMultipleChoice" 
+                choice="@item" 
+                OnChoiceValueChanged="HandleChoiceValueChanged"
+                OnDeleteChoice="HandleDeleteChoice"
+                />
             index = index + 1;
         }
     </ul>
@@ -55,23 +79,72 @@
         <span class="is_button is-primary-40">Thêm tùy chọn</span>
     </div>
 </li>
-@code{ 
-    public string questionName = String.Empty;
-    [Parameter]
-    public int questionIndex { get;  set;}
-    public List<ChoiceModel> choices = new List<ChoiceModel>();
-    protected override async Task OnInitializedAsync()
+@code{
+    [Parameter] public int questionIndex { get;  set;}
+    [Parameter] public QuestionModel question { get; set; }
+    [Parameter] public EventCallback<QuestionModel> OnQuestionValueChanged { get; set; }
+    [Parameter] public EventCallback<QuestionModel> OnDeleteQuestion { get; set; }
+    [Parameter] public EventCallback<QuestionChoice> HandleChangeMultipleChoice { get; set; }
+    [Parameter] public bool isMultipleChoice { get; set; }
+    
+    
+    public bool isMultipleChoiceClone = false;
+
+    public void ToggleMultipleChoice(bool isMultiple) 
     {
-        choices.Add(new ChoiceModel
+        var questionToUpdate = new QuestionChoice { 
+            id = question.id,
+            isMultipleChoice = isMultiple
+        };
+        HandleChangeMultipleChoice.InvokeAsync(questionToUpdate);
+        isMultipleChoiceClone = !isMultipleChoiceClone;
+    }
+
+    protected override void OnInitialized()
+    {
+        isMultipleChoiceClone =  isMultipleChoice;
+    }
+
+     
+
+    public void HandleAddChoice()
+    {
+        question.choices.Add(new ChoiceModel
         {
+        id = GenerateIDHelper.GenerateID("190120o1"),
            text = "",
         });
     }
-    public void HandleAddChoice()
+
+    private void HandleChoiceValueChanged(ChoiceModel choice) 
     {
-        choices.Add(new ChoiceModel
+        var choiceToUpdate = question.choices.FirstOrDefault(c => c.id == choice.id);
+        if (choiceToUpdate != null) {
+            choiceToUpdate.text = choice.text;
+        }
+    }
+
+
+
+    private void HandleDeleteChoice(ChoiceModel choice)
+    {
+        var choiceToDelete = question.choices.FirstOrDefault(c => c.id == choice.id);
+        if (choiceToDelete != null)
         {
-           text = "",
-        });
+            question.choices.Remove(choiceToDelete);
+        }
+    }
+
+
+    private void HandleDeleteQuestion() 
+    {
+        OnDeleteQuestion.InvokeAsync(question);
+    }
+    
+
+
+    private void HandleValueChanged(ChangeEventArgs args) 
+    {
+        OnQuestionValueChanged.InvokeAsync(question);
     }
 }

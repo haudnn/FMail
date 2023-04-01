@@ -128,11 +128,9 @@
 </section>
 
 @code {
-  @* [CascadingParameter]
-  public LayoutMain Layout { get; set; } *@
-
   [CascadingParameter]
-  public LayoutMail Layout { get; set; }
+  public LayoutMain Layout { get; set; }
+
   [Parameter]
   public EventCallback<bool> HandleToggleSidebar { get; set; }
   private List<NavModel> ListNav = new();

@@ -9,4 +9,9 @@ public class ToggleHelper
     {
         _isToggled = !_isToggled;
     }
+    
+    public void ToggleFalse()
+    {
+        _isToggled = false;
+    }
 }

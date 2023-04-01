@@ -2,62 +2,61 @@
 @inject ProtectedLocalStorage storage
 @inject NavigationManager navigation
 <nav class="mail__sidebar @(navLess ? " is_less" : "" )">
-    <ul class="mail__sidebar-menu top">
-        <li class="mail__sidebar-item is-flex is-align-items-center" @onclick="ToggleSidebar">
-            <span class="icon">
-                <i class="material-icons-outlined">menu</i>
-            </span>
-        </li>
-        <li class="mail__sidebar-add">
+    <div class="is-flex is-align-items-center is-pointer" @onclick="ToggleSidebar" style="width: 42px; height: 36px;">
+        <span class="icon is-small">
+            <i class="material-icons-outlined">menu</i>
+        </span>
+    </div>
+
+    <div class="mail__sidebar-menu scrolly">
+        <div class="mail__sidebar-add" style="margin-right: 10px;">
             <a href="create" class="is-flex is-align-items-center is-justify-content-center is-full">
                 <span class="icon">
                     <i class="material-icons-outlined has-text-white">add</i>
                 </span>
                 <span class="has-text-weight-medium has-text-white">Tạo thư mới</span>
             </a>
-        </li>
+        </div>
         @foreach (var item in NavMap.Values)
         {
-        <li class="mail__sidebar-item is-flex is-align-items-center @(item.active ? "active" : "")">
-            <a href="@item.link" @onclick="(e) => SetActiveNavItem(item)">
-                <span class="icon">
-                    <i class="material-icons-sharp is-secondary-40">@item.icon</i>
-                </span>
-                <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@item.name</span>
-            </a> 
-        </li>
+            <div  style="margin-right: 10px;" class="mail__sidebar-item is-flex is-align-items-center @(item.active ? "active" : "")">
+                <a href="@item.link" @onclick="(e) => SetActiveNavItem(item)">
+                    <span class="icon">
+                        <i class="material-icons-sharp is-secondary-40">@item.icon</i>
+                    </span>
+                    <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@item.name</span>
+                </a> 
+            </div>
         }
-    </ul>
-    <div>
-        <div class="mail__sidebar-item is-flex is-align-items-center">
+        <div  style="margin-right: 10px;" class="mail__sidebar-item border is-flex is-align-items-center is-gap-10-y">
             <span class="icon">
                 <i class="material-icons-outlined">arrow_drop_down</i>
             </span>
             <span class="is_sub2 is-secondary-40">Nhãn</span>
         </div>
-        <ul class="labels-list">
+        <div class="labels-list">
             @foreach (var label in labels)
             {
-                <li class="label-item @(label.id == activeLabel ? "label-active" : "")" @onclick="() => HandleActiveLabel(label)">
+                <div class="label-item @(label.id == activeLabel ? "label-active" : "")" @onclick="() => HandleActiveLabel(label)">
                     <a href="mail/label/@label.id" class="is-flex is-gap-10-y" >
-                        <span class="icon is-small">
+                        <span class="icon">
                             <i class="material-icons-sharp" style="color: @label.color">label</i>
                         </span>
-                        <span class="is_sub2 @(label.id == activeLabel ? "is-primary-40" : "is-secondary-40") ">@label.name</span>
+                        <span class="text-ellipsis is_sub2 @(label.id == activeLabel ? "is-primary-40" : "is-secondary-40") ">@label.name</span>
                     </a>
-                </li>
+                </div>
             }
 
-        </ul>
+        </div>
     </div>
-    <div class="nav-settings" style="padding-left: 10px;">
-        <a href="settings" class="is-flex is-align-items-center is-justify-content-center ">
+
+    <div class="nav-settings">
+        <a href="settings" class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
            <span class="icon is_sub2 is-secondary-40">
-                <i class="material-icons-outlined">settings</i>
+                <i class="material-icons-sharp">settings</i>
             </span>
             <span class="is_sub2 is-secondary-40">Thiết lập</span>
         </a>
-
     </div>
 
 </nav>
@@ -65,14 +64,12 @@
 @code{
     [CascadingParameter]
     public LayoutMail Layout { get; set; }
-
     [Parameter]
     public EventCallback<int> HandleActiveTab { get; set; }
     [Parameter]
     public EventCallback<bool> HandleToggleSidebarMail { get; set; }
     private Dictionary<int, NavModel> NavMap = new Dictionary<int, NavModel>();
     private int currentIndexNavActive;
-
     private bool navLess = false;
     private List<LabelModel> labels = new();
     private async Task ToggleSidebar()
@@ -82,10 +79,11 @@
     }
     private NavModel _prevActiveNavItem;
     private int labelActive;
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        LabelData labelData = new LabelData();
+        labels = await labelData.GetAllLabels();
         Navigation();
-        labels = InitDataFakeHelper.InitLabels();
     }
     private async Task SetActiveNavItem(NavModel navItem)
     {
@@ -98,7 +96,8 @@
         _prevActiveNavItem = navItem;
         await InvokeAsync(StateHasChanged);
     }
-    private void Navigation() {
+    private void Navigation() 
+    {
         NavMap.Add(1, new NavModel
             {
                 id = 1,

@@ -41,11 +41,18 @@
 
     [Parameter]
     public EventCallback HandleConfirmation { get; set; }
-    private void ToggleActiveModal(bool isActiveModal) {
+
+
+    private void ToggleActiveModal(bool isActiveModal) 
+    {
         HandleToggleActiveModal.InvokeAsync(isActiveModal);
     }
-    private void HandleConfirmationModal() {
+    
+    
+    private void HandleConfirmationModal() 
+    {
         HandleConfirmation.InvokeAsync();
     }
+
 
 }

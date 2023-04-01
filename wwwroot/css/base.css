@@ -440,3 +440,11 @@
 .bte-content {
   font-family: 'Montserrat', sans-serif;
 }
+.bottom-dropdown{
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--white-color);
+  border-top: 1px solid var(--color-secondary-80);
+}

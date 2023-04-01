@@ -1,5 +1,115 @@
-<div class="mail-item @(isDraft ? "drafts" : "") @(isReadToogle ? "read" : "unread") @(isChecked ? "is-selected" : "" )">
-    <div class="columns">
+@inject NavigationManager navigation
+<tr @onclick="HandleViewDetail" class="mail-item @(isDraft ? "drafts" : "") @(isReadToogle ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px">
+    <td class="mail-td mail-checkbox">
+        @if (isChecked)
+            {
+                <span class="icon is-small" @onclick="SelectedMail">
+                    <i class="material-icons-sharp is-secondary-60">check_box</i>
+                </span>  
+            }
+        else
+            {
+                <span class="icon is-small" @onclick="SelectedMail">
+                    <i class="material-icons-outlined is-secondary-60">check_box_outline_blank</i>
+                </span>
+            }
+    </td>
+    <td class="mail-td mail-star">
+        @if (isStar)
+            { 
+                <span class="icon is-small is-warning-20" @onclick="() => HandleStarMail(false)">
+                    <i class="material-icons-sharp" style="font-size: 12px;">star_purple500</i>
+                </span>
+            }
+        else
+            { 
+                <span class="icon is-small is-warning-20" @onclick="() => HandleStarMail(true)">
+                    <i class="material-symbols-outlined "  style="font-size: 12px;">star</i>
+                </span>
+            }
+    </td>
+    <td class="mail-td mail-from">
+        <span class="is_sub2 @(isReadToogle ? "read" : "unread") text-ellipsis">
+            @if(isSentMail) 
+            {
+                <span>Đến: </span>
+            }
+            Tôi
+        </span>
+    </td>
+    <td class="mail-td mail-main">
+        <div>
+            <div class="mail-main-content">
+                <div class="mail-subject">
+                    <span class="text-ellipsis is_sub2 @(isReadToogle ? "read" : "unread")">
+                            @subject
+                    </span>
+                </div>
+                <div class="mail-body">
+                    <span class="is_body2 @(isReadToogle ? "read" : "unread")">
+                        -
+                    </span>
+                        @body
+                </div>
+            </div>    
+        </div>
+        @if(attachments.Count > 0)
+        {
+            <ul class="attachments-list">
+                @foreach (var attachment in attachments.Take(3))
+                    {
+                        <li class="attachment-item">
+                            <img style="width: 16px; height: 16px;" src="@string.Concat("images/", attachment.icon, ".png")">
+                            <span>@attachment.name</span>
+                        </li>
+                    }
+            @if (attachments.Count() > 2)
+                {
+                    <li class="attachment-item count">
+                        <span class="is_sub2 is-secondary-40">+@(labels.Count() - 3)</span>
+                    </li>
+                 }
+        </ul>
+        }
+    </td>
+    <td class="mail-td">
+            <div class="mail-actions">
+                @if (isReadToogle)
+                    {
+                        <span @onclick="() => HandleToogleReadMail(false)" class="icon material-symbols-outlined is-pointer" style="font-size: 16px;">
+                            drafts
+                        </span>
+                    }
+                    else
+                    { 
+                        <span @onclick="() => HandleToogleReadMail(true)" class="icon material-symbols-outlined is-pointer" style="font-size: 16px;">
+                            mail
+                        </span>
+                    }
+                    <span class="material-symbols-outlined is-pointer" style="font-size: 16px;">
+                            delete
+                    </span>
+            </div>
+    </td>
+    <td class="mail-td tags-list">
+        @foreach (var label in labels.Take(2))
+            {
+                <div style="background-color: @(label.color + "33")" class="tag-item">
+                    <span style="color: @label.color;" class="is_caption">@label.name</span>
+                </div>
+            }
+            @if (labels.Count() > 2)
+            {
+                <div class="tag-item count">
+                        <span class="is_sub2 is-secondary-40">+@(labels.Count() - 2)</span>
+                </div>
+            }
+
+    </td>
+    <td class="mail-td mail__item-datetime">
+        <span class="is-block @(isReadToogle ? "read" : "unread")">@sentDate</span>
+    </td>
+    @* <div class="columns">
         <div class="column is-2">
             <div class="is-flex is-align-items-center" style="gap: 0 16px; position: relative;">
                 @if (isChecked)
@@ -30,7 +140,12 @@
                     <span class="is_sub2 title-drafts text-ellipsis mw-160  @(isReadToogle ? "read" : "unread") drafts">Thư nháp</span>
                 }
                 else{
-                    <span class="is_sub2 text-ellipsis mw-160  @(isReadToogle ? "read" : "unread") ">@from</span>
+                    <span class="is_sub2 text-ellipsis mw-160  @(isReadToogle ? "read" : "unread") ">
+                        @if(isSentMail) {
+                            <span>Đến: </span>
+                        }
+                        @from
+                    </span>
                 }
           
             </div>
@@ -38,14 +153,17 @@
         <div class="column is-10">
             <div class="mail__item-content is-flex is-flex-direction-column">
                 <div class="mail__item-content-top">
-                    <a href="/inbox/connado-lich-nghi-tet" class="is-flex mail__item-content-text">
+                    <a href="/inbox/@id" class="is-flex mail__item-content-text">
                         <span class="mail__item-tag">KS</span>
-                        <div class="is-flex is-align-items-center mail-text read" style="gap: 0 10px;">
-                            <p class="text-ellipsis mw-160  is_sub2 @(isReadToogle ? "read" : "unread")">@subject</p>
-                            <span>-</span>
-                            <p style="max-width: 500px;" class="is_body2 @(isReadToogle ? "read" : "unread") mail-text--content">@body</p>
+                        <p style="flex-shrink: 1;white-space: nowrap; overflow: hidden; " class="is-inline-flex is_sub2 @(isReadToogle ? "read" : "unread")">
+                            @subject
+                        </p>
+                        <span>-</span>
+                        <div class=" is-flex is_body2 @(isReadToogle ? "read" : "unread") mail-text--content">
+                          @body
                         </div>
                     </a>
+
                     <div class="mail-actions">
                         @if (isReadToogle)
                         {
@@ -77,32 +195,20 @@
                             </li>
                         }
                     </ul>
-                    <div>
-                        <span class="mail__item-datetime @(isReadToogle ? "read" : "unread")">@sentDate</span>
+                    <div class="mail__item-datetime">
+                        <span class="is-block @(isReadToogle ? "read" : "unread")">@sentDate</span>
                     </div>
                 </div>
-                <ul class="attachments-list">
-                    @foreach (var attachment in attachments.Take(3))
-                    {
-                        <li class="attachment-item">
-                            <img src="images/word-icon.png" alt="word-icon">
-                            <span>@attachment.name</span>
-                        </li>
-                    }
-                    @if (attachments.Count() > 2)
-                    {
-                        <li class="attachment-item count">
-                            <span class="is_sub2 is-secondary-40">+@(labels.Count() - 3)</span>
-                        </li>
-                    }
-                </ul>
             </div>
         </div>
-    </div>
-</div>
+    </div> *@
+</tr>
 @code {
+
     [Parameter]
     public string id { get; set; }
+    [Parameter]
+    public bool isSentMail { get; set; }
     [Parameter]
     public string from { get; set; }
     [Parameter]
@@ -114,7 +220,7 @@
     [Parameter]
     public List<AttachmentModel> attachments { get; set; }
     [Parameter]
-    public List<LabelModel> labels { get; set; }
+    public List<string> labelsIds { get; set; }
     [Parameter]
     public bool isImportant { get; set; }
     [Parameter]
@@ -127,11 +233,18 @@
     public bool isDraft { get; set; }
     public bool isStar { get; set; }
     public bool isReadToogle { get; set; }
-    protected override void OnInitialized()
+
+    public List<LabelModel> labels = new List<LabelModel>();
+
+    protected override async Task OnInitializedAsync()
     {
+        LabelData labelData = new LabelData();
         isStar  = isImportant;
         isReadToogle = isRead;
+        labels = await labelData.FindLabelsByIds(labelsIds);
     }
+
+
     private async Task SelectedMail()
     {
         var selected = new SelectedModel
@@ -141,12 +254,22 @@
             };
         await HandleSelectedMail.InvokeAsync(selected);
     }
+
+
     private void HandleStarMail(bool isStarMail)
     {
         isStar = isStarMail;
     }
+
+
     private void HandleToogleReadMail(bool isReadMail)
     {
         isReadToogle = isReadMail;
-    }  
+    }
+
+    private void HandleViewDetail() 
+    {
+        navigation.NavigateTo("inbox/" + id, true);
+    }
+
 }

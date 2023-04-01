@@ -1,18 +1,20 @@
 <header class="is-flex is-align-items-center is-justify-content-space-between">
     <div class="is-flex is-align-items-center is-gap-20">
         <a href="mail/inbox" class="is-flex is-align-items-center is-gap-8 is-pointer ">
-            <span class="icon">
+            <span class="icon is-small">
                 <i class="material-icons-outlined is-primary-40">arrow_back</i>
             </span>
             <span class="is-primary-40 is_button">Trở về</span>
         </a>
         <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-            @if(isImportantClone) { 
+            @if(isImportantClone) 
+            { 
                 <span class="icon" @onclick="() => HandleImportantMail(false)">
                     <i class="material-icons-sharp is-warning-20">star_purple500</i>
                 </span>
             }
-            else {
+            else 
+            {
                 <span class="icon star" @onclick="() => HandleImportantMail(true)">
                     <i class="material-symbols-outlined">star</i>
                 </span>
@@ -33,12 +35,14 @@
                         @foreach (var label in labels)
                         {
                             <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
-                                @if(labelsSelected.Contains(label)) {
+                                @if(labelsSelected.Contains(label)) 
+                                {
                                     <span class="icon is-small" @onclick="() => HandelChooseLabel(label)">
                                         <i class="material-icons-sharp is-secondary-40">check_box</i>
                                     </span>  
                                 }
-                                else { 
+                                else 
+                                { 
                                     <span class="icon is-small" @onclick="() => HandelChooseLabel(label)">
                                         <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
                                     </span>
@@ -70,13 +74,15 @@
         </ul>
     </div>
     <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-        @if(isReadClone) { 
+        @if(isReadClone) 
+        { 
             <span class="icon is-primary-40" @onclick="() => HandlIsReadMail(false)">
                 <i class="material-icons-outlined">drafts</i>
             </span>
             <span class="is_caption is-primary-40">Đánh dấu chưa đọc</span>
-            }
-        else {
+        }
+        else 
+        {
             <span class="icon is-primary-40" @onclick="() => HandlIsReadMail(true)">
                 <i class="material-icons-outlined">email</i>
             </span>
@@ -95,29 +101,40 @@
     [Parameter]
     public List<LabelModel> labels { get; set; }
     [Parameter]
+    public List<LabelModel> labelsSelected { get; set; }
+    [Parameter]
     public bool isRead { get; set; }
     public bool isImportantClone { get; set; }
     public bool isReadClone  { get; set; }
     private ToggleHelper toggleShowLabel = new ToggleHelper();
-    private List<LabelModel> labelsSelected = new List<LabelModel>();
-    private void HandelToggleShowLabel() { 
+    // private List<LabelModel> labelsSelected = new List<LabelModel>();
+    private void HandelToggleShowLabel() 
+    { 
         toggleShowLabel.Toggle();
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         isImportantClone = isImportant;
         isReadClone = isRead;
     }
 
-    private void HandleImportantMail(bool isImportantMail ) {
+
+    private void HandleImportantMail(bool isImportantMail ) 
+    {
         isImportantClone = isImportantMail;
     }
-    private void HandlIsReadMail(bool isReadMail ) {
+
+
+    private void HandlIsReadMail(bool isReadMail )
+    {
         isReadClone = isReadMail;
     }
 
-    private void HandelChooseLabel(LabelModel label) {
+
+
+    private void HandelChooseLabel(LabelModel label) 
+    {
         if (labelsSelected.Contains(label))
         {
             labelsSelected.Remove(label);

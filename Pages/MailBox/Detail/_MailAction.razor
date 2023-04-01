@@ -45,7 +45,8 @@
                         </div>
                     </div>
                 </div>
-                @if(isShowTextTo) {
+                @if(isShowTextTo) 
+                {
                     <p class="is_caption is-secondary-40">Đến:</p>
                 }
 
@@ -132,23 +133,33 @@
         groups = InitDataFakeHelper.InitGroups();
     }
 
-    private void HandleSelectedMember(List<MemberModel> membersList) { 
+
+    private void HandleSelectedMember(List<MemberModel> membersList) 
+    { 
         List<MemberModel> clonedList = new List<MemberModel>(membersSelected);
         clonedList.AddRange(membersList);
         membersSelected = clonedList;
     }
-    private void HandleDeleteMemberSelected(MemberModel member) {
+
+
+    private void HandleDeleteMemberSelected(MemberModel member) 
+    {
         membersSelected.Remove(member);
         members.Add(member);
     }
 
-    private void HandleSelectedGroup(List<GroupModel> groupsList) { 
+
+    private void HandleSelectedGroup(List<GroupModel> groupsList) 
+    { 
         List<GroupModel> clonedList = new List<GroupModel>(groupsSelected);
         clonedList.AddRange(groupsList);
         groupsSelected = clonedList;
     }
 
-    private void HandleDeleteGroupSelected(GroupModel group) {
+
+
+    private void HandleDeleteGroupSelected(GroupModel group) 
+    {
         groupsSelected.Remove(group);
         groups.Add(group);
     }

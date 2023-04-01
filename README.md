@@ -22,3 +22,12 @@
     <p> 13. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với database, các model 
         <a href="https://drive.google.com/file/d/1UD7hLkSYp1aRRiXFhbsQA_8uThPgP94K/view?usp=sharing">tại đây</a>
     </p>
+<div>_________________________________________________________________________________________________________________</div>
+<strong>Tuần 3: 27/3/2023 - 1/4/2023</strong>
+  <h4>Công việc thực hiện được: </h4>
+    <p> 1. CRUD "Chữ ký", "Nhóm", Thành viên trong nhóm, Nhãn, Danh mục với MongoDB </p>
+    <p> 2. Tạo, xem được mail, đấy file lên, dowload file về </p>
+    <p> 3. Check được người gửi, người nhận, check được author mail, filter được mail gửi mail, mail nhận, mail quan trọng,... (MongoDB) </p>
+    <p> 4. Tạo được Poll, vote poll, xem thống kế poll </p>
+    <p> 5. Login với, check login </p>
+    <p> 6. Hoàn thiện tất cả UI </p>

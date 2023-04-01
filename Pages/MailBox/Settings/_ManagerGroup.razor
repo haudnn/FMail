@@ -1,4 +1,4 @@
-@* all group *@
+@inject IJSRuntime JSRuntime
 <div class="container-manager">
     @switch (nameCurrentAction)
     {
@@ -34,10 +34,11 @@
                         </span>
                         <span class="is_button is-secondary-40">Quay lại</span>
                     </div>
-                    <_AddMember members="members" directionDropdown="is-right" HandleSelectedMember="HandleSelectedMember"/>   
+                    <_AddMember members="membersUnique" directionDropdown="is-right" HandleSelectedMember="HandleSelectedMember"/>   
                 </div>
                 <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Tên nhóm</p>
-                @if(!isShowEditNameGroup) {
+                @if(!isShowEditNameGroup) 
+                {
                     <div class="is-flex is-align-items-center is-gap-4 is-pointer">
                         <span class="is_sub2 is-secondary-20">Nhóm @groupSelected.name</span>
                         <span class="icon" @onclick="HandleToggleShowEditName">
@@ -45,7 +46,8 @@
                         </span>
                     </div>
                 }
-                else { 
+                else 
+                { 
                     <div class="is-flex is-align-items-center">
                         <div class="input-container is-flex-1 is-flex is-align-items-center">
                             <span class="input-icon left is_body2 is-secondary-60">Nhóm</span>
@@ -135,13 +137,18 @@
     public List<GroupModel> groups { get; set; }
     [Parameter]
     public List<MemberModel> members { get; set; }
+    [Parameter]
+    public EventCallback<List<GroupModel>> getAllGroups { get; set; }
     private string groupName = String.Empty;
     private bool toggleActiveAddMember = false;
     private bool isShowEditNameGroup = false;
     public string nameCurrentAction = "static";
-    public GroupModel groupSelected;
+    public List<MemberModel> membersUnique = new List<MemberModel>();
+
+    public GroupModelDetail groupSelected;
 
     private List<MemberModel> membersSelected = new List<MemberModel>();
+
 
     private void ToggleActiveAddMember(bool isActiveAddMember)
     {
@@ -149,19 +156,22 @@
     }
 
 
-    private void HandleToggleShowEditName() { 
+    private void HandleToggleShowEditName() 
+    { 
         isShowEditNameGroup = !isShowEditNameGroup;
         groupName = groupSelected.name;
     }
 
-    private void HandleViewDetailGroup(string groupId) { 
-        GroupModel findGroup = groups.FirstOrDefault(group => group.id == groupId);
-        if (findGroup  != null)
-        {
-            groupSelected = findGroup;
-            HandleChangeCurrentAction("detail");
-        }
+
+    private async Task HandleViewDetailGroup(string groupId) 
+    {
+        GroupData groupData = new GroupData();
+        GroupModelDetail foundGroup = await groupData.GetGroupById(groupId);
+        groupSelected = foundGroup;
+        membersUnique = InitDataFakeHelper.GetMembersUnion(members, foundGroup.members);
+        HandleChangeCurrentAction("detail");
     }
+
 
     private void HandleChangeCurrentAction(string nameActionChange)
     {
@@ -169,38 +179,63 @@
         StateHasChanged();
     }
 
-    private void HandleConfirmationDeleteGroup(string groupId){
-        GroupModel groupToDelete = groups.FirstOrDefault(group => group.id == groupId);
-        if (groupToDelete != null)
-        {
-            groups.Remove(groupToDelete);
-        }
+
+    private async Task HandleConfirmationDeleteGroup(string groupId)
+    {
+        GroupData groupData = new GroupData();
+        await groupData.DeleteGroup(groupId);
+        await getAllGroups.InvokeAsync();
         StateHasChanged();
     }
 
-    private void HandleSelectedMember(List<MemberModel> membersList) { 
+    private async Task HandleSelectedMember(List<MemberModel> membersList) 
+    { 
         List<MemberModel> clonedList = new List<MemberModel>(membersSelected);
         clonedList.AddRange(membersList);
         membersSelected = clonedList;
-        if(groupSelected != null) {
+        if(groupSelected != null) 
+        {
             groupSelected.members.AddRange(membersList);
+            List<string> members = membersList.Select(m => m.id).ToList(); 
+            GroupData groupData = new GroupData();
+            await groupData.AddMembers(groupSelected.id, members);
+            await getAllGroups.InvokeAsync();
+            StateHasChanged();
         }
-        
+
     }
-    
-    private void HandleCreateGroup() {
-        GroupModel groupToCreate = new GroupModel{ 
-            id = "999",
+
+
+    private async Task HandleCreateGroup() 
+    {
+        List<string> members = membersSelected.Select(m => m.id).ToList();
+        bool isValidGroup = await IsValidGroup();
+        if(!isValidGroup) 
+        {
+            return;
+        }
+        GroupData groupData = new GroupData();
+        GroupModel groupToCreate = new GroupModel
+        { 
+            id = GenerateIDHelper.GenerateID("19012001"),
             name= groupName,
-            members = membersSelected
+            members = members
         };
-        groups.Add(groupToCreate);
+        bool isValidGroupName = await groupData.CreateGroup(groupToCreate);
+        if(!isValidGroupName) 
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Tên nhóm bạn chọn đã tồn tại!");
+            return;
+        }
+        await getAllGroups.InvokeAsync();
         groupName = String.Empty;
         membersSelected = new List<MemberModel>();
         HandleChangeCurrentAction("static");
+        StateHasChanged();
     }
 
-    private void HandleBackStep() {
+    private void HandleBackStep() 
+    {
         isShowEditNameGroup = false;
         groupSelected = null;
         groupName = String.Empty;
@@ -208,21 +243,60 @@
         HandleChangeCurrentAction("static");
     }
 
-    private void HandleDeleteMember(MemberModel member){
-        // Flow: when user selected group => groupSelected => query id group => find members id => remove
-        // get group id
-        if(groupSelected != null) {
+
+    private async Task HandleDeleteMember(MemberModel member)
+    {
+        if(groupSelected != null) 
+        {
+            GroupData groupData = new GroupData();
+            await groupData.DeleteMember(groupSelected.id, member.id);
             groupSelected.members.Remove(member);
         }
-        else {
+        else 
+        {
             membersSelected.Remove(member);
         }
-        members.Add(member);
+        membersUnique.Add(member);
+        await getAllGroups.InvokeAsync();
+        StateHasChanged();
     }
 
-    private void HandleEditGroup() {
-        @* get group id from group selected => update by id *@
+
+
+    private async Task HandleEditGroup() 
+    {
+        bool isValid = await IsValidGroup();
+        if(!isValid)
+        {
+            return;
+        }
+        GroupData groupData = new GroupData();
         groupSelected.name = groupName;
+        bool isValidGroupName = await groupData.UpdateGroup(groupName, groupSelected.id);
+        if(!isValidGroupName) 
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Tên nhóm bạn chọn đã tồn tại!");
+            return;
+        }
+        await getAllGroups.InvokeAsync();
+        StateHasChanged();
         isShowEditNameGroup = false;
+    }
+
+
+
+    private async Task<bool> IsValidGroup() 
+    {
+        if(groupName == string.Empty) 
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Tên nhóm không được trống!"); 
+            return false;
+        }
+        if(groupName.Length > 30) 
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Tên nhóm tối đa 30 ký tự!"); 
+            return false;
+        }
+        return true;
     }
 }

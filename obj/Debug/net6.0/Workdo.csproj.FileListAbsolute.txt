@@ -74,3 +74,5 @@ C:\Conando\WorkdoTemplate\Workdo\obj\Debug\net6.0\refint\Workdo.dll
 C:\Conando\WorkdoTemplate\Workdo\obj\Debug\net6.0\Workdo.pdb
 C:\Conando\WorkdoTemplate\Workdo\obj\Debug\net6.0\Workdo.genruntimeconfig.cache
 C:\Conando\WorkdoTemplate\Workdo\obj\Debug\net6.0\ref\Workdo.dll
+C:\Conando\WorkdoTemplate\Workdo\bin\Debug\net6.0\Faker.Net.6.0.dll
+C:\Conando\WorkdoTemplate\Workdo\bin\Debug\net6.0\de-DE\Faker.Net.6.0.resources.dll

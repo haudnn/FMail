@@ -1,4 +1,6 @@
+@inject IJSRuntime JSRuntime
 @page "/config/mail"
+
 @layout LayoutMail
 <div class="is-padding-20">
     <div class="container-manager is-config">
@@ -18,7 +20,7 @@
                 <_Item  
                     category="category" 
                     HandleDeleteCategory="HandleDeleteCategory" 
-                    HandleEditCategory="HandleEditCategory"
+                    HandleUpdateCategory="HandleUpdateCategory"
                 />
             }
 
@@ -38,38 +40,66 @@
 
     public bool isShowModalAdd = false;
     public string categoryName = String.Empty;
-    public void HandleToggleShowModalAdd(bool isShow) {
+    public void HandleToggleShowModalAdd(bool isShow) 
+    {
         isShowModalAdd = isShow;
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
+    {   
+        await getAllCategories();
+    }
+
+    public async Task HandleDeleteCategory(CategoryModel categoryDelete)
     {
-        categories = InitDataFakeHelper.InitCategories();
+        CategoryData categoryData = new CategoryData();
+        await categoryData.DeleteCategory(categoryDelete);
+        await getAllCategories();
+        StateHasChanged();
     }
 
-    public void HandleDeleteCategory(CategoryModel categoryDelete){
-        CategoryModel categoryToDelete = categories.FirstOrDefault(category => category.id == categoryDelete.id);
-        if (categoryToDelete != null)
-        {
-            categories.Remove(categoryToDelete);
-        }
+
+    private async Task getAllCategories() 
+    {
+        CategoryData categoryData = new CategoryData();
+        categories = await categoryData.GetAllCategory();
+        return;
     }
 
-    public void HandleAddCategory(string nameToAdd){
+    public async Task HandleAddCategory(string nameToAdd)
+    {
+        bool isValid = await IsValidCategory(nameToAdd);
+        if(!isValid) return;
+        CategoryData categoryData = new CategoryData();
         CategoryModel categoryToCreate = new CategoryModel{ 
-            id = "999",
+            id = GenerateIDHelper.GenerateID("19012001"),
             name = nameToAdd,
         };
+        await categoryData.CreateCategory(categoryToCreate);
         categories.Add(categoryToCreate);
         categoryName = String.Empty;
         isShowModalAdd = !isShowModalAdd;
     }
-    public void HandleEditCategory(CategoryModel categoryUpdate) {
-        CategoryModel categoryToUpdate = categories.FirstOrDefault(category => category.id == categoryUpdate.id);
-        if (categoryToUpdate != null)
-        {
-            categoryToUpdate.name = categoryUpdate.name;
+
+    public async Task HandleUpdateCategory(CategoryModel categoryUpdate) 
+    {
+        CategoryData categoryData = new CategoryData();
+        await categoryData.UpdateCategory(categoryUpdate);
+        await getAllCategories();
+        StateHasChanged();
+    }
+
+    public async Task<bool> IsValidCategory(string nameToAdd)
+    { 
+        if(nameToAdd == String.Empty) {
+            await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên danh mục!");
+            return false;
         }
+        if( nameToAdd.Length >  30) {
+            await JSRuntime.InvokeVoidAsync("alert", "Tên danh mục tối đa 30 ký tự!");
+            return false;
+        }
+        return true;
     }
 
 }

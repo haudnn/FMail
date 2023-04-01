@@ -1,13 +1,19 @@
 @page "/settings"
-@layout LayoutMail
+@layout LayoutMain
 
 <PageTitle>Thiết lập</PageTitle>
-<section class="is-padding-20 is-flex is-flex-direction-column" style="gap: 20px 0">
-    <_ManagerGroup groups="groups" members="members"/>
-    <_ManagerCategory categories="categories"/>
-    <_ManagerLabel labels="labels"/>
-    <_ManagerSignature signatures="signatures" />
-</section> 
+<div class="mail-wrapper">
+    <MailSideBar/>
+    <div  class="mail__main">
+        <HeaderMain />
+        <section class="is-padding-20 is-flex is-flex-direction-column" style="gap: 20px 0">
+            <_ManagerGroup groups="groups" members="members" getAllGroups="getAllGroups"/>
+            <_ManagerCategory categories="categories"/>
+            <_ManagerLabel labels="labels"/>
+            <_ManagerSignature signatures="signatures" getAllSignatures="getAllSignatures"/>
+        </section> 
+    </div>
+</div>
 @code {
     private List<LabelModel> labels = new();
     private List<CategoryModel> categories = new();
@@ -15,12 +21,35 @@
     private List<MemberModel> members = new List<MemberModel>();
     private List<SignatureModel> signatures = new List<SignatureModel>();
 
-    protected override void OnInitialized()
+
+    protected override async Task OnInitializedAsync ()
     {
-        labels = InitDataFakeHelper.InitLabels();
-        categories = InitDataFakeHelper.InitCategories();
-        groups = InitDataFakeHelper.InitGroups();
+        CategoryData categoryData = new CategoryData();
+        LabelData labelData = new LabelData();
+        SignatureData signatureData = new SignatureData();
+        GroupData groupData = new GroupData();
+
+
+        categories = await categoryData.GetAllCategory();
+        labels = await labelData.GetAllLabels();
+        signatures = await signatureData.GetAllSignatures();
+        groups = await groupData.GetAllGroups();
         members = InitDataFakeHelper.InitMembers();
-        signatures = InitDataFakeHelper.InitSignatures();
+    }
+
+
+    private async Task<List<SignatureModel>> getAllSignatures()
+    {
+        SignatureData signatureData = new SignatureData();
+        signatures = await signatureData.GetAllSignatures();
+        return signatures;
+    }
+
+
+    private async Task<List<GroupModel>> getAllGroups() 
+    {
+        GroupData groupData = new GroupData();
+        groups = await groupData.GetAllGroups();
+        return groups;
     }
 }

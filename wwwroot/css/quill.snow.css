@@ -685,7 +685,7 @@
 .ql-snow .ql-picker.ql-expanded .ql-picker-options {
   display: block;
   margin-top: -1px;
-  top: 100%;
+  bottom: 100%;
   z-index: 1;
 }
 .ql-snow .ql-color-picker,
@@ -965,8 +965,11 @@
   color: #06c;
 }
 .ql-container.ql-snow {
-  min-height: 300px;
+  /* min-height: 300px; */
   overflow: auto;
+}
+.ql-editor {
+  min-height: unset;
 }
 .ql-editor.ql-blank::before {
   color: #293042;

@@ -1,8 +1,9 @@
-@page "/inbox/{slug}"
+@page "/inbox/{id}"
 @layout LayoutMail
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigation
 @using Microsoft.AspNetCore.Components
+@using System.IO
 @inject IJSRuntime JSRuntime
 
 <section class="is-padding-20">
@@ -10,128 +11,131 @@
         isImportant="@mail.isImportant"
         isRead="@mail.isRead"
         labels="labels"
+        labelsSelected="labelsSelected"
     />
 
     <main class="is-padding-top-20">
         <p class="is-secondary-20 is_h6">@mail.subject</p>
         <div class="is-padding-top-20">
             <_MailActionsBar
-                mailName="@mail.from"
-                displayName="Author Name"
-                sentDate="@mail.sentDate"
-                cc="@mail.cc"
-                to="@mail.to"
+                author="author"
+                sentDate="@sentDateFormat"
+                to="membersTo"
                 SetCurrentAction="SetCurrentAction"
             />
         </div>
         <div class="is-padding-top-20" style="margin-left: 40px;">
-            <div style="padding-bottom: 20px;">
-                @mail.body
+            <div style="padding-bottom: 20px">
+                <BlazoredTextEditor Placeholder="" ReadOnly>
+                     <EditorContent>
+                        @((MarkupString)QuillHTMLContentBody)
+                    </EditorContent>
+                </BlazoredTextEditor>
             </div>
-            @if(mail.isPoll)
+            @if(mail.pollId != null)
             {
-            <div class="is-padding-top-20">
-                    @if (isStopSurvey)
-                    {
-                        <div class="is-flex is-align-items-center is-gap-4" style="margin-bottom: 10px;">
-                            <span class="icon is-small">
-                                <i class="material-icons-outlined is-error-40">info</i>
-                            </span>
-                            <span class="is_sub2 is-error-40">Hiện tại đã dừng khảo sát. Vậy nên bạn chỉ có thể xem thống kê.</span>
-                        </div>
-                    }
-                <div class="is-flex is-align-items-center" style="gap: 0 20px">
-                    <p class="is-flex-1 is-uppercase is-secondary-10 is_typhography @(isStopSurvey ? " stop-survey" : "" )">
-                        @poll.title
-                    </p>
-                    <div class="is-flex is-align-items-center" style="gap: 0 20px">
-                        <div class="is-flex is-align-items-center @(isStopSurvey ? " stop-survey" : "" )">
-                            <span class="icon is-secondary-40 is_body2">
-                                <i class="material-icons-outlined">info</i>
-                            </span>
-                            <span class="is_body2 is-secondary-40">Thời gian kết thúc khảo sát: </span>
-                        </div>
-                        <div class="is-flex is-align-items-center is-gap-4">
-                            <div class="is-flex is-align-items-center @(isStopSurvey ? " stop-survey" : "" )">
-                                <span class="icon">
-                                    <i class="material-icons-outlined is-secondary-10">calendar_today</i>
-                                </span>
-                                <span class="is_caption is-black">@poll.endDate</span>
-                            </div>
-                            <div class="is-flex is-align-items-center @(isStopSurvey ? " stop-survey" : "" )">
-                                <span class="icon">
-                                    <i class="material-icons-outlined is-secondary-10">schedule</i>
-                                </span>
-                                <span class="is_caption is-black">@poll.endTime</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="is-padding-top-20">
-                    <div class="is-flex is-align-items-center is-gap-4">
-                        <button disabled="@isStopSurvey" class="wrapper-header-poll @(isStopSurvey ? " stop-survey" : ""
-                                ) @(!toggleViewStatistical.IsToggled ? "active" : "" ) is-pointer"
-                                @onclick="HandleToggleViewStatistical">
-                            <span class="is_sub2">Khảo sát</span>
-                        </button>
-                        @if(mail.author == Layout.User.id) { 
-                            <button 
-                                    disabled="@isStopSurvey"
-                                    class="wrapper-header-poll @(toggleViewStatistical.IsToggled ? " active" : "" ) is-pointer"
-                                    @onclick="HandleToggleViewStatistical">
-                                    <span class="is_sub2">Thống kê</span>
-                            </button>
-                        }
-
-                    </div>
-                        @if (!toggleViewStatistical.IsToggled)
+                        @if (isStopSurvey)
                         {
-                            <_Survey questions="poll.questions" />
+                            <div class="is-flex is-align-items-center is-gap-4" style="margin-bottom: 10px;">
+                                <span class="icon is-small">
+                                    <i class="material-icons-outlined is-error-40">info</i>
+                                </span>
+                                <span class="is_sub2 is-error-40">Hiện tại đã dừng khảo sát. Vậy nên bạn chỉ có thể xem thống kê.</span>
+                            </div>
                         }
-                        else
-                        {  
-                            <_Statistical questions="poll.questions"/>
+                    <div class="is-flex is-align-items-center" style="gap: 0 20px">
+                        <p class="is-flex-1  is-secondary-10 is_typhography @(isStopSurvey ? "stop-survey" : "" )">
+                            @poll.title
+                        </p>
+                        <div class="is-flex is-align-items-center" style="gap: 0 20px">
+                            <div class="is-flex is-align-items-center @(isStopSurvey ? "stop-survey" : "" )">
+                                <span class="icon is-secondary-40 is_body2">
+                                    <i class="material-icons-outlined">info</i>
+                                </span>
+                                <span class="is_body2 is-secondary-40">Thời gian kết thúc khảo sát: </span>
+                            </div>
+                            <div class="is-flex is-align-items-center is-gap-4">
+                                <div class="is-flex is-align-items-center @(isStopSurvey ? " stop-survey" : "" )">
+                                    <span class="icon">
+                                        <i class="material-icons-outlined is-secondary-10">calendar_today</i>
+                                    </span>
+                                    <span class="is_caption is-black">@poll.endDate</span>
+                                </div>
+                                <div class="is-flex is-align-items-center @(isStopSurvey ? " stop-survey" : "" )">
+                                    <span class="icon">
+                                        <i class="material-icons-outlined is-secondary-10">schedule</i>
+                                    </span>
+                                    <span class="is_caption is-black">@poll.endTime</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="is-padding-top-20">
+                        <div class="is-flex is-align-items-center is-gap-4">
+                            <button disabled="@isStopSurvey" class="wrapper-header-poll @(isStopSurvey ? " stop-survey" : ""
+                                    ) @(!toggleViewStatistical.IsToggled ? "active" : "" ) is-pointer"
+                                    @onclick="HandleToggleViewStatistical">
+                                <span class="is_sub2">Khảo sát</span>
+                            </button>
+                            @if(mail.author == Layout.User.id) { 
+                                <button 
+                                        disabled="@isStopSurvey"
+                                        class="wrapper-header-poll @(toggleViewStatistical.IsToggled ? " active" : "" ) is-pointer"
+                                        @onclick="HandleToggleViewStatistical">
+                                        <span class="is_sub2">Thống kê</span>
+                                </button>
+                            }
+
+                        </div>
+                            @if (!toggleViewStatistical.IsToggled)
+                            {
+                                <_Survey questions="questions" />
+                            }
+                            else
+                            {  
+                                <_Statistical questions="questions"/>
+                            }
+                    </div>
+                </div>
+                @if(mail.author == Layout.User.id) 
+                {
+                    <div class="is-padding-top-20">
+                        <button disabled="@isStopSurvey" style="border: none;"
+                            class="wrapper-button error-btn @(isStopSurvey ? " disable" : "" ) is-inline-flex"
+                            @onclick="() => HandleToggleActiveModal(true)">
+                            <span class="icon">
+                                <i class="material-icons-outlined has-text-white">poll</i>
+                            </span>
+                            <span class="is_caption has-text-white">Dừng khảo sát</span>
+                        </button>
+                    </div>
+                    <_ModalConfirmation 
+                        nameModal="Xác nhận việc dừng khảo sát" 
+                        toggleActiveModal="toggleActiveModal"
+                        contentButton="Dừng khảo sát"
+                        contentModal="Khi thực hiện thao tác này, người dùng sẽ không thể thực hiện khảo sát được nữa và bạn sẽ không thể mở lại cuộc khảo sát này . Bạn có chắc chắn muốn tiếp tục không?"
+                        HandleToggleActiveModal="HandleToggleActiveModal" 
+                        HandleConfirmation="HandleStopSurvey" 
+                    />
+                }
+            }
+            @if(attachments.Count > 0)
+            { 
+                <div style="padding: 40px 0px 20px 0px">
+                    <ul class="attachments-list mt-0">
+                        @foreach (var attachment in attachments)
+                        {
+                            <li class="attachment-item" @onclick="() => DownloadFileFromStream(attachment)">
+                                <img style="width: 16px; height: 16px;" src="@string.Concat("images/", attachment.icon, ".png")">
+                                <span>@attachment.name</span>
+                            </li>
                         }
+                    </ul>
                 </div>
-            </div>
-            @if(mail.author == Layout.User.id) {
-                <div class="is-padding-top-20">
-                    <button disabled="@isStopSurvey" style="border: none;"
-                        class="wrapper-button error-btn @(isStopSurvey ? " disable" : "" ) is-inline-flex"
-                        @onclick="() => HandleToggleActiveModal(true)">
-                        <span class="icon">
-                            <i class="material-icons-outlined has-text-white">poll</i>
-                        </span>
-                        <span class="is_caption has-text-white">Dừng khảo sát</span>
-                    </button>
-                </div>
-                <_ModalConfirmation 
-                    nameModal="Xác nhận việc dừng khảo sát" 
-                    toggleActiveModal="toggleActiveModal"
-                    contentButton="Dừng khảo sát"
-                    contentModal="Khi thực hiện thao tác này, người dùng sẽ không thể thực hiện khảo sát được nữa và bạn sẽ không thể mở lại cuộc khảo sát này . Bạn có chắc chắn muốn tiếp tục không?"
-                    HandleToggleActiveModal="HandleToggleActiveModal" 
-                    HandleConfirmation="HandleStopSurvey" 
-                />
             }
-            }
-            <div style="padding: 40px 0px 20px 0px">
-                <ul class="attachments-list mt-0">
-                    @foreach (var attachment in mail.attachments)
-                    {
-                        <li class="attachment-item">
-                            <img src="images/word-icon.png" alt="word-icon">
-                            <span>@attachment.name</span>
-                        </li>
-                    }
-                </ul>
-            </div>
-            <div class="is_sub2 is-secondary-10 is-padding-bottom-20">
-                <p>-----------------------------------------</p>
-                <p>DOCORP JSC</p>
-                <p>CÔNG TY CỔ PHẦN DOCORP</p>
-                <p>Số 23 Trường Thi 1, Phường Hòa Thuận Tây, Quận Hải Châu, Thành phố Đà Nẵng</p>
-                <p>Phone : 0905.043.312 (Ms Thúy Phượng)</p>
+            <div  class="is_sub2 is-secondary-10 is-padding-20-x">
+               @((MarkupString)QuillHTMLContentSignature)
             </div>
             <div class="is-flex is-align-items-center is-gap-10-y ">
                 <div class="wrapper-button btn-outlined">
@@ -154,15 +158,11 @@
                 </div>
             </div>
         </div>
-
-        @* replies *@
         <div>
             <ul>
                 
             </ul>
         </div>
-
-        @* actions *@
         <div style="margin-left: 45px;">
             @switch (currentAction)
             {
@@ -198,59 +198,96 @@
 
 </section>
 @code {
-
     [CascadingParameter]
     public LayoutMail Layout { get; set; }
-
     [Parameter]
-    public string? slug { get; set; }
+    public string? id { get; set; }
+    BlazoredTextEditor QuillHtml;
+    string QuillHTMLContentBody;
+    string QuillHTMLContentSignature;
     public string currentAction = String.Empty;
     public bool toggleActiveModal = false;
     private ToggleHelper toggleViewExpand = new ToggleHelper();
     public MailModel mail = new MailModel();
-    public PollModel poll = new PollModel();
+    public List<MemberModel> membersTo = new List<MemberModel>();
+    public List<AttachmentModel> attachments = new List<AttachmentModel>();
+    public PollModel poll = new();
+    public List<QuestionModel> questions = new();
     public List<LabelModel> labels = new List<LabelModel>();
+    public List<LabelModel> labelsSelected  = new List<LabelModel>();
     public bool isStopSurvey = false;
-
-    protected override void OnInitialized()
-    {
-        mail = InitDataFakeHelper.InitMail();
-        poll = InitDataFakeHelper.InitPoll();
-        labels = InitDataFakeHelper.InitLabels();        
-    }
+    public UserModel author  = new();
+    public string sentDateFormat;
     private ToggleHelper toggleViewStatistical = new ToggleHelper();
     private ToggleHelper toggleViewCC = new ToggleHelper();
 
     private ToggleHelper toggleViewButtonAnother = new ToggleHelper();
 
+    protected override async Task OnParametersSetAsync()
+    {
+        MailData mailData = new MailData(); 
+        LabelData labelData = new LabelData();
+        mail = await mailData.GetMailById(id);
+        if(mail.pollId != null) { 
+            PollData pollData = new PollData();
+            poll = await pollData.GetPollById(mail.pollId);
+            questions= poll.questions;
+        }
+        author = await UserData.Get(mail.author);
+        labelsSelected  = await labelData.FindLabelsByIds(mail.labels);
+        labels = await labelData.GetAllLabels();
+        attachments = mail.attachments;
+        sentDateFormat = DateTimeHelper.FormatDateTimeDetailView(mail.sentDate);
+        membersTo = mail.to;
+        QuillHTMLContentBody = mail.body;
+        QuillHTMLContentSignature = mail.signature.body;
+    }
+    
+
+
     private void HandleToggleViewStatistical()
     {
         toggleViewStatistical.Toggle();
     }
+
     private void HandleToogleViewExpand()
     {
         toggleViewExpand.Toggle();
     }
+
     private void HandleToggleButtonAnother()
     {
         toggleViewButtonAnother.Toggle();
     }
+
     private void HandleToggleViewCC()
     {
         toggleViewCC.Toggle();
     }
+
     private void HandleToggleActiveModal(bool isActiveModal)
     {
         toggleActiveModal = isActiveModal;
     }
+
     private void HandleStopSurvey()
     {
         toggleActiveModal = false;
         toggleViewStatistical.Toggle();
         isStopSurvey = true;
     }
+
+
     public void SetCurrentAction(string actionName)
     {
         currentAction = actionName;
     }
+
+    private async Task DownloadFileFromStream(AttachmentModel attachment)
+    {
+        var fileName = attachment.name;
+        var fileURL = "https://localhost:2023" + attachment.filePath;
+        await JSRuntime.InvokeVoidAsync("triggerFileDownload", fileName, fileURL);
+    }
+    
 }

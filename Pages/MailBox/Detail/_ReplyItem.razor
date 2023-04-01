@@ -24,7 +24,8 @@
             </div>
         </div>
     }
-    else{ 
+    else
+    { 
         <li class="is-padding-20-x is-border-y" style="gap: 0 12px">
             <_MailActionsBar 
                 mailName="<haudn191@gmail.com>" 
@@ -78,12 +79,14 @@
     [Parameter]
     public bool isShowDetail { get;  set;}
     public bool isShow;
+    
     protected override void OnInitialized()
     {
         isShow = isShowDetail;
     }
 
-    public void HandleShowDetail() {
+    public void HandleShowDetail() 
+    {
         isShow = !isShow;
     }
 }

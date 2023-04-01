@@ -424,4 +424,10 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
-
+window.triggerFileDownload = (fileName, url) => {
+  const anchorElement = document.createElement('a');
+  anchorElement.href = url;
+  anchorElement.download = fileName ?? '';
+  anchorElement.click();
+  anchorElement.remove();
+}

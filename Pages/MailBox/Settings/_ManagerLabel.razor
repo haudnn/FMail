@@ -1,3 +1,5 @@
+@inject IJSRuntime JSRuntime
+
 <div class="container-manager">
     <div class="is-mb-20">
         <span class="is-uppercase is_h6 is-secondary-10">Quản lí nhãn</span>
@@ -12,7 +14,8 @@
                 <i class="material-symbols-outlined">palette</i>
             </label>
         </div>
-        @if(isEditLabel) {
+        @if(isEditLabel) 
+        {
             <div class="wrapper-button primary-btn" style="display: inline-flex; min-height: 36px;" @onclick="HandelAcceptEdit">
                 <span class="icon">
                     <i class="material-icons-outlined">done</i>
@@ -26,7 +29,8 @@
                 <span class="is_sub2 is-error-40">Hủy</span>
             </div>
         }
-        else{ 
+        else
+        { 
             <div class="wrapper-button primary-btn" style="display: inline-flex; min-height: 36px;" @onclick="HandelCreateLabel">
                 <span class="icon">
                     <i class="material-icons-outlined">done</i>
@@ -63,55 +67,100 @@
     public List<LabelModel> labels { get; set; }
     private string labelName { get; set; } = String.Empty;
     private string labelColor { get; set; } = String.Empty;
+    private string labelId { get; set; } = String.Empty;
     private bool isEditLabel = false;
-    private LabelModel labelSelected { get; set; }
-    private void HandelEditLabel(LabelModel label) { 
-        labelSelected = label;
+
+
+
+    private void HandelEditLabel(LabelModel label) 
+    { 
+        labelId = label.id;
         labelName = label.name;
+        labelColor = label.color;
         isEditLabel = true;
     }
-    private void HandelAcceptEdit(){
-        LabelModel labelToUpdate = labels.FirstOrDefault(label => label.id == labelSelected.id);
+
+
+
+    private async Task HandelAcceptEdit()
+    {
+        if(labelName == String.Empty) 
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên của nhãn!");
+            return;
+        }
+        LabelData labelData = new LabelData();
+        
+        await labelData.UpdateLabel(
+            new LabelModel 
+            {
+                id = labelId,
+                color = labelColor,
+                name = labelName,
+            });
+        LabelModel labelToUpdate = labels.FirstOrDefault(label => label.id ==  labelId);
         if (labelToUpdate != null)
         {
             labelToUpdate.name = labelName;
-            if(labelColor != String.Empty){
-                labelToUpdate.color = labelColor;
-            }
+            labelToUpdate.color = labelColor;
         }
         isEditLabel = false;
-        labelSelected = null;
+        labelId =  String.Empty;
         labelName = String.Empty;
         labelColor = String.Empty;
-        StateHasChanged();
     }
-    private void HandelDeleteLabel(LabelModel label) {
+
+
+
+    private async Task HandelDeleteLabel(LabelModel label) 
+    {
+        LabelData labelData = new LabelData();
+        await labelData.DeleteLabel(label);
         LabelModel labelToDelete = labels.FirstOrDefault(l => l.id == label.id);
-        if (labelToDelete != null)
-        {
-            labels.Remove(labelToDelete);
-        }
+        labels.Remove(labelToDelete);
         StateHasChanged();
     }
-    private void HandelCancelEdit() { 
+
+
+
+    private void HandelCancelEdit() 
+    { 
         isEditLabel = false;
         labelName = String.Empty;
+        labelColor = String.Empty;
+        labelId = String.Empty;
     }
-    private void HandelCreateLabel() {
-        if( labelName == String.Empty ) { 
+
+
+
+    private async Task HandelCreateLabel() 
+    {
+        if( labelName == String.Empty ) 
+        { 
+            await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên của nhãn!");
             return;
         }
-        var label = new LabelModel{ 
-            id = "20",
+        if(labelColor == String.Empty) 
+        {
+            labelColor = GenerateColorHelper.RandomColor();
+        }
+        LabelData labelData = new LabelData();
+        LabelModel labelToCreate = new LabelModel{ 
+            id = GenerateIDHelper.GenerateID("19012001"),
             name = labelName,
             color = labelColor
         };
-        labels.Add(label);
+        await labelData.CreateLabel(labelToCreate);
+        labels.Add(labelToCreate);
         labelName = String.Empty;
         labelColor = String.Empty;
         StateHasChanged();
     }
-    private void HandleChangeColor(ChangeEventArgs e) {
+
+
+
+    private void HandleChangeColor(ChangeEventArgs e) 
+    {
         labelColor = e.Value.ToString();
     }
 }

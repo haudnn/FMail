@@ -74,64 +74,11 @@
                 </div>
             </ToolbarContent>
         </BlazoredTextEditor>
-        @* <div class="wrapper-button primary-btn is-bg-main is-pointer"
-            style="display: inline-flex; margin-bottom: 20px;">
-            <span class="icon has-text-white">
-                <i class="material-icons-outlined">poll</i>
-            </span>
-            <span class="has-text-white is-font-12">Tạo khảo sát</span>
-        </div> *@
-        @* <Poll /> *@
-    </div>
-</div>
-<div class="is-padding-top-20" style="padding-bottom: 100px;">
-    <div class="is-flex is-align-items-center is-gap-10-y">
-        <span>Chữ ký:</span>
-        <div class="dropdown click @(toggleViewSignature.IsToggled ? " is-active" : "" )">
-            <div class="dropdown-trigger is-hover drop-border" @onclick="HandleToggleViewSignature">
-                <div class=" is-flex is-align-items-center">
-                    <span class="is-secondary-20 is-font-14">Chữ ký 1</span>
-                    <span class="icon">
-                        <i class="material-icons-sharp read">arrow_drop_down</i>
-                    </span>
-                </div>
-            </div>
-            <div class="dropdown-menu" style="min-width: 185px;">
-                <div class="dropdown-content" style="padding: 10px;">
-                    <div class="dropdown-item is-flex is-align-items-center is-gap-4">
-                        <span class="icon"></span>
-                        <span class="is_body2">Không có chữ ký</span>
-                    </div>
-                    <div class="dropdown-item is-flex is-align-items-center is-gap-4">
-                        <span class="icon">
-                            <i class="material-icons-sharp is_body2">done</i>
-                        </span>
-                        <span class="is_body2">Chữ ký 1</span>
-                    </div>
-                    <div class="dropdown-item is-flex is-align-items-center is-gap-4">
-                        <span class="icon"></span>
-                        <span class="is_body2">Chữ ký 2</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="is_sub2 is-secondary-10 pt-4">
-        <p>-----------------------------------------</p>
-        <p>DOCORP JSC</p>
-        <p>CÔNG TY CỔ PHẦN DOCORP</p>
-        <p>Số 23 Trường Thi 1, Phường Hòa Thuận Tây, Quận Hải Châu, Thành phố Đà Nẵng</p>
-        <p>Phone : 0905.043.312 (Ms Thúy Phượng)</p>
     </div>
 </div>
 
 @code{
     [CascadingParameter]
     public LayoutMail Layout { get; set; }
-    private ToggleHelper toggleViewSignature = new ToggleHelper();
-    private void HandleToggleViewSignature()
-    {
-        toggleViewSignature.Toggle();
-    }
     BlazoredTextEditor QuillHtml;
 }

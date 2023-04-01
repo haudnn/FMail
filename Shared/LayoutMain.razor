@@ -8,10 +8,15 @@
     @if (User != null)
     {
       <aside class="column is-narrow">
-        <Sidebar />
+        <Sidebar HandleToggleSidebar="HandleToggleSidebar"/>
       </aside>
-      <section id="content" class="column">
-        <HeaderMain />
+      <section id="content" class="column">          
+        @{
+          var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
+        }
+          @if(!relativePath.StartsWith("mail/") && !relativePath.StartsWith("settings")) {
+              <HeaderMain />
+          }
         @Body
       </section>
     }
@@ -24,6 +29,7 @@
 
 @code {
   public UserModel User = null;
+  public bool isToogleSideBar;
   public bool IsMobile = false;
   public int PageSize = 25;
   public long MaxFileSize = 10 * 1024000;
@@ -69,5 +75,8 @@
       navigation.NavigateTo("/", true);
       return;
     }
+  }
+  public void HandleToggleSidebar(bool isToogle ) {
+    isToogleSideBar = isToogle;
   }
 }

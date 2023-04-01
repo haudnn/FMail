@@ -1,43 +1,57 @@
-@if(poll != null) 
-{
-    <div class="pb-5">
+ @inject IJSRuntime JSRuntime
+ <div class="pb-5">
         <div class="is-flex is-align-items-center" style="gap: 0 20px">
             <div class="search-wrapper poll">
                 <span class="icon">
                     <i class="material-icons-outlined">edit</i>
                 </span>
-                <input class="search-input poll" type="text" @bind-value="title" placeholder="Nhập tiêu đề khảo sát">
+                <input class="search-input poll" type="text" @bind="poll.title" placeholder="Nhập tiêu đề khảo sát">
             </div>
             <div class="is-flex is-align-items-center" style="gap: 0 20px">
                 <span class="is_body2 is-secondary-40">Thời gian kết thúc: </span>
-                <div class="is-flex is-align-items-center is-gap-4">
-                    <div class="is-flex is-align-items-center">
-                        <span class="icon">
-                            <i class="material-icons-outlined is-secondary-10">calendar_today</i>
-                        </span>
-                        <div class="poll-date-picker">
-                            <DateRangePicker SingleDatePicker="true" placeholder="dd/mm/yyyy" />
-                        </div>
-                    </div>
-                    <div class="is-flex is-align-items-center">
-                        <span class="icon">
-                            <i class="material-icons-outlined is-secondary-10">schedule</i>
-                        </span>
-                        <div class="poll-date-picker">
-                            <DateRangePicker SingleDatePicker="true" placeholder="hh:mm" />
-                        </div>
-                    </div>
-                </div>
+                    <DateRangePicker
+                        OnRangeSelect="OnRangeSelect"
+                        SingleDatePicker="true" 
+                        @bind-StartDate="StartDate"
+                        TimePicker="true">
+                        <PickerTemplate>
+                            <div class="is-flex is-align-items-center is-gap-4">
+                                <div id="@context.ParentId" @onclick="context.Toggle" style="cursor:pointer;">
+                                    <div class="is-flex is-align-items-center">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined is-secondary-10">calendar_today</i>
+                                        </span>
+                                        <span>@poll.endDate</span>
+                                    </div>
+                                </div>
+                                <div id="@context.ParentId" @onclick="context.Toggle" style="cursor:pointer;">
+                                    <div class="is-flex is-align-items-center">
+                                        <span class="icon">
+                                        <i class="material-icons-outlined is-secondary-10">schedule</i>
+                                        </span>
+                                        <span>@poll.endTime</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </PickerTemplate>
+                    </DateRangePicker>
             </div>
         </div>
         <div class="poll__content">
             <ul class="is-flex is-flex-direction-column" style="gap: 20px 0">
-                  @{
+                @{
                     var questionIndex = 1;
                 }
                 @foreach (var question in poll.questions)
                 {
-                    <_QuestionItem questionIndex="questionIndex"/>
+                    <_QuestionItem 
+                        questionIndex="questionIndex" 
+                        question="@question" 
+                        OnQuestionValueChanged="HandleQuestionValueChanged"
+                        OnDeleteQuestion="HandleDeleteQuestion"
+                        isMultipleChoice ="question.isMultipleChoice"
+                        HandleChangeMultipleChoice="HandleChangeMultipleChoice"
+                        />
                     questionIndex = questionIndex + 1;
                 }
             </ul>
@@ -64,46 +78,88 @@
         </div>
     </div>
 
-}
-
 @code {
 
-    private PollModel poll;
-
-    public string title = String.Empty;
-    
     [Parameter] 
     public EventCallback HandleToogleCreatePoll {get; set;}
-    [Parameter] 
-    public EventCallback HandelCreatePoll {get; set;}
 
-    protected override async Task OnInitializedAsync()
-    {
-        poll = new PollModel
-        {
-            title = "",
-            questions = new List<QuestionModel>
-            {
-                new QuestionModel
-                {
-                    text = "",
-                    isMultipleChoice = false
-                }
-            }
-        };
-    }
+    [Parameter] 
+    public PollModel poll {get; set;}
+    [Parameter] 
+    public EventCallback<PollModel> HandelCreatePoll {get; set;}
+    DateTimeOffset? StartDate { get; set; } = DateTime.Today;
     public void HandleAddQuestion()
     {
         poll.questions.Add(new QuestionModel
         {
+            id = GenerateIDHelper.GenerateID("19012001"),
             text = "",
-            isMultipleChoice = false
+            isMultipleChoice = false,
+            choices  = new List<ChoiceModel> 
+                    {
+                        new ChoiceModel {
+                            id = GenerateIDHelper.GenerateID("19012001"),
+                            text = "",
+                        }
+                    }
         });
     }
-    private void HandleCancleCreate() {
+
+
+    private void HandleCancleCreate() 
+    {
         HandleToogleCreatePoll.InvokeAsync();
     }
-    private void HandleCreate() {
+
+
+    private void HandleCreate() 
+    {
         HandelCreatePoll.InvokeAsync();
+
     }
+
+
+    private void HandleQuestionValueChanged(QuestionModel question) 
+    {
+        var questionToUpdate = poll.questions.FirstOrDefault(q => q.id == question.id);
+        if (questionToUpdate != null) {
+            questionToUpdate.text = question.text;
+        }
+    }
+
+
+
+    private void HandleDeleteQuestion(QuestionModel question)
+    { 
+        var questionToDelete = poll.questions.FirstOrDefault(c => c.id == question.id);
+        if (questionToDelete != null)
+        {
+            poll.questions.Remove(questionToDelete);
+        }
+    }
+
+
+
+    private void HandleTitleChanged(ChangeEventArgs args) 
+    {
+        poll.title = args.Value.ToString();
+    }
+
+
+    public void HandleChangeMultipleChoice(QuestionChoice questionChange) 
+    {
+        QuestionModel questionToUpdate = poll.questions.FirstOrDefault(q => q.id == questionChange.id);
+        if (questionToUpdate != null)
+        {
+            questionToUpdate.isMultipleChoice = questionChange.isMultipleChoice;
+        }
+    }
+
+    
+    public void OnRangeSelect(DateRange range)
+    {
+        poll.endDate = range.Start.ToString("dd/MM/yyyy");
+        poll.endTime = range.Start.ToString("HH:mm");
+    }
+
 }

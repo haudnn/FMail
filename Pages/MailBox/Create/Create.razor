@@ -1,9 +1,12 @@
 @page "/create"
-@layout LayoutMail
+@layout LayoutMain
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigation
-@using Blazored.TextEditor;
+@using Blazored.TextEditor
+@using System.IO;
+@using System;
 @using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Forms
 
 <PageTitle>Tạo thư mới</PageTitle>
 <section class="is-padding-20">
@@ -21,7 +24,7 @@
             </span>
             <div class="dropdown is-right @(toogleShowCategories.IsToggled ? " is-active" : "" )">
                 <div class="dropdown-trigger is-hover drop-border is-flex is-align-items-center" style="padding: 0 8px;" @onclick="HandleShowCategories">
-                    <span class="is-secondary-20 is_caption" style="line-height: 24px;">Vận hành</span>
+                    <span class="is-secondary-20 is_caption" style="line-height: 24px;">@currentCategory.name</span>
                     <span class="icon is-secondary-20">
                         <i class="material-icons-sharp">arrow_drop_down</i>
                     </span>
@@ -30,7 +33,7 @@
                     <ul class="dropdown-content" style="padding: 8px">
                         @foreach (var category in categories)
                         {
-                            <li class="dropdown-item" style="padding: 4px 8px;">
+                            <li class="dropdown-item" style="padding: 4px 8px;" @onclick="() => HandleChooseCategory(category)">
                                 <span class="is_caption is-secondary-20">@category.name</span>
                             </li>
                         }
@@ -39,12 +42,14 @@
             </div>
         </div>
         <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-            @if(isStar) { 
+            @if(isStar) 
+            { 
                 <span class="icon" @onclick="() => HandleStarMail(false)">
                     <i class="material-icons-sharp is-warning-20">star_purple500</i>
                 </span>
             }
-            else {
+            else 
+            {
                 <span class="icon star" @onclick="() => HandleStarMail(true)">
                     <i class="material-symbols-outlined">star</i>
                 </span>
@@ -109,7 +114,7 @@
                 <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
                     @if(membersSelected.Count > 0) 
                     {
-                        <ul class="is-flex is-align-items-center is-gap-8">
+                        <ul class="is-flex is-align-items-center" style="flex-wrap: wrap; gap: 8px">
                             @foreach (var member in membersSelected)
                             {
                             <li class="is-flex is-align-items-center container-to">
@@ -132,7 +137,7 @@
                     }
                     @if(groupsSelected.Count > 0 ) 
                     {
-                        <ul class="is-flex is-align-items-center is-gap-8">
+                        <ul class="is-flex is-align-items-center"  style="flex-wrap: wrap; gap: 8px">
                             @foreach (var group in groupsSelected)
                             {
                                 <li class="is-flex is-align-items-center container-to">
@@ -151,11 +156,11 @@
                             }
                         </ul>
                     }
-
                     <_AddMember members="members" directionDropdown="is-left" HandleSelectedMember="HandleSelectedMember"/>
                     <_AddGroupMember groups="groups" directionDropdown="is-left" HandleSelectedGroup="HandleSelectedGroup"/>
                 </div>
-                @if(!toggleAddCC) {
+                @if(!toggleAddCC) 
+                {
                 <div class="is-flex is-align-items-center is-justify-content-center is-gap-10-y" style="height: 100%;">
                     <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">CC</span>
                     <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">BCC</span>
@@ -164,44 +169,12 @@
             </div>
             @if(toggleAddCC) 
             {
-                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
-                    <p class="is-secondary-40 is-font-14" style="width: 60px;">CC</p>
-                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
-                        <div class="is-flex is-align-items-center is-pointer">
-                            <span class="icon has-text-white">
-                                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
-                            </span>
-                            <span class="is-primary-40 is_caption">Thêm người nhận</span>
-                        </div>
-                        <div class="is-flex is-align-items-center is-pointer">
-                            <span class="icon">
-                                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
-                            </span>
-                            <span class="is-primary-40 is_caption">Thêm nhóm người nhận</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
-                    <p class="is-secondary-40 is-font-14" style="width: 60px;">BCC</p>
-                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center">
-                        <div class="is-flex is-align-items-center is-pointer">
-                            <span class="icon has-text-white">
-                                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
-                            </span>
-                            <span class="is-primary-40 is-font-12">Thêm người nhận</span>
-                        </div>
-                        <div class="is-flex is-align-items-center is-pointer">
-                            <span class="icon has-text-white">
-                                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
-                            </span>
-                            <span class="is-primary-40 is-font-12">Thêm nhóm người nhận</span>
-                        </div>
-                    </div>
-                </div>
+               @* <_AddReceiver name="cc" members="members" groups="groups"/>
+               <_AddReceiver name="bcc" members="members" groups="groups"/> *@
             }
             <div class="is-flex is-align-items-center is-gap-10-y">
                 <p class="is-secondary-40 is-font-14" style="width: 60px;">Tiêu đề</p>
-                <textarea placeholder="Tiêu đề thư" class="textarea-mail"></textarea>
+                <textarea placeholder="Tiêu đề thư" class="textarea-mail" @bind="@subject"></textarea>
             </div>
         </div>
         <div class="create__main-container">
@@ -210,9 +183,9 @@
                     <EditorContent>
                     </EditorContent>
                     <ToolbarContent>
-                        <div class="toolbar-create" style="left: @(Layout.isToggleSideBar ? " 80" : "220" )px">
+                        <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? "80" : "220" )px">
                             <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
-                                style="padding: 10px 40px;">
+                                style="padding: 10px 40px;" @onclick="CreateMail">
                                 <span class="is-font-14">Gửi</span>
                             </div>
                             <div class="is-flex-1">
@@ -222,13 +195,11 @@
                                         <option value="serif"></option>
                                         <option value="monospace"></option>
                                     </select>
-                                    <select class="ql-header">
+                                    <select class="ql-size">
+                                        <option value="small"></option>
                                         <option selected=""></option>
-                                        <option value="1"></option>
-                                        <option value="2"></option>
-                                        <option value="3"></option>
-                                        <option value="4"></option>
-                                        <option value="5"></option>
+                                        <option value="large"></option>
+                                        <option value="huge"></option>
                                     </select>
                                 </span>
                                 <span class="ql-formats">
@@ -242,25 +213,28 @@
                                     <select class="ql-background"></select>
                                 </span>
                                 <span class="ql-formats">
-                                    <span class="ql-align ql-picker ql-icon-picker"></span>
-                                    <select class="ql-align">
-                                        <option selected="selected"></option>
-                                        <option selected="center"></option>
-                                        <option selected="right"></option>
-                                        <option selected="justify"></option>
-                                    </select>
-                                </span>
-                                <span class="ql-formats">
                                     <button class="ql-list" value="ordered"></button>
                                     <button class="ql-list" value="bullet"></button>
                                     <button class="ql-indent" value="-1"></button>
                                     <button class="ql-indent" value="+1"></button>
                                     <button class="ql-blockquote"></button>
+                                    <select class="ql-align">
+                                        <option selected=""></option>
+                                        <option value="center"></option>
+                                        <option value="right"></option>
+                                        <option value="justify"></option>
+                                    </select>
                                 </span>
                                 <span class="ql-formats">
+                                    <button>
+                                        <label for="fileInput">
+                                            <i class="material-icons-outlined">link</i>
+                                        </label>
+                                    </button>
                                     <button class="ql-link"></button>
                                     <button class="ql-image"></button>
                                 </span>
+                            
                             </div>
                             <div class="is-flex is-align-items-center is-gap-8">
                                 <div class="wrapper-button is-justify-content-center is-inline-flex"
@@ -281,6 +255,35 @@
                         </div>
                     </ToolbarContent>
                 </BlazoredTextEditor>
+                <InputFile 
+                    multiple 
+                    id="fileInput" 
+                    style="display:none;"
+                    OnChange="@UploadFile" 
+                    accept="
+                        application/pdf,
+                        image/png,
+                        image/jpg,
+                        image/jpeg,
+                        application/msword,
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                        application/vnd.ms-excel,
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                <div style="padding: 40px 0px 20px 0px">
+                    <ul class="attachments-list mt-0">
+                        @foreach (var file in files)
+                        {
+                            <li class="attachment-item">
+                                <img style="width: 16px; height: 16px;" src="@string.Concat("images/", file.icon, ".png")">
+                                <span>@file.name</span>
+                                <span class="icon is-pointer" @onclick="() => HandleDeleteFile(file)">
+                                    <i class="material-icons-outlined">close</i>    
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
                 @if(!toggleCreatePoll.IsToggled) {
                     <div class="wrapper-button primary-btn is-bg-main is-pointer"
                         style="display: inline-flex; margin-bottom: 20px;" @onclick="HandleToogleCreatePoll">
@@ -292,10 +295,10 @@
                 }
                 else{
                     @if(!isDoneCreatePoll){
-                        <_Poll HandleToogleCreatePoll="HandleToogleCreatePoll" HandelCreatePoll="HandelCreatePoll"/>
+                        <_Poll poll="poll" HandleToogleCreatePoll="HandleToogleCreatePoll" HandelCreatePoll="HandelCreatePoll"/>
                     }
                     else{ 
-                        <_ContentPoll/>
+                        <_ContentPoll poll="poll" HandleEditPoll="HandleEditPoll"/>
                     }
                  
                 }
@@ -304,10 +307,10 @@
         <div class="is-padding-top-20" style="padding-bottom: 100px;">
             <div class="is-flex is-align-items-center is-gap-10-y">
                 <span>Chữ ký:</span>
-                <div class="dropdown click @(toggleActiveSign ? " is-active" : "" )">
+                <div class="dropdown is-up click @(toggleActiveSign ? " is-active" : "" )">
                     <div class="dropdown-trigger is-hover drop-border" @onclick='ToggleActiveSign'>
                         <div class=" is-flex is-align-items-center">
-                            <span class="is-secondary-20 is-font-14">Chữ ký 1</span>
+                            <span class="is-secondary-20 is-font-14">@(currentSignature.name != null ? currentSignature.name : "Không có chữ ký" )</span>
                             <span class="icon">
                                 <i class="material-icons-sharp read">arrow_drop_down</i>
                             </span>
@@ -315,30 +318,23 @@
                     </div>
                     <div class="dropdown-menu" style="min-width: 185px;">
                         <div class="dropdown-content" style="padding: 10px;">
-                            <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                            <div class="dropdown-item is-flex is-align-items-center is-gap-4" @onclick="() => HandleChooseSignature(null)">
                                 <span class="icon"></span>
                                 <span class="is_body2">Không có chữ ký</span>
                             </div>
-                            <div class="dropdown-item is-flex is-align-items-center is-gap-4">
-                                <span class="icon">
-                                    <i class="material-icons-sharp is_body2">done</i>
-                                </span>
-                                <span class="is_body2">Chữ ký 1</span>
-                            </div>
-                            <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                            @foreach ( var signature in signatures)
+                            {
+                            <div class="dropdown-item is-flex is-align-items-center is-gap-4" @onclick="() => HandleChooseSignature(signature)">
                                 <span class="icon"></span>
-                                <span class="is_body2">Chữ ký 2</span>
+                                <span class="is_body2">@signature.name</span>
                             </div>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
             <div class="is_sub2 is-secondary-10 pt-4">
-                <p>-----------------------------------------</p>
-                <p>DOCORP JSC</p>
-                <p>CÔNG TY CỔ PHẦN DOCORP</p>
-                <p>Số 23 Trường Thi 1, Phường Hòa Thuận Tây, Quận Hải Châu, Thành phố Đà Nẵng</p>
-                <p>Phone : 0905.043.312 (Ms Thúy Phượng)</p>
+                @((MarkupString)QuillHTMLContentSignature)
             </div>
 
         </div>
@@ -346,13 +342,15 @@
 </section>
 @code {
     [CascadingParameter]
-    public LayoutMail Layout { get; set; }
+    public LayoutMain Layout { get; set; }
     BlazoredTextEditor QuillHtml;
     string QuillHTMLContent;
+    string QuillHTMLContentSignature;
+    public string subject = String.Empty;
     private bool toggleActiveSign = false;
+    private CategoryModel currentCategory = new CategoryModel();
+    private SignatureModel currentSignature = new SignatureModel();
     private bool isDoneCreatePoll = false;
-    public PollModel currentPoll = new PollModel();
-    public List<MemberModel> members { get; set; }  = new List<MemberModel>();
     private ToggleHelper toggleShowLabel = new ToggleHelper();
     public ToggleHelper toggleCreatePoll = new ToggleHelper();
     private bool isStar = false;
@@ -365,63 +363,108 @@
     private List<GroupModel> groupsSelected = new List<GroupModel>();
     public List<CategoryModel> categories = new List<CategoryModel>();
     public List<LabelModel> labels = new List<LabelModel>();
+    public List<SignatureModel> signatures = new List<SignatureModel>();
+    public List<MemberModel> members  = new List<MemberModel>();
     public List<GroupModel> groups = new List<GroupModel>();
-    protected override void OnInitialized()
+    public List<MemberModel> membersCC =  new List<MemberModel>();
+    public List<GroupModel> groupsCC = new List<GroupModel>();
+    public List<MemberModel> membersBCC =  new List<MemberModel>();
+    public List<GroupModel> groupsBCC = new List<GroupModel>();
+
+    public PollModel poll = new();
+    private long maxFileSize = 25 * 1024 * 1024; 
+    private long totalFileSize;
+
+    protected override async Task OnInitializedAsync()
     {
-        categories = InitDataFakeHelper.InitCategories();
-        labels = InitDataFakeHelper.InitLabels();
+        CategoryData categoryData =  new CategoryData();
+        LabelData labelData = new LabelData();
+        GroupData groupData = new GroupData();
+        SignatureData signatureData = new SignatureData();
+        
+        categories = await categoryData.GetAllCategory();
+        labels = await labelData.GetAllLabels();
+        groups = await groupData.GetAllGroups();
+        signatures = await signatureData.GetAllSignatures();
+        currentCategory = categories.LastOrDefault();
         members = InitDataFakeHelper.InitMembers();
-        groups = InitDataFakeHelper.InitGroups();
     }
 
-    private void HandleShowCategories() {
+    private void HandleShowCategories() 
+    {
         toogleShowCategories.Toggle();
     }
 
-    private void HandleToogleCreatePoll() {
+    private void HandleToogleCreatePoll() 
+    {
+        poll = new PollModel
+        {
+            id = GenerateIDHelper.GenerateID("19012001"),
+            title = "",
+            endDate = DateTime.Today.ToString("dd/MM/yyyy"),
+            endTime = DateTime.Today.ToString("HH:mm"),
+            questions = new List<QuestionModel>
+            {
+                new QuestionModel
+                {
+                    id = GenerateIDHelper.GenerateID("19012001"),
+                    text = "",
+                    isMultipleChoice = false,
+                    choices  = new List<ChoiceModel> 
+                        {
+                            new ChoiceModel {
+                                id = GenerateIDHelper.GenerateID("19012001"),
+                                text = "",
+                            }
+                        }
+                }
+            }
+        };
         toggleCreatePoll.Toggle();
     }
+
     protected override async Task OnParametersSetAsync()
     {
     }
-    public async void GetHTML()
-    {
-        QuillHTMLContent = await this.QuillHtml.GetHTML();
-        StateHasChanged();
-    }
 
-    public async void SetHTML()
-    {
-        string QuillContent =
-        @"<a href='http://BlazorHelpWebsite.com/'>" +
-            "<img src='images/BlazorHelpWebsite.gif' /></a>";
-
-        await this.QuillHtml.LoadHTMLContent(QuillContent);
-        StateHasChanged();
-    }
     private void ToggleAddCC()
     {
         toggleAddCC = true;
     }
+
+
     private void ToggleActiveSign()
     {
         toggleActiveSign = !toggleActiveSign;
     }
+
     private void HandleStarMail(bool isStarMail)
     {
         isStar = isStarMail;
     }
-    private void ToggleActiveAddMember(bool isActiveAddMember){
+
+
+    private void ToggleActiveAddMember(bool isActiveAddMember)
+    {
         toggleActiveAddMember = isActiveAddMember;
     }
-    private void ToggleActiveAddGroup() {
+
+
+    private void ToggleActiveAddGroup() 
+    {
         toggleActiveAddGroup = !toggleActiveAddGroup;
     }
-    private void HandelToggleShowLabel() { 
+
+
+
+    private void HandelToggleShowLabel() 
+    { 
         toggleShowLabel.Toggle();
     }
 
-    private void HandelChooseLabel(LabelModel label) {
+
+    private void HandelChooseLabel(LabelModel label) 
+    {
         if (labelsSelected.Contains(label))
         {
             labelsSelected.Remove(label);
@@ -431,27 +474,225 @@
             labelsSelected.Add(label);
         }
     }
+    
+
+    private async Task HandleChooseSignature(SignatureModel signature) 
+    {
+        if(signature == null) {
+            currentSignature = new SignatureModel();
+            QuillHTMLContentSignature = String.Empty;
+            toggleActiveSign = !toggleActiveSign;
+            return;
+        }
+        SignatureData signatureData = new SignatureData();
+        SignatureModel getSignature =  await signatureData.GetSignatureById(signature.id);
+        currentSignature = signature;
+        QuillHTMLContentSignature = getSignature.body;
+        toggleActiveSign = !toggleActiveSign;
+        StateHasChanged();
+    }
+
+
     private void HandleSelectedMember(List<MemberModel> membersList) { 
         List<MemberModel> clonedList = new List<MemberModel>(membersSelected);
         clonedList.AddRange(membersList);
         membersSelected = clonedList;
     }
-    private void HandleDeleteMemberSelected(MemberModel member) {
+
+
+    private void HandleDeleteMemberSelected(MemberModel member) 
+    {
         membersSelected.Remove(member);
         members.Add(member);
     }
 
-    private void HandleSelectedGroup(List<GroupModel> groupsList) { 
+
+    private void HandleSelectedGroup(List<GroupModel> groupsList) 
+    { 
         List<GroupModel> clonedList = new List<GroupModel>(groupsSelected);
         clonedList.AddRange(groupsList);
         groupsSelected = clonedList;
     }
 
-    private void HandleDeleteGroupSelected(GroupModel group) {
+
+    private void HandleDeleteGroupSelected(GroupModel group) 
+    {
         groupsSelected.Remove(group);
         groups.Add(group);
     }
-    public void HandelCreatePoll() {
+
+
+    public async Task HandelCreatePoll() 
+    {
+        bool isValidPoll = await IsValidPoll();
+        if (!isValidPoll) { 
+            return;
+        }
         isDoneCreatePoll = true;
+        StateHasChanged();
+    }
+
+
+    private List<AttachmentModel> files =new List<AttachmentModel>();
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        try {
+            foreach (var file in e.GetMultipleFiles())
+            {
+                if(!FileHelper.IsValidFileType(file)) 
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Định dạng file hiện tại không cho phép. Chỉ PDF, PNG, JPG, JPEG, DOC, DOCX, XLS, and XLSX là các tệp mở rộng cho phép.");
+                    return;
+                }
+                if (totalFileSize + file.Size > maxFileSize)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Tối đa 25MB cho tất cả các file!");
+                    return;
+                }
+
+                // var total = files.Sum(x => x.size);
+                totalFileSize += file.Size;
+                var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+                string filePath = await FileHelper.SaveFileAsync(fileContent, file.Name);
+                await JSRuntime.InvokeVoidAsync("alert", "Upload thành công");
+                files.Add(new AttachmentModel {
+                    id = "1",
+                    name = file.Name,
+                    size = file.Size,
+                    contentType = file.ContentType,
+                    filePath = filePath,
+                });
+            }
+        }
+        catch(Exception ex) {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+
+    private void HandleDeleteFile(AttachmentModel fileDelete) 
+    {
+        FileHelper.DeleteFile(fileDelete.filePath);
+        AttachmentModel fileToDelete = files.FirstOrDefault(file => file.filePath == fileDelete.filePath);
+        if (fileToDelete != null)
+        {
+            files.Remove(fileToDelete);
+        }
+        StateHasChanged();
+    }
+
+
+    private void HandleEditPoll()
+    {
+        isDoneCreatePoll = false;
+    }
+
+
+    private async Task<bool> IsValidPoll()
+    {
+        if (string.IsNullOrEmpty(poll.title))
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Tên khảo sát không được trống!");
+            return false;
+        }
+
+        int questionCount = poll.questions.Count;
+        if( questionCount == 0) {
+            await JSRuntime.InvokeVoidAsync("alert", "Vui lòng thêm câu hỏi!");
+            return false;
+        }
+        for (int i = 0; i < questionCount; i++)
+        {
+            var question = poll.questions[i];
+            if (string.IsNullOrEmpty(question.text))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Nội dung câu hỏi không được trống!");
+                return false;
+            }
+
+            int choiceCount = question.choices.Count;
+            if( choiceCount == 0) {
+                await JSRuntime.InvokeVoidAsync("alert", "Vui lòng thêm lựa chọn!");
+                return false;
+            }
+            for (int j = 0; j < choiceCount; j++)
+            {
+                if (string.IsNullOrEmpty(question.choices[j].text))
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Lựa chọn không được trống!");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+    private void HandleChooseCategory(CategoryModel categorySelected) 
+    {
+        currentCategory = categorySelected;
+        toogleShowCategories.ToggleFalse();
+    }
+
+
+    public async Task CreateMail() 
+    {
+        bool isValidMail = await IsValidMail();
+        if(!isValidMail) 
+        {
+            return;
+        }
+        QuillHTMLContent = await QuillHtml.GetHTML();
+        string shortBody = await QuillHtml.GetText();
+        MailData mailData = new MailData();
+        MailModel mailToCreate = new MailModel
+        {
+            id = GenerateIDHelper.GenerateID("19012001"),
+            from = Layout.User.email,
+            category = currentCategory.id,
+            isImportant = isStar,
+            labels = labelsSelected.Select(l => l.id).ToList(),
+            to = membersSelected,
+            cc = new List<MemberModel>(),
+            bcc = new List<MemberModel>(), 
+            subject = subject == String.Empty ? "Không có chủ đề" : subject,
+            body = QuillHTMLContent,
+            attachments = files,
+            signature = currentSignature,
+            sentDate = DateTimeHelper.FormatDateTimeUTC(),
+            author = Layout.User.id,
+            folder = "sent",
+            shortBody = shortBody.Length > 50 ? shortBody.Substring(0, 50) : shortBody,
+        };
+        if(toggleCreatePoll.IsToggled) {
+            PollData pollData = new PollData();
+            bool isCreatedPollSuccess = await pollData.CreatePoll(poll);
+            if(isCreatedPollSuccess) {
+                mailToCreate.pollId = poll.id;
+                await mailData.CreateMail(mailToCreate);
+                await JSRuntime.InvokeVoidAsync("alert", "Tạo mail thành công!");   
+            };
+        }
+        else {
+            await mailData.CreateMail(mailToCreate);
+            await JSRuntime.InvokeVoidAsync("alert", "Tạo mail thành công!");      
+        }
+        navigation.NavigateTo("/mail/inbox", true);
+    }
+
+
+    private async Task<bool> IsValidMail() 
+    {
+        if(membersSelected.Count == 0) 
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Danh sách người nhận không được trống!");   
+            return false;
+        }
+        @* if(string.IsNullOrEmpty(QuillHTMLContent)) {
+            await JSRuntime.InvokeVoidAsync("alert", "Nội dung của thư không được trống!");   
+            return false;
+        } *@
+        return true;
     }
 }

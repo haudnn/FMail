@@ -35,10 +35,16 @@
     {
         toggleActiveModal = isActiveModal;
     }
-    private void HandleViewDetail() {
+
+
+    private void HandleViewDetail() 
+    {
         HandleViewDetailGroup.InvokeAsync(id);
     }
-    private void HandleConfirmation() {
+
+
+    private void HandleConfirmation() 
+    {
         HandleConfirmationDeleteGroup.InvokeAsync(id);
         toggleActiveModal = !toggleActiveModal;
     }

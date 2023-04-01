@@ -86,16 +86,22 @@
 
     private ToggleHelper toggleViewAdd = new ToggleHelper();
     private ToggleHelper toggleCheckBox = new ToggleHelper();
+
+
     private void HandleToggleViewAdd()
     {
         toggleViewAdd.Toggle();
     }
+
+
     private void HandleToggleCheckBox() 
     {
         toggleCheckBox.Toggle();
     }
 
-    private void HandlePickedGroup(GroupModel group) {
+
+    private void HandlePickedGroup(GroupModel group) 
+    {
         if (!groupsSelected.Contains(group))
         {
             groupsSelected.Add(group);
@@ -107,12 +113,18 @@
             groups.Add(group);
         }
     }
-    private void HandleUpdateGroups() {
-        if(toggleCheckBox.IsToggled){
+
+
+
+    private void HandleUpdateGroups() 
+    {
+        if(toggleCheckBox.IsToggled)
+        {
             HandleSelectedGroup.InvokeAsync(groups);
             groups.Clear();
         }
-        else {
+        else 
+        {
             HandleSelectedGroup.InvokeAsync(groupsSelected);
         }
         toggleViewAdd.Toggle();
@@ -120,4 +132,6 @@
         toggleCheckBox.Toggle();
 
     }
+    
+    
 }

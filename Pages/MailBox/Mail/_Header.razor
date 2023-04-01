@@ -21,8 +21,17 @@
                         </span>
                     </div>
                     <div class="container-datepicker is-flex-1">
-                        <DateRangePicker class="is_body2 is-secondary-40" @bind-StartDate="StartDate" SingleDatePicker=true  />
-                        <DateRangePicker class="end-date is_body2 is-secondary-40" @bind-StartDate="EndDate" SingleDatePicker=true/>
+                        @* <DateRangePicker class="is_body2 is-secondary-40" @bind-StartDate="StartDate" SingleDatePicker=true /> *@
+                        <DateRangePicker>
+                            <PickerTemplate>
+                                <div id="@context.ParentId" @onclick="context.Toggle">
+                                    <span class="is_body2 is-secondary-40">dd/MM/yyyy</span>
+                                </div>
+                                <div style="margin-left: 10px;" id="@context.ParentId" @onclick="context.Toggle">
+                                    <span class="is_body2 is-secondary-40">dd/MM/yyyy</span>
+                                </div>
+                            </PickerTemplate>
+                        </DateRangePicker>
                     </div>
                     <div style="padding-left: 8px;" class="dropdown @(toggleFilterTime.IsToggled ? " is-active" : "" )
                         is-right">
@@ -49,7 +58,7 @@
             {
                     <div class="dropdown is-right @(toggleFilterStatus.IsToggled ? "is-active" : "" ) ">
                         <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleFilterStatus">
-                            <span class="is_body2 is-secondary-20">Trạng thái</span>
+                            <span style="white-space: nowrap;" class="is_body2 is-secondary-20">Trạng thái</span>
                             <span class="icon is-secondary-20">
                                 <i class="material-icons-outlined">
                                     arrow_drop_down
@@ -79,7 +88,7 @@
                             <div class="dropdown-content filter-label">
                                 <div class="dropdown__header">Nhãn cần lọc</div>
                                 <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding-bottom: 40px;">
-                                @* @foreach (var label in labels)
+                                @foreach (var label in labels)
                                 {
                                     <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
                                         <span class="icon is-small">
@@ -92,7 +101,7 @@
                                             <span class="is_body2 is-secondary-10">@label.name</span>
                                         </div>
                                     </li>
-                                } *@
+                                }
                                 </ul>
                                 <div class="is-flex is-align-items-center is-justify-content-flex-start" style="gap: 0 10px;">
                                     <div class="wrapper-button primary-btn" style="padding: 0 4px;">
@@ -142,14 +151,19 @@
     private ToggleHelper toggleFilterLabel = new ToggleHelper();
     private ToggleHelper toggleFilterStatus = new ToggleHelper();
     private ToggleHelper toggleFilterTime = new ToggleHelper();
+
     private void HandleToggleFilterLabel()
     {
         toggleFilterLabel.Toggle();
     }
+
+    
     private void HandleToggleFilterStatus()
     {
         toggleFilterStatus.Toggle();
     }
+
+    
     private void HandleToggleFilterTime()
     {
         toggleFilterTime.Toggle();
