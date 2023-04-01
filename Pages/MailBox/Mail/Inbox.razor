@@ -7,7 +7,7 @@
 
 <PageTitle>Hộp thư đến </PageTitle>
 <div class="mail-wrapper">
-    <MailSideBar HandleActiveTab="HandleActiveTab"/>
+    <MailSideBar />
     <div class="mail__main">
         <HeaderMain />
         <div class="mail__container">
@@ -122,7 +122,7 @@
     public List<CategoryModel> categorise = new();
     private List<LabelModel> labels = new();
     private List<MailModel> mails = new List<MailModel> ();
-    public int currentSideBarActive = 1;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -179,8 +179,5 @@
         mails.Clear();
     }
 
-    public void HandleActiveTab(int currentTab) 
-    {
-        currentSideBarActive = currentTab;
-    }
+
 }

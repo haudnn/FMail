@@ -1,8 +1,8 @@
 @inject IJSRuntime JSRuntime
 @inject ProtectedLocalStorage storage
 @inject NavigationManager navigation
-<nav class="mail__sidebar @(navLess ? " is_less" : "" )">
-    <div class="is-flex is-align-items-center is-pointer" @onclick="ToggleSidebar" style="width: 42px; height: 36px;">
+<nav class="mail__sidebar @(navLess ? "is_less" : "" )">
+    <div class="is-flex is-align-items-center is-pointer is-justify-content-center" @onclick="ToggleSidebar" style="width: 44px; height: 44px; margin-right: 10px;">
         <span class="icon is-small">
             <i class="material-icons-outlined">menu</i>
         </span>
@@ -19,8 +19,8 @@
         </div>
         @foreach (var item in NavMap.Values)
         {
-            <div  style="margin-right: 10px;" class="mail__sidebar-item is-flex is-align-items-center @(item.active ? "active" : "")">
-                <a href="@item.link" @onclick="(e) => SetActiveNavItem(item)">
+            <div  style="margin-right: 10px;" class="mail__sidebar-item is-flex is-align-items-center @(currentPath == item.link ? "active" : "")">
+                <a href="@item.link" @onclick="SetActiveNavItem">
                     <span class="icon">
                         <i class="material-icons-sharp is-secondary-40">@item.icon</i>
                     </span>
@@ -28,7 +28,7 @@
                 </a> 
             </div>
         }
-        <div  style="margin-right: 10px;" class="mail__sidebar-item border is-flex is-align-items-center is-gap-10-y">
+        <div style="margin-right: 10px;" class="mail__sidebar-item border is-flex is-align-items-center is-gap-10-y">
             <span class="icon">
                 <i class="material-icons-outlined">arrow_drop_down</i>
             </span>
@@ -63,39 +63,39 @@
 
 @code{
     [CascadingParameter]
-    public LayoutMail Layout { get; set; }
+    public LayoutMain Layout { get; set; }
     [Parameter]
     public EventCallback<int> HandleActiveTab { get; set; }
     [Parameter]
     public EventCallback<bool> HandleToggleSidebarMail { get; set; }
     private Dictionary<int, NavModel> NavMap = new Dictionary<int, NavModel>();
-    private int currentIndexNavActive;
+    public string activeLabel { get; set; }
     private bool navLess = false;
     private List<LabelModel> labels = new();
+    private NavModel _prevActiveNavItem;
+    public string currentPath { get; set;}
+
     private async Task ToggleSidebar()
     {
         navLess = !navLess;
         await HandleToggleSidebarMail.InvokeAsync(navLess);
     }
-    private NavModel _prevActiveNavItem;
-    private int labelActive;
+
     protected override async Task OnInitializedAsync()
     {
         LabelData labelData = new LabelData();
         labels = await labelData.GetAllLabels();
+        var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
+        currentPath = relativePath;
         Navigation();
     }
-    private async Task SetActiveNavItem(NavModel navItem)
+
+    private void SetActiveNavItem()
     {
         var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
-        if (_prevActiveNavItem != null)
-        {
-            _prevActiveNavItem.active = false;
-        }
-        navItem.active = true;
-        _prevActiveNavItem = navItem;
-        await InvokeAsync(StateHasChanged);
+        currentPath = relativePath;
     }
+
     private void Navigation() 
     {
         NavMap.Add(1, new NavModel
@@ -139,6 +139,7 @@
                 active = false,
             });
     }
+
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
@@ -161,7 +162,6 @@
             StateHasChanged();
         }
     }
-    public string activeLabel { get; set; }
 
     private void HandleActiveLabel(LabelModel clickedLabel) { 
         activeLabel = clickedLabel.id;

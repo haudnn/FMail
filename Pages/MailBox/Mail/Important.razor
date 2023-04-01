@@ -7,7 +7,7 @@
 
 <PageTitle>Hộp quan trọng </PageTitle>
 <div class="mail-wrapper">
-    <MailSideBar HandleActiveTab="HandleActiveTab"/>
+    <MailSideBar/>
     <div class="mail__main">
         <HeaderMain />
         <div class="mail__container">
@@ -108,7 +108,6 @@
     private List<LabelModel> labels = new();
     private List<MailModel> mails = new();
     private bool isSelectedAll  = false;
-    public int currentSideBarActive = 1;
     private List<string> selectedItems = new List<string>();
 
     protected override void OnInitialized()
@@ -118,10 +117,6 @@
         mails = InitDataFakeHelper.FitterMailsImportant();
     }
 
-    public void HandleActiveTab(int currentTab) 
-    {
-        currentSideBarActive = currentTab;
-    }
 
     private void HandleSelectedAllMail()
     {

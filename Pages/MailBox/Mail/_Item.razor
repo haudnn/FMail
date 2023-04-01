@@ -1,5 +1,5 @@
 @inject NavigationManager navigation
-<tr @onclick="HandleViewDetail" class="mail-item @(isDraft ? "drafts" : "") @(isReadToogle ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px">
+<tr class="mail-item @(isDraft ? "drafts" : "") @(isReadToogle ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px">
     <td class="mail-td mail-checkbox">
         @if (isChecked)
             {
@@ -37,7 +37,7 @@
             Tôi
         </span>
     </td>
-    <td class="mail-td mail-main">
+    <td class="mail-td mail-main" @onclick="HandleViewDetail">
         <div>
             <div class="mail-main-content">
                 <div class="mail-subject">
@@ -66,7 +66,7 @@
             @if (attachments.Count() > 2)
                 {
                     <li class="attachment-item count">
-                        <span class="is_sub2 is-secondary-40">+@(labels.Count() - 3)</span>
+                        <span class="is_sub2 is-secondary-40">+@(attachments.Count() - 3)</span>
                     </li>
                  }
         </ul>
@@ -76,19 +76,19 @@
             <div class="mail-actions">
                 @if (isReadToogle)
                     {
-                        <span @onclick="() => HandleToogleReadMail(false)" class="icon material-symbols-outlined is-pointer" style="font-size: 16px;">
-                            drafts
+                        <span class="is-pointer is-small" @onclick="() => HandleToogleReadMail(false)">
+                           <i class="icon material-icons-outlined"> drafts</i>
                         </span>
                     }
                     else
                     { 
-                        <span @onclick="() => HandleToogleReadMail(true)" class="icon material-symbols-outlined is-pointer" style="font-size: 16px;">
-                            mail
+                        <span class="is-pointer is-small" @onclick="() => HandleToogleReadMail(true)">
+                           <i class="icon material-icons-outlined">mail</i>
                         </span>
                     }
-                    <span class="material-symbols-outlined is-pointer" style="font-size: 16px;">
-                            delete
-                    </span>
+                        <span class="is-pointer is-small">
+                           <i class="icon material-icons-outlined">delete</i>
+                        </span>
             </div>
     </td>
     <td class="mail-td tags-list">
@@ -109,99 +109,6 @@
     <td class="mail-td mail__item-datetime">
         <span class="is-block @(isReadToogle ? "read" : "unread")">@sentDate</span>
     </td>
-    @* <div class="columns">
-        <div class="column is-2">
-            <div class="is-flex is-align-items-center" style="gap: 0 16px; position: relative;">
-                @if (isChecked)
-                {
-                    <span class="icon is-small" @onclick="SelectedMail">
-                        <i class="material-icons-sharp is-secondary-60">check_box</i>
-                    </span>  
-                }
-                else
-                {
-                    <span class="icon is-small" @onclick="SelectedMail">
-                        <i class="material-icons-outlined is-secondary-60">check_box_outline_blank</i>
-                    </span>
-                }
-                @if (isStar)
-                { 
-                    <span class="icon" @onclick="() => HandleStarMail(false)">
-                        <i class="material-icons-sharp is-warning-20">star_purple500</i>
-                    </span>
-                }
-                else
-                { 
-                    <span class="icon star" @onclick="() => HandleStarMail(true)">
-                        <i class="material-symbols-outlined">star</i>
-                    </span>
-                }
-                @if(isDraft) {
-                    <span class="is_sub2 title-drafts text-ellipsis mw-160  @(isReadToogle ? "read" : "unread") drafts">Thư nháp</span>
-                }
-                else{
-                    <span class="is_sub2 text-ellipsis mw-160  @(isReadToogle ? "read" : "unread") ">
-                        @if(isSentMail) {
-                            <span>Đến: </span>
-                        }
-                        @from
-                    </span>
-                }
-          
-            </div>
-        </div>
-        <div class="column is-10">
-            <div class="mail__item-content is-flex is-flex-direction-column">
-                <div class="mail__item-content-top">
-                    <a href="/inbox/@id" class="is-flex mail__item-content-text">
-                        <span class="mail__item-tag">KS</span>
-                        <p style="flex-shrink: 1;white-space: nowrap; overflow: hidden; " class="is-inline-flex is_sub2 @(isReadToogle ? "read" : "unread")">
-                            @subject
-                        </p>
-                        <span>-</span>
-                        <div class=" is-flex is_body2 @(isReadToogle ? "read" : "unread") mail-text--content">
-                          @body
-                        </div>
-                    </a>
-
-                    <div class="mail-actions">
-                        @if (isReadToogle)
-                        {
-                            <span @onclick="() => HandleToogleReadMail(false)" class="icon material-symbols-outlined is-pointer" style="font-size: 16px;">
-                                drafts
-                            </span>
-                        }
-                        else
-                        { 
-                            <span @onclick="() => HandleToogleReadMail(true)" class="icon material-symbols-outlined is-pointer" style="font-size: 16px;">
-                                mail
-                            </span>
-                        }
-                        <span class="material-symbols-outlined is-pointer" style="font-size: 16px;">
-                            delete
-                        </span>
-                    </div>
-                    <ul class="tags-list">
-                        @foreach (var label in labels.Take(2))
-                        {
-                            <li style="background-color: @(label.color + "33")" class="tag-item">
-                                <span style="color: @label.color;" class="is_caption">@label.name</span>
-                            </li>
-                        }
-                        @if (labels.Count() > 2)
-                        {
-                            <li class="tag-item count">
-                                <span class="is_sub2 is-secondary-40">+@(labels.Count() - 2)</span>
-                            </li>
-                        }
-                    </ul>
-                    <div class="mail__item-datetime">
-                        <span class="is-block @(isReadToogle ? "read" : "unread")">@sentDate</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> *@
 </tr>
 @code {
 

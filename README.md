@@ -19,15 +19,14 @@
     <p> 9. Tái cấu trúc source code: Mỗi chức năng được đưa vào trong 1 folder, component sẽ có "_" phía trước, các component dùng chung được bỏ ra ngoài</p>
     <p> 10. Tạo được poll</p>
     <p> 12.Trong folder helper có 1 file là: "InitDataFakeHelper.cs" file này dùng để fake data</p>
-    <p> 13. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với database, các model 
-        <a href="https://drive.google.com/file/d/1UD7hLkSYp1aRRiXFhbsQA_8uThPgP94K/view?usp=sharing">tại đây</a>
-    </p>
+    <p> 13. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với database, các model </p>
 <div>_________________________________________________________________________________________________________________</div>
 <strong>Tuần 3: 27/3/2023 - 1/4/2023</strong>
   <h4>Công việc thực hiện được: </h4>
-    <p> 1. CRUD "Chữ ký", "Nhóm", Thành viên trong nhóm, Nhãn, Danh mục với MongoDB </p>
-    <p> 2. Tạo, xem được mail, đấy file lên, dowload file về </p>
+    <p> 1. CRUD "Chữ ký", "Nhóm", "Thành viên trong nhóm", "Nhãn", Danh mục (MongoDB) </p>
+    <p> 2. Tạo, xem được mail, đấy file lên, dowload file về trong mail </p>
     <p> 3. Check được người gửi, người nhận, check được author mail, filter được mail gửi mail, mail nhận, mail quan trọng,... (MongoDB) </p>
-    <p> 4. Tạo được Poll, vote poll, xem thống kế poll </p>
-    <p> 5. Login với, check login </p>
+    <p> 4. CRUD Poll, xem thống kế poll, vote poll (MongoDB) </p>
+    <p> 5. Login với, check login, check current user,... </p>
     <p> 6. Hoàn thiện tất cả UI </p>
+    <p> 7. Clean code, sửa lại src cho phù hợp với yêu cầu </p>

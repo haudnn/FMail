@@ -2851,29 +2851,34 @@ button.dropdown-item {
   background-color: var(--white-color);
   border-right: 1px solid var(--border-navbar-mail-color);
   padding: 20px 10px;
-  position: sticky;
+  position: fixed;
   padding-right: 0;
   top: 0;
-  transition: all 0.1s;
+  z-index: 20;
+  transition: all 0.2s ease;
+  min-height: 100vh;
 }
 .mail__sidebar.is_less {
   min-width: 60px;
 }
+.mail__sidebar.is_less + .mail__main{
+  margin-left: 73px;
+}
 .mail__sidebar.is_less span:not(.icon) {
   display: none;
-  transition: all 0.1s;
+  transition: all 0.2s ease;
 }
 .mail__sidebar.is_less li:not(:first-child) {
   justify-content: center;
   width: 36px;
   height: 36px;
-  transition: all 0.1s;
+  transition: all 0.2s ease;
 }
 .mail__sidebar-menu {
   display: flex;
   flex-direction: column;
   gap: 10px 0;
-  transition: all 0.1s;
+  transition: all 0.2s ease;
   max-height: calc( 100vh - 100px );
 }
 .icon_mail {
@@ -2887,7 +2892,7 @@ button.dropdown-item {
   border-radius: 4px;
   padding: 10px;
   cursor: pointer;
-  transition: all 0.1s;
+  transition: all 0.2s ease;
 }
 .mail__sidebar-item.border{
   border-top: 1px solid var(--color-secondary-60);
@@ -2898,12 +2903,13 @@ button.dropdown-item {
   padding: 10px;
   cursor: pointer;
   background-color: var(--color-primary-40);
-  transition: all 0.1s;
+  transition: all 0.2s ease;
   margin-top: 10px;
 }
 .mail__sidebar-item.active {
   background-color: #ecf0ff;
-  transition: all 0.1s;
+  transition: all 0.2s ease;
+
 }
 .mail__sidebar-item.active .mail__sidebar-item-text {
   color: var(--color-primary-40);
@@ -2935,9 +2941,11 @@ button.dropdown-item {
 .mail__main {
   background-color: var(--white-color);
   flex: 1;
+  margin-left: 220px;
+  transition: all 0.2s ease;
 }
 .mail__container {
-  padding: 20px;
+  padding: 20px 20px 0 20px;
 }
 .dropdown-trigger {
   cursor: pointer;
@@ -3065,7 +3073,7 @@ button.dropdown-item {
 }
 .mail__content {
   padding-top: 20px;
-  max-height: calc(100vh - var(--header-mail-height) - 80px);
+  min-height: calc(100vh - 152px);
 }
 .category__list {
   max-height: 37px;
@@ -3099,7 +3107,7 @@ button.dropdown-item {
   display: flex;
   position: relative;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 .unread {
@@ -3176,11 +3184,6 @@ button.dropdown-item {
   white-space: nowrap;
 }
 .mail__item-datetime {
-  /* display: flex;
-  height: 100%;
-  justify-content: flex-end;
-  width: 80px;
-  flex-basis: 80px; */
   letter-spacing: normal;
   width: 80px;
   flex-basis: 80px !important;
@@ -3189,17 +3192,14 @@ button.dropdown-item {
   padding-right: 16px;
 }
 .attachments-list {
-  /* margin-top: 10px;
-  gap: 0 10px;
   display: flex;
-  align-items: center; */
-    display: flex;
-    height: 30px;
-    margin-bottom: 3px;
-    margin-left: 2px;
-    margin-top: 7px;
-    order: 1;
-    width: 100%;
+  height: 30px;
+  margin-bottom: 3px;
+  margin-left: 2px;
+  margin-top: 7px;
+  order: 1;
+  width: 100%;
+  gap: 0 10px;
 }
 .attachment-item {
   padding: 5px 12px;
@@ -3335,8 +3335,10 @@ button.dropdown-item {
 }
 .mail__content-header.error {
   background-color: var(--color-error-95);
-  padding: 10mail-wrapper unset;
+  padding: 10px;
   height: unset;
+  gap: 0 40px;
+  max-height: 44px;
 }
 .mail__bar {
   background-color: var(--white-color);
@@ -3396,16 +3398,24 @@ button.dropdown-item {
   background-color: #ecf0ff;
 }
 .mail__footer {
-  background-color: var(--white-color);
   padding: 14px 30px 20px 30px;
+  background-color: var(--white-color);
 }
 .mail__footer.actions {
   position: sticky;
   border-top: 1px solid #c0c6dc;
-  background-color: var(--white-color);
   bottom: 0;
   right: 20px;
   left: 20px;
+}
+.mail__footer.pagination{
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+ align-items: center;
+ justify-content: center;
 }
 .mail__sidebar.is_less .mail__main .mail__footer .mail-actions {
   background: #000;
@@ -3641,9 +3651,12 @@ button.dropdown-item {
   outline: none;
   width: 100%;
 }
-.mail__sidebar.is_less .mail__main .mail__footer {
+/* .mail__sidebar.is_less .mail__main .mail__footer {
   left: 200px;
-}
+} */
+/* .mail__sidebar.is_less .mail__main{
+  margin-left: 80px;
+} */
 .wrapper-header-poll {
   padding: 10px 20px;
   border-radius: 10px 10px 0px 0px;

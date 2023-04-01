@@ -1,5 +1,5 @@
 @page "/inbox/{id}"
-@layout LayoutMail
+@layout LayoutMain
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigation
 @using Microsoft.AspNetCore.Components
@@ -199,7 +199,7 @@
 </section>
 @code {
     [CascadingParameter]
-    public LayoutMail Layout { get; set; }
+    public LayoutMain Layout { get; set; }
     [Parameter]
     public string? id { get; set; }
     BlazoredTextEditor QuillHtml;

@@ -21,7 +21,7 @@
             />
             <div class="mail__bar" style="top: 56px">
                 @if(mails.Count > 0) {
-                    <div class="mail__content-header error is-flex is-align-items-center" style="gap: 0 40px; padding: 10px;">
+                    <div class="mail__content-header error is-flex is-align-items-center">
                         @if(selectedItems.Count > 0) {
                             @if(isSelectedAll) {
                                 <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="HandleSelectedAllMail">
