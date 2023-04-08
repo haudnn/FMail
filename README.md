@@ -20,13 +20,39 @@
     <p> 10. Tạo được poll</p>
     <p> 12.Trong folder helper có 1 file là: "InitDataFakeHelper.cs" file này dùng để fake data</p>
     <p> 13. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với database, các model </p>
-<div>_________________________________________________________________________________________________________________</div>
+<div>______________________________________________________________________________________________________________________________________</div>
 <strong>Tuần 3: 27/3/2023 - 1/4/2023</strong>
   <h4>Công việc thực hiện được: </h4>
-    <p> 1. CRUD "Chữ ký", "Nhóm", "Thành viên trong nhóm", "Nhãn", Danh mục (MongoDB) </p>
+    <p> 1. CRUD "Chữ ký", "Nhóm", "Thành viên trong nhóm", "Nhãn", "Danh mục" (MongoDB) </p>
     <p> 2. Tạo, xem được mail, đấy file lên, dowload file về trong mail </p>
     <p> 3. Check được người gửi, người nhận, check được author mail, filter được mail gửi mail, mail nhận, mail quan trọng,... (MongoDB) </p>
     <p> 4. CRUD Poll, xem thống kế poll, vote poll (MongoDB) </p>
     <p> 5. Login với, check login, check current user,... </p>
     <p> 6. Hoàn thiện tất cả UI </p>
     <p> 7. Clean code, sửa lại src cho phù hợp với yêu cầu </p>
+<div>______________________________________________________________________________________________________________________________________</div>
+<strong>Tuần 4: 3/4/2023 - 8/4/2023</strong>
+  <h4>Công việc thực hiện được: </h4>
+    <p> 1. Hoàn thiện tất cả chức năng: "Chữ ký", "Nhóm", "Thành viên trong nhóm", "Nhãn", "Danh mục" trong "Cấu hình" + "Settings"  </p>
+    <p> 2. Về phần mail: Hoàn thành chức năng gửi mail (gửi cc, to, bcc), chọn danh mục, chữ ký mặc định, tải file, thêm xóa nhãn </p>.
+    <p> 3. Tạo được "poll" vote được poll, xem được phần trăm %, người đã vote cũng như chưa vote </p>
+    <p> 4. Lưu được thư nháp </p>
+    <p> 5. Về trang home: Đã làm được việc lọc mail theo thư đã gửi, thư đến, thư quan trọng, thư nháp, thùng rác </p>
+    <p> 6. Xóa được 1 hay nhiều mails ( vào thừng rác ), khôi phục 1 hay nhiều thư về thư mục ban đầu </p>
+    <p> 7. Đánh dấu quan trong, gán nhãn, đánh dấu đọc chưa đọc một hay nhiều mail ở trang home </p>
+  <h4>Vấn đề đang gặp phải</h4>
+    <p> 
+      Về cơ bản, tất cả các chức năng theo PRD đã hoàn thành ở múc trên 80%, chỉ còn thiếu phần "Replies", "Forward", tuy nhiên hiện tại những thứ cần realtime vần
+      đang chưa thực hiện được, hiện tại phải reload thì mới được tuần sau sẽ khắc phục vấn đề này bằng MessingCenter và một số cách khác.
+    </p>
+    <p>
+      Chưa tách data với service ra riêng đang bị dồn hết vào data sẽ tách ra vào tuần sau, src code đang chưa tôi ưu có các folder đang bị dư (tạo ra nhưng chưa dùng) sẽ
+      cố gắng sửa lại trong tuần tới.
+    </p>
+    <p>
+      Trong lúc test sẽ cõ những lỗi vặt do chưa handle hết các phần đó, lúc test anh sẽ gặp lỗi "Cannot remove child last..." anh nhấn thử lại là được lỗi này xuất hiện trong thằng
+      blazor editors nhưng chưa khắc phục được .   
+    </p>
+    
+    
+  

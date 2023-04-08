@@ -66,18 +66,12 @@
                     <div class="mail__items">
                         @foreach (var mail in mails)
                         {
-                            <_Item 
-                                id="@mail.id"
-                                from="@mail.from"
-                                body="@mail.body"
-                                isRead="@mail.isRead"
-                                attachments="@mail.attachments"
-                                isImportant="@mail.isImportant"
-                                sentDate="@mail.sentDate"
-                                labelsIds="@mail.labels"
-                                subject="@mail.subject"
+                            <_Item
+                                mail="mail"
+                                isSentMail ="true"
                                 isChecked="@selectedItems.Contains(mail.id)" 
                                 HandleSelectedMail="HandleSelectedMail"
+                                HandleTrashItem="HandleTrashItem"
                             />
                         }
                     </div>
@@ -98,7 +92,9 @@
                         mailCount="selectedItems.Count" 
                         HandleCancelSelectedMail="HandleCancelSelectedMail"
                         HandleTrashMails="HandleTrashMails"
-                        isTrashMails="true"         
+                        HandleRestoreMails="HandleRestoreMails"
+                        isTrashMails="true"      
+                        HandleUpdateLabels="HandleUpdateLabels"   
                         />
                 }
                 else
@@ -114,24 +110,27 @@
             toggleActiveModal="@isShowModal"
             HandleToggleActiveModal="HandleToggleShowModal"
             HandleConfirmation="HandleTrashMails"
+            
         />
     </div>
 </div>
 
-@code {
+@code {   
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
     public List<CategoryModel> categorise = new();
     private List<LabelModel> labels = new();
     public bool isShowModal = false;
-    private List<MailModel> mails = new();   
+     private List<MailModel> mails = new List<MailModel>();
     private bool isSelectedAll  = false;
     private List<string> selectedItems = new List<string>();
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        mails = await MailData.GetAllMailsByFolder("trash", Layout.User.id);
         categorise = InitDataFakeHelper.InitCategories();
-        labels = InitDataFakeHelper.InitLabels();
-        mails = InitDataFakeHelper.FitterMailsNotDraft();
+        labels = await LabelData.GetAllLabels(Layout.User.id);
     }
 
 
@@ -187,4 +186,27 @@
         mails.Clear();
         isShowModal = !isShowModal;
     }
+
+    public async Task HandleTrashItem(MailModel mailTrash)
+    {
+        await MailData.Trash(mailTrash.id, mailTrash.folder);
+        MailModel mail = mails.Where(m => m.id == mailTrash.id).FirstOrDefault();
+        mails.Remove(mail);
+    }
+
+
+    public async Task HandleRestoreMails()
+    {
+        await MailData.RestoreMails(selectedItems);
+        mails.RemoveAll(m => selectedItems.Contains(m.id));
+    }
+
+    public async Task HandleUpdateLabels(List<string> labelIds)
+    {
+        await MailData.UpdateLabels(selectedItems, labelIds);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Đã thêm" + " " + selectedItems.Count + " " + "thư vào các nhãn được chọn!");   
+        return;
+    }
+    
+
 }

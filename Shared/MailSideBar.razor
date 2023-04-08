@@ -38,7 +38,7 @@
             @foreach (var label in labels)
             {
                 <div class="label-item @(label.id == activeLabel ? "label-active" : "")" @onclick="() => HandleActiveLabel(label)">
-                    <a href="mail/label/@label.id" class="is-flex is-gap-10-y" >
+                    <a href="mail/label/@label.id" class="is-flex is-gap-10-y is-align-items-center" >
                         <span class="icon">
                             <i class="material-icons-sharp" style="color: @label.color">label</i>
                         </span>
@@ -83,7 +83,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        labels = await LabelData.GetAllLabels();
+        labels = await LabelData.GetAllLabels(Layout.User.id);
         var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
         currentPath = relativePath;
         Navigation();

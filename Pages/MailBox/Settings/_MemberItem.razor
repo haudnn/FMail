@@ -17,7 +17,6 @@
     [Parameter]
     public EventCallback<MemberModel> HandleDeleteMember { get; set; }
     
-    
     public void HandleDelete() 
     {
         HandleDeleteMember.InvokeAsync(member);

@@ -9,14 +9,14 @@
         <div class="is-flex is-align-items-center is-gap-8 is-pointer">
             @if(isImportantClone) 
             { 
-                <span class="icon" @onclick="() => HandleImportantMail(false)">
-                    <i class="material-icons-sharp is-warning-20">star_purple500</i>
+                <span class="icon is-small is-warning-20" @onclick="() => HandleImportantMail(false)">
+                    <i class="material-icons-sharp" style="font-size: 12px;">star_purple500</i>
                 </span>
             }
             else 
             {
-                <span class="icon star" @onclick="() => HandleImportantMail(true)">
-                    <i class="material-symbols-outlined">star</i>
+                <span class="icon is-small is-warning-20" @onclick="() => HandleImportantMail(true)">
+                    <i class="material-symbols-outlined "  style="font-size: 12px;">star</i>
                 </span>
             }
             <span class="is_body2 is-secondary-40">Đánh dấu quan trọng</span>
@@ -92,20 +92,15 @@
     </div>
 </header>
 
-
-
-
 @code{
-    [Parameter]
-    public bool isImportant { get; set; }
     [Parameter]
     public List<LabelModel> labels { get; set; }
     [Parameter]
     public List<LabelModel> labelsSelected { get; set; }
     [Parameter]
-    public bool isRead { get; set; }
-    public bool isImportantClone { get; set; }
-    public bool isReadClone  { get; set; }
+    public MailModel mail { get; set; }  = new ();
+    public bool isImportantClone { get; set; } = false;
+    public bool isReadClone  { get; set; } = false;
     private ToggleHelper toggleShowLabel = new ToggleHelper();
     // private List<LabelModel> labelsSelected = new List<LabelModel>();
     private void HandelToggleShowLabel() 
@@ -113,10 +108,10 @@
         toggleShowLabel.Toggle();
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        isImportantClone = isImportant;
-        isReadClone = isRead;
+        isImportantClone = mail.isImportant;
+        isReadClone = mail.isRead;
     }
 
 

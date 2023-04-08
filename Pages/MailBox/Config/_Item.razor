@@ -2,17 +2,14 @@
     <div class="is-flex is-align-items-center is-gap-10-y">
         <span class="is_sub2 is-secondary-20">@category.name</span>
     </div>
-    @if(category.name != "Khác") 
-    { 
-        <div class="is-flex is-align-items-center is-gap-10-y">
+     <div class="is-flex is-align-items-center is-gap-10-y">
             <span class="icon is-pointer is-primary-40" @onclick="() => HandleToggleShowModalEdit(true)">
                 <i class="material-icons-outlined">edit</i>
             </span>
             <span class="icon is-pointer is-error-60" @onclick="() => HandleToggleShowModalConfirm(true)">
                 <i class="material-icons-outlined">delete</i>
             </span>
-        </div>
-    }
+    </div>
 </li>
 
     <_ModalConfirmation

@@ -1,0 +1,72 @@
+<div class="dropdown is-left @(toggleShowLabel.IsToggled ? "is-active" : "" )">
+    <div class="dropdown-trigger is-flex is-align-items-center is-gap-8 is-pointer" @onclick="HandleToggleShowLabel">
+        <span class="icon">
+            <i class="material-icons-outlined is-error-40">label</i>
+        </span>
+        <span class="is_body2 is-secondary-20">Nhãn</span>
+    </div>
+    <div class="dropdown-menu" style="min-width: 250px; min-height: 280px;">
+        <div class="dropdown-content is-padding-10">
+            <p class="is_sub2 is-secondary-10 is-padding-bottom-20">Danh sách nhãn</p>
+                <ul class="is-flex is-flex-direction-column is-gap-10-x">
+                    @foreach (var label in labels)
+                        {
+                            <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
+                                @if(labelsSelected.Contains(label)) {
+                                    <span class="icon is-small" @onclick="() => Selected(label)">
+                                        <i class="material-icons-sharp is-secondary-40">check_box</i>
+                                    </span>  
+                                }
+                                else { 
+                                    <span class="icon is-small" @onclick="() => Selected(label)">
+                                        <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
+                                    </span>
+                                }
+                                <div class="is-flex is-align-items-center">
+                                    <span class="icon">
+                                        <i class="material-symbols-sharp" style="color: @label.color; font-size: 12px">label</i>
+                                    </span>
+                                    <span class="is_body2 is-secondary-10">@label.name</span>
+                                </div>
+                            </li>
+                        }
+                </ul>
+        </div>
+    </div>
+</div>
+<ul class="is-flex is-align-items-center is-gap-8">
+    @foreach (var label in labelsSelected)
+        {
+            <li class="is-flex is-align-items-center is-gap-4" style="border-radius: 5px; padding: 5px ;background-color: @(label.color + "33")">
+                <span class="is_caption" style="color: @label.color">@label.name</span>
+                <div 
+                    class="wrapper-icon-24-rounded is-flex is-align-items-center is-justify-content-center" 
+                    style="width: 16px; height: 16px;" 
+                    @onclick="() => Selected(label)">
+                    <span class="icon">
+                        <i class="material-icons-outlined has-text-white" style="font-size: 9px;">close</i>
+                    </span>
+                </div>
+            </li>
+        }
+</ul>
+
+@code {
+    [Parameter] public List<LabelModel> labels {get; set;} = new List<LabelModel>();
+    [Parameter] public List<LabelModel> labelsSelected {get; set;} = new List<LabelModel>();
+    [Parameter] public EventCallback<LabelModel> HandleChooseLabel {get; set;}
+    private ToggleHelper toggleShowLabel = new ToggleHelper();
+
+    private void HandleToggleShowLabel() 
+    { 
+        toggleShowLabel.Toggle();
+    }
+
+    private void Selected(LabelModel label)
+    {
+        HandleChooseLabel.InvokeAsync(label);
+        StateHasChanged();
+    }
+    
+
+}

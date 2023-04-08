@@ -1,4 +1,4 @@
-@* <ul class="is-flex is-align-items-center is-gap-10-y is-justify-content-flex-end is-full">
+<ul class="is-flex is-align-items-center is-gap-10-y is-justify-content-flex-end is-full">
     <li class="is-flex is-align-items-center is-pointer">
         <span class="is_caption is-secondary-40">10:47,</span>
         <span class="is_caption is-secondary-40">20/2/2023 (1 tiếng trước)</span>
@@ -47,4 +47,19 @@
             </div>
         </div>
     </li>
-</ul> *@
+</ul>
+
+@code{
+    private ToggleHelper toggleViewButtonAnother = new ToggleHelper();
+    [Parameter]
+    public EventCallback<string> SetCurrentAction { get; set; }
+    private void HandleToggleButtonAnother()
+    {
+        toggleViewButtonAnother.Toggle();
+    }
+
+    public void HandleClickAction(string actionName)
+    {
+        SetCurrentAction.InvokeAsync(actionName);
+    }
+}

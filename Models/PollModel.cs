@@ -1,5 +1,6 @@
 namespace Workdo.Models;
 using System.Collections.Generic;
+using Workdo.Helpers;
 public class PollModel
 {
     public string id { get; set; }
@@ -11,6 +12,7 @@ public class PollModel
     public string endTime { get; set; }
     // <summary> Ngay kết thúc poll</summary>
     public string endDate { get; set; }
+    public bool isStopPoll { get; set; }
 }
 
 public class QuestionModel
@@ -30,10 +32,13 @@ public class ChoiceModel
     public string text { get; set; }
     // <summary> List user vote </summary>  
     public List<MemberModel> voters { get; set; }
+
 }
 
 public class QuestionChoice
 {
     public string id { get; set; }
     public bool isMultipleChoice { get; set; }
+    public bool isVotePrevious { get; set; }
+    public string choiceId { get; set; }
 }

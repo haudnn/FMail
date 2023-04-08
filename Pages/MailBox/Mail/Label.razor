@@ -63,7 +63,7 @@
                     <div class="mail__items">
                         @foreach (var mail in mails)
                         {
-                            <_Item 
+                            @* <_Item 
                                 id="@mail.id"
                                 from="@mail.from"
                                 body="@mail.body"
@@ -75,7 +75,7 @@
                                 subject="@mail.subject"
                                 isChecked="@selectedItems.Contains(mail.id)" 
                                 HandleSelectedMail="HandleSelectedMail"
-                            />
+                            /> *@
                         }
                     </div>
                 </div>

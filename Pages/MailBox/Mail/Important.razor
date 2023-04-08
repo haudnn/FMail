@@ -60,19 +60,13 @@
                     <div class="mail__items">
                         @foreach (var mail in mails)
                         {
-                            <_Item 
-                                id="@mail.id"
-                                from="@mail.from"
-                                body="@mail.body"
-                                isRead="@mail.isRead"
-                                attachments="@mail.attachments"
-                                isImportant="@mail.isImportant"
-                                sentDate="@mail.sentDate"
-                                labelsIds="@mail.labels"
-                                subject="@mail.subject"
-                                isChecked="@selectedItems.Contains(mail.id)" 
-                                HandleSelectedMail="HandleSelectedMail"
-                            />
+                                <_Item
+                                    mail="mail"
+                                    isSentMail ="true"
+                                    isChecked="@selectedItems.Contains(mail.id)" 
+                                    HandleSelectedMail="HandleSelectedMail"
+                                    HandleTrashItem="HandleTrashItem"
+                                />
                         }
                     </div>
                 </div>
@@ -92,6 +86,10 @@
                         mailCount="selectedItems.Count" 
                         HandleCancelSelectedMail="HandleCancelSelectedMail"
                         HandleTrashMails="HandleTrashMails"
+                        HandleReadMails="HandleReadMails"
+                        HandleImportantMails="HandleImportantMails"
+                        isImportantMails = "true"
+                        HandleUpdateLabels="HandleUpdateLabels"
                         />
                 }
                 else
@@ -104,17 +102,19 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
     public List<CategoryModel> categorise = new();
     private List<LabelModel> labels = new();
     private List<MailModel> mails = new();
     private bool isSelectedAll  = false;
     private List<string> selectedItems = new List<string>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        categorise = InitDataFakeHelper.InitCategories();
-        labels = InitDataFakeHelper.InitLabels();
-        mails = InitDataFakeHelper.FitterMailsImportant();
+        categorise = await CategoryData.GetAllCategory();
+        labels = await LabelData.GetAllLabels(Layout.User.id);
+        mails = await MailData.GetAllMailsByFolder("important", Layout.User.id );
     }
 
 
@@ -162,5 +162,39 @@
         mails.Clear();
     }
 
+    public async Task HandleTrashItem(MailModel mailTrash)
+    {
+        await MailData.Trash(mailTrash.id, mailTrash.folder);
+        MailModel mail = mails.Where(m => m.id == mailTrash.id).FirstOrDefault();
+        mails.Remove(mail);
+    }
+
+    public async Task HandleReadMails(bool isReads)
+    {
+        await MailData.ReadMails(selectedItems ,isReads);
+        if(isReads) 
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "cuộc trò chuyện là đã đọc!");   
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "cuộc trò chuyện là chưa đọc!"); 
+        }
+       
+        
+    }
+    public async Task HandleImportantMails(bool isImportants)
+    {
+        await MailData.ImportantMails(selectedItems ,isImportants);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "thư chưa đọc là không quan trọng!"); 
+    }
+
+
+    public async Task HandleUpdateLabels(List<string> labelIds)
+    {
+        await MailData.UpdateLabels(selectedItems, labelIds);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Đã thêm" + " " + selectedItems.Count + " " + "thư vào các nhãn được chọn!");   
+        return;
+    }
 
 }

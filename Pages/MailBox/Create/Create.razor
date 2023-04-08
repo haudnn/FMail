@@ -7,6 +7,7 @@
 @using System;
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Forms
+@inject ProtectedLocalStorage storage
 
 <PageTitle>Tạo thư mới</PageTitle>
 <section class="is-padding-20">
@@ -22,7 +23,7 @@
             <span class="is_body2 is-secondary-40">
                 Danh mục:
             </span>
-            <div class="dropdown is-right @(toogleShowCategories.IsToggled ? " is-active" : "" )">
+            <div class="dropdown is-right @(toogleShowCategories.IsToggled ? "is-active" : "" )">
                 <div class="dropdown-trigger is-hover drop-border is-flex is-align-items-center" style="padding: 0 8px;" @onclick="HandleShowCategories">
                     <span class="is-secondary-20 is_caption" style="line-height: 24px;">@currentCategory.name</span>
                     <span class="icon is-secondary-20">
@@ -31,146 +32,88 @@
                 </div>
                 <div class="dropdown-menu is-small">
                     <ul class="dropdown-content" style="padding: 8px">
-                        @foreach (var category in categories)
+                        @foreach (var category in categories.Where(c => c.name != "Khác"))
                         {
                             <li class="dropdown-item" style="padding: 4px 8px;" @onclick="() => HandleChooseCategory(category)">
                                 <span class="is_caption is-secondary-20">@category.name</span>
                             </li>
                         }
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-            @if(isStar) 
-            { 
-                <span class="icon" @onclick="() => HandleStarMail(false)">
-                    <i class="material-icons-sharp is-warning-20">star_purple500</i>
-                </span>
-            }
-            else 
-            {
-                <span class="icon star" @onclick="() => HandleStarMail(true)">
-                    <i class="material-symbols-outlined">star</i>
-                </span>
-            }
-            <span class="is_body2 is-secondary-40">Đánh dấu quan trọng</span>
-        </div>
-        <div class="dropdown is-left @(toggleShowLabel.IsToggled ? "is-active" : "" )">
-            <div class="dropdown-trigger is-flex is-align-items-center is-gap-8 is-pointer" @onclick="HandelToggleShowLabel">
-                <span class="icon">
-                    <i class="material-icons-outlined is-error-40">label</i>
-                </span>
-                <span class="is_body2 is-secondary-20">Nhãn</span>
-            </div>
-            <div class="dropdown-menu" style="min-width: 250px; min-height: 280px;">
-                <div class="dropdown-content is-padding-10">
-                    <p class="is_sub2 is-secondary-10 is-padding-bottom-20">Danh sách nhãn</p>
-                    <ul class="is-flex is-flex-direction-column is-gap-10-x">
-                        @foreach (var label in labels)
-                        {
-                            <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
-                                @if(labelsSelected.Contains(label)) {
-                                    <span class="icon is-small" @onclick="() => HandelChooseLabel(label)">
-                                        <i class="material-icons-sharp is-secondary-40">check_box</i>
-                                    </span>  
-                                }
-                                else { 
-                                    <span class="icon is-small" @onclick="() => HandelChooseLabel(label)">
-                                        <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
-                                    </span>
-                                }
-                                <div class="is-flex is-align-items-center">
-                                    <span class="icon">
-                                        <i class="material-symbols-sharp" style="color: @label.color; font-size: 12px">label</i>
-                                    </span>
-                                    <span class="is_body2 is-secondary-10">@label.name</span>
-                                </div>
+                            <li class="dropdown-item" style="padding: 4px 8px;" @onclick="() => HandleChooseCategory(null)">
+                                <span class="is_caption is-secondary-20">Khác</span>
                             </li>
-                        }
                     </ul>
                 </div>
             </div>
         </div>
-        <ul class="is-flex is-align-items-center is-gap-8">
-            @foreach (var label in labelsSelected)
-            {
-                <li class="is-flex is-align-items-center is-gap-4" style="border-radius: 5px; padding: 5px ;background-color: @(label.color + "33")">
-                    <span class="is_caption" style="color: @label.color">@label.name</span>
-                    <div class="wrapper-icon-24-rounded is-flex is-align-items-center is-justify-content-center" style="width: 16px; height: 16px;" @onclick="() => HandelChooseLabel(label)">
-                        <span class="icon">
-                            <i class="material-icons-outlined has-text-white" style="font-size: 9px;">close</i>
-                        </span>
-                    </div>
-                </li>
-            }
-        </ul>
+        <_StarMail
+            isShowText="true"
+            isStared="@isStar"
+            HandleStarMail="HandleStarMail"
+        />
+        <_SelectedLabels 
+            labels="labels"
+            labelsSelected="labelsSelected"
+            HandleChooseLabel="HandleChooseLabel"
+        />
     </div>
 
     <main class="create">
         <div class="is-flex is-flex-direction-column is-gap-10-x is-padding-20-x">
             <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
-                <p class="is-secondary-40 is-font-14" style="width: 60px;">To</p>
-                <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
-                    @if(membersSelected.Count > 0) 
-                    {
-                        <ul class="is-flex is-align-items-center" style="flex-wrap: wrap; gap: 8px">
-                            @foreach (var member in membersSelected)
-                            {
-                            <li class="is-flex is-align-items-center container-to">
-                                <figure class="image is-16x16">
-                                    <img class="is-rounded" src="@member.avatar">
-                                </figure>
-                                <span 
-                                    style="margin: 0px 8px 0px 4px; max-width: 75px; line-height: 16px;" 
-                                    class="is-inline-block text-ellipsis is-secondary-10 is_label2">
-                                    @member.name
-                                </span>
-                                <span class="icon is-pointer" @onclick="() => HandleDeleteMemberSelected(member)">
-                                    <i class="material-icons-outlined is-secondary-10">
-                                        close
-                                    </i>
-                                </span>
-                            </li>
-                            }
-                        </ul>
-                    }
-                    @if(groupsSelected.Count > 0 ) 
-                    {
-                        <ul class="is-flex is-align-items-center"  style="flex-wrap: wrap; gap: 8px">
-                            @foreach (var group in groupsSelected)
-                            {
-                                <li class="is-flex is-align-items-center container-to">
-                                    <span class="is_caption is-secondary-40">Nhóm</span>
-                                    <span 
-                                        style="margin: 0px 8px 0px 4px; max-width: 75px;" 
-                                        class="is-inline-block text-ellipsis is-secondary-10 is_label2">
-                                        @group.name
-                                    </span>
-                                    <span class="icon is-pointer" @onclick="() => HandleDeleteGroupSelected(group)">
-                                        <i class="material-icons-outlined is-secondary-10">
-                                            close
-                                        </i>
-                                    </span>
-                                </li> 
-                            }
-                        </ul>
-                    }
-                    <_AddMember members="members" directionDropdown="is-left" HandleSelectedMember="HandleSelectedMember"/>
-                    <_AddGroupMember groups="groups" directionDropdown="is-left" HandleSelectedGroup="HandleSelectedGroup"/>
+                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                    <p class="is-secondary-40 is-font-14" style="width: 60px;">To</p>
+                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
+                        <_AddReceiver
+                            nameReceiver="To"
+                            groups="groups"
+                            members="members"
+                            groupsSelected="groupsSelected"
+                            membersSelected="membersSelected"
+                            originalMembers="originalMembers"
+                            OnUpdateMembersSelected="OnUpdateMembersSelected"
+                        />
+                    </div>
                 </div>
                 @if(!toggleAddCC) 
                 {
-                <div class="is-flex is-align-items-center is-justify-content-center is-gap-10-y" style="height: 100%;">
-                    <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">CC</span>
-                    <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">BCC</span>
-                </div>
+                    <div class="is-flex is-align-items-center is-justify-content-center is-gap-10-y" style="height: 100%;">
+                        <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">CC</span>
+                        <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">BCC</span>
+                    </div>
                 }
             </div>
+
             @if(toggleAddCC) 
-            {
-               @* <_AddReceiver name="cc" members="members" groups="groups"/>
-               <_AddReceiver name="bcc" members="members" groups="groups"/> *@
+            {  
+                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                    <p class="is-secondary-40 is-font-14" style="width: 60px;">CC</p>
+                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
+                        <_AddReceiver
+                            nameReceiver="CC"
+                            groups="groupsCC"
+                            groupsSelected="groupsCCSelected"
+                            membersSelected="membersCCSelected"
+                            members="membersBCC"
+                            originalMembers="originalMembers"
+                            OnUpdateMembersSelected="OnUpdateMembersSelected"
+                        />
+                    </div>
+                </div>
+
+                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                    <p class="is-secondary-40 is-font-14" style="width: 60px;">BCC</p>
+                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
+                    <_AddReceiver
+                        nameReceiver="BCC"
+                        groups="groupsBCC"
+                        groupsSelected="groupsBCCSelected"
+                        membersSelected="membersBCCSelected"
+                        members="membersCC"
+                        originalMembers="originalMembers"
+                        OnUpdateMembersSelected="OnUpdateMembersSelected"
+                    />
+                    </div>
+                </div>
             }
             <div class="is-flex is-align-items-center is-gap-10-y">
                 <p class="is-secondary-40 is-font-14" style="width: 60px;">Tiêu đề</p>
@@ -179,82 +122,82 @@
         </div>
         <div class="create__main-container">
             <div>
-                <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập nội dung thư">
-                    <EditorContent>
-                    </EditorContent>
-                    <ToolbarContent>
-                        <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? "80" : "220" )px">
-                            <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
-                                style="padding: 10px 40px;" @onclick="CreateMail">
-                                <span class="is-font-14">Gửi</span>
-                            </div>
-                            <div class="is-flex-1">
-                                <span class="ql-formats">
-                                    <select class="ql-font">
-                                        <option value=""></option>
-                                        <option value="serif"></option>
-                                        <option value="monospace"></option>
-                                    </select>
-                                    <select class="ql-size">
-                                        <option value="small"></option>
-                                        <option selected=""></option>
-                                        <option value="large"></option>
-                                        <option value="huge"></option>
-                                    </select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-bold"></button>
-                                    <button class="ql-italic"></button>
-                                    <button class="ql-underline"></button>
-                                    <button class="ql-strike"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <select class="ql-color"></select>
-                                    <select class="ql-background"></select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-list" value="ordered"></button>
-                                    <button class="ql-list" value="bullet"></button>
-                                    <button class="ql-indent" value="-1"></button>
-                                    <button class="ql-indent" value="+1"></button>
-                                    <button class="ql-blockquote"></button>
-                                    <select class="ql-align">
-                                        <option selected=""></option>
-                                        <option value="center"></option>
-                                        <option value="right"></option>
-                                        <option value="justify"></option>
-                                    </select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button>
-                                        <label for="fileInput">
-                                            <i class="material-icons-outlined">link</i>
-                                        </label>
-                                    </button>
-                                    <button class="ql-link"></button>
-                                    <button class="ql-image"></button>
-                                </span>
-                            
-                            </div>
-                            <div class="is-flex is-align-items-center is-gap-8">
-                                <div class="wrapper-button is-justify-content-center is-inline-flex"
-                                    style="padding: 9px 10px">
-                                    <span class="icon">
-                                        <i class="material-icons-outlined is-primary-40">mail</i>
-                                    </span>
-                                    <span class="is_body2 is-primary-40">Lưu nháp</span>
+                    <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập nội dung thư">
+                            <EditorContent>
+                                @((MarkupString)QuillHTMLContent)
+                            </EditorContent> 
+                        <ToolbarContent>
+                            <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? "80" : "220" )px">
+                                <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
+                                    style="padding: 10px 40px;" @onclick="CreateMail">
+                                    <span class="is-font-14">Gửi</span>
                                 </div>
-                                <div class="wrapper-button is-justify-content-center is-inline-flex error-btn"
-                                    style="padding: 9px 10px">
-                                    <span class="icon">
-                                        <i class="material-icons-outlined">close</i>
+                                <div class="is-flex-1">
+                                    <span class="ql-formats">
+                                        <select class="ql-font">
+                                            <option value=""></option>
+                                            <option value="serif"></option>
+                                            <option value="monospace"></option>
+                                        </select>
+                                        <select class="ql-size">
+                                            <option value="small"></option>
+                                            <option selected=""></option>
+                                            <option value="large"></option>
+                                            <option value="huge"></option>
+                                        </select>
                                     </span>
-                                    <span class="is-font-14">Hủy tạo</span>
+                                    <span class="ql-formats">
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-underline"></button>
+                                        <button class="ql-strike"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <select class="ql-color"></select>
+                                        <select class="ql-background"></select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-list" value="ordered"></button>
+                                        <button class="ql-list" value="bullet"></button>
+                                        <button class="ql-indent" value="-1"></button>
+                                        <button class="ql-indent" value="+1"></button>
+                                        <button class="ql-blockquote"></button>
+                                        <select class="ql-align">
+                                            <option selected=""></option>
+                                            <option value="center"></option>
+                                            <option value="right"></option>
+                                            <option value="justify"></option>
+                                        </select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button>
+                                            <label for="fileInput">
+                                                <i class="material-icons-outlined">link</i>
+                                            </label>
+                                        </button>
+                                        <button class="ql-link"></button>
+                                        <button class="ql-image"></button>
+                                    </span>
+                                
+                                </div>
+                                <div class="is-flex is-align-items-center is-gap-8">
+                                    <div @onclick="Draft" class="wrapper-button is-justify-content-center is-inline-flex" style="padding: 9px 10px">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined is-primary-40">mail</i>
+                                        </span>
+                                        <span class="is_body2 is-primary-40">Lưu nháp</span>
+                                    </div>
+                                    <div @onclick="CancelCreate" class="wrapper-button is-justify-content-center is-inline-flex error-btn"
+                                        style="padding: 9px 10px">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined">close</i>
+                                        </span>
+                                        <span class="is-font-14">Hủy tạo</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </ToolbarContent>
-                </BlazoredTextEditor>
+                        </ToolbarContent>
+                    </BlazoredTextEditor>
                 <InputFile 
                     multiple 
                     id="fileInput" 
@@ -293,7 +236,8 @@
                         <span class="has-text-white is-font-12">Tạo khảo sát</span>
                     </div>
                 }
-                else{
+                else
+                {
                     @if(!isDoneCreatePoll){
                         <_Poll poll="poll" HandleToogleCreatePoll="HandleToogleCreatePoll" HandelCreatePoll="HandelCreatePoll"/>
                     }
@@ -304,63 +248,23 @@
                 }
             </div>
         </div>
-        <div class="is-padding-top-20" style="padding-bottom: 100px;">
-            <div class="is-flex is-align-items-center is-gap-10-y">
-                <span>Chữ ký:</span>
-                <div class="dropdown is-up click @(toggleActiveSign ? " is-active" : "" )">
-                    <div class="dropdown-trigger is-hover drop-border" @onclick='ToggleActiveSign'>
-                        <div class=" is-flex is-align-items-center">
-                            <span class="is-secondary-20 is-font-14">@(currentSignature.name != null ? currentSignature.name : "Không có chữ ký" )</span>
-                            <span class="icon">
-                                <i class="material-icons-sharp read">arrow_drop_down</i>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="dropdown-menu" style="min-width: 185px;">
-                        <div class="dropdown-content" style="padding: 10px;">
-                            <div class="dropdown-item is-flex is-align-items-center is-gap-4" @onclick="() => HandleChooseSignature(null)">
-                                <span class="icon"></span>
-                                <span class="is_body2">Không có chữ ký</span>
-                            </div>
-                            @foreach ( var signature in signatures)
-                            {
-                            <div class="dropdown-item is-flex is-align-items-center is-gap-4" @onclick="() => HandleChooseSignature(signature)">
-                                <span class="icon"></span>
-                                <span class="is_body2">@signature.name</span>
-                            </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="is_sub2 is-secondary-10 pt-4">
-                @((MarkupString)QuillHTMLContentSignature)
-            </div>
-
-        </div>
+        <_SignatureZone/>
     </main>
 </section>
 @code {
     [CascadingParameter]
     public LayoutMain Layout { get; set; }
-    BlazoredTextEditor QuillHtml;
-    string QuillHTMLContent;
-    string QuillHTMLContentSignature;
-    public string subject = String.Empty;
-    private bool toggleActiveSign = false;
     private CategoryModel currentCategory = new CategoryModel();
     private SignatureModel currentSignature = new SignatureModel();
-    private bool isDoneCreatePoll = false;
-    private ToggleHelper toggleShowLabel = new ToggleHelper();
     public ToggleHelper toggleCreatePoll = new ToggleHelper();
-    private bool isStar = false;
-    private bool toggleActiveAddMember = false;
-    private bool toggleActiveAddGroup = false;
-    private bool toggleAddCC = false;
     private ToggleHelper toogleShowCategories = new ToggleHelper();
     private List<LabelModel> labelsSelected = new List<LabelModel>();
     private List<MemberModel> membersSelected = new List<MemberModel>();
     private List<GroupModel> groupsSelected = new List<GroupModel>();
+    private List<MemberModel> membersCCSelected = new List<MemberModel>();
+    private List<GroupModel> groupsCCSelected = new List<GroupModel>();
+    private List<MemberModel> membersBCCSelected = new List<MemberModel>();
+    private List<GroupModel> groupsBCCSelected = new List<GroupModel>();
     public List<CategoryModel> categories = new List<CategoryModel>();
     public List<LabelModel> labels = new List<LabelModel>();
     public List<SignatureModel> signatures = new List<SignatureModel>();
@@ -370,22 +274,68 @@
     public List<GroupModel> groupsCC = new List<GroupModel>();
     public List<MemberModel> membersBCC =  new List<MemberModel>();
     public List<GroupModel> groupsBCC = new List<GroupModel>();
-
+    private List<MemberModel> originalMembers = new List<MemberModel>(); 
+    private List<GroupModel> originalGroups = new List<GroupModel>(); 
     public PollModel poll = new();
     private long maxFileSize = 25 * 1024 * 1024; 
     private long totalFileSize;
+    private bool isStar = false;
+    private bool toggleAddCC = false;
+    private bool isDoneCreatePoll = false;
+    public string subject = String.Empty;
+    private bool toggleActiveSign = false;
+    public string mailId = String.Empty;
+    BlazoredTextEditor QuillHtml;
+    string QuillHTMLContent;
+    string QuillHTMLContentSignature;
+    private List<AttachmentModel> files =new List<AttachmentModel>();
+
 
     protected override async Task OnInitializedAsync()
     {
-        
         categories = await CategoryData.GetAllCategory();
-        labels = await LabelData.GetAllLabels();
-        groups = await GroupData.GetAllGroups();
-        signatures = await SignatureData.GetAllSignatures();
-        currentCategory = categories.LastOrDefault();
-        members = InitDataFakeHelper.InitMembers();
-    }
+        labels = await LabelData.GetAllLabels(Layout.User.id);
+        signatures = await SignatureData.GetAllSignatures(Layout.User.id);
+        currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
+        currentSignature = signatures.FirstOrDefault(s => s.isDefault == true);
 
+        originalGroups = await GroupData.GetAllGroups();
+        groups = originalGroups.ToList();
+        groupsCC = originalGroups.ToList();
+        groupsBCC = originalGroups.ToList();
+
+        originalMembers = InitDataFakeHelper.InitMembersHasCondition(Layout.User.id);
+        members = originalMembers.ToList();
+        membersCC = originalMembers.ToList();
+        membersBCC = originalMembers.ToList();
+
+
+
+        var uri = navigation.ToAbsoluteUri(navigation.Uri);
+        var queryParams = QueryHelpers.ParseQuery(uri.Query);
+        if(queryParams.ContainsKey("mailId")) 
+        {
+            mailId = queryParams["mailId"];
+            MailModel mail = await MailData.GetMailById(mailId);
+            isStar = mail.isImportant;
+            QuillHTMLContent = mail.body;
+            membersSelected = mail.to;
+            membersCCSelected = mail.cc;
+            membersBCCSelected = mail.bcc;
+            subject = mail.subject;
+            files = mail.attachments;
+            currentSignature = mail.signature;
+            currentCategory = await CategoryData.GetCategoryById(mail.category);
+            labelsSelected = await LabelData.FindLabelsByIds(mail.labels);
+            if(mail.pollId != null)
+            {
+                poll = await PollData.GetPollById(mail.pollId);
+                toggleCreatePoll.Toggle();
+                isDoneCreatePoll = true;
+            }            
+
+        }
+    }  
     private void HandleShowCategories() 
     {
         toogleShowCategories.Toggle();
@@ -398,7 +348,8 @@
             id = GenerateIDHelper.GenerateID("19012001"),
             title = "",
             endDate = DateTime.Today.ToString("dd/MM/yyyy"),
-            endTime = DateTime.Today.ToString("HH:mm"),
+            endTime = DateTime.Today.ToString("23:59"),
+            isStopPoll = false,
             questions = new List<QuestionModel>
             {
                 new QuestionModel
@@ -408,11 +359,13 @@
                     isMultipleChoice = false,
                     choices  = new List<ChoiceModel> 
                         {
-                            new ChoiceModel {
+                            new ChoiceModel 
+                            {
                                 id = GenerateIDHelper.GenerateID("19012001"),
                                 text = "",
+                                voters = new List<MemberModel>(),
                             }
-                        }
+                        },
                 }
             }
         };
@@ -421,6 +374,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
+        
     }
 
     private void ToggleAddCC()
@@ -429,10 +383,6 @@
     }
 
 
-    private void ToggleActiveSign()
-    {
-        toggleActiveSign = !toggleActiveSign;
-    }
 
     private void HandleStarMail(bool isStarMail)
     {
@@ -440,26 +390,7 @@
     }
 
 
-    private void ToggleActiveAddMember(bool isActiveAddMember)
-    {
-        toggleActiveAddMember = isActiveAddMember;
-    }
-
-
-    private void ToggleActiveAddGroup() 
-    {
-        toggleActiveAddGroup = !toggleActiveAddGroup;
-    }
-
-
-
-    private void HandelToggleShowLabel() 
-    { 
-        toggleShowLabel.Toggle();
-    }
-
-
-    private void HandelChooseLabel(LabelModel label) 
+    private void HandleChooseLabel(LabelModel label) 
     {
         if (labelsSelected.Contains(label))
         {
@@ -470,7 +401,7 @@
             labelsSelected.Add(label);
         }
     }
-    
+
 
     private async Task HandleChooseSignature(SignatureModel signature) 
     {
@@ -487,36 +418,6 @@
         StateHasChanged();
     }
 
-
-    private void HandleSelectedMember(List<MemberModel> membersList) { 
-        List<MemberModel> clonedList = new List<MemberModel>(membersSelected);
-        clonedList.AddRange(membersList);
-        membersSelected = clonedList;
-    }
-
-
-    private void HandleDeleteMemberSelected(MemberModel member) 
-    {
-        membersSelected.Remove(member);
-        members.Add(member);
-    }
-
-
-    private void HandleSelectedGroup(List<GroupModel> groupsList) 
-    { 
-        List<GroupModel> clonedList = new List<GroupModel>(groupsSelected);
-        clonedList.AddRange(groupsList);
-        groupsSelected = clonedList;
-    }
-
-
-    private void HandleDeleteGroupSelected(GroupModel group) 
-    {
-        groupsSelected.Remove(group);
-        groups.Add(group);
-    }
-
-
     public async Task HandelCreatePoll() 
     {
         bool isValidPoll = await IsValidPoll();
@@ -528,7 +429,7 @@
     }
 
 
-    private List<AttachmentModel> files =new List<AttachmentModel>();
+
 
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
@@ -545,8 +446,6 @@
                     await JSRuntime.InvokeVoidAsync("alert", "Tối đa 25MB cho tất cả các file!");
                     return;
                 }
-
-                // var total = files.Sum(x => x.size);
                 totalFileSize += file.Size;
                 var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
                 string filePath = await FileHelper.SaveFileAsync(fileContent, file.Name);
@@ -593,7 +492,8 @@
         }
 
         int questionCount = poll.questions.Count;
-        if( questionCount == 0) {
+        if( questionCount == 0) 
+        {
             await JSRuntime.InvokeVoidAsync("alert", "Vui lòng thêm câu hỏi!");
             return false;
         }
@@ -626,9 +526,16 @@
 
     private void HandleChooseCategory(CategoryModel categorySelected) 
     {
+        if(categorySelected == null)
+        { 
+            currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
+            toogleShowCategories.ToggleFalse();
+            return;
+        }
         currentCategory = categorySelected;
         toogleShowCategories.ToggleFalse();
     }
+
 
 
     public async Task CreateMail() 
@@ -641,37 +548,36 @@
         QuillHTMLContent = await QuillHtml.GetHTML();
         string shortBody = await QuillHtml.GetText();
         MailModel mailToCreate = new MailModel
+            {
+                from = Layout.User.email,
+                category = currentCategory.id,
+                isImportant = isStar,
+                labels = labelsSelected.Select(l => l.id).ToList(),
+                to = membersSelected,
+                cc = membersCCSelected,
+                bcc = membersBCCSelected,
+                subject = subject == String.Empty ? "Không có chủ đề" : subject,
+                body = QuillHTMLContent,
+                attachments = files,
+                signature = currentSignature,
+                sentDate = DateTimeHelper.FormatDateTimeUTC(),
+                author = Layout.User.id,
+                folder = "sent",
+                shortBody = shortBody.Length > 50 ? shortBody.Substring(0, 50) : shortBody,
+                prevFolder = "sent",
+                isDraft = false,
+            };
+        if(toggleCreatePoll.IsToggled) 
         {
-            id = GenerateIDHelper.GenerateID("19012001"),
-            from = Layout.User.email,
-            category = currentCategory.id,
-            isImportant = isStar,
-            labels = labelsSelected.Select(l => l.id).ToList(),
-            to = membersSelected,
-            cc = new List<MemberModel>(),
-            bcc = new List<MemberModel>(), 
-            subject = subject == String.Empty ? "Không có chủ đề" : subject,
-            body = QuillHTMLContent,
-            attachments = files,
-            signature = currentSignature,
-            sentDate = DateTimeHelper.FormatDateTimeUTC(),
-            author = Layout.User.id,
-            folder = "sent",
-            shortBody = shortBody.Length > 50 ? shortBody.Substring(0, 50) : shortBody,
-        };
-        if(toggleCreatePoll.IsToggled) {
             bool isCreatedPollSuccess = await PollData.CreatePoll(poll);
-            if(isCreatedPollSuccess) {
+            if(isCreatedPollSuccess) 
+            {
                 mailToCreate.pollId = poll.id;
-                await MailData.CreateMail(mailToCreate);
-                await JSRuntime.InvokeVoidAsync("alert", "Tạo mail thành công!");   
             };
         }
-        else {
-            await MailData.CreateMail(mailToCreate);
-            await JSRuntime.InvokeVoidAsync("alert", "Tạo mail thành công!");      
-        }
-        navigation.NavigateTo("/mail/inbox", true);
+        await MailData.CreateMail(mailToCreate);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Tạo mail thành công!");  
+        navigation.NavigateTo("/mail/inbox", true   );
     }
 
 
@@ -682,10 +588,74 @@
             await JSRuntime.InvokeVoidAsync("alert", "Danh sách người nhận không được trống!");   
             return false;
         }
-        @* if(string.IsNullOrEmpty(QuillHTMLContent)) {
-            await JSRuntime.InvokeVoidAsync("alert", "Nội dung của thư không được trống!");   
-            return false;
-        } *@
         return true;
+    }
+
+
+
+    private void CancelCreate() 
+    { 
+        navigation.NavigateTo("/mail/inbox", true);
+    }
+
+
+
+    public void OnUpdateMembersSelected(MemberSelectedModel memberModel) 
+    { 
+        if(memberModel.name == "To")
+        { 
+            membersSelected = memberModel.members;
+            return;
+        }
+        if(memberModel.name == "CC")
+        { 
+            membersCCSelected = memberModel.members;
+            return;
+        }
+        if(memberModel.name == "BCC")
+        { 
+            membersBCCSelected = memberModel.members;
+            return;
+        }
+    }
+
+    public async Task Draft()
+    {
+        QuillHTMLContent = await QuillHtml.GetHTML();
+        string shortBody = await QuillHtml.GetText();
+        MailModel mailToDraft = new MailModel
+            {
+                from = Layout.User.email,
+                category = currentCategory.id,
+                isImportant = isStar,
+                labels = labelsSelected.Select(l => l.id).ToList(),
+                to = membersSelected,
+                cc = membersCCSelected,
+                bcc = membersBCCSelected,
+                subject = subject == String.Empty ? "Không có chủ đề" : subject,
+                body = QuillHTMLContent,
+                attachments = files,
+                signature = currentSignature,
+                sentDate = DateTimeHelper.FormatDateTimeUTC(),
+                author = Layout.User.id,
+                folder = "draft",
+                shortBody = shortBody.Length > 50 ? shortBody.Substring(0, 50) : shortBody,
+                isDraft = true,
+                prevFolder = "draft",
+                isReply = false,
+                replies = new List<string>(),
+                originalMailId = "",
+            };
+        if(toggleCreatePoll.IsToggled) 
+        {
+            bool isCreatedPollSuccess = await PollData.CreatePoll(poll);
+            if(isCreatedPollSuccess) 
+            {
+                mailToDraft.pollId = poll.id;
+            };
+        }
+        await MailData.Draft(mailToDraft);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Lưu nháp thành công");
+        navigation.NavigateTo("/mail/inbox", true);
     }
 }

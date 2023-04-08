@@ -1,0 +1,76 @@
+<div class="is-padding-top-20" style="padding-bottom: 100px;">
+    <div class="is-flex is-align-items-center is-gap-10-y">
+        <span>Chữ ký:</span>
+        <div class="dropdown is-up click @(toggleActiveSign ? " is-active" : "" )">
+            <div class="dropdown-trigger is-hover drop-border" @onclick='ToggleActiveSign'>
+                <div class=" is-flex is-align-items-center">
+                    <span class="is-secondary-20 is-font-14">@(defaultSignature.name != null ? defaultSignature.name : "Không có chữ ký" )</span>
+                    <span class="icon">
+                        <i class="material-icons-sharp read">arrow_drop_down</i>
+                    </span>
+                </div>
+            </div>
+            <div class="dropdown-menu" style="min-width: 185px;">
+                <div class="dropdown-content" style="padding: 10px;">
+                    <div class="dropdown-item is-flex is-align-items-center is-gap-4"
+                        @onclick="() => HandleChooseSignature(null)">
+                        <span class="icon">
+                            <i class="material-icons-sharp is_body2">@(defaultSignature.name == null ? "done" : "")</i>
+                        </span>
+                        <span class="is_body2">Không có chữ ký</span>
+                    </div>
+                    @foreach ( var signature in signatures)
+                    {
+                    <div class="dropdown-item is-flex is-align-items-center is-gap-4"
+                        @onclick="() => HandleChooseSignature(signature)">
+                        <span class="icon">
+                            <i class="material-icons-sharp is_body2">@(defaultSignature.name != null && defaultSignature.id == signature.id ? "done" : "")</i>
+                        </span>
+                        <span class="is_body2">@signature.name</span>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="is_sub2 is-secondary-10 pt-4">
+        @((MarkupString)QuillHTMLContentSignature)
+    </div>
+</div>
+
+@code{
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
+    string QuillHTMLContentSignature;  
+    private bool toggleActiveSign = false;
+    public SignatureModel defaultSignature = new SignatureModel();
+    public List<SignatureModel> signatures =  new List<SignatureModel>();
+
+    private void ToggleActiveSign()
+    {
+        toggleActiveSign = !toggleActiveSign;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        signatures = await SignatureData.GetAllSignatures(Layout.User.id);
+        defaultSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
+        QuillHTMLContentSignature = defaultSignature.body;
+    }
+
+    private async Task HandleChooseSignature(SignatureModel signature) 
+    {
+        if(signature == null) {
+            defaultSignature = new SignatureModel();
+            QuillHTMLContentSignature = String.Empty;
+            toggleActiveSign = !toggleActiveSign;
+            return;
+        }
+        SignatureModel getSignature =  await SignatureData.GetSignatureById(signature.id);
+        defaultSignature = signature;
+        QuillHTMLContentSignature = getSignature.body;
+        toggleActiveSign = !toggleActiveSign;
+        StateHasChanged();
+    }
+
+}

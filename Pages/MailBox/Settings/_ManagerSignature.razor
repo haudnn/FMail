@@ -25,7 +25,7 @@
             </div>
               <div class="column is-9">
                     <div class="input-container is-flex-1 is-flex is-align-items-center" style="margin-bottom: 10px;">
-                        <input style="padding: 10px;" class="input-zone signature is_body2 is-secondary-20" type="text" placeholder="Nhập tên chữ ký" @bind-value="signatureName">
+                        <input style="padding: 10px; padding-left: 15px;" class="input-zone signature is_body2 is-secondary-20" type="text" placeholder="Nhập tên chữ ký" @bind-value="signatureName">
                     </div>
                     <div class="container-signature-zone">
                         <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập chữ ký">
@@ -120,7 +120,7 @@
         <div class="dropdown is-up @(toggleSignature.IsToggled ? "is-active" : "" )">
             <div class="dropdown-trigger is-hover drop-border" style="padding: 4px 12px;" @onclick="ToggleSignature">
                 <div class="is-flex is-align-items-center">
-                    <span class="is-secondary-20 is_body2">Chưa chọn</span>
+                    <span class="is-secondary-20 is_body2">@(String.IsNullOrEmpty(defaultSignature.name) ? "Không chọn" : defaultSignature.name)</span>
                     <span class="icon">
                         <i class="material-icons-sharp is-secondary-20">arrow_drop_down</i>
                     </span>
@@ -128,11 +128,17 @@
             </div>
             <div class="dropdown-menu" style="min-width: 185px;">
                 <div class="dropdown-content" style="padding: 10px;">
-                    @foreach (var signature in signatures)
-                    {
-                        <div class="dropdown-item is-flex is-align-items-center is-gap-4">
+                        <div class="dropdown-item is-flex is-align-items-center is-gap-4" @onclick="() => SetDefault(null)">
                             <span class="icon">
-                                @* <i class="material-icons-sharp is_body2">done</i> *@
+                                <i class="material-icons-sharp is_body2">@(defaultSignature.name == null ? "done" : "")</i>
+                            </span>
+                            <span class="is_body2">Không chọn</span>
+                        </div>
+                    @foreach (var signature in signatures)
+                    {   
+                        <div class="dropdown-item is-flex is-align-items-center is-gap-4" @onclick="() => SetDefault(signature)">
+                            <span class="icon">
+                                <i class="material-icons-sharp is_body2">@(defaultSignature.id == signature.id ? "done" : "")</i>
                             </span>
                             <span class="is_body2">@signature.name</span>
                         </div>
@@ -143,12 +149,15 @@
     </div>
 </div>
 @code {
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
     [Parameter] public List<SignatureModel> signatures { get; set;}
     [Parameter] public EventCallback<List<SignatureModel>> getAllSignatures {get; set;}
     BlazoredTextEditor QuillHtml;
     string QuillHTMLContent = String.Empty;
     public string signatureName = String.Empty;
     public bool isEditSignature = false;
+    public SignatureModel defaultSignature = new SignatureModel();
     private SignatureModel signatureCurrent = new SignatureModel();
     private ToggleHelper toggleSignature = new ToggleHelper();
 
@@ -156,7 +165,6 @@
     {
         toggleSignature.Toggle();
     }
-
 
 
     private async Task HandleChooseSignature(SignatureModel signature) 
@@ -170,6 +178,11 @@
         StateHasChanged();
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        defaultSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
+        StateHasChanged();
+    }
 
     private async Task HandelCreateSignature() 
     {
@@ -184,6 +197,8 @@
             id = GenerateIDHelper.GenerateID("19012001"),
             name = signatureName,
             body = QuillHTMLContent,
+            author = Layout.User.id,
+            isDefault = false,
         };
         bool isValidSignatureName = await SignatureData.CreateSignature(signatureToCreate);
         if(!isValidSignatureName) 
@@ -245,6 +260,8 @@
             id = signatureCurrent.id,
             name = signatureName,
             body = QuillHTMLContent,
+            isDefault = signatureCurrent.isDefault,
+            author = signatureCurrent.author
         };
         await SignatureData.UpdateSignature(signatureToUpdate);
         signatureCurrent = new SignatureModel();
@@ -263,8 +280,24 @@
     }
 
 
-    public void HandleSetDefaultSignature() 
+    public async Task SetDefault(SignatureModel signature)
     {
-
+        if(signature == null)
+        {
+            await SignatureData.SetDefaultSignature(new SignatureModel{},defaultSignature);
+            defaultSignature = new SignatureModel{ };
+            return;
+        }
+        SignatureModel signatureToUpdate = new SignatureModel
+        {
+            id = signature.id,
+            name = signature.name,
+            body = signature.body,
+            isDefault = true,
+            author = signature.author
+        };
+        await SignatureData.SetDefaultSignature(signatureToUpdate, defaultSignature);
+        defaultSignature = signatureToUpdate;
+        return;
     }
 }

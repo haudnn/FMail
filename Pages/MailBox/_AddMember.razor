@@ -1,24 +1,25 @@
+
 <div class="dropdown @directionDropdown @(toggleViewAdd.IsToggled ? "is-active" : "" )">
     <div class="dropdown-trigger" @onclick='HandleToggleViewAdd'>
-        <div class="is-flex is-align-items-center is-pointer">
-            <span class="icon has-text-white">
-                <i class="material-icons-outlined is-font-12 is-primary-40">add</i>
+        <div class="is-flex is-align-items-center is-pointer is-gap-8">
+            <span class="icon is-primary-40 is-small">
+                <i class="material-icons-outlined">add</i>
             </span>
-            <span class="is-primary-40 is-font-12">Thêm người nhận</span>
+            <span class="is-primary-40 is_caption" style="line-height: 16px;">Thêm người nhận</span>
         </div>
     </div>
-    <div class="dropdown-menu" style="min-width: 350px; min-height: 430px">
-        <div class="dropdown-content" style="padding-bottom: 0px;">
+    <div class="dropdown-menu" style="min-width: 350px;">
+        <div class="dropdown-content" style="padding-bottom: 0px; overflow: hidden;">
             <div class="dropdown-header" style="padding: 0 20px;">
                 <div class="dropdown-item unhover is-flex is-align-items-center is-justify-content-space-between"
                     style="padding: 10px 0;">
                     <span class="is_sub2 is-secondary-40">Cập nhật người dùng</span>
                     <div class="dropdown">
-                        <div class="dropdown-trigger is-hover drop-border" style="padding: 0px 4px;">
+                        <div class="dropdown-trigger is-hover drop-border" style="padding: 5px;">
                             <div class=" is-flex is-align-items-center">
                                 <span class="is-secondary-20 is_caption">Tất cả phòng ban</span>
-                                <span class="icon">
-                                    <i class="material-icons-sharp is-secondary-20 is_caption">arrow_drop_down</i>
+                                <span class="icon is-small is-secondary-20">
+                                    <i class="material-icons-sharp ">arrow_drop_down</i>
                                 </span>
                             </div>
                         </div>
@@ -44,19 +45,57 @@
                 </div>
                 <div class="dropdown-item unhover" style="padding: 10px 0;">
                     <div class="search-wrapper">
-                        <input @bind-value="memberName" class="search-input" type="text" placeholder="Tìm người dùng...">
+                        <input  @oninput="OnSearch" class="search-input" type="text" placeholder="Tìm người dùng...">
                         <span class="icon">
                             <i class="material-icons-outlined">search</i>
                         </span>
                     </div>
                 </div>
-                <div class="dropdown-item unhover" style="padding: 10px 0;">
-                    <ul class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 10px 10px">
-                        @foreach (var member in membersSelected)
+            </div>
+            <div class="container-items-dropdown scrolly">
+                <div class="dropdown-item unhover" style="padding: 0 20px 10px 20px;">
+                        <ul class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 10px 10px">
+                            @foreach (var member in membersSelected)
+                            {
+                                <li class="is-flex is-align-items-center is-gap-8">
+                                    <span class="icon is-small" @onclick="() => HandlePickedMember(member)">
+                                        <i class="material-icons-outlined is-secondary-40">remove_circle_outline</i>
+                                    </span>
+                                    <div class="is-flex is-align-items-center is-gap-4">
+                                        <figure class="image is-24x24">
+                                            <img class="is-rounded" src="@member.avatar">
+                                        </figure>
+                                        <span class="is_sub2 is-secondary-40">@member.name</span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                </div>
+                <div style="padding: 0 20px;">
+                    <div class="divide-dropdown"></div>
+                </div>
+                <div class="dropdown-item unhover is-padding-20-x" style="border-radius:0; padding: 20px;">
+                    <div class="is-flex is-align-items-center is-gap-10-y pb-4">
+                        @if(toggleCheckBox.IsToggled) 
+                        {
+                            <span class="icon is-small is-primary-40" @onclick="HandleToggleCheckBox">
+                                <i class="material-icons-outlined">check_box</i>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="icon is-small is-primary-40" @onclick="HandleToggleCheckBox">
+                                <i class="material-icons-outlined">check_box_outline_blank</i>
+                            </span>
+                        }
+                        <span class="is_button is-primary-40 is-pointer">Chọn tất cả</span>
+                    </div>
+                    <ul class="is-flex is-flex-direction-column is-gap-10-x">
+                        @foreach (var member in members)
                         {
                             <li class="is-flex is-align-items-center is-gap-8-y">
                                 <span class="icon is-justify-content-start" @onclick="() => HandlePickedMember(member)">
-                                    <i class="material-icons-outlined is-secondary-40">remove_circle_outline</i>
+                                    <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
                                 </span>
                                 <div class="is-flex is-align-items-center is-gap-4">
                                     <figure class="image is-24x24">
@@ -69,54 +108,20 @@
                     </ul>
                 </div>
             </div>
-            <div class="dropdown-item unhover is-padding-20-x" style="border-radius:0; padding: 20px;">
-                <div class="is-flex is-align-items-center is-gap-10-y pb-4">
-                    @if(toggleCheckBox.IsToggled) 
-                    {
-                        <span class="icon is-small is-primary-40" @onclick="HandleToggleCheckBox">
-                            <i class="material-icons-outlined">check_box</i>
+            <div class="bottom-dropdown unhover">
+                <div class="is-flex is-justify-content-flex-end is-align-content-center is-gap-10-y">
+                    <div class="wrapper-button primary-btn" style="display: inline-flex" @onclick="HandleUpdateMembers">
+                        <span class="icon is-small has-text-white">
+                            <i class="material-icons-outlined">done</i>
                         </span>
-                    }
-                    else
-                    {
-                        <span class="icon is-small is-primary-40" @onclick="HandleToggleCheckBox">
-                            <i class="material-icons-outlined">check_box_outline_blank</i>
+                        <span class="has-text-white is-font-12">Cập nhật</span>
+                    </div>
+                    <div class="wrapper-button error-btn" style="display: inline-flex" @onclick='HandleToggleViewAdd'>
+                        <span class="icon has-text-white is-small">
+                            <i class="material-icons-sharp">close</i>
                         </span>
-                    }
-                    <span class="is_button is-primary-40 is-pointer">Chọn tất cả</span>
-                </div>
-                <ul class="is-flex is-flex-direction-column is-gap-10-x">
-                    @foreach (var member in members)
-                    {
-                        <li class="is-flex is-align-items-center is-gap-8-y">
-                            <span class="icon is-justify-content-start" @onclick="() => HandlePickedMember(member)">
-                                <i class="material-icons-outlined is-secondary-40">add_circle_outline</i>
-                            </span>
-                            <div class="is-flex is-align-items-center is-gap-4">
-                                <figure class="image is-24x24">
-                                    <img class="is-rounded" src="@member.avatar">
-                                </figure>
-                                <span class="is_sub2 is-secondary-40">@member.name</span>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
-            <div
-                class="bottom-dropdown unhover">
-                <div class="is-flex is-justify-content-flex-end is-align-content-center is-gap-10-y" style="padding: 10px;">
-                <div class="wrapper-button primary-btn" style="display: inline-flex" @onclick="HandleUpdateMembers">
-                    <span class="icon has-text-white">
-                        <i class="material-icons-outlined">done</i>
-                    </span>
-                    <span class="has-text-white is-font-12">Cập nhật</span>
-                </div>
-                <div class="wrapper-button error-btn" style="display: inline-flex" @onclick='HandleToggleViewAdd'>
-                    <span class="icon has-text-white">
-                        <i class="material-icons-sharp">close</i>
-                    </span>
-                    <span class="has-text-white is-font-12">Hủy</span>
-                </div>
+                        <span class="has-text-white is-font-12">Hủy</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,11 +133,12 @@
     public List<MemberModel> members {get; set;}
     public List<MemberModel> membersSelected = new List<MemberModel>();
     public string memberName = "";
-    List<MemberModel> matchingMembers = new List<MemberModel>();
     [Parameter]
     public string directionDropdown {get; set;}
     [Parameter]
     public EventCallback<List<MemberModel>> HandleSelectedMember { get; set; }
+    [Parameter]
+    public EventCallback<string> SearchMembers { get; set; }
     private ToggleHelper toggleViewAdd = new ToggleHelper();
     private ToggleHelper toggleCheckBox = new ToggleHelper();
 
@@ -142,7 +148,7 @@
         toggleViewAdd.Toggle();
     }
 
-    
+
     private void HandleToggleCheckBox() 
     {
         toggleCheckBox.Toggle();
@@ -182,13 +188,9 @@
         toggleCheckBox.ToggleFalse();
     }
 
-    @* private void UpdateMatchingMembers()
+    public void OnSearch(ChangeEventArgs e)
     {
-        Console.WriteLine(memberName);
-        string normalizedInput = memberName.ToLower();
-        members = members
-            .Where(member => member.name.ToLower().Contains(normalizedInput))
-            .ToList();
+        SearchMembers.InvokeAsync(e.Value.ToString());
         StateHasChanged();
-    } *@
+    }
 }

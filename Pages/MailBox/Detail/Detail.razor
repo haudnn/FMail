@@ -8,8 +8,7 @@
 
 <section class="is-padding-20">
     <_Header
-        isImportant="@mail.isImportant"
-        isRead="@mail.isRead"
+        mail="mail"
         labels="labels"
         labelsSelected="labelsSelected"
     />
@@ -21,6 +20,8 @@
                 author="author"
                 sentDate="@sentDateFormat"
                 to="membersTo"
+                cc="membersCC"
+                bcc="membersBCC"
                 SetCurrentAction="SetCurrentAction"
             />
         </div>
@@ -45,7 +46,7 @@
                             </div>
                         }
                     <div class="is-flex is-align-items-center" style="gap: 0 20px">
-                        <p class="is-flex-1  is-secondary-10 is_typhography @(isStopSurvey ? "stop-survey" : "" )">
+                        <p class="is-flex-1 is-secondary-10 is_typhography @(isStopSurvey ? "stop-survey" : "" )">
                             @poll.title
                         </p>
                         <div class="is-flex is-align-items-center" style="gap: 0 20px">
@@ -90,11 +91,16 @@
                         </div>
                             @if (!toggleViewStatistical.IsToggled)
                             {
-                                <_Survey questions="questions" />
+                                <_Survey poll="poll" />
                             }
                             else
                             {  
-                                <_Statistical questions="questions"/>
+                                <_Statistical 
+                                    questions="questions"
+                                    cc="@mail.cc"
+                                    bcc="@mail.bcc" 
+                                    to="@mail.to"
+                                />
                             }
                     </div>
                 </div>
@@ -114,7 +120,7 @@
                         nameModal="Xác nhận việc dừng khảo sát" 
                         toggleActiveModal="toggleActiveModal"
                         contentButton="Dừng khảo sát"
-                        contentModal="Khi thực hiện thao tác này, người dùng sẽ không thể thực hiện khảo sát được nữa và bạn sẽ không thể mở lại cuộc khảo sát này . Bạn có chắc chắn muốn tiếp tục không?"
+                        contentModal="Khi thực hiện thao tác này, người dùng sẽ không thể thực hiện khảo sát được nữa và bạn sẽ không thể mở lại cuộc khảo sát này. Bạn có chắc chắn muốn tiếp tục không?"
                         HandleToggleActiveModal="HandleToggleActiveModal" 
                         HandleConfirmation="HandleStopSurvey" 
                     />
@@ -137,34 +143,37 @@
             <div  class="is_sub2 is-secondary-10 is-padding-20-x">
                @((MarkupString)QuillHTMLContentSignature)
             </div>
-            <div class="is-flex is-align-items-center is-gap-10-y ">
-                <div class="wrapper-button btn-outlined">
-                    <span class="icon">
-                        <i class="material-icons-outlined is-secondary-40">reply</i>
-                    </span>
-                    <span class="is_caption is-secondary-40">Trả lời</span>
+            @if(string.IsNullOrEmpty(currentAction))
+            {
+                <div class="is-flex is-align-items-center is-gap-10-y ">
+                    <div class="wrapper-button btn-outlined" @onclick='() => SetCurrentAction("reply")'>
+                        <span class="icon">
+                            <i class="material-icons-outlined is-secondary-40">reply</i>
+                        </span>
+                        <span class="is_caption is-secondary-40">Trả lời</span>
+                    </div>
+                    <div class="wrapper-button btn-outlined" @onclick='() => SetCurrentAction("reply_all")'>
+                        <span class="icon">
+                            <i class="material-icons-outlined is-secondary-40">reply_all</i>
+                        </span>
+                        <span class="is_caption is-secondary-40">Trả lời tất cả</span>
+                    </div>
+                    <div class="wrapper-button btn-outlined" @onclick='() => SetCurrentAction("forward")'>
+                        <span class="icon">
+                            <i class="material-icons-outlined is-secondary-40">forward</i>
+                        </span>
+                        <span class="is_caption is-secondary-40">Chuyển tiếp</span>
+                    </div>
                 </div>
-                <div class="wrapper-button btn-outlined">
-                    <span class="icon">
-                        <i class="material-icons-outlined is-secondary-40">reply_all</i>
-                    </span>
-                    <span class="is_caption is-secondary-40">Trả lời tất cả</span>
-                </div>
-                <div class="wrapper-button btn-outlined">
-                    <span class="icon">
-                        <i class="material-icons-outlined is-secondary-40">forward</i>
-                    </span>
-                    <span class="is_caption is-secondary-40">Chuyển tiếp</span>
-                </div>
-            </div>
+            }
+
         </div>
         <div>
             <ul>
                 
             </ul>
         </div>
-        <div style="margin-left: 45px;">
-            @switch (currentAction)
+        @switch (currentAction)
             {
                 case "reply":
                     <_MailAction
@@ -172,6 +181,7 @@
                         displayName="Đặng Ngọc Hậu"
                         isShowTextTo=@false
                         actionName="Trả lời"
+                        SetCurrentAction="SetCurrentAction"
                     />
                     break;
                 case "reply_all":
@@ -180,6 +190,7 @@
                         displayName="Đặng Ngọc Hậu"
                         isShowTextTo=@false
                         actionName="Trả lời tất cả"
+                        SetCurrentAction="SetCurrentAction"
                     />
                     break;
                 case "forward":
@@ -188,12 +199,12 @@
                         displayName="Đặng Ngọc Hậu"
                         isShowTextTo=@true
                         actionName="Chuyển tiếp"
+                        SetCurrentAction="SetCurrentAction"
                     />
                     break;
                 default:
                     break;
-            }   
-        </div>
+            }  
     </main>
 
 </section>
@@ -207,9 +218,10 @@
     string QuillHTMLContentSignature;
     public string currentAction = String.Empty;
     public bool toggleActiveModal = false;
-    private ToggleHelper toggleViewExpand = new ToggleHelper();
     public MailModel mail = new MailModel();
     public List<MemberModel> membersTo = new List<MemberModel>();
+    public List<MemberModel> membersCC = new List<MemberModel>();
+    public List<MemberModel> membersBCC = new List<MemberModel>();
     public List<AttachmentModel> attachments = new List<AttachmentModel>();
     public PollModel poll = new();
     public List<QuestionModel> questions = new();
@@ -219,9 +231,7 @@
     public UserModel author  = new();
     public string sentDateFormat;
     private ToggleHelper toggleViewStatistical = new ToggleHelper();
-    private ToggleHelper toggleViewCC = new ToggleHelper();
 
-    private ToggleHelper toggleViewButtonAnother = new ToggleHelper();
 
     protected override async Task OnParametersSetAsync()
     {
@@ -232,10 +242,12 @@
         }
         author = await UserData.Get(mail.author);
         labelsSelected  = await LabelData.FindLabelsByIds(mail.labels);
-        labels = await LabelData.GetAllLabels();
+        labels = await LabelData.GetAllLabels(Layout.User.id);
         attachments = mail.attachments;
         sentDateFormat = DateTimeHelper.FormatDateTimeDetailView(mail.sentDate);
         membersTo = mail.to;
+        membersCC = mail.cc;
+        membersBCC = mail.bcc;
         QuillHTMLContentBody = mail.body;
         QuillHTMLContentSignature = mail.signature.body;
     }
@@ -245,21 +257,6 @@
     private void HandleToggleViewStatistical()
     {
         toggleViewStatistical.Toggle();
-    }
-
-    private void HandleToogleViewExpand()
-    {
-        toggleViewExpand.Toggle();
-    }
-
-    private void HandleToggleButtonAnother()
-    {
-        toggleViewButtonAnother.Toggle();
-    }
-
-    private void HandleToggleViewCC()
-    {
-        toggleViewCC.Toggle();
     }
 
     private void HandleToggleActiveModal(bool isActiveModal)

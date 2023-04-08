@@ -61,20 +61,13 @@
                     <div class="mail__items">
                         @foreach (var mail in mails)
                         {
-                            <_Item 
-                                id="@mail.id"
-                                from="@mail.from"
-                                body="@mail.body"
-                                isRead="@mail.isRead"
-                                isDraft="@mail.isDraft"
-                                attachments="@mail.attachments"
-                                isImportant="@mail.isImportant"
-                                sentDate="@mail.sentDate"
-                                labelsIds="@mail.labels"
-                                subject="@mail.subject"
-                                isChecked="@selectedItems.Contains(mail.id)" 
-                                HandleSelectedMail="HandleSelectedMail"
-                            />
+                                <_Item
+                                    mail="mail"
+                                    isSentMail="true"
+                                    isChecked="@selectedItems.Contains(mail.id)" 
+                                    HandleSelectedMail="HandleSelectedMail"
+                                    HandleTrashItem="HandleTrashItem"
+                                />
                         }
                     </div>
                 </div>
@@ -94,7 +87,9 @@
                         mailCount="selectedItems.Count" 
                         HandleCancelSelectedMail="HandleCancelSelectedMail"
                         HandleTrashMails="HandleTrashMails"
-                        />
+                        HandleReadMails="HandleReadMails"
+                        HandleImportantMails="HandleImportantMails" 
+                    />
                 }
                 else
                 {
@@ -111,11 +106,11 @@
     public List<CategoryModel> categorise = new();
     private List<LabelModel> labels = new();
     private List<MailModel> mails = new();
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        categorise = InitDataFakeHelper.InitCategories();
-        labels = InitDataFakeHelper.InitLabels();
-        mails = InitDataFakeHelper.FitterMailsDraft();
+        categorise = await CategoryData.GetAllCategory();
+        labels = await LabelData.GetAllLabels(Layout.User.id);
+        mails = await MailData.GetAllMailsByFolder("draft", Layout.User.id);
     }
     private bool isSelectedAll  = false;
     private List<string> selectedItems = new List<string>();
@@ -156,11 +151,45 @@
     }
 
 
-    private void HandleTrashMails() 
+    private async Task HandleTrashMails()
     {
+        await MailData.TrashMails(selectedItems);
         selectedItems.Clear();
         mails.Clear();
     }
 
-    
+    private async Task HandleTrashItem(MailModel mailTrash)
+    {
+        await MailData.Trash(mailTrash.id, mailTrash.folder);
+        MailModel mail = mails.Where(m => m.id == mailTrash.id).FirstOrDefault();
+        mails.Remove(mail);
+    }
+
+    private async Task HandleReadMails(bool isReads)
+    {
+        await MailData.ReadMails(selectedItems ,isReads);
+        if(isReads) 
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "cuộc trò chuyện là đã đọc!");   
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "cuộc trò chuyện là chưa đọc!"); 
+        }
+       
+        
+    }
+    private async Task HandleImportantMails(bool isImportants)
+    {
+        await MailData.ImportantMails(selectedItems ,isImportants);
+        if(isImportants) 
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "cuộc trò chuyện là quan trọng!");   
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "thư chưa đọc là không quan trọng!"); 
+        }
+    }
+
 }

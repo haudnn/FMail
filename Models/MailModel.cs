@@ -29,6 +29,8 @@ public class MailModel
     public bool isImportant { get; set; }
     // summary>Check thư nháp </summary>  
     public bool isDraft { get; set; }
+    // <summary> folder trước khi xóa </summary> 
+    public string prevFolder{get; set;}
     // summary>Check thư rác </summary>  
     public bool isTrash { get; set; }
     // summary>List ids label </summary> 
@@ -54,12 +56,16 @@ public class MailModel
 
     // <summary> poll id </summary> 
     public string pollId { get; set; }
-
     // <summary> check xóa trong Draft </summary> 
     public bool isDeleted { get; set; }
     // <summary> for home view </summary> 
     public string shortBody { get; set; }
+
+    public List<TagMailModel> tags => MailHelper.TagsMailHelper(pollId == null ? false : true, isDraft, isReply);
+
+
 }
+
 
 public class AttachmentModel
 {
@@ -73,4 +79,11 @@ public class AttachmentModel
     public long size { get; set; }
     public string filePath { get; set; }
     public string icon => FileHelper.GetIconForFileType(name);
+}
+
+public class TagMailModel
+{
+    public string textColor { get; set; }
+    public string backgroundColor { get; set; }
+    public string name { get; set; }
 }

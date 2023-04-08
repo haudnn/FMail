@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Workdo.Helpers;
@@ -45,5 +46,18 @@ public class UserData
     }
     await Task.Delay(100);
     return isFoundUser;
+  }
+
+  public static async Task SortCategory(string userid, string categoryId, int newIndex) {
+      List<UserModel> users = InitDataFakeHelper.InitUsers();
+      var user = users.Find(u => u.id == userid);
+      var sortedCategoryIds = user.catrgoryIds;
+
+      var currentIndex = sortedCategoryIds.IndexOf(categoryId);
+      sortedCategoryIds.RemoveAt(currentIndex);
+
+      sortedCategoryIds.Insert(newIndex, categoryId);
+      user.catrgoryIds = sortedCategoryIds;
+
   }
 }

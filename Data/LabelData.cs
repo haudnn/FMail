@@ -16,21 +16,15 @@ public class LabelData {
 
     public static async Task CreateLabel(LabelModel label)
     {
-        LabelModel labelToCreate = new LabelModel
-        {
-            id = GenerateIDHelper.GenerateID("19012001"),
-            name = label.name,
-            color = label.color
-        };
-        await labelCollection.InsertOneAsync(labelToCreate);
+        await labelCollection.InsertOneAsync(label);
         return;
     }
     
 
-    public static async Task<List<LabelModel>> GetAllLabels() 
+    public static async Task<List<LabelModel>> GetAllLabels(string author) 
     {
         List<LabelModel> labels = new List<LabelModel>();
-        labels = await labelCollection.Find(_ => true).ToListAsync();
+        labels = await labelCollection.Find(x => x.author == author).ToListAsync();
         return labels;
     }
 

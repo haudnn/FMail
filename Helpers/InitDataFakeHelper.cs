@@ -334,8 +334,30 @@ public class InitDataFakeHelper
         return members;
     }
 
+    public static List<MemberModel> InitMembersHasCondition(string userid)
+    {
+        List<MemberModel> members = new List<MemberModel>();
+        List<UserModel> users = InitUsers();
+        foreach (UserModel user in users)
+        {
+            if(user.id == userid) 
+            { 
+                continue;
+            }
+            else  
+            {
+                members.Add(new MemberModel
+                {
+                    id = user.id,
+                    avatar = user.avatar,
+                    email = user.email,
+                    name = $"{user.first_name} {user.last_name}",
+                });
+            }
 
-    
+        }
+        return members;
+    }
 
     public static List<MailModel> FilterMailByLabel(string labelId) 
     {

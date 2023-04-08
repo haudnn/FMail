@@ -1,5 +1,5 @@
 @inject NavigationManager navigation
-<tr class="mail-item @(isDraft ? "drafts" : "") @(isReadToogle ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px">
+<tr class="mail-item @(mail.isDraft ? "drafts" : "") @(isRead ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px">
     <td class="mail-td mail-checkbox">
         @if (isChecked)
             {
@@ -14,82 +14,97 @@
                 </span>
             }
     </td>
-    <td class="mail-td mail-star">
-        @if (isStar)
+    <td class="mail-td mail-Important">
+        @if (isImportant)
             { 
-                <span class="icon is-small is-warning-20" @onclick="() => HandleStarMail(false)">
+                <span class="icon is-small is-warning-20" @onclick="() => Important(false)">
                     <i class="material-icons-sharp" style="font-size: 12px;">star_purple500</i>
                 </span>
             }
         else
             { 
-                <span class="icon is-small is-warning-20" @onclick="() => HandleStarMail(true)">
+                <span class="icon is-small is-warning-20" @onclick="() => Important(true)">
                     <i class="material-symbols-outlined "  style="font-size: 12px;">star</i>
                 </span>
             }
     </td>
     <td class="mail-td mail-from">
-        <span class="is_sub2 @(isReadToogle ? "read" : "unread") text-ellipsis">
+        <span class="is_sub2 @(isRead ? "read" : "unread") text-ellipsis">
             @if(isSentMail) 
             {
-                <span>Đến: </span>
+                <span class="mr-1">Đến: </span>
             }
-            Tôi
+            @foreach (var item in @mail.to.Take(1))
+            {
+                @item.name;
+            }
+            <span class="ml-1">...</span>
         </span>
     </td>
     <td class="mail-td mail-main" @onclick="HandleViewDetail">
         <div>
-            <div class="mail-main-content">
+            <div class="mail-main-content" style="gap: 0 10px">
+                <div class="is-flex is-align-items-center" style="gap: 0 5px">
+
+                    @foreach (var item in mail.tags)
+                    {
+                        <div style="background-color: @item.backgroundColor ;" class="mailtag-item">
+                            <span style="color: @item.textColor ;">
+                               @item.name
+                            </span>
+                        </div>
+                    }
+                </div>
                 <div class="mail-subject">
-                    <span class="text-ellipsis is_sub2 @(isReadToogle ? "read" : "unread")">
-                            @subject
+                    <span class="text-ellipsis is_sub2 @(isRead ? "read" : "unread")">
+                        @mail.subject
                     </span>
                 </div>
+                <span class="mx-1 is_body2 @(isRead ? "read" : "unread")">
+                    -
+                </span>
                 <div class="mail-body">
-                    <span class="is_body2 @(isReadToogle ? "read" : "unread")">
-                        -
-                    </span>
-                        @body
+                    @mail.shortBody
                 </div>
             </div>    
         </div>
-        @if(attachments.Count > 0)
+        @if(mail.attachments.Count > 0)
         {
             <ul class="attachments-list">
-                @foreach (var attachment in attachments.Take(3))
+                @foreach (var attachment in mail.attachments.Take(3))
                     {
                         <li class="attachment-item">
                             <img style="width: 16px; height: 16px;" src="@string.Concat("images/", attachment.icon, ".png")">
                             <span>@attachment.name</span>
                         </li>
                     }
-            @if (attachments.Count() > 2)
+            @if (mail.attachments.Count() > 2)
                 {
                     <li class="attachment-item count">
-                        <span class="is_sub2 is-secondary-40">+@(attachments.Count() - 3)</span>
+                        <span class="is_sub2 is-secondary-40">+@(mail.attachments.Count() - 3)</span>
                     </li>
                  }
         </ul>
         }
     </td>
     <td class="mail-td">
-            <div class="mail-actions">
-                @if (isReadToogle)
-                    {
-                        <span class="is-pointer is-small" @onclick="() => HandleToogleReadMail(false)">
-                           <i class="icon material-icons-outlined"> drafts</i>
-                        </span>
-                    }
-                    else
-                    { 
-                        <span class="is-pointer is-small" @onclick="() => HandleToogleReadMail(true)">
-                           <i class="icon material-icons-outlined">mail</i>
-                        </span>
-                    }
-                        <span class="is-pointer is-small">
-                           <i class="icon material-icons-outlined">delete</i>
-                        </span>
-            </div>
+        <div class="mail-actions is-align-content-center">
+            @if (isRead)
+                {
+                    <span class="icon is-pointer is-small" @onclick="() => Read(false)">
+                        <i class="material-icons-outlined"> drafts</i>
+                    </span>
+                }
+            else
+            { 
+                <span class="icon is-pointer is-small" @onclick="() => Read(true)">
+                    <i class="material-icons-outlined">mail</i>
+                </span>
+            }
+                <span class="icon is-pointer is-small" @onclick="() => Trash()">
+                    <i class="material-icons-outlined">delete</i>
+                </span>
+        </div>
     </td>
     <td class="mail-td tags-list">
         @foreach (var label in labels.Take(2))
@@ -107,47 +122,28 @@
 
     </td>
     <td class="mail-td mail__item-datetime">
-        <span class="is-block @(isReadToogle ? "read" : "unread")">@sentDate</span>
+        <span class="is-block @(isRead ? "read" : "unread")">@sentDate</span>
     </td>
 </tr>
 @code {
 
-    [Parameter]
-    public string id { get; set; }
-    [Parameter]
-    public bool isSentMail { get; set; }
-    [Parameter]
-    public string from { get; set; }
-    [Parameter]
-    public string subject { get; set; }
-    [Parameter]
-    public string body { get; set; }
-    [Parameter]
-    public string sentDate { get; set; }
-    [Parameter]
-    public List<AttachmentModel> attachments { get; set; }
-    [Parameter]
-    public List<string> labelsIds { get; set; }
-    [Parameter]
-    public bool isImportant { get; set; }
-    [Parameter]
-    public bool isRead { get; set; }
-    [Parameter]
-    public bool isChecked { get; set; }
-    [Parameter]
-    public EventCallback<SelectedModel> HandleSelectedMail { get; set; }
-    [Parameter]
-    public bool isDraft { get; set; }
-    public bool isStar { get; set; }
-    public bool isReadToogle { get; set; }
+    [Parameter] public bool isSentMail { get; set; }
+    [Parameter] public MailModel mail  { get; set; } = new ();
+    [Parameter] public bool isChecked { get; set; }
+    [Parameter] public EventCallback<SelectedModel> HandleSelectedMail { get; set; }
+    [Parameter] public EventCallback<MailModel> HandleTrashItem { get; set; }
 
+    public bool isImportant { get; set; }
+    public bool isRead { get; set; }
+    public string sentDate { get; set; }
     public List<LabelModel> labels = new List<LabelModel>();
 
     protected override async Task OnInitializedAsync()
     {
-        isStar  = isImportant;
-        isReadToogle = isRead;
-        labels = await LabelData.FindLabelsByIds(labelsIds);
+        isImportant  = mail.isImportant;
+        isRead = mail.isRead;
+        sentDate = DateTimeHelper.FormatDateTime(mail.sentDate);
+        labels = await LabelData.FindLabelsByIds(mail.labels);
     }
 
 
@@ -156,26 +152,41 @@
         var selected = new SelectedModel
             {
                 isChecked = !isChecked,
-                itemId = id,
+                itemId = mail.id,
             };
         await HandleSelectedMail.InvokeAsync(selected);
     }
 
 
-    private void HandleStarMail(bool isStarMail)
+    private async Task Important(bool isImportantMail)
     {
-        isStar = isStarMail;
+        isImportant = isImportantMail;
+        await MailData.Important(mail.id, isImportant);
     }
 
 
-    private void HandleToogleReadMail(bool isReadMail)
+    private async Task Read(bool isReadMail)
     {
-        isReadToogle = isReadMail;
+        isRead = isReadMail;
+        await MailData.Read(mail.id, isRead);
     }
 
     private void HandleViewDetail() 
     {
-        navigation.NavigateTo("inbox/" + id, true);
+        if(!mail.isDraft)
+        {
+            navigation.NavigateTo("inbox/" + mail.id, true);
+        }
+        else
+        {
+            navigation.NavigateTo($"create?mailId={mail.id}");
+        }
+        
     }
+
+    private void Trash()
+    {
+        HandleTrashItem.InvokeAsync(mail);
+    }   
 
 }

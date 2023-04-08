@@ -72,18 +72,11 @@
                                 @foreach (var mail in mails)
                                     {
                                         <_Item
-                                            id="@mail.id"
+                                            mail="mail"
                                             isSentMail ="true"
-                                            from="@mail.from"
-                                            body="@mail.shortBody"
-                                            isRead="@mail.isRead"
-                                            attachments="@mail.attachments"
-                                            isImportant="@mail.isImportant"
-                                            sentDate="@mail.sentDate"
-                                            labelsIds="@mail.labels"
-                                            subject="@mail.subject"
                                             isChecked="@selectedItems.Contains(mail.id)" 
                                             HandleSelectedMail="HandleSelectedMail"
+                                            HandleTrashItem="HandleTrashItem"
                                         />
                                     }
                         </tbody>
@@ -103,8 +96,15 @@
             <div class="mail__footer @(selectedItems.Count > 0 ? " actions" : "" )">
                 @if (selectedItems.Count > 0)
                 {
-                    <_Actions labels="labels" mailCount="selectedItems.Count" HandleCancelSelectedMail="HandleCancelSelectedMail"
-                        HandleTrashMails="HandleTrashMails" />
+                    <_Actions 
+                        labels="labels" 
+                        mailCount="selectedItems.Count" 
+                        HandleCancelSelectedMail="HandleCancelSelectedMail"
+                        HandleTrashMails="HandleTrashMails"
+                        HandleReadMails="HandleReadMails"
+                        HandleImportantMails="HandleImportantMails"
+                        HandleUpdateLabels="HandleUpdateLabels"
+                    />
                 }
                 else
                 {
@@ -127,8 +127,8 @@
     protected override async Task OnInitializedAsync()
     {
         categorise = await CategoryData.GetAllCategory();
-        labels = await LabelData.GetAllLabels();
-        mails = await MailData.GetAllMailsByFolder("inbox", Layout.User.id, false);
+        labels = await LabelData.GetAllLabels(Layout.User.id);
+        mails = await MailData.GetAllMailsByFolder("inbox", Layout.User.id);
     }
 
     private bool isSelectedAll  = false;
@@ -169,11 +169,56 @@
     }
 
 
-    private void HandleTrashMails() 
+    
+    private async Task HandleTrashItem(MailModel mailTrash)
     {
+        await MailData.Trash(mailTrash.id, mailTrash.folder);
+        MailModel mail = mails.Where(m => m.id == mailTrash.id).FirstOrDefault();
+        mails.Remove(mail);
+    }
+
+
+    private async Task HandleTrashMails()
+    {
+        await MailData.TrashMails(selectedItems);
         selectedItems.Clear();
         mails.Clear();
     }
 
+    private async Task HandleReadMails(bool isReads)
+    {
+        await MailData.ReadMails(selectedItems ,isReads);
+        if(isReads) 
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "cuộc trò chuyện là đã đọc!");   
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "cuộc trò chuyện là chưa đọc!"); 
+        }
+       
+        
+    }
+    private async Task HandleImportantMails(bool isImportants)
+    {
+        await MailData.ImportantMails(selectedItems ,isImportants);
+        if(isImportants) 
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "cuộc trò chuyện là quan trọng!");   
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Đã đánh dấu" + " " + selectedItems.Count + " " + "thư chưa đọc là không quan trọng!"); 
+        }
+    }
+
+
+    public async Task HandleUpdateLabels(List<string> labelIds)
+    {
+        await MailData.UpdateLabels(selectedItems, labelIds);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Đã thêm" + " " + selectedItems.Count + " " + "thư vào các nhãn được chọn!");   
+        return;
+    }
+    
 
 }

@@ -16,29 +16,29 @@
                 </div>
                 <div class="dropdown-menu" style="width: 250px;">
                     <div class="dropdown-content px-3" style="z-index: 20;">
-                        <div class="dropdown-item unhover is-flex is-align-items-center"
-                            style="gap: 0 5px; padding: 5px;">
+                        <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => ReadMails(true)">
                             <span class="icon">
                                 <i class="material-icons-outlined read">drafts</i>
                             </span>
                             <span class="read has-text-weight-medium">Đánh dấu đã đọc</span>
                         </div>
-                        <div class="dropdown-item unhover is-flex is-align-items-center"
-                            style="gap: 0 5px; padding: 5px;">
+                        <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => ReadMails(false)">
                             <span class="icon">
-                                <i class="material-icons-outlined read">drafts</i>
+                                <i class="material-icons-outlined read">mail</i>
                             </span>
                             <span class="read has-text-weight-medium">Đánh dấu chưa đọc</span>
                         </div>
-                        <div class="dropdown-item unhover is-flex is-align-items-center"
-                            style="gap: 0 5px; padding: 5px;">
-                            <span class="icon">
-                                <i class="material-icons-sharp read">star</i>
-                            </span>
-                            <span class="read has-text-weight-medium">Đánh dấu quan trọng</span>
-                        </div>
-                        <div class="dropdown-item unhover is-flex is-align-items-center"
-                            style="gap: 0 5px; padding: 5px;">
+                        @if(!isImportantMails)
+                        {
+                            <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => ImportantMails(true)">
+                                    <span class="icon">
+                                        <i class="material-icons-sharp read">star</i>
+                                    </span>
+                                    <span class="read has-text-weight-medium">Đánh dấu quan trọng</span>
+                            </div>
+                        }
+
+                        <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => ImportantMails(false)">
                             <span class="icon">
                                 <i class="material-icons-outlined read">star_outline</i>
                             </span>
@@ -63,7 +63,7 @@
                     <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding-bottom: 40px;">
                         @foreach (var label in labels)
                         {
-                            <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
+                            <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-10-y">
                                 @if(labelsSelected.Contains(label.id)) {
                                     <span class="icon is-small" @onclick="() => HandelToggleIconCheckbox(label.id)">
                                         <i class="material-icons-sharp is-secondary-40">check_box</i>
@@ -74,9 +74,9 @@
                                         <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
                                     </span>
                                 }
-                                <div class="is-flex is-align-items-center">
-                                    <span class="icon">
-                                        <i class="material-symbols-sharp" style="color: @label.color">label</i>
+                                <div class="is-flex is-align-items-center" style="gap: 0 5px">
+                                    <span class="icon is-small">
+                                        <i class="material-icons-sharp" style="color: @label.color">label</i>
                                     </span>
                                     <span class="is_body2 is-secondary-10">@label.name</span>
                                 </div>
@@ -87,7 +87,7 @@
                         <div class="wrapper-button" @onclick="HandelToggleShowLabels" style="max-height: 24px;">
                             <span class="is_caption is-error-60">Hủy</span>
                         </div>
-                        <div class="wrapper-button primary-btn" style="max-height: 24px;">
+                        <div class="wrapper-button primary-btn" style="max-height: 24px;" @onclick="UpdateLabels">
                             <span class="icon has-text-white">
                                 <i class="material-icons-outlined">check</i>
                             </span>
@@ -99,7 +99,7 @@
         </div>
         @if(isTrashMails) 
         {
-            <div class="is-flex is-align-items-center is-pointer mail__footer-drafs restore">
+            <div class="is-flex is-align-items-center is-pointer mail__footer-drafs restore" @onclick="RestoreMails">
                 <span class="icon is-secondary-40">
                     <i class="material-icons-outlined">mark_email_read</i>
                 </span>
@@ -129,16 +129,16 @@
     private ToggleHelper toggleIconCheckbox = new ToggleHelper();
     private ToggleHelper toggleShowLabels = new ToggleHelper();
     private List<string> labelsSelected = new List<string>();
-    [Parameter] 
-    public List<LabelModel> labels { get; set; }
-    [Parameter]
-    public int mailCount { get; set; } 
-    [Parameter]
-    public EventCallback HandleCancelSelectedMail { get; set; }
-    [Parameter]
-    public EventCallback HandleTrashMails { get; set; }
-    [Parameter]
-    public bool isTrashMails { get; set; }
+    [Parameter] public List<LabelModel> labels { get; set; }
+    [Parameter] public int mailCount { get; set; } 
+    [Parameter] public EventCallback HandleCancelSelectedMail { get; set; }
+    [Parameter] public EventCallback HandleTrashMails { get; set; }
+    [Parameter] public bool isTrashMails { get; set; }
+    [Parameter] public EventCallback<bool> HandleReadMails { get; set; }
+    [Parameter] public EventCallback<bool> HandleImportantMails { get; set; }
+    [Parameter] public EventCallback HandleRestoreMails { get; set; }
+    [Parameter] public bool isImportantMails { get; set; }
+    [Parameter] public EventCallback<List<string>> HandleUpdateLabels {get; set;}
 
     private void HandelToggleShowAction() 
     { 
@@ -180,4 +180,28 @@
     { 
         HandleTrashMails.InvokeAsync();
     }
+
+    public void ReadMails(bool isReads)
+    {
+        HandleReadMails.InvokeAsync(isReads);
+    }
+
+    public void ImportantMails(bool isImportants)
+    {
+        HandleImportantMails.InvokeAsync(isImportants);
+    }
+
+    public void RestoreMails()
+    {
+        HandleRestoreMails.InvokeAsync();
+    }
+
+
+    public void UpdateLabels()
+    {
+        HandleUpdateLabels.InvokeAsync(labelsSelected);
+        labelsSelected = new List<string>();
+        toggleShowLabels.Toggle();
+    }
+
 }

@@ -1,17 +1,19 @@
 <div class="dropdown-content is-padding-20">
     <p class="is_sub2 is-secondary-10 is-padding-bottom-20">Danh sách</p>
     <ul class="is-flex is-flex-direction-column is-gap-10-x">
-        <li class="is-flex is-align-items-center" style="gap: 0 12px">
-            <figure class="image is-24x24">
-                <img src="images/avatar-mail.png">
-            </figure>
-            <span class="is_body2 is-secondary-10">Khánh Hoàn</span>
-        </li>
-        <li class="is-flex is-align-items-center" style="gap: 0 12px">
-            <figure class="image is-24x24">
-                <img src="images/avatar-mail.png">
-            </figure>
-            <span class="is_body2 is-secondary-10">Khánh Hoàn</span>
-        </li>
+        @foreach (var member in members)
+        {
+            <li class="is-flex is-align-items-center" style="gap: 0 12px">
+                <figure class="image is-24x24 is-rounded">
+                    <img src="@member.avatar">
+                </figure>
+                <span class="is_body2 is-secondary-10">@member.name</span>
+            </li>
+        }
     </ul>
 </div>
+
+@code{
+    [Parameter]
+    public List<MemberModel> members { get; set; } = new List<MemberModel>();
+}

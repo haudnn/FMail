@@ -107,6 +107,8 @@ namespace Workdo.Models
         /// <summary>Các kế hoạch đã lưu trữ</summary>
         public List<string> plans_hide { get; set; }
 
+        /// <summary>category_sorted/summary>
+        public List<string> catrgoryIds { get; set; }
 
         public class Company
         {

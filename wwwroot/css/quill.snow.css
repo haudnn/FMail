@@ -35,6 +35,7 @@
   text-align: left;
   white-space: pre-wrap;
   word-wrap: break-word;
+  padding-left: 0 !important;
 }
 .ql-editor > * {
   cursor: text;
@@ -978,4 +979,7 @@
   font-style: italic;
   /* right: 10px; */
   font-size: 14px;
+}
+.create__main-container .ql-container.ql-snow{
+  min-height: 300px !important;
 }

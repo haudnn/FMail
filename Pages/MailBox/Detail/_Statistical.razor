@@ -1,18 +1,18 @@
 <div class="poll__content" style="margin: 0; border-top-left-radius: 0;">
     <ul class="is-flex is-flex-direction-column" style="gap: 20px 0">
-        
+        @foreach ( var question in questions)
+        {
         <li>
             <div class="is-flex is-align-items-center is-gap-8">
                 <span class="is_sub2">1.</span>
-                <p class="is_sub2 is-secondary-20">Bạn muốn tham dự End Year Party vào thời điểm
-                    nào?</p>
+                <p class="is_sub2 is-secondary-20">@question.text</p>
             </div>
             <div class="is-mt-10">
-                <div class="dropdown is-right @(toggleViewUnVote.IsToggled ? "is-active" : "" )">
-                    <div class="dropdown-trigger" @onclick="HandleToggleViewUnVote">   
+                <div class="dropdown is-right @(toggleViewUnvote.IsToggled && idToogleUnvote == question.id ? "is-active" : "" )">
+                    <div class="dropdown-trigger" @onclick="() => HandleToggleViewUnvote(question.id)">   
                         <div class="is-flex is-align-items-center">
                             <span class="is_body2 is-secondary-40">Số người chưa thực hiện khảo sát:
-                                <span class="is_sub2 is-secondary-20">12</span>
+                                <span class="is_sub2 is-secondary-20">@getMembersUnvote.Count()</span>
                             </span>
                             <span class="icon">
                                 <i class="material-icons-outlined is-secondary-20">arrow_drop_down</i>
@@ -20,123 +20,91 @@
                         </div>
                     </div>
                     <div class="dropdown-menu" style="min-width: 90%;">
-                        <_DropdownPoll/>
+                        <_DropdownPoll members="getMembersUnvote"/>
                     </div>
                 </div>
                 <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding: 10px 20px 0px 20px;">
-                    <li class="is-flex is-align-items-center is-justify-content-space-between">
-                        <span class="is_body2 is-secondary-20 is-flex-1">24 tháng chạp</span>
-                        <div class="is-flex is-align-items-center is-flex-1 is-justify-content-flex-end">
-                            <div class="progress_has_value is-justify-content-flex-end is-gap-10-y">
-                                <div class="dropdown is-right @(toggleViewVote.IsToggled ? "is-active" : "" )">
-                                    <div class="dropdown-trigger" @onclick="HandleToggleViewVote">
-                                       <div class="is-flex is-align-items-center">
-                                            <span class="is_sub2 is-secondary-40">72 lượt bình chọn</span>
-                                            <span class="icon">
-                                                <i class="material-icons-outlined is-secondary-40">arrow_drop_down</i>
-                                            </span>
+                    @foreach (var item in question.choices)
+                    {
+                        var valueProgress = Math.Floor(SharedHelper.Progress(item.voters.Count(), totalMembers));
+                        <li class="is-flex is-align-items-center is-justify-content-space-between">
+                            <span class="is_body2 is-secondary-20 is-flex-1">@item.text</span>
+                            <div class="is-flex is-align-items-center is-flex-1 is-justify-content-flex-end">
+                                <div class="progress_has_value is-justify-content-flex-end is-gap-10-y">
+                                    <div class="dropdown is-right @(toggleViewVote.IsToggled && idToogleVote == item.id ? "is-active" : "" )">
+                                        <div class="dropdown-trigger" @onclick="() => HandleToggleViewVote(item.id)">
+                                        <div class="is-flex is-align-items-center is-justify-content-flex-start" style="width: 140px;">
+                                                <span class="is_sub2 is-secondary-40 is-flex-1">@item.voters.Count() lượt bình chọn</span>
+                                                <span class="icon is-small">
+                                                    <i class="material-icons-outlined is-secondary-40">arrow_drop_down</i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown-menu" style="min-width: 250px;">
+                                            <_DropdownPoll members="@item.voters"/>
                                         </div>
                                     </div>
-                                    <div class="dropdown-menu" style="min-width: 250px;">
-                                         <_DropdownPoll/>
-                                    </div>
+                                    <progress class="progress is-small @SharedHelper.ProgressColor(valueProgress)" style="max-width: 180px;"
+                                        value="@valueProgress" 
+                                        max="100"
+                                        >
+                                    </progress>
+                                    <span style="min-width: 40px;" 
+                                    class="has-text-right is_sub2 @SharedHelper.ProgressColor(item.voters.Count())">@valueProgress%</span>
                                 </div>
-                                <progress class="progress is-small is-link" value="72" max="100"
-                                    style="max-width: 180px;">
-                                </progress>
-                                <span class="is_sub2 is-primary-40">72%</span>
                             </div>
-                        </div>
-                    </li>
-                    <li class="is-flex is-align-items-center is-justify-content-space-between">
-                        <span class="is_body2 is-secondary-20 is-flex-1">25 tháng chạp</span>
-                        <div class="is-flex is-align-items-center is-flex-1 is-justify-content-flex-end">
-                            <div class="progress_has_value is-justify-content-flex-end is-gap-10-y">
-                                <div class="is-flex is-align-items-center">
-                                    <span class="is_sub2 is-secondary-40">28 lượt bình chọn</span>
-                                    <span class="icon">
-                                        <i class="material-icons-outlined is-secondary-40">arrow_drop_down</i>
-                                    </span>
-                                </div>
-                                <progress class="progress is-small is-danger" value="72" max="100"
-                                    style="max-width: 180px;">
-                                </progress>
-                                <span class="is_sub2 is-error-40">28%</span>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    }
                 </ul>
             </div>
         </li>
-        <li>
-            <div class="is-flex is-align-items-center is-gap-8">
-                <span class="is_sub2">2.</span>
-                <p class="is_sub2 is-secondary-20">Phần thưởng Tết bạn muốn nhận là gì?</p>
-            </div>
-            <div class="is-mt-10">
-                <div class="is-flex is-align-items-center">
-                    <span class="is_body2 is-secondary-40">Số người chưa thực hiện khảo sát:
-                        <span class="is_sub2 is-secondary-20">05</span>
-                    </span>
-                    <span class="icon">
-                        <i class="material-icons-outlined is-secondary-20">arrow_drop_down</i>
-                    </span>
-                </div>
-                <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding: 10px 20px 0px 20px;">
-                    <li class="is-flex is-align-items-center is-justify-content-space-between">
-                        <span class="is_body2 is-secondary-20 is-flex-1">24 tháng chạp</span>
-                        <div class="is-flex is-align-items-center is-flex-1 is-justify-content-flex-end">
-                            <div class="progress_has_value is-justify-content-flex-end is-gap-10-y">
-                                <div class="is-flex is-align-items-center">
-                                    <span class="is_sub2 is-secondary-40">72 lượt bình chọn</span>
-                                    <span class="icon">
-                                        <i class="material-icons-outlined is-secondary-40">arrow_drop_down</i>
-                                    </span>
-                                </div>
-                                <progress class="progress is-small is-link" value="72" max="100"
-                                    style="max-width: 180px;">
-                                </progress>
-                                <span class="is_sub2 is-primary-40">72%</span>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="is-flex is-align-items-center is-justify-content-space-between">
-                        <span class="is_body2 is-secondary-20 is-flex-1">25 tháng chạp</span>
-                        <div class="is-flex is-align-items-center is-flex-1 is-justify-content-flex-end">
-                            <div class="progress_has_value is-justify-content-flex-end is-gap-10-y">
-                                <div class="is-flex is-align-items-center">
-                                    <span class="is_sub2 is-secondary-40">28 lượt bình chọn</span>
-                                    <span class="icon">
-                                        <i class="material-icons-outlined is-secondary-40">arrow_drop_down</i>
-                                    </span>
-                                </div>
-                                <progress class="progress is-small is-danger" value="72" max="100"
-                                    style="max-width: 180px;">
-                                </progress>
-                                <span class="is_sub2 is-error-40">28%</span>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </li>
+        }
     </ul>
 </div>
 
-@code{ 
-    
+@code{
     [Parameter] 
     public List<QuestionModel> questions { get; set; }
+    [Parameter]
+    public List<MemberModel> to { get; set; } = new List<MemberModel>();
+    [Parameter]
+    public List<MemberModel> cc { get; set; } = new List<MemberModel>();
+    [Parameter]
+    public List<MemberModel> bcc { get; set; } = new List<MemberModel>();
     private ToggleHelper toggleViewVote = new ToggleHelper();
-    private ToggleHelper toggleViewUnVote = new ToggleHelper();
+    private ToggleHelper toggleViewUnvote = new ToggleHelper();
+    private string idToogleUnvote = String.Empty;
+    private string idToogleVote = String.Empty;
+    private List<MemberModel> getMembersUnvote = new List<MemberModel>();
+    private int totalMembers = 0;
 
-    private void HandleToggleViewVote()
+    private void HandleToggleViewVote(string idChoice)
     { 
-       toggleViewVote.Toggle();
+        idToogleVote = idChoice; 
+        toggleViewVote.Toggle();
     }
 
-    private void HandleToggleViewUnVote()
+    protected override void OnInitialized()
     {
-        toggleViewUnVote.Toggle();
+        getMembersUnvote = GetMembersUnvote();
     }
+
+
+    private void HandleToggleViewUnvote(string idQuestion)
+    {
+        idToogleUnvote = idQuestion;
+        toggleViewUnvote.Toggle();
+    }
+
+
+    public List<MemberModel> GetMembersUnvote()   
+    {
+        var allVoters = questions.SelectMany(q => q.choices).SelectMany(c => c.voters).ToList();
+        var membersReceived = to.Concat(cc).Concat(bcc).Distinct().ToList();
+        totalMembers = membersReceived.Count();
+        var unvotedMembers = membersReceived.Where(m => !allVoters.Any(v => v.id == m.id)).ToList();
+        return unvotedMembers;
+    }
+
+    
 }

@@ -57,4 +57,10 @@ public class CategoryData
         return;
     }
 
- }
+    public static async Task<CategoryModel> GetCategoryById(string id)
+    {
+        return await categoryCollection.Find(c => c.id == id).FirstOrDefaultAsync();
+    }
+
+
+}

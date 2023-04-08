@@ -1,12 +1,13 @@
+@inject IJSRuntime JSRuntime
 <div class="create__main-container">
     <div>
         <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập nội dung thư">
             <EditorContent>
             </EditorContent>
             <ToolbarContent>
-                <div class="toolbar-create">
+                <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? " 80" : "220" )px">
                     <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
-                        style="padding: 10px 40px;">
+                        style="padding: 10px 40px;" @onclick="CreateMail">
                         <span class="is-font-14">Gửi</span>
                     </div>
                     <div class="is-flex-1">
@@ -16,13 +17,11 @@
                                 <option value="serif"></option>
                                 <option value="monospace"></option>
                             </select>
-                            <select class="ql-header">
+                            <select class="ql-size">
+                                <option value="small"></option>
                                 <option selected=""></option>
-                                <option value="1"></option>
-                                <option value="2"></option>
-                                <option value="3"></option>
-                                <option value="4"></option>
-                                <option value="5"></option>
+                                <option value="large"></option>
+                                <option value="huge"></option>
                             </select>
                         </span>
                         <span class="ql-formats">
@@ -36,25 +35,28 @@
                             <select class="ql-background"></select>
                         </span>
                         <span class="ql-formats">
-                            <span class="ql-align ql-picker ql-icon-picker"></span>
-                            <select class="ql-align">
-                                <option selected="selected"></option>
-                                <option selected="center"></option>
-                                <option selected="right"></option>
-                                <option selected="justify"></option>
-                            </select>
-                        </span>
-                        <span class="ql-formats">
                             <button class="ql-list" value="ordered"></button>
                             <button class="ql-list" value="bullet"></button>
                             <button class="ql-indent" value="-1"></button>
                             <button class="ql-indent" value="+1"></button>
                             <button class="ql-blockquote"></button>
+                            <select class="ql-align">
+                                <option selected=""></option>
+                                <option value="center"></option>
+                                <option value="right"></option>
+                                <option value="justify"></option>
+                            </select>
                         </span>
                         <span class="ql-formats">
+                            <button>
+                                <label for="fileInput">
+                                    <i class="material-icons-outlined">link</i>
+                                </label>
+                            </button>
                             <button class="ql-link"></button>
                             <button class="ql-image"></button>
                         </span>
+
                     </div>
                     <div class="is-flex is-align-items-center is-gap-8">
                         <div class="wrapper-button is-justify-content-center is-inline-flex" style="padding: 9px 10px">
@@ -63,7 +65,8 @@
                             </span>
                             <span class="is_body2 is-primary-40">Lưu nháp</span>
                         </div>
-                        <div class="wrapper-button is-justify-content-center is-inline-flex error-btn"
+                        <div @onclick="CancelCreate"
+                            class="wrapper-button is-justify-content-center is-inline-flex error-btn"
                             style="padding: 9px 10px">
                             <span class="icon">
                                 <i class="material-icons-outlined">close</i>
@@ -74,9 +77,100 @@
                 </div>
             </ToolbarContent>
         </BlazoredTextEditor>
+        <InputFile 
+            multiple id="fileInput" 
+            style="display:none;" 
+            OnChange="@UploadFile" 
+            accept="application/pdf,
+                    image/png,
+                    image/jpg,
+                    image/jpeg,
+                    application/msword,
+                    application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                    application/vnd.ms-excel,
+                    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+        />
+        <div style="padding: 40px 0px 20px 0px">
+            <ul class="attachments-list mt-0">
+                @foreach (var file in files)
+                {
+                <li class="attachment-item">
+                    <img style="width: 16px; height: 16px;" src="@string.Concat(" images/", file.icon, ".png" )">
+                    <span>@file.name</span>
+                    <span class="icon is-pointer" @onclick="() => HandleDeleteFile(file)">
+                        <i class="material-icons-outlined">close</i>
+                    </span>
+                </li>
+                }
+            </ul>
+        </div>
     </div>
 </div>
+<_SignatureZone/>
 
-@code{
+@code{ 
     BlazoredTextEditor QuillHtml;
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
+    private List<AttachmentModel> files =new List<AttachmentModel>();
+    private long maxFileSize = 25 * 1024 * 1024; 
+    private long totalFileSize;
+    [Parameter] public EventCallback<string> SetCurrentAction {get; set;}
+
+    public void CreateMail()
+    {
+
+    }
+
+    public void CancelCreate()
+    {
+        SetCurrentAction.InvokeAsync("");
+    }
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        try {
+            foreach (var file in e.GetMultipleFiles())
+            {
+                if(!FileHelper.IsValidFileType(file)) 
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Định dạng file hiện tại không cho phép. Chỉ PDF, PNG, JPG, JPEG, DOC, DOCX, XLS, and XLSX là các tệp mở rộng cho phép.");
+                    return;
+                }
+                if (totalFileSize + file.Size > maxFileSize)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Tối đa 25MB cho tất cả các file!");
+                    return;
+                }
+                totalFileSize += file.Size;
+                var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+                string filePath = await FileHelper.SaveFileAsync(fileContent, file.Name);
+                await JSRuntime.InvokeVoidAsync("alert", "Upload thành công");
+                files.Add(new AttachmentModel {
+                    id = "1",
+                    name = file.Name,
+                    size = file.Size,
+                    contentType = file.ContentType,
+                    filePath = filePath,
+                });
+            }
+        }
+        catch(Exception ex) {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+    private void HandleDeleteFile(AttachmentModel fileDelete) 
+    {
+        FileHelper.DeleteFile(fileDelete.filePath);
+        AttachmentModel fileToDelete = files.FirstOrDefault(file => file.filePath == fileDelete.filePath);
+        if (fileToDelete != null)
+        {
+            files.Remove(fileToDelete);
+        }
+        StateHasChanged();
+    }
+
+
+
 }

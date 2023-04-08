@@ -2961,8 +2961,17 @@ button.dropdown-item {
 .dropdown-header {
   padding: 10px 0;
   border-radius: 0;
+}
+.divide-dropdown {
   border-bottom: 1px solid var(--color-secondary-80);
 }
+.container-items-dropdown{
+  max-height: 230px;
+  min-height: 230px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .icon.label {
   font-size: 13px;
   display: flex;
@@ -3849,4 +3858,12 @@ button.dropdown-item {
   justify-content: flex-end;
   flex-basis: 240px;
   max-width: 240px !important;
+}
+.mailtag-item{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  max-height: 25px;
+  border-radius: 4px;
 }

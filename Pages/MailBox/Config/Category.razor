@@ -15,7 +15,7 @@
         </div>
         <p class="is-padding-20-x is_body1 is-secondary-20">Danh sách hạng mục</p>
         <ul>
-            @foreach (var category in categories)
+            @foreach (var category in categories.Where(c => c.name != "Khác"))
             {
                 <_Item  
                     category="category" 
@@ -23,8 +23,12 @@
                     HandleUpdateCategory="HandleUpdateCategory"
                 />
             }
-
         </ul>
+        <li class="is-flex is-align-items-center is-justify-content-space-between is-padding-10-y border-bottom">
+                <div class="is-flex is-align-items-center is-gap-10-y">
+                    <span class="is_sub2 is-secondary-20">Khác</span>
+                </div>
+            </li>
     </div>
     <_ModalData
         nameModal="Thêm danh mục"
