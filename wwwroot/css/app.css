@@ -2863,6 +2863,7 @@ button.dropdown-item {
 }
 .mail__sidebar.is_less + .mail__main{
   margin-left: 73px;
+  width: calc( 100% - 73px);
 }
 .mail__sidebar.is_less span:not(.icon) {
   display: none;
@@ -2940,9 +2941,10 @@ button.dropdown-item {
 } */
 .mail__main {
   background-color: var(--white-color);
-  flex: 1;
-  margin-left: 220px;
   transition: all 0.2s ease;
+  width: calc(100% - 220px);
+  margin-left: 220px;
+  
 }
 .mail__container {
   padding: 20px 20px 0 20px;
@@ -3082,7 +3084,7 @@ button.dropdown-item {
 }
 .mail__content {
   padding-top: 20px;
-  min-height: calc(100vh - 152px);
+    min-height: calc(100vh - 152px);
 }
 .category__list {
   max-height: 37px;
@@ -3116,7 +3118,7 @@ button.dropdown-item {
   display: flex;
   position: relative;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-out;
   cursor: pointer;
 }
 .unread {
@@ -3130,6 +3132,7 @@ button.dropdown-item {
 }
 .mail-item.read {
   background: #fbfbfb;
+  
 }
 .mail-item.unread {
   background-color: var(--white-color);
@@ -3366,9 +3369,12 @@ button.dropdown-item {
 .mail-item:hover {
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+
+
 }
 .mail-item:hover .mail-actions {
   display: flex;
+  
 }
 .mail-item:hover .tags-list {
   display: none;
@@ -3635,8 +3641,6 @@ button.dropdown-item {
   max-height: 35px;
   border: 1px solid var(--color-primary-40);
   border-radius: 4px;
-  max-width: 345px;
-  min-width: 345px;
 }
 .container-icon-bg {
   padding: 10px;
@@ -3692,7 +3696,6 @@ button.dropdown-item {
   white-space: nowrap;
   text-overflow: ellipsis;
   flex: 1;
-  max-width: 500px;
 }
 .ellipsis-text {
   overflow: hidden;
@@ -3853,11 +3856,11 @@ button.dropdown-item {
 }
 .tags-list {
   display: flex;
-  align-items: center;
   gap: 0 5px;
   justify-content: flex-end;
   flex-basis: 240px;
   max-width: 240px !important;
+  transition: all 0.2s ease-in-out;
 }
 .mailtag-item{
   display: flex;

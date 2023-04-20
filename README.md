@@ -5,7 +5,6 @@
     <p> 2. UI phần tạo mail, tạo poll, chữ ký, view poll </p>
     <p> 3. Thiết lập:  UI, phần quản lí nhóm: xem được tất cả nhóm, tạo nhóm, thêm thành viên, edit nhóm </p>
     <p> 4. Xem chi tiết mail bao gồm: Ui, xem poll, xem thống kê </p>
-<div>_________________________________________________________________________________________________________________</div>
 <strong>Tuần 2: 20/3/2023 - 25/3/2023</strong>
   <h4>Công việc thực hiện được: </h4>
     <p> 1. Navigation, Hộp thư đến, Hộp thư đi, Hộp thư quan trọng, Thư nháp, Thùng rác, Thư theo nhãn (lọc thư theo nhãn)</p>
@@ -20,7 +19,7 @@
     <p> 10. Tạo được poll</p>
     <p> 12.Trong folder helper có 1 file là: "InitDataFakeHelper.cs" file này dùng để fake data</p>
     <p> 13. Đã viết collections cần thiết cho dự án tuần sau sẽ bắt đầu làm việc với database, các model </p>
-<div>______________________________________________________________________________________________________________________________________</div>
+    
 <strong>Tuần 3: 27/3/2023 - 1/4/2023</strong>
   <h4>Công việc thực hiện được: </h4>
     <p> 1. CRUD "Chữ ký", "Nhóm", "Thành viên trong nhóm", "Nhãn", "Danh mục" (MongoDB) </p>
@@ -30,11 +29,11 @@
     <p> 5. Login với, check login, check current user,... </p>
     <p> 6. Hoàn thiện tất cả UI </p>
     <p> 7. Clean code, sửa lại src cho phù hợp với yêu cầu </p>
-<div>______________________________________________________________________________________________________________________________________</div>
+
 <strong>Tuần 4: 3/4/2023 - 8/4/2023</strong>
   <h4>Công việc thực hiện được: </h4>
-    <p> 1. Hoàn thiện tất cả chức năng: "Chữ ký", "Nhóm", "Thành viên trong nhóm", "Nhãn", "Danh mục" trong "Cấu hình" + "Settings"  </p>
-    <p> 2. Về phần mail: Hoàn thành chức năng gửi mail (gửi cc, to, bcc), chọn danh mục, chữ ký mặc định, tải file, thêm xóa nhãn </p>.
+    <p> 1. Hoàn thiện tất cả chức năng: "Chữ ký", "Nhóm", "Thành viên trong nhóm", "Nhãn", "Danh mục" trong "Cấu hình" + "Settings" </p>
+    <p> 2. Về phần mail: Hoàn thành chức năng gửi mail (gửi cc, to, bcc), chọn danh mục, chữ ký mặc định, tải file, thêm xóa nhãn </p>
     <p> 3. Tạo được "poll" vote được poll, xem được phần trăm %, người đã vote cũng như chưa vote </p>
     <p> 4. Lưu được thư nháp </p>
     <p> 5. Về trang home: Đã làm được việc lọc mail theo thư đã gửi, thư đến, thư quan trọng, thư nháp, thùng rác </p>

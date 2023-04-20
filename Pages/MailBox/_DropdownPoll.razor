@@ -14,6 +14,22 @@
 </div>
 
 @code{
-    [Parameter]
+    [Parameter] 
+    public List<string> memberIds { get; set; }
     public List<MemberModel> members { get; set; } = new List<MemberModel>();
+
+    protected override void OnAfterRender(bool firstRender)
+        {
+            if(firstRender)
+            {
+                members = InitDataFakeHelper.GetMembersById(memberIds);
+                InvokeAsync(StateHasChanged);
+            }
+        }
+
+
+
+
+    
 }
+

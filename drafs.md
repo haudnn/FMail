@@ -376,3 +376,108 @@ delete
                     </div>
                 </div>
             </div> *@
+
+
+
+
+
+
+
+public static string ReplyMail(List<MailModel> mails, string mailId, string userId, string body)
+{
+    var originalMail = mails.FirstOrDefault(m => m.id == mailId);
+    if (originalMail == null)
+    {
+        return "Mail not found.";
+    }
+
+    // Create the reply mail
+    var replyMail = new MailModel
+    {
+        _id = Guid.NewGuid().ToString(),
+        repliesList = new List<string> { mailId },
+        from = originalMail.to.FirstOrDefault(t => t._id == userId)?.email ?? "",
+        to = new List<RecipientModel> { new RecipientModel { _id = Guid.NewGuid().ToString(), name = originalMail.from, email = originalMail.from } },
+        cc = originalMail.cc.Select(c => new RecipientModel { _id = c._id, name = c.name, email = c.email }).ToList(),
+        bcc = originalMail.bcc.Select(b => new RecipientModel { _id = b._id, name = b.name, email = b.email }).ToList(),
+        subject = originalMail.subject,
+        body = body,
+        attachments = new List<AttachmentModel>(),
+        sentDate = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+        isRead = false,
+        isImportant = false,
+        isDraft = false,
+        prevFolder = "",
+        isTrash = false,
+        labels = new List<LabelModel>(),
+        isReply = true,
+        originalMailId = mailId,
+        replies = new List<MailModel>(),
+        author = userId,
+        folder = "inbox",
+        isPoll = false,
+        category = originalMail.category,
+        signature = originalMail.signature,
+        pollId = "",
+        isDeleted = false,
+        shortBody = body
+    };
+
+    // Add the reply mail to the original mail's replies list
+    originalMail.replies.Add(replyMail);
+    mails.RemoveAll(m => m._id == mailId);
+    mails.Add(originalMail);
+
+    // Add the reply mail to the recipients' inbox folders
+    foreach (var recipient in originalMail.to.Concat(originalMail.cc).Concat(originalMail.bcc))
+    {
+        var recipientMail = new MailModel
+        {
+            _id = Guid.NewGuid().ToString(),
+            repliesList = new List<string> { mailId },
+            from = originalMail.to.FirstOrDefault(t => t._id == userId)?.email ?? "",
+            to = new List<RecipientModel> { new RecipientModel { _id = recipient._id, name = recipient.name, email = recipient.email } },
+            cc = new List<RecipientModel>(),
+            bcc = new List<RecipientModel>(),
+            subject = originalMail.subject,
+            body = body,
+            attachments = new List<AttachmentModel>(),
+            sentDate = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+            isRead = false,
+            isImportant = false,
+            isDraft = false,
+            prevFolder = "",
+            isTrash = false,
+            labels = new List<LabelModel>(),
+            isReply = true,
+            originalMailId = mailId,
+            replies = new List<MailModel>(),
+            author = userId,
+            folder = "inbox",
+            isPoll = false,
+            category = originalMail.category,
+            signature = originalMail.signature,
+            pollId = "",
+            isDeleted = false,
+            shortBody = body
+        };
+
+        // Check if the recipient already has an email from the original sender in their inbox
+        var existingMail = mails.FirstOrDefault(m => m.to.Any(t => t.email == recipient.email && t._id == recipient._id
+    if (existingMail != null)
+    {
+        // Add the reply to the existing mail's replies list
+        existingMail.replies.Add(replyMail);
+        mails.RemoveAll(m => m._id == existingMail._id);
+        mails.Add(existingMail);
+    }
+    else
+    {
+        // Create a new email for the recipient
+        recipientMail._id = Guid.NewGuid().ToString();
+        mails.Add(recipientMail);
+    }
+}
+
+return "Reply sent successfully.";
+}

@@ -4,7 +4,7 @@
         <div class="dropdown is-up click @(toggleActiveSign ? " is-active" : "" )">
             <div class="dropdown-trigger is-hover drop-border" @onclick='ToggleActiveSign'>
                 <div class=" is-flex is-align-items-center">
-                    <span class="is-secondary-20 is-font-14">@(defaultSignature.name != null ? defaultSignature.name : "Không có chữ ký" )</span>
+                    <span class="is-secondary-20 is-font-14">@(currentSignature.name != null ? currentSignature.name : "Không có chữ ký" )</span>
                     <span class="icon">
                         <i class="material-icons-sharp read">arrow_drop_down</i>
                     </span>
@@ -13,18 +13,18 @@
             <div class="dropdown-menu" style="min-width: 185px;">
                 <div class="dropdown-content" style="padding: 10px;">
                     <div class="dropdown-item is-flex is-align-items-center is-gap-4"
-                        @onclick="() => HandleChooseSignature(null)">
+                        @onclick="() => Choose(null)">
                         <span class="icon">
-                            <i class="material-icons-sharp is_body2">@(defaultSignature.name == null ? "done" : "")</i>
+                            <i class="material-icons-sharp is_body2">@(currentSignature.name == null ? "done" : "")</i>
                         </span>
                         <span class="is_body2">Không có chữ ký</span>
                     </div>
                     @foreach ( var signature in signatures)
                     {
                     <div class="dropdown-item is-flex is-align-items-center is-gap-4"
-                        @onclick="() => HandleChooseSignature(signature)">
+                        @onclick="() => Choose(signature)">
                         <span class="icon">
-                            <i class="material-icons-sharp is_body2">@(defaultSignature.name != null && defaultSignature.id == signature.id ? "done" : "")</i>
+                            <i class="material-icons-sharp is_body2">@(currentSignature.name != null && currentSignature.id == signature.id ? "done" : "")</i>
                         </span>
                         <span class="is_body2">@signature.name</span>
                     </div>
@@ -43,8 +43,9 @@
     public LayoutMain Layout { get; set; }
     string QuillHTMLContentSignature;  
     private bool toggleActiveSign = false;
-    public SignatureModel defaultSignature = new SignatureModel();
+    public SignatureModel currentSignature  = new SignatureModel();
     public List<SignatureModel> signatures =  new List<SignatureModel>();
+    [Parameter] public EventCallback<SignatureModel> HandleChooseSignature  {get; set; }
 
     private void ToggleActiveSign()
     {
@@ -54,22 +55,24 @@
     protected override async Task OnInitializedAsync()
     {
         signatures = await SignatureData.GetAllSignatures(Layout.User.id);
-        defaultSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
-        QuillHTMLContentSignature = defaultSignature.body;
+        currentSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
+        QuillHTMLContentSignature = currentSignature?.body;
     }
 
-    private async Task HandleChooseSignature(SignatureModel signature) 
+    private async Task Choose(SignatureModel signature) 
     {
         if(signature == null) {
-            defaultSignature = new SignatureModel();
+            currentSignature = new SignatureModel();
             QuillHTMLContentSignature = String.Empty;
             toggleActiveSign = !toggleActiveSign;
             return;
         }
         SignatureModel getSignature =  await SignatureData.GetSignatureById(signature.id);
-        defaultSignature = signature;
+        currentSignature = getSignature;
+        await HandleChooseSignature.InvokeAsync(currentSignature);
         QuillHTMLContentSignature = getSignature.body;
         toggleActiveSign = !toggleActiveSign;
+
         StateHasChanged();
     }
 

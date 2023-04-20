@@ -105,7 +105,7 @@
                 </span>
                 <span class="is-secondary-40 is_caption">Khôi phục thư</span>
             </div>
-            <div class="is-flex is-align-items-center is-pointer mail__footer-drafs" @onclick="TrashMails">
+            <div class="is-flex is-align-items-center is-pointer mail__footer-drafs" @onclick="PermanentlyDeleted">
                 <span class="icon has-text-white">
                     <i class="material-icons-outlined">delete_forever</i>
                 </span>
@@ -126,19 +126,22 @@
 </div>
 @code {
     private ToggleHelper toggleShowAction = new ToggleHelper();
-    private ToggleHelper toggleIconCheckbox = new ToggleHelper();
     private ToggleHelper toggleShowLabels = new ToggleHelper();
     private List<string> labelsSelected = new List<string>();
     [Parameter] public List<LabelModel> labels { get; set; }
+    [Parameter] public bool isTrashMails { get; set; }
+    [Parameter] public bool isImportantMails { get; set; }
     [Parameter] public int mailCount { get; set; } 
     [Parameter] public EventCallback HandleCancelSelectedMail { get; set; }
     [Parameter] public EventCallback HandleTrashMails { get; set; }
-    [Parameter] public bool isTrashMails { get; set; }
     [Parameter] public EventCallback<bool> HandleReadMails { get; set; }
     [Parameter] public EventCallback<bool> HandleImportantMails { get; set; }
     [Parameter] public EventCallback HandleRestoreMails { get; set; }
-    [Parameter] public bool isImportantMails { get; set; }
     [Parameter] public EventCallback<List<string>> HandleUpdateLabels {get; set;}
+    [Parameter]
+    public EventCallback<bool> HandleToggleActiveModal { get; set; }
+
+
 
     private void HandelToggleShowAction() 
     { 
@@ -156,7 +159,7 @@
         {
             labelsSelected.Add(id);
         }
-        else if (labelsSelected.Contains(id))
+        else
         {
             labelsSelected.Remove(id);
         }
@@ -168,18 +171,23 @@
         toggleShowLabels.Toggle();
     }
     
-
+    
 
     private void HandleCancleSelect() 
     {
         HandleCancelSelectedMail.InvokeAsync();
     }
 
-    
+    private void PermanentlyDeleted()
+    {
+        HandleToggleActiveModal.InvokeAsync(true);
+    }
+
     private void TrashMails() 
     { 
         HandleTrashMails.InvokeAsync();
     }
+
 
     public void ReadMails(bool isReads)
     {

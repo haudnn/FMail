@@ -1,5 +1,8 @@
 <ul class="is-flex is-align-items-center category__list is-flex-1">
-    @foreach (var category in categories)
+    <li @onclick='() => HandleChangeTabCategory("all")' class="category__item @(currentTabActive == "all" ? "active": "" )">
+        <span>Tất cả</span>
+    </li>
+    @foreach (var category in categories.Where(c => c.name != "Khác").Take(7))
     {
         <li @onclick="() => HandleChangeTabCategory(category.id)" class="category__item @(currentTabActive == category.id ? "active": "" )">
             <span>@category.name</span>
@@ -26,18 +29,25 @@
             <p class="dropdown-item">Tuyển dụng</p>
             <p class="dropdown-item">Lịch họp</p>
             <p class="dropdown-item">OKRs</p>
-            <p class="dropdown-item">Khác</p>
+            <p class="dropdown-item">Khác</p>   
         </div>
     </div>
 </div>
 
 @code {
-    public string currentTabActive = "1";
+    public string currentTabActive = "all";
     [Parameter]
     public List<CategoryModel> categories {get; set; }
-        
+    [Parameter]
+    public EventCallback<FilterModel> FilterMails {get; set; }
+
     private void HandleChangeTabCategory(string id)
     {
         currentTabActive = id;
+        FilterMails.InvokeAsync(
+            new FilterModel {
+                categoryId = id
+            }
+        );
     }
 }

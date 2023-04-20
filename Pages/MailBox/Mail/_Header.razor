@@ -3,7 +3,7 @@
         <div class="mail__bar-left is-flex is-align-items-center" style="gap: 0 20px;">
             <p class="mail-title">@name</p>
             <div class="search-wrapper">
-                <input class="search-input" type="text" placeholder="@placehoder">
+                <input @oninput="OnSearch" class="search-input" type="text" placeholder="@placehoder">
                 <span class="icon">
                     <i class="material-icons-outlined">search</i>
                 </span>
@@ -12,7 +12,7 @@
     </div>
     <div class="column is-@quantityColumnSecond">
         <div class="is-flex is-align-items-center is-full is-justify-content-end" style="gap: 0 20px;">
-                <div class="is-flex is-align-items-center wrapper-calendar is-flex-1">
+                <div class="is-flex is-align-items-center wrapper-calendar">
                     <div class="container-icon-bg">
                         <span class="icon">
                             <i style="font-size: 14px;" class="material-symbols-outlined has-text-white">
@@ -20,15 +20,19 @@
                             </i>
                         </span>
                     </div>
-                    <div class="container-datepicker is-flex-1">
-                        @* <DateRangePicker class="is_body2 is-secondary-40" @bind-StartDate="StartDate" SingleDatePicker=true /> *@
-                        <DateRangePicker>
+                    <div class="container-datepicker">
+                        <DateRangePicker 
+                            OnRangeSelect="OnRangeSelect"
+                            @bind-StartDate="StartDate"
+                            @bind-EndDate="EndDate"
+                        >
                             <PickerTemplate>
-                                <div id="@context.ParentId" @onclick="context.Toggle">
-                                    <span class="is_body2 is-secondary-40">dd/MM/yyyy</span>
+                                <div style="margin-right: 10px;" id="@context.ParentId" @onclick="context.Toggle">
+                                    <span class="is_body2 is-secondary-40 is-pointer">@(StartDate?.ToString("dd/MM/yyyy"))</span>
                                 </div>
+                                <span>-</span>
                                 <div style="margin-left: 10px;" id="@context.ParentId" @onclick="context.Toggle">
-                                    <span class="is_body2 is-secondary-40">dd/MM/yyyy</span>
+                                    <span class="is_body2 is-secondary-40 is-pointer">@(EndDate?.ToString("dd/MM/yyyy"))</span>
                                 </div>
                             </PickerTemplate>
                         </DateRangePicker>
@@ -36,7 +40,7 @@
                     <div style="padding-left: 8px;" class="dropdown @(toggleFilterTime.IsToggled ? " is-active" : "" )
                         is-right">
                         <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleFilterTime">
-                            <span class="is_body2 is-secondary-20">Thời gian</span>
+                            <span class="is_body2 is-secondary-20" style="white-space: nowrap;">@(currentFilterTime.name != null ? currentFilterTime.name : "Thời gian" )</span>
                             <span class="icon is-secondary-20">
                                 <i class="material-icons-outlined">
                                     arrow_drop_down
@@ -45,11 +49,10 @@
                         </div>
                         <div class="dropdown-menu" style="min-width: 180px; top: 40px">
                             <div class="dropdown-content px-2">
-                                <p class="dropdown-item is_body2 is-secondary-20">Mọi lúc</p>
-                                <p class="dropdown-item is_body2 is-secondary-20">Hơn 1 tuần trước</p>
-                                <p class="dropdown-item is_body2 is-secondary-20">Hơn 1 tháng trước</p>
-                                <p class="dropdown-item is_body2 is-secondary-20">Hơn 6 tháng trước</p>
-                                <p class="dropdown-item is_body2 is-secondary-20">Hơn 1 năm trước</p>
+                                @foreach (var item in times)
+                                {
+                                    <p @onclick="() => FilterTime(item)" class="dropdown-item is_body2 is-secondary-20">@item.name</p>
+                                }
                             </div>
                         </div>
                     </div>
@@ -58,7 +61,7 @@
             {
                     <div class="dropdown is-right @(toggleFilterStatus.IsToggled ? "is-active" : "" ) ">
                         <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleFilterStatus">
-                            <span style="white-space: nowrap;" class="is_body2 is-secondary-20">Trạng thái</span>
+                            <span style="white-space: nowrap;" class="is_body2 is-secondary-20">@(String.IsNullOrEmpty(currentFilterStatus.name) ? "Trạng thái" : currentFilterStatus.name)</span>
                             <span class="icon is-secondary-20">
                                 <i class="material-icons-outlined">
                                     arrow_drop_down
@@ -67,8 +70,11 @@
                         </div>
                         <div class="dropdown-menu" style="width: 180px; top: 40px">
                             <div class="dropdown-content px-2">
-                                <p class="dropdown-item is_body2 is-secondary-20">Thư đã đọc</p>
-                                <p class="dropdown-item is_body2 is-secondary-20">Thư chưa đọc</p>
+                                @foreach (var item in status)
+                                {
+                                    <p @onclick="() => FilterStatus(item)" class="dropdown-item is_body2 is-secondary-20">@item.name</p>
+                                }
+                                 <p @onclick="() => FilterStatus(null)" class="dropdown-item is_body2 is-secondary-20">Trạng thái</p>
                             </div>
                         </div>
                     </div>
@@ -88,23 +94,30 @@
                             <div class="dropdown-content filter-label">
                                 <div class="dropdown__header">Nhãn cần lọc</div>
                                 <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding-bottom: 40px;">
-                                @foreach (var label in labels)
-                                {
-                                    <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
-                                        <span class="icon is-small">
-                                            <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
-                                        </span>
-                                        <div class="is-flex is-align-items-center">
-                                            <span class="icon">
-                                                <i class="material-symbols-sharp" style="color: @label.color">label</i>
-                                            </span>
-                                            <span class="is_body2 is-secondary-10">@label.name</span>
-                                        </div>
-                                    </li>
-                                }
+                                    @foreach (var label in labels)
+                                    {
+                                        <li  class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
+                                            @if(labelsSelected.Contains(label.id)) {
+                                                <span class="icon is-small" @onclick="() => SelectedLabel(label.id)">
+                                                    <i class="material-icons-sharp is-secondary-40">check_box</i>
+                                                </span>  
+                                            }
+                                            else { 
+                                                <span class="icon is-small" @onclick="() => SelectedLabel(label.id)">
+                                                    <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
+                                                </span>
+                                            }
+                                            <div class="is-flex is-align-items-center" style="gap: 0 5px">
+                                                <span class="icon is-small">
+                                                    <i class="material-icons-sharp" style="color: @label.color">label</i>
+                                                </span>
+                                                <span class="is_body2 is-secondary-10">@label.name</span>
+                                            </div>
+                                        </li>
+                                    }
                                 </ul>
                                 <div class="is-flex is-align-items-center is-justify-content-flex-start" style="gap: 0 10px;">
-                                    <div class="wrapper-button primary-btn" style="padding: 0 4px;">
+                                    <div class="wrapper-button primary-btn" style="padding: 0 4px;" @onclick="FilterLabels">
                                         <span class="icon">
                                             <i class="material-icons-outlined">filter_list</i>
                                         </span>
@@ -112,7 +125,7 @@
                                     </div>
                                     <div class="wrapper-button" @onclick="HandleToggleFilterLabel">
                                         <span class="icon">
-                                            <i class="material-symbols-outlined is-error-40" style="font-size: 14px;">
+                                            <i class="material-icons-outlined is-error-40" style="font-size: 14px;">
                                                 cancel
                                             </i>
                                         </span>
@@ -128,44 +141,136 @@
 </div>
 
 @code {
-    [Parameter]
-    public string name { get; set; }
-    [Parameter]
-    public string quantityColumnFirst { get; set; }
-    [Parameter]
-    public string quantityColumnSecond { get; set; }
+    [Parameter] public EventCallback<FilterModel> FilterMails {get; set;}
+    [Parameter] public string name { get; set; }
+    [Parameter] public string quantityColumnFirst { get; set; }
+    [Parameter] public string quantityColumnSecond { get; set; }
+    [Parameter] public bool isShowStatus { get; set; }
+    [Parameter] public EventCallback<string> Searching { get; set; }
+    [Parameter] public bool isShowLabel { get; set; }
+    [Parameter] public string placehoder { get; set; }
+    [Parameter] public List<LabelModel> labels { get; set; } = new List<LabelModel>();
 
-    [Parameter]
-    public bool isShowStatus { get; set; }
-
-    [Parameter]
-    public bool isShowLabel { get; set; }
-
-    [Parameter]
-    public string placehoder { get; set; }
-    [Parameter]
-    public List<LabelModel>? labels { get; set; }
-
-    DateTimeOffset? StartDate { get; set; } = DateTime.Today.AddMonths(-1);
-    DateTimeOffset? EndDate { get; set; } = DateTime.Today.AddDays(1).AddTicks(-1);
+    DateTimeOffset? StartDate { get; set; } =  DateTime.Now;
+    DateTimeOffset? EndDate { get; set; } = DateTime.Now;
     private ToggleHelper toggleFilterLabel = new ToggleHelper();
+    private List<FilterModel> times = new List<FilterModel> ();
+    private List<FilterModel> status = new List<FilterModel> ();
     private ToggleHelper toggleFilterStatus = new ToggleHelper();
     private ToggleHelper toggleFilterTime = new ToggleHelper();
+    private List<string> labelsSelected = new List<string>();
+
+    public FilterModel currentFilterTime = new FilterModel();
+    public FilterModel currentFilterStatus = new FilterModel();
+
+    protected override void OnInitialized()
+    {
+        times = MailHelper.InitFilterTimeHelper();
+        FilterTime(times[0]);
+        toggleFilterTime.ToggleFalse();
+        status = MailHelper.InitFilterStatusHelper();
+    }
+
 
     private void HandleToggleFilterLabel()
     {
         toggleFilterLabel.Toggle();
     }
 
-    
+
     private void HandleToggleFilterStatus()
     {
         toggleFilterStatus.Toggle();
     }
 
-    
+
     private void HandleToggleFilterTime()
     {
         toggleFilterTime.Toggle();
     }
+
+    private void SelectedLabel(string id) 
+    {
+        if (!labelsSelected.Contains(id))
+        {
+            labelsSelected.Add(id);
+        }
+        else
+        {
+            labelsSelected.Remove(id);
+        }
+    }
+
+
+    public void FilterLabels()
+    {
+        FilterMails.InvokeAsync(new FilterModel {
+            labelIds = labelsSelected
+        });
+        toggleFilterLabel.Toggle();
+    }
+
+    public void OnSearch(ChangeEventArgs e)
+    {
+        Searching.InvokeAsync(e.Value.ToString());
+        StateHasChanged();
+    }
+
+
+    public void FilterStatus(FilterModel status)
+    {
+        if(status == null)
+        {
+            currentFilterStatus = new FilterModel();
+            FilterMails.InvokeAsync(
+                new FilterModel 
+                {
+                    isRead = 0,
+                });
+            toggleFilterStatus.Toggle();
+
+            return;
+        }
+        currentFilterStatus = status;
+        FilterMails.InvokeAsync(
+        new FilterModel 
+        {
+            isRead = status.id,
+        });
+        toggleFilterStatus.Toggle();
+    }
+
+
+    public void OnRangeSelect(DateRange range)
+    {
+        StartDate = range.Start;
+        EndDate = range.End;
+        FilterMails.InvokeAsync(
+            new FilterModel {
+                startTime = StartDate?.ToString("yyyy/MM/dd"),
+                endTime = EndDate?.ToString("yyyy/MM/dd"),
+            }
+        );
+
+    }
+
+    public void FilterTime(FilterModel time)
+    {   
+        currentFilterTime = time;
+        DateTime start = DateTime.Now;
+        DateTime end = DateTime.Now;
+        SharedHelper.GetTimeSpan(time.id, out start , out end);
+        StartDate = start;
+        EndDate = end;
+        FilterMails.InvokeAsync(
+            new FilterModel 
+            {
+                startTime = StartDate?.ToString("yyyy/MM/dd"),
+                endTime = EndDate?.ToString("yyyy/MM/dd"),
+            }
+        );
+        toggleFilterTime.Toggle();
+
+    }
 }
+

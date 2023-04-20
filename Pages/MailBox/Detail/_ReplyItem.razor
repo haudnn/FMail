@@ -1,92 +1,92 @@
 <li class="is-padding-20-x is-border-y" style="gap: 0 12px">
     @if (!isShow)
     { 
-        <div class="columns">
+        <div class="columns" @onclick="ToogleShow">
             <div class="column is-9">
                 <div class="is-flex-1 is-flex is-align-items-center is-gap-10-y">
-                    <figure class="image is-36x36">
-                        <img src="images/avatar-mail.png">
+                    <figure class="image is-32x32 is-rounded" style="min-width: 32px;">
+                        <img src="@member.avatar">
                     </figure>
                     <div class="is-flex-auto">
-                        <p class="is_sub2 is-secondary-10" style="margin-bottom: 5px;">Thảo Hoàng</p>
-                        <p class="is_caption is-secondary-20 ellipsis-text">Hiện tại tôi không thể tham gia
-                            tiệc cuối năm vì lý do gia đình. Hy vọng tôi có thể tham dự các
-                            buổi tiệc sắp tới. Để tránh ảnh hưởng tới sự vận hành của sự kiện, tôi sẽ đề
-                            xuất một người thay thế.</p>
+                        <p class="is_sub2 is-secondary-10" style="margin-bottom: 5px;">@member.name</p>
+                        @((MarkupString)mail.body)
                     </div>
                 </div>
             </div>
             <div class="column is-3">
                 <div class="is-flex is-align-items-center is-justify-content-flex-end is-full">
-                    <span class="is_caption is-secondary-40">23:30,</span>
-                    <span class="is_caption is-secondary-40">18/2/2023 (2 ngày trước)</span>
+                    <span class="is_caption is-secondary-40">@sentDateTime.ToString("HH:mm")</span>
+                    <span class="mr-1">,</span>
+                    <span class="is_caption is-secondary-40">@sentDateTime.ToString("dd/MM/yyyy") (@convertDate)</span>
                 </div>
             </div>
         </div>
     }
     else
-    { 
-        <li class="is-padding-20-x is-border-y" style="gap: 0 12px">
-            <_MailActionsBar 
-                mailName="<haudn191@gmail.com>" 
-                displayName="Hậu Đặng Ngọc" 
-                time="9:28" 
-                dateMonth="20/03"
-                year="2023"
+    {
+        <ul>
+            <_Info
+                author="author"
+                mail="mail"
+                SetCurrentAction="SetCurrentAction"
             />
-                @* ccList="@ccList" 
-                toList="@toList"  *@
-            <div style="margin-left: 45px;">
-                <div>
-                    <div>
-                        <p>Cảm ơn công ty</p>
-                    </div>
-                    <div class="is-padding-20-x">
-                        <p class="is_sub2 is-secondary-10"> ------------------------------------------------</p>
-                        <p class="is_sub2 is-secondary-10">hhoc.conando</p>
-                        <p class="is_sub2 is-secondary-10">Address: Số 23 Trường Thi 1, Phường Hòa Thuận Tây, Quận Hải Châu,
-                            Thành phố Đà Nẵng</p>
-                        <p class="is_sub2 is-secondary-10">Phone : 0905.043.312</p>
-                    </div>
-                    @* <div>
-                        <div class="dots" @onclick="HandleToogleViewExpand">
-                            <span class="icon">
-                                <i class="material-icons-outlined is-secondary-10">more_horiz</i>
-                            </span>
-                        </div>
-                        @if (toggleViewExpand.IsToggled)
-                        {
-                        <div class="container-reply">
-                            <div class="is-has-borderleft-2" style="padding-bottom: 20px;">
-                                <p>Kính gửi: Toàn thể Nhân sự Công ty TNHH Truyền thông và Công nghệ Conando;<br /></p>
-                                <p>
-                                    Nhằm mục đích triển khai kịp thời lịch nghỉ Tết Dương lịch 2023
-                                    và Tết Nguyên Đán Quý Mão, tạo điều kiện thuận lợi cho NLĐ chuẩn bị đón Tết,
-                                    Phòng Nhân sự thông báo đến đến toàn thể nhân sự về lịch nghỉ Tết như sau
-                                </p>
+            <li class="is-padding-20-x" style="gap: 0 12px">
+                    <div style="margin-left: 45px;">
+                        <div>
+                            @((MarkupString)mail.body)
+                              <div class="is-padding-20-x">
+                                    @((MarkupString)mail.signature.body)
+                                </div>
+                            <div @onclick="ToogleShow">
+                                <div class="dots">
+                                    <span class="icon">
+                                        <i class="material-icons-outlined is-secondary-10">more_horiz</i>
+                                    </span>
+                                </div>
+                                <div class="container-reply">
+                                    @((MarkupString)mail.parentId)
+                                </div>
                             </div>
                         </div>
-                        }
-                    </div> *@
-                </div>
-            </div>
-        </li> 
+                    </div>
+            </li> 
+        </ul>
     }
-
 </li>
 
 @code{
-    [Parameter]
-    public bool isShowDetail { get;  set;}
     public bool isShow;
-    
-    protected override void OnInitialized()
+    [Parameter] public MailModel mail { get; set; } = new MailModel();
+    [Parameter] public EventCallback<ActionModel> SetCurrentAction { get; set; }
+    public MemberModel member = new MemberModel();
+    public DateTime sentDateTime;
+    public string convertDate;
+    public UserModel author  = new();
+
+    protected override async Task OnInitializedAsync()
     {
-        isShow = isShowDetail;
+        isShow = false;
+        author = await UserData.Get(mail.from);
+        member = InitDataFakeHelper.GetMemberById(mail.from);
+        sentDateTime = DateTime.Parse(mail.sentDate);
+        convertDate = SharedHelper.ConvertDate(sentDateTime);
     }
 
-    public void HandleShowDetail() 
+    public void ToogleShow() 
     {
         isShow = !isShow;
+        StateHasChanged();
+    }
+
+
+
+    public void HandleClickAction(string action)
+    {
+        SetCurrentAction.InvokeAsync(
+            new ActionModel {
+                mail = mail.id,
+                action = action
+            }
+        );
     }
 }

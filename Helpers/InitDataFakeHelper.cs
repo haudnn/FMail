@@ -18,298 +18,6 @@ public class InitDataFakeHelper
         return categories;
     }
 
-    public static List<LabelModel> InitLabels()
-    {
-        List<LabelModel> labels = new List<LabelModel>();
-        labels.Add(new LabelModel() { id = "1", name = "Nhân sự Conando", color = "#fff962" });
-        labels.Add(new LabelModel() { id = "2", name = "Nhân sự Docorp", color = "#bcb51f" });
-        labels.Add(new LabelModel() { id = "3", name = "Truyền thông 2023", color = "#ecf0ff" });
-        labels.Add(new LabelModel() { id = "4", name = "Kế hoạch quý I", color = "#575e72" });
-        labels.Add(new LabelModel() { id = "5", name = "Kế hoạch quý II", color = "#ffb4a9" });
-        labels.Add(new LabelModel() { id = "6", name = "Plan tuần", color = "#5fcfe6" });
-        return labels;
-    }
-
-
-    public static List<MailModel> InitMails()
-    {
-        List<MailModel> mails = new List<MailModel>();
-
-        mails.Add(new MailModel()
-        {
-            id = "1",
-            from = "Công ty TNHH Conando",
-            subject = "Place.ai: Apply Now",
-            body = "You wont regret it. I was amazed at the quality of it. I am really satisfied with my it.",
-            isRead = true,
-            isImportant = false,
-            isDraft = false,
-            isTrash = false,
-            labels = new List<string>{"1","2","3", "4","5"},
-            attachments = new List<AttachmentModel>
-            {
-                new AttachmentModel { name = "Filename.docx" },
-                new AttachmentModel { name = "Filename.xlsx" },
-                new AttachmentModel { name = "Filename.xlsx" },
-                new AttachmentModel { name = "Filename.xlsx" },
-                new AttachmentModel { name = "Filename.xlsx" },
-            },
-            sentDate = "8:14",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "2",
-            from = "Trang, tôi",
-            subject = "Không có chủ đề",
-            body = "You wont regret it. I was amazed at the quality of it. I am really satisfied with my it.",
-            isRead = false,
-            isImportant = true,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4", "3" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "7:25",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4"},
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-             mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4"},
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        mails.Add(new MailModel()
-        {
-            id = "3",
-            from = "Lý Công Hoàng Anh",
-            subject = "The results to our user testing",
-            body = "",
-            isRead = true,
-            isImportant = false,
-            isDraft = true,
-            isTrash = false,
-            labels = new List<string> { "4" },
-            attachments = new List<AttachmentModel> { },
-            sentDate = "30/12/2022",
-        });
-        
-        return mails;
-    }
-
-
-    public static List<MailModel> FitterMailsImportant()
-    {
-        List<MailModel> mails = InitMails();
-        List<MailModel> mailsFilter = mails.Where(item => item.isImportant).ToList();
-        return mailsFilter;
-    }
-
-
-    public static List<MailModel> FitterMailsDraft()
-    {
-        List<MailModel> mails = InitMails();
-        List<MailModel> mailsFilter = mails.Where(item => item.isDraft).ToList();
-        return mailsFilter;
-    }
-
-
-    public static List<MailModel> FitterMailsNotDraft()
-    {
-        List<MailModel> mails = InitMails();
-        List<MailModel> mailsFilter = mails.Where(item => !item.isDraft).ToList();
-        return mailsFilter;
-    }
-
-
     public static List<GroupModel> InitGroups()
     {
         List<GroupModel> groups = new List<GroupModel>();
@@ -329,6 +37,7 @@ public class InitDataFakeHelper
                 avatar = user.avatar,
                 email = user.email,
                 name = $"{user.first_name} {user.last_name}",
+                last_name = user.last_name,
             });
         }
         return members;
@@ -352,23 +61,14 @@ public class InitDataFakeHelper
                     avatar = user.avatar,
                     email = user.email,
                     name = $"{user.first_name} {user.last_name}",
+                    last_name = user.last_name
+                    
                 });
             }
 
         }
         return members;
     }
-
-    public static List<MailModel> FilterMailByLabel(string labelId) 
-    {
-        List<MailModel> mails = InitMails();
-        List<MailModel> filteredMails = mails.Where(mail => mail.labels.Contains(labelId)).ToList();
-        if(filteredMails.Count == 0 ) {
-            return new List<MailModel>();
-        }
-        return filteredMails;
-    }
-
 
 
     public static List<UserModel> InitUsers() 
@@ -413,6 +113,25 @@ public class InitDataFakeHelper
         return matchingMembers;
     }
 
+    public static List<LabelModel> GetLabelsById(List<string> ids, List<LabelModel> labels)
+    {
+        List<LabelModel> matchingLabels = new List<LabelModel>();
+        if(ids.Count == 0 || labels.Count == 0)
+        {
+            return matchingLabels; 
+        }
+
+        foreach (string id in ids)
+        {
+            LabelModel label = labels.Find(m => m.id == id);
+            if (label != null)
+            {
+                matchingLabels.Add(label);
+            }
+        }
+        return matchingLabels;
+    }
+
 
 
     public static List<MemberModel> GetMembersUnion(List<MemberModel> members, List<MemberModel> membersDetail) 
@@ -424,6 +143,13 @@ public class InitDataFakeHelper
                            .Select(g => g.First())
                            .ToList();
         return uniqueMembers;
+    }
+
+    public static MemberModel GetMemberById(string id)
+    {
+     
+        List<MemberModel> members = InitMembers();
+        return members.Where(m => m.id == id).FirstOrDefault();
     }
 
 }

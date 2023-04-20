@@ -12,7 +12,8 @@ public class PollModel
     public string endTime { get; set; }
     // <summary> Ngay kết thúc poll</summary>
     public string endDate { get; set; }
-    public bool isStopPoll { get; set; }
+    public bool isStopped { get; set; }
+    public string author { get; set; }
 }
 
 public class QuestionModel
@@ -31,7 +32,7 @@ public class ChoiceModel
     // <summary> Nội dung lựa chọn</summary>  
     public string text { get; set; }
     // <summary> List user vote </summary>  
-    public List<MemberModel> voters { get; set; }
+    public List<string> voters { get; set; }
 
 }
 

@@ -123,9 +123,7 @@
         <div class="create__main-container">
             <div>
                     <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập nội dung thư">
-                            <EditorContent>
-                                @((MarkupString)QuillHTMLContent)
-                            </EditorContent> 
+                            <EditorContent></EditorContent> 
                         <ToolbarContent>
                             <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? "80" : "220" )px">
                                 <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
@@ -248,7 +246,7 @@
                 }
             </div>
         </div>
-        <_SignatureZone/>
+            <_SignatureZone HandleChooseSignature="HandleChooseSignature" />
     </main>
 </section>
 @code {
@@ -283,21 +281,19 @@
     private bool toggleAddCC = false;
     private bool isDoneCreatePoll = false;
     public string subject = String.Empty;
-    private bool toggleActiveSign = false;
     public string mailId = String.Empty;
     BlazoredTextEditor QuillHtml;
     string QuillHTMLContent;
     string QuillHTMLContentSignature;
-    private List<AttachmentModel> files =new List<AttachmentModel>();
+    private List<AttachmentModel> files = new List<AttachmentModel>();
 
 
     protected override async Task OnInitializedAsync()
     {
         categories = await CategoryData.GetAllCategory();
         labels = await LabelData.GetAllLabels(Layout.User.id);
-        signatures = await SignatureData.GetAllSignatures(Layout.User.id);
         currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
-        currentSignature = signatures.FirstOrDefault(s => s.isDefault == true);
+        currentSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
 
         originalGroups = await GroupData.GetAllGroups();
         groups = originalGroups.ToList();
@@ -319,15 +315,15 @@
             MailModel mail = await MailData.GetMailById(mailId);
             isStar = mail.isImportant;
             QuillHTMLContent = mail.body;
-            membersSelected = mail.to;
-            membersCCSelected = mail.cc;
-            membersBCCSelected = mail.bcc;
+            membersSelected = InitDataFakeHelper.GetMembersById(mail.to);
+            membersCCSelected = InitDataFakeHelper.GetMembersById(mail.cc);
+            membersBCCSelected = InitDataFakeHelper.GetMembersById(mail.bcc);
             subject = mail.subject;
             files = mail.attachments;
             currentSignature = mail.signature;
             currentCategory = await CategoryData.GetCategoryById(mail.category);
             labelsSelected = await LabelData.FindLabelsByIds(mail.labels);
-            if(mail.pollId != null)
+            if(!string.IsNullOrEmpty((mail.pollId)))
             {
                 poll = await PollData.GetPollById(mail.pollId);
                 toggleCreatePoll.Toggle();
@@ -349,7 +345,8 @@
             title = "",
             endDate = DateTime.Today.ToString("dd/MM/yyyy"),
             endTime = DateTime.Today.ToString("23:59"),
-            isStopPoll = false,
+            isStopped = false,
+            author= Layout.User.id,
             questions = new List<QuestionModel>
             {
                 new QuestionModel
@@ -363,7 +360,7 @@
                             {
                                 id = GenerateIDHelper.GenerateID("19012001"),
                                 text = "",
-                                voters = new List<MemberModel>(),
+                                voters = new List<string>(),
                             }
                         },
                 }
@@ -374,7 +371,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        
+
     }
 
     private void ToggleAddCC()
@@ -403,19 +400,9 @@
     }
 
 
-    private async Task HandleChooseSignature(SignatureModel signature) 
+    private void HandleChooseSignature(SignatureModel signature) 
     {
-        if(signature == null) {
-            currentSignature = new SignatureModel();
-            QuillHTMLContentSignature = String.Empty;
-            toggleActiveSign = !toggleActiveSign;
-            return;
-        }
-        SignatureModel getSignature =  await SignatureData.GetSignatureById(signature.id);
         currentSignature = signature;
-        QuillHTMLContentSignature = getSignature.body;
-        toggleActiveSign = !toggleActiveSign;
-        StateHasChanged();
     }
 
     public async Task HandelCreatePoll() 
@@ -549,23 +536,29 @@
         string shortBody = await QuillHtml.GetText();
         MailModel mailToCreate = new MailModel
             {
-                from = Layout.User.email,
+                from = Layout.User.id,
                 category = currentCategory.id,
                 isImportant = isStar,
                 labels = labelsSelected.Select(l => l.id).ToList(),
-                to = membersSelected,
-                cc = membersCCSelected,
-                bcc = membersBCCSelected,
+                to = membersSelected.Select(l => l.id).ToList(),
+                cc = membersCCSelected.Select(l => l.id).ToList(),
+                bcc = membersBCCSelected.Select(l => l.id).ToList(),
                 subject = subject == String.Empty ? "Không có chủ đề" : subject,
                 body = QuillHTMLContent,
                 attachments = files,
                 signature = currentSignature,
                 sentDate = DateTimeHelper.FormatDateTimeUTC(),
                 author = Layout.User.id,
-                folder = "sent",
-                shortBody = shortBody.Length > 50 ? shortBody.Substring(0, 50) : shortBody,
-                prevFolder = "sent",
+                shortBody = shortBody.Length > 150 ? shortBody.Substring(0, 150) : shortBody,
                 isDraft = false,
+                isDeleted = false,
+                isRead = false,
+                isReply = false,
+                originalMailId = "",
+                isTrash = false,
+                pollId = "",
+                created_at = DateTime.Now.Ticks,
+                parentId = String.Empty,    
             };
         if(toggleCreatePoll.IsToggled) 
         {
@@ -577,7 +570,7 @@
         }
         await MailData.CreateMail(mailToCreate);
         await JSRuntime.InvokeVoidAsync("tagline", true, "Tạo mail thành công!");  
-        navigation.NavigateTo("/mail/inbox", true   );
+        navigation.NavigateTo("/mail/inbox", true);
     }
 
 
@@ -625,26 +618,27 @@
         string shortBody = await QuillHtml.GetText();
         MailModel mailToDraft = new MailModel
             {
-                from = Layout.User.email,
+                from = Layout.User.id,
                 category = currentCategory.id,
                 isImportant = isStar,
                 labels = labelsSelected.Select(l => l.id).ToList(),
-                to = membersSelected,
-                cc = membersCCSelected,
-                bcc = membersBCCSelected,
+                to = membersSelected.Select(l => l.id).ToList(),
+                cc = membersCCSelected.Select(l => l.id).ToList(),
+                bcc = membersBCCSelected.Select(l => l.id).ToList(),
                 subject = subject == String.Empty ? "Không có chủ đề" : subject,
                 body = QuillHTMLContent,
                 attachments = files,
                 signature = currentSignature,
                 sentDate = DateTimeHelper.FormatDateTimeUTC(),
                 author = Layout.User.id,
-                folder = "draft",
                 shortBody = shortBody.Length > 50 ? shortBody.Substring(0, 50) : shortBody,
                 isDraft = true,
-                prevFolder = "draft",
                 isReply = false,
-                replies = new List<string>(),
                 originalMailId = "",
+                isDeleted = false,
+                isRead = false,
+                isTrash = false,
+                created_at = DateTime.Now.Ticks,
             };
         if(toggleCreatePoll.IsToggled) 
         {

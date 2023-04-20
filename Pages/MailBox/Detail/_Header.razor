@@ -9,17 +9,19 @@
         <div class="is-flex is-align-items-center is-gap-8 is-pointer">
             @if(isImportantClone) 
             { 
-                <span class="icon is-small is-warning-20" @onclick="() => HandleImportantMail(false)">
+                <span class="icon is-small is-warning-20" @onclick="() => IsImportant(false)">
                     <i class="material-icons-sharp" style="font-size: 12px;">star_purple500</i>
                 </span>
+                <span class="is_body2 is-secondary-40">Đánh dấu không quan trọng</span>
             }
             else 
             {
-                <span class="icon is-small is-warning-20" @onclick="() => HandleImportantMail(true)">
+                <span class="icon is-small is-warning-20" @onclick="() => IsImportant(true)">
                     <i class="material-symbols-outlined "  style="font-size: 12px;">star</i>
                 </span>
+                <span class="is_body2 is-secondary-40">Đánh dấu quan trọng</span>
             }
-            <span class="is_body2 is-secondary-40">Đánh dấu quan trọng</span>
+
         </div>
         <div class="dropdown is-left @(toggleShowLabel.IsToggled ? "is-active" : "" )">
             <div class="dropdown-trigger is-flex is-align-items-center is-gap-8 is-pointer" @onclick="HandelToggleShowLabel">
@@ -35,7 +37,7 @@
                         @foreach (var label in labels)
                         {
                             <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
-                                @if(labelsSelected.Contains(label)) 
+                                @if(labelsSelected.Any(l => l.id == label.id))
                                 {
                                     <span class="icon is-small" @onclick="() => HandelChooseLabel(label)">
                                         <i class="material-icons-sharp is-secondary-40">check_box</i>
@@ -74,16 +76,16 @@
         </ul>
     </div>
     <div class="is-flex is-align-items-center is-gap-8 is-pointer">
-        @if(isReadClone) 
+        @if(isReadMail) 
         { 
-            <span class="icon is-primary-40" @onclick="() => HandlIsReadMail(false)">
+            <span class="icon is-primary-40" @onclick="() => IsRead(false)">
                 <i class="material-icons-outlined">drafts</i>
             </span>
             <span class="is_caption is-primary-40">Đánh dấu chưa đọc</span>
         }
         else 
         {
-            <span class="icon is-primary-40" @onclick="() => HandlIsReadMail(true)">
+            <span class="icon is-primary-40" @onclick="() => IsRead(true)">
                 <i class="material-icons-outlined">email</i>
             </span>
             <span class="is_caption is-primary-40">Đánh dấu đã đọc</span>
@@ -93,50 +95,61 @@
 </header>
 
 @code{
-    [Parameter]
-    public List<LabelModel> labels { get; set; }
-    [Parameter]
-    public List<LabelModel> labelsSelected { get; set; }
-    [Parameter]
-    public MailModel mail { get; set; }  = new ();
-    public bool isImportantClone { get; set; } = false;
-    public bool isReadClone  { get; set; } = false;
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
+    public List<LabelModel> labels { get; set; } = new List<LabelModel>();
+    public List<LabelModel> labelsSelected { get; set; } = new List<LabelModel>();
+    [Parameter] public MailModel mail { get; set; }
+    public bool isImportantClone;
+    public bool isReadMail = true;
     private ToggleHelper toggleShowLabel = new ToggleHelper();
-    // private List<LabelModel> labelsSelected = new List<LabelModel>();
+
     private void HandelToggleShowLabel() 
     { 
         toggleShowLabel.Toggle();
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
-        isImportantClone = mail.isImportant;
-        isReadClone = mail.isRead;
+        labelsSelected  = await LabelData.FindLabelsByIds(mail.labels);
+        labels = await LabelData.GetAllLabels(Layout.User.id);
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+        {
+            isImportantClone = mail.isImportant;
+        }
     }
 
-
-    private void HandleImportantMail(bool isImportantMail ) 
+    
+    private async Task IsImportant(bool isImportantMail ) 
     {
+        await MailData.Important(mail.id, isImportantMail);
         isImportantClone = isImportantMail;
     }
 
 
-    private void HandlIsReadMail(bool isReadMail )
+    private async Task IsRead(bool isRead )
     {
-        isReadClone = isReadMail;
+        await MailData.Read(mail.id, isRead);
+        isReadMail = isRead;
     }
 
 
-
-    private void HandelChooseLabel(LabelModel label) 
+    private async Task HandelChooseLabel(LabelModel label) 
     {
-        if (labelsSelected.Contains(label))
+        if (labelsSelected.Any(l => l.id == label.id))
         {
-            labelsSelected.Remove(label);
+            await MailData.RemoveLabel(mail.id, label.id);
+            labelsSelected.Remove(labelsSelected.FirstOrDefault(l => l.id == label.id));
+            StateHasChanged();
         }
         else
         {
-            labelsSelected.Add(label);
+            await MailData.AddLabel(mail.id, label.id);
+            labelsSelected.Add(label);  
+                StateHasChanged();                   
         }
     }
 }

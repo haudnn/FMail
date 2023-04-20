@@ -63,19 +63,17 @@
                     <div class="mail__items">
                         @foreach (var mail in mails)
                         {
-                            @* <_Item 
-                                id="@mail.id"
-                                from="@mail.from"
-                                body="@mail.body"
-                                isRead="@mail.isRead"
-                                attachments="@mail.attachments"
-                                isImportant="@mail.isImportant"
-                                sentDate="@mail.sentDate"
-                                labelsIds="@mail.labels"
-                                subject="@mail.subject"
-                                isChecked="@selectedItems.Contains(mail.id)" 
-                                HandleSelectedMail="HandleSelectedMail"
-                            /> *@
+                            @if(!mail.isReply)
+                            {
+                                <_Item
+                                    mail="mail"
+                                    currentPage="sent"
+                                    mails = "mails"
+                                    isChecked="@selectedItems.Contains(mail.id)" 
+                                    HandleSelectedMail="HandleSelectedMail"
+                                    HandleTrashItem="HandleTrashItem"
+                                />
+                            }
                         }
                     </div>
                 </div>
@@ -109,29 +107,27 @@
 </div>
 
 @code {
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
     [Parameter]
-    public string? id { get; set; }
+    public string id { get; set; }
     public List<CategoryModel> categorise = new();
     private List<LabelModel> labels = new();
-    private List<MailModel> mails = new();
+    private List<MailModel> mails = new List<MailModel>();
     private bool isSelectedAll  = false;
     private List<string> selectedItems = new List<string>();
 
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        categorise = InitDataFakeHelper.InitCategories();
-        labels = InitDataFakeHelper.InitLabels();
-        mails = InitDataFakeHelper.FilterMailByLabel(id);  
+        categorise = await CategoryData.GetAllCategory();
+        labels = await LabelData.GetAllLabels(Layout.User.id);
     }
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
-        List<MailModel> newMails = InitDataFakeHelper.FilterMailByLabel(id);
-
-        mails = newMails;
-
+        mails = await MailData.GetMailsByLabel(id, Layout.User.id);
         StateHasChanged();
     }
 
@@ -176,5 +172,11 @@
         mails.Clear();
     }
 
+   public async Task HandleTrashItem(MailModel mailTrash)
+    {
+        await MailData.Trash(mailTrash.id);
+        MailModel mail = mails.Where(m => m.id == mailTrash.id).FirstOrDefault();
+        mails.Remove(mail);
+    }
 
 }

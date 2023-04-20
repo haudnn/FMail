@@ -1,4 +1,5 @@
 @inject IJSRuntime JSRuntime
+
 <div class="create__main-container">
     <div>
         <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập nội dung thư">
@@ -7,7 +8,7 @@
             <ToolbarContent>
                 <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? " 80" : "220" )px">
                     <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
-                        style="padding: 10px 40px;" @onclick="CreateMail">
+                        style="padding: 10px 40px;" @onclick="Create">
                         <span class="is-font-14">Gửi</span>
                     </div>
                     <div class="is-flex-1">
@@ -65,9 +66,7 @@
                             </span>
                             <span class="is_body2 is-primary-40">Lưu nháp</span>
                         </div>
-                        <div @onclick="CancelCreate"
-                            class="wrapper-button is-justify-content-center is-inline-flex error-btn"
-                            style="padding: 9px 10px">
+                        <div @onclick="Cancel" class="wrapper-button is-justify-content-center is-inline-flex error-btn" style="padding: 9px 10px">
                             <span class="icon">
                                 <i class="material-icons-outlined">close</i>
                             </span>
@@ -94,37 +93,67 @@
             <ul class="attachments-list mt-0">
                 @foreach (var file in files)
                 {
-                <li class="attachment-item">
-                    <img style="width: 16px; height: 16px;" src="@string.Concat(" images/", file.icon, ".png" )">
-                    <span>@file.name</span>
-                    <span class="icon is-pointer" @onclick="() => HandleDeleteFile(file)">
-                        <i class="material-icons-outlined">close</i>
-                    </span>
-                </li>
+                    <li class="attachment-item">
+                        <img style="width: 16px; height: 16px;" src="@string.Concat(" images/", file.icon, ".png" )">
+                        <span>@file.name</span>
+                        <span class="icon is-pointer" @onclick="() => DeleteFile(file)">
+                            <i class="material-icons-outlined">close</i>
+                        </span>
+                    </li>
                 }
             </ul>
         </div>
     </div>
 </div>
-<_SignatureZone/>
+<_SignatureZone HandleChooseSignature="HandleChooseSignature"/>
 
 @code{ 
+ 
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public EventCallback<ActionModel> SetCurrentAction {get; set;}
+    [Parameter] public EventCallback<MailModel> HandleCreate {get; set;}
     BlazoredTextEditor QuillHtml;
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
     private List<AttachmentModel> files =new List<AttachmentModel>();
     private long maxFileSize = 25 * 1024 * 1024; 
     private long totalFileSize;
-    [Parameter] public EventCallback<string> SetCurrentAction {get; set;}
+    string QuillHTMLContent;
+    private SignatureModel currentSignature = new SignatureModel();
 
-    public void CreateMail()
+    protected override async Task OnInitializedAsync()
     {
+        currentSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
+    }
+    
+    public async Task Create()
+    {
+        QuillHTMLContent = await QuillHtml.GetHTML();
+    
+        string shortBody = await QuillHtml.GetText();
+        MailModel mailToCreate = new MailModel
+            {
+                from = Layout.User.id,
+                isImportant = false,
+                labels = new List<string>(),
+                body = QuillHTMLContent,
+                attachments = files,
+                signature = currentSignature,
+                sentDate = DateTimeHelper.FormatDateTimeUTC(),
+                author = Layout.User.id,
+                shortBody = shortBody.Length > 150 ? shortBody.Substring(0, 150) : shortBody,
+                isDraft = false,
+                isDeleted = false,
+                isTrash = false,
+                isRead = false,
+                pollId = String.Empty,
+                created_at = DateTime.Now.Ticks,
+            };
+        await HandleCreate.InvokeAsync(mailToCreate);
 
     }
 
-    public void CancelCreate()
+    public void Cancel()
     {
-        SetCurrentAction.InvokeAsync("");
+        SetCurrentAction.InvokeAsync(new ActionModel());
     }
 
     private async Task UploadFile(InputFileChangeEventArgs e)
@@ -160,7 +189,7 @@
         }
     }
 
-    private void HandleDeleteFile(AttachmentModel fileDelete) 
+    private void DeleteFile(AttachmentModel fileDelete) 
     {
         FileHelper.DeleteFile(fileDelete.filePath);
         AttachmentModel fileToDelete = files.FirstOrDefault(file => file.filePath == fileDelete.filePath);
@@ -172,5 +201,12 @@
     }
 
 
+    private void HandleChooseSignature(SignatureModel signature) 
+    {
+        currentSignature = signature;
+    }
+
+
 
 }
+

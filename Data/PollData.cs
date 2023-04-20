@@ -38,7 +38,7 @@ public class PollData
     }
 
 
-    public static async Task Vote(string pollId, string questionId, string choiceId, MemberModel voter)
+    public static async Task Vote(string pollId, string questionId, string choiceId, string voter)
     {
         try
         {
@@ -66,7 +66,7 @@ public class PollData
     }
 
 
-    public static async Task<PollModel> UnVote(string pollId, string questionId, string choiceId, MemberModel voter)
+    public static async Task<PollModel> UnVote(string pollId, string questionId, string choiceId, string voter)
     {
         try
         {
@@ -75,8 +75,7 @@ public class PollData
                 Builders<PollModel>.Filter.Eq("questions._id", questionId),
                 Builders<PollModel>.Filter.Eq("questions.choices._id", choiceId)
             );
-            var update = Builders<PollModel>.Update.PullFilter("questions.$.choices.$[choice].voters",
-                Builders<MemberModel>.Filter.Eq("id", voter.id));
+            var update = Builders<PollModel>.Update.Pull("questions.$.choices.$[choice].voters", voter);
             var arrayFilters = new List<ArrayFilterDefinition>
         {
             new BsonDocumentArrayFilterDefinition<BsonDocument>(
@@ -96,6 +95,14 @@ public class PollData
             Console.WriteLine(ex.ToString());
             return null;
         }
+    }
+
+
+    public static async Task Stop(string id)
+    {
+        var filter = Builders<PollModel>.Filter.Eq(x => x.id, id);
+        var update = Builders<PollModel>.Update.Set("isStopped", true);
+        await pollCollection.UpdateOneAsync(filter, update);
     }
 
 }

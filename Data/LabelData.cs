@@ -54,7 +54,7 @@ public class LabelData {
             return new List<LabelModel>();
         }
 
-        var filter = Builders<LabelModel>.Filter.In(x => x.id, ids);
+        var filter = Builders<LabelModel>.Filter.In("id", ids);
         var labels = await labelCollection.Find(filter).ToListAsync();
         return labels;
 

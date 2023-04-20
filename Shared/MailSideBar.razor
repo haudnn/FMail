@@ -37,8 +37,8 @@
         <div class="labels-list">
             @foreach (var label in labels)
             {
-                <div class="label-item @(label.id == activeLabel ? "label-active" : "")" @onclick="() => HandleActiveLabel(label)">
-                    <a href="mail/label/@label.id" class="is-flex is-gap-10-y is-align-items-center" >
+                <div class="label-item @(label.id == activeLabel ? "label-active" : "")">
+                    <a href="mail/label/@label.id" class="is-flex is-gap-10-y is-align-items-center" @onclick="() => HandleActiveLabel(label)">
                         <span class="icon">
                             <i class="material-icons-sharp" style="color: @label.color">label</i>
                         </span>
@@ -72,7 +72,7 @@
     public string activeLabel { get; set; }
     private bool navLess = false;
     private List<LabelModel> labels = new();
-    private NavModel _prevActiveNavItem;
+    private NavModel prevActiveNavItem;
     public string currentPath { get; set;}
 
     private async Task ToggleSidebar()
@@ -85,14 +85,22 @@
     {
         labels = await LabelData.GetAllLabels(Layout.User.id);
         var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
-        currentPath = relativePath;
         Navigation();
+        SetActiveNavItem();
     }
 
     private void SetActiveNavItem()
     {
         var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
-        currentPath = relativePath;
+        if(relativePath.StartsWith("mail/label/"))
+        {
+            var label = labels.FirstOrDefault(item => item.id == relativePath?.Split('/').Last());
+            activeLabel = label?.id;
+        }
+        else
+        {
+            currentPath = relativePath;
+        }
     }
 
     private void Navigation() 
@@ -144,25 +152,31 @@
         if (firstRender)
         {
             var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
-            if(relativePath == "mail/label/") {
-                _prevActiveNavItem = null;
+
+            if (relativePath.StartsWith("mail/label/"))
+            {
+                var label = labels.FirstOrDefault(item => item.id == relativePath?.Split('/').Last());
+                activeLabel = label?.id;
+                return;
             }
-            else{ 
+            else
+            {
                 foreach (var item in NavMap.Values)
                 {
-                    if(item.link == relativePath) { 
+                    if (item.link == relativePath)
+                    {
                         item.active = true;
-                        _prevActiveNavItem = item;
+                        prevActiveNavItem = item;
                         return;
                     }
                 }
             }
-
             StateHasChanged();
         }
     }
 
-    private void HandleActiveLabel(LabelModel clickedLabel) { 
+
+    private void HandleActiveLabel(LabelModel clickedLabel) {
         activeLabel = clickedLabel.id;
     }
 }

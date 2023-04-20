@@ -390,7 +390,6 @@
   border-radius: 4px;
 }
 .is-has-borderleft-2 {
-  padding-left: 10px;
   border-left: 2px solid var(--color-secondary-80);
 }
 .write-zone .create__main-container {

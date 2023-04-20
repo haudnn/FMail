@@ -3,7 +3,7 @@
         @{
             var index = 1;
         }
-        @foreach (var question in poll.questions)
+        @foreach (var question in questions)
         {
             <li>
                 <div class="is-flex is-align-items-center is-gap-8">
@@ -13,13 +13,14 @@
                 <div class="control is-mt-10 is-flex is-flex-direction-column is-gap-10-x">
                     @foreach (var choice in question.choices)
                     {
-                        <_ChoiceiItem
+                        <_ChoiceItem
                             choice="choice"
                             questionid="@question.id"
                             isMultipleChoice="@question.isMultipleChoice"
                             idChoice="@idChoice"
                             IsVotePrevious="IsVotePrevious"
                             OnVote="Vote"
+                            isStopped="@isStopped"
                         />
                     }
                 </div>
@@ -31,10 +32,15 @@
 @code{
     [CascadingParameter]
     public LayoutMain Layout { get; set; }
-
     [Parameter] 
     public PollModel poll { get; set; } = new PollModel();
+    [Parameter]
+    public bool isStopped { get; set; }
+
+        [Parameter] 
+    public List<QuestionModel> questions { get; set; }
     public string idChoice { get; set; } = String.Empty;
+    
 
     public void IsVotePrevious(string id) {
         idChoice = id;
@@ -42,35 +48,30 @@
 
     public async Task Vote(QuestionChoice question)
     {
-        MemberModel member = new MemberModel
-            {
-                id = Layout.User.id,
-                avatar = Layout.User.avatar,
-                email = Layout.User.email,
-                name = Layout.User.FullName
-            };
+        // radio button
         if(!question.isMultipleChoice) {
             if (!question.isVotePrevious)
             {
                 if (!String.IsNullOrEmpty(idChoice))
                 {
-                    await PollData.UnVote(poll.id, question.id, idChoice, member);
+                    await PollData.UnVote(poll.id, question.id, idChoice, Layout.User.id);
                 }
                 idChoice = question.choiceId;
-                await PollData.Vote(poll.id, question.id, idChoice, member);
+                await PollData.Vote(poll.id, question.id, idChoice, Layout.User.id);
                 @* MessagingCenter.Send<string>(idChoice,"vote"); *@
             }
         }
+        // checkbox
         else 
         { 
             idChoice = question.choiceId;
             if(question.isVotePrevious) 
             {
-                await PollData.UnVote(poll.id, question.id, idChoice, member); 
+                await PollData.UnVote(poll.id, question.id, idChoice, Layout.User.id); 
             }
             else
             { 
-                await PollData.Vote(poll.id, question.id, idChoice, member);
+                await PollData.Vote(poll.id, question.id, idChoice, Layout.User.id);
             }    
         }
 

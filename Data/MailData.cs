@@ -1,3 +1,4 @@
+
 using Workdo.Helpers;
 using MongoDB.Driver;
 using Workdo.Models;
@@ -19,198 +20,272 @@ public class MailData
     private static IMongoCollection<MailModel> mailCollection = database.GetCollection<MailModel>("mail");
     private static IMongoCollection<LabelModel> labelCollection = database.GetCollection<LabelModel>("label");
 
-    public static async Task<List<MailModel>> GetAllMailsByFolder(string folderName, string userid)
+    public static async Task<List<MailModel>> GetList(string folderName, string userid, string category = "all")
     {
         List<MailModel> mails = new List<MailModel>();
         if(folderName == "trash")
         {
-            var filter = Builders<MailModel>.Filter.And(
-                    Builders<MailModel>.Filter.Eq(x => x.isTrash, true),
-                    Builders<MailModel>.Filter.Eq(x => x.isDeleted, false),
-                    Builders<MailModel>.Filter.Eq(x => x.folder, folderName),
-                    Builders<MailModel>.Filter.Or(
-                        Builders<MailModel>.Filter.Eq(x => x.author, userid),
-                        Builders<MailModel>.Filter.Where(x => x.to.Any(t => t.id == userid)),
-                        Builders<MailModel>.Filter.Where(x => x.cc.Any(c => c.id == userid)),
-                        Builders<MailModel>.Filter.Where(x => x.bcc.Any(b => b.id == userid))
-                    )
-                );
-            mails = await mailCollection.Find(filter).ToListAsync();
-            mails = mails.GroupBy(m => m.originalMailId ?? m.id).Select(g => g.First()).ToList();
-            return mails;
+            return await GetMailsTrash(userid);
         }
 
         if(folderName == "sent")
         {
-            var filter = Builders<MailModel>.Filter.And(
-                Builders<MailModel>.Filter.Eq(x => x.isTrash, false),
-                Builders<MailModel>.Filter.Eq(x => x.isDeleted, false),
-                Builders<MailModel>.Filter.Eq(x => x.folder, folderName),
-                Builders<MailModel>.Filter.Or(
-                    Builders<MailModel>.Filter.Eq(x => x.author, userid),
-                    Builders<MailModel>.Filter.Eq(x => x.isImportant, true)
-                )
-            );
-            mails = await mailCollection.Find(filter).ToListAsync();
-            return mails;
+            return await GetMailsSent(category, userid);
         }
-
 
         if(folderName == "important")
         {
-            var filter = Builders<MailModel>.Filter.And(
-                Builders<MailModel>.Filter.Eq(x => x.isTrash, false),
-                Builders<MailModel>.Filter.Eq(x => x.isDeleted, false),
-                Builders<MailModel>.Filter.Eq(x => x.isImportant, true),
-                Builders<MailModel>.Filter.Or(
-                        Builders<MailModel>.Filter.Eq(x => x.author, userid),
-                        Builders<MailModel>.Filter.Where(x => x.to.Any(t => t.id == userid)),
-                        Builders<MailModel>.Filter.Where(x => x.cc.Any(c => c.id == userid)),
-                        Builders<MailModel>.Filter.Where(x => x.bcc.Any(b => b.id == userid))
-                    )
-            );
-            mails = await mailCollection.Find(filter).ToListAsync();
-            return mails;
+            return await GetMailsImportant(category, userid);
         }
 
-        
         if(folderName == "inbox")
         {
-            var filter = Builders<MailModel>.Filter.And(
-                Builders<MailModel>.Filter.Eq(x => x.isTrash, false),
-                Builders<MailModel>.Filter.Eq(x => x.isDeleted, false),
-                Builders<MailModel>.Filter.Eq(x => x.folder, folderName),
-                Builders<MailModel>.Filter.Or(
-                    Builders<MailModel>.Filter.Where(x => x.to.Any(t => t.id == userid)),
-                    Builders<MailModel>.Filter.Where(x => x.cc.Any(c => c.id == userid)),
-                    Builders<MailModel>.Filter.Where(x => x.bcc.Any(b => b.id == userid))
-                )
-            );
-            mails = await mailCollection.Find(filter).ToListAsync();
-            mails = mails.GroupBy(m => m.originalMailId ?? m.id).Select(g => g.First()).ToList();
-            return mails;
+            return await GetMailsInbox(category, userid);
         }
 
         if (folderName == "draft")
         {
-            var filter = Builders<MailModel>.Filter.And(
-                Builders<MailModel>.Filter.Eq(x => x.isDraft, true),
-                Builders<MailModel>.Filter.Eq(x => x.isTrash, false),
-                Builders<MailModel>.Filter.Eq(x => x.isDeleted, false),
-                Builders<MailModel>.Filter.Eq(x => x.folder, folderName),
-                Builders<MailModel>.Filter.Eq(x => x.author, userid)
-            );
-            mails = await mailCollection.Find(filter).ToListAsync();
-            // mails = mails.GroupBy(m => m.originalMailId ?? m.id).Select(g => g.First()).ToList();
-            return mails;
+            return await GetMailsDraft(category, userid);
         }
         return mails;
     }
 
 
-    public static async Task<MailModel> GetMailById(string id) 
+    public static async Task<List<MailModel>> GetMailsDraft(string category, string userid)
     {
-        MailModel mail = new MailModel();
-        var isFoundMail = await mailCollection.Find(x => x.id == id).FirstOrDefaultAsync();
-        if (isFoundMail != null)
+
+        var builder = Builders<MailModel>.Filter;
+
+        var filtered = 
+            builder.Eq("isDraft", true) 
+            & builder.Eq("isTrash", false)
+            & builder.Eq("author", userid);
+
+        if (category != "all")
         {
-            mail = isFoundMail;
-            if(isFoundMail.originalMailId != null) 
-            {
-                var isFoundOriginalMail = await mailCollection.Find(x => x.id == isFoundMail.originalMailId).FirstOrDefaultAsync();
-                if(isFoundOriginalMail!= null) 
-                {
-                    mail.to = isFoundOriginalMail.to;
-                    mail.cc = isFoundOriginalMail.cc;
-                }
-            }
+            filtered = filtered & builder.Eq("category", category);
         }
-        return mail;
+
+        return await mailCollection.Find(filtered).ToListAsync();
+    }
+    public static async Task<List<MailModel>> GetMailsTrash(string userid)
+    {
+
+        var builder = Builders<MailModel>.Filter;
+
+        var filtered =
+            builder.Eq("isDeleted", false)
+            & builder.Eq("isTrash", true)
+            & builder.Eq("author", userid);
+
+        return await mailCollection.Find(filtered).ToListAsync();
     }
 
+
+
+
+    public static async Task<List<MailModel>> GetMailsInbox(string category, string userId)
+    {
+        var builder = Builders<MailModel>.Filter;
+        var filtered = builder.Eq("author", userId) & builder.Eq("isTrash", false) & builder.Eq("isReply", false);
+        if (category != "all")
+        {
+            filtered = filtered & builder.Eq("category", category);
+        }
+        var mails = await mailCollection.Find(filtered).ToListAsync();
+
+        var mailsFiltered = new List<MailModel>();
+        foreach (var mail in mails)
+        {
+            if ((mail.from == userId) && ((await RepliesCount(mail.id, userId) > 0)))
+            {
+                mailsFiltered.Add(mail);
+            }
+            if (mail.to.Contains(userId) || mail.cc.Contains(userId) || mail.bcc.Contains(userId))
+            {
+                mailsFiltered.Add(mail);
+            }
+        }
+        return mailsFiltered;
+    }
+
+
+    public static async Task<List<MailModel>> GetMailsSent(string category, string userid)
+    {
+        var mailsFiltered = new List<MailModel>();
+        var builder = Builders<MailModel>.Filter;
+        var filtered = builder.Eq("author", userid) & builder.Eq("isTrash" , false) & builder.Eq("isReply", false);
+        if (category != "all")
+        {
+            filtered = filtered & builder.Eq("category", category);
+        }
+        var mails = await mailCollection.Find(filtered).ToListAsync();
+        foreach (var mail in mails)
+        {
+            if ((mail.from == mail.author) && (mail.originalMailId == ""))
+            {
+                mailsFiltered.Add(mail);
+            }
+            if ((mail.to.Contains(userid) || mail.cc.Contains(userid) || mail.bcc.Contains(userid)) && (mail.originalMailId != ""))
+            {
+                if(await RepliesCount(mail.id, userid) > 0)
+                {
+                    mailsFiltered.Add(mail);
+                }
+
+            }
+        }
+        return mailsFiltered;
+    }
+
+
+
+
+    public static async Task<List<MailModel>> GetMailsImportant(string category, string userid)
+    {
+        var builder = Builders<MailModel>.Filter;
+        var filtered =
+            builder.Eq("author", userid) &
+            builder.Eq("isTrash", false) &
+            builder.Eq("isImportant", true);
+
+        if (category != "all")
+        {
+            filtered = filtered & builder.Eq("category", category);
+        }
+
+        return await mailCollection.Find(filtered).ToListAsync();
+    }
+
+    public static async Task<List<MailModel>> GetMailsByLabel(string labelId, string userid)
+    {
+        var builder = Builders<MailModel>.Filter;
+
+        var filtered =
+            builder.Where(x => x.labels.Any(t => t == labelId)) &
+            builder.Eq("isTrash", false) &
+            builder.Eq("author", userid);
+
+        return await mailCollection.Find(filtered).ToListAsync();
+    }
+
+
+    public static async Task<MailModel> GetMailById(string id)
+    {
+        return await mailCollection.Find(x => x.id == id).FirstOrDefaultAsync();
+    }
     public static async Task CreateMail(MailModel mail)
     {
         var id = GenerateIDHelper.GenerateID("19012001");
         mail.id = id;
-        mail.isDeleted = false;
-        mail.isRead = false;
-        mail.isReply = false;
-        mail.replies = new List<string>();
-        mail.originalMailId = "";
-        mail.isTrash = false;
         await mailCollection.InsertOneAsync(mail);
-
-        mail.isImportant = false;
-        mail.labels = new List<string>();
-        mail.category = string.Empty;
-        var members = mail.to.Concat(mail.cc).Concat(mail.bcc).GroupBy(m => m.id).Select(g => g.First()).ToList();
+        var members = mail.to.Concat(mail.cc).Concat(mail.bcc).GroupBy(m => m).Select(g => g.First()).ToList();
         var recipientMails = new List<MailModel>();
-        foreach (var recipient in mail.to)
+        foreach (var recipient in members)
         {
             var recipientMail = CreateRecipientMail(mail, recipient, members);
             recipientMails.Add(recipientMail);
         }
-        foreach (var recipient in mail.cc)
-        {
-            var recipientMail = CreateRecipientMail(mail, recipient, members);
-            recipientMails.Add(recipientMail);
-        }
-        foreach (var recipient in mail.bcc)
-        {
-            var recipientMail = CreateRecipientMail(mail, recipient, members);
-            recipientMails.Add(recipientMail);
-        }
+        // foreach (var recipient in mail.cc)
+        // {
+        //     var recipientMail = CreateRecipientMail(mail, recipient, members);
+        //     recipientMails.Add(recipientMail);
+        // }
+        // foreach (var recipient in mail.bcc)
+        // {
+        //     var recipientMail = CreateRecipientMail(mail, recipient, members);
+        //     recipientMails.Add(recipientMail);
+        // }
 
         foreach (var recipientMail in recipientMails)
         {
-            var folder = recipientMail.folder ?? "inbox";
             await mailCollection.InsertOneAsync(recipientMail);
         }
     }
 
-    private static MailModel CreateRecipientMail(MailModel mail, MemberModel recipient, List<MemberModel> members)
+    private static MailModel CreateRecipientMail(MailModel mail, string recipient, List<string> members)
     {
-        var recipientMail = new MailModel{
+        var recipientMail = new MailModel
+        {
             attachments = mail.attachments,
-            author = mail.author,
             body = mail.body,
             from = mail.from,
-            isDeleted = mail.isDeleted,
-            isDraft = mail.isDraft,
-            isPoll = mail.isPoll,
+            isDeleted = false,
+            isDraft = false,
             originalMailId = mail.id,
-            isRead = mail.isRead,
+            isRead = false,
+            category = mail.category,
             pollId = mail.pollId,
             shortBody = mail.shortBody,
-            signature= mail.signature,
-            replies = mail.replies,
-            isTrash = mail.isTrash,
+            signature = mail.signature,
+            isTrash = false,
             sentDate = mail.sentDate,
-            isReply = mail.isReply,
+            isReply = false,
             subject = mail.subject,
-            folder  = "inbox",
-            prevFolder = "inbox",
+            to = mail.to,
+            isImportant = false,
+            parentId = String.Empty,
+            labels = new List<string>(),
+            cc = mail.cc,
+            bcc = mail.bcc,
+            created_at = DateTime.Now.Ticks,
         };
         recipientMail.id = GenerateIDHelper.GenerateID("19012001");
-        recipientMail.to = new List<MemberModel> { recipient };
-        recipientMail.cc = new List<MemberModel>();
-        recipientMail.bcc = new List<MemberModel>();
-        
-        var member = members.FirstOrDefault(x => x.id == recipient.id);
-        if (member != null)
-        {
-            recipientMail.to[0].name = member.name;
-            recipientMail.to[0].email = member.email;
-        }
+        recipientMail.author = recipient;
         return recipientMail;
     }
 
-    // Đánh dấu đã đọc mail
+    public static async Task Reply(MailModel mail, string idMailToReply, string mailIdClicked)
+    {
+
+        var currentMailReply = await mailCollection.Find(x => x.id == mailIdClicked).FirstOrDefaultAsync();
+        string customHtml = "";
+        if(currentMailReply.parentId == null)
+        {
+            customHtml = "<div style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">" + currentMailReply.body + "</div>";
+        }
+        else
+        {
+            customHtml = "<div style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">" + currentMailReply.body + currentMailReply.parentId + "</div>";
+        }
+        var mailReply = await mailCollection.Find(x => x.id == idMailToReply).FirstOrDefaultAsync();
+        mail.id = GenerateIDHelper.GenerateID("19012001"); ;
+        mail.category = mailReply.category;
+        mail.parentId = customHtml;
+        mail.originalMailId = mailReply.originalMailId != "" ? mailReply.originalMailId : idMailToReply;
+
+        await mailCollection.InsertOneAsync(mail);
+
+        var recipients = mail.to;
+        foreach (var recipient in recipients)
+        {
+            mail.id = GenerateIDHelper.GenerateID("19012001");
+            mail.originalMailId = mailReply.originalMailId != "" ? mailReply.originalMailId : idMailToReply;
+            mail.category = mailReply.category;
+            mail.parentId = customHtml;
+            mail.author = recipient;
+            mail.to = mail.to;
+            await mailCollection.InsertOneAsync(mail);
+        }
+    }
+
+    public static async Task<List<MailModel>> GetMailThread(string originalMailId , string author)
+    {
+        var mails = await mailCollection.Find(x => 
+            x.originalMailId == originalMailId && 
+            x.author == author && 
+            x.isReply == true).ToListAsync();
+
+        return mails;
+        
+    }
+
+
+
     public static async Task Read(string id, bool isRead) 
     {
         var filter = Builders<MailModel>.Filter.Eq(x => x.id, id);
-        var update = Builders<MailModel>.Update
-            .Set(m => m.isRead, isRead);
+        var update = Builders<MailModel>.Update.Set("isRead", isRead);
         await mailCollection.UpdateOneAsync(filter, update);
         return;
     }
@@ -220,64 +295,38 @@ public class MailData
     public static async Task Important(string id, bool isImportant)
     {
         var filter = Builders<MailModel>.Filter.Eq(x => x.id, id);
-        var update = Builders<MailModel>.Update
-            .Set(m => m.isImportant, isImportant);
+        var update = Builders<MailModel>.Update.Set("isImportant", isImportant);
         await mailCollection.UpdateOneAsync(filter, update);
         return;
     }
 
-    // Xóa mail
-    public static async Task Trash(string id, string folder)
+    public static async Task Trash(string id)
     {
         var filter = Builders<MailModel>.Filter.Eq(x => x.id, id);
-        var update = Builders<MailModel>.Update
-            .Set(m => m.folder, "trash")
-            .Set(m => m.isTrash, true);
+        var update = Builders<MailModel>.Update.Set("isTrash", true);
         await mailCollection.UpdateOneAsync(filter, update);
         return;
     }
-    // read + unread nhiều mail
     public static async Task ReadMails(List<string> mailIds, bool isReads) 
     {
-        if(isReads)
-        {
-            var filter = Builders<MailModel>.Filter.In("id", mailIds);
-            var update = Builders<MailModel>.Update.Set("isRead", true);
-            await mailCollection.UpdateManyAsync(filter, update);
-            return;
-        }
-        else
-        {
-            var filter = Builders<MailModel>.Filter.In("id", mailIds);
-            var update = Builders<MailModel>.Update.Set("isRead", false);
-            await mailCollection.UpdateManyAsync(filter, update);
-            return;
-        }
+        var filter = Builders<MailModel>.Filter.In("id", mailIds);
+        var update = Builders<MailModel>.Update.Set("isRead", isReads);
+        await mailCollection.UpdateManyAsync(filter, update);
+        return;
     }
 
     public static async Task ImportantMails(List<string> mailIds, bool isImportants)
     {
-        if (isImportants)
-        {
-            var filter = Builders<MailModel>.Filter.In("id", mailIds);
-            var update = Builders<MailModel>.Update.Set("isImportant", true);
-            await mailCollection.UpdateManyAsync(filter, update);
-            return;
-        }
-        else
-        {
-            var filter = Builders<MailModel>.Filter.In("id", mailIds);
-            var update = Builders<MailModel>.Update.Set("isImportant", false);
-            await mailCollection.UpdateManyAsync(filter, update);
-            return;
-        }
+        var filter = Builders<MailModel>.Filter.In("id", mailIds);
+        var update = Builders<MailModel>.Update.Set("isImportant", isImportants);
+        await mailCollection.UpdateManyAsync(filter, update);
+        return;
     }
 
     public static async Task TrashMails(List<string> mailIds)
     {
         var filter = Builders<MailModel>.Filter.In("id", mailIds);
         var update = Builders<MailModel>.Update
-            .Set("folder", "trash")
             .Set("isTrash", true);
         await mailCollection.UpdateManyAsync(filter, update);
         return;
@@ -285,13 +334,20 @@ public class MailData
 
     public static async Task RestoreMails(List<string> mailIds)
     {
-        var mails = await mailCollection.Find(m => mailIds.Contains(m.id)).ToListAsync();
-        foreach (var mail in mails)
-        {
-            mail.folder = mail.prevFolder;
-            mail.isTrash = false;
-            await mailCollection.ReplaceOneAsync(m => m.id == mail.id, mail);
-        }
+        var filter = Builders<MailModel>.Filter.In("id", mailIds);
+        var update = Builders<MailModel>.Update
+            .Set("isTrash", false);
+        await mailCollection.UpdateManyAsync(filter, update);
+        return;
+    }
+    
+    public static async Task DeleteMails(List<string> mailIds)
+    {
+        var filter = Builders<MailModel>.Filter.In("id", mailIds);
+        var update = Builders<MailModel>.Update
+            .Set("isTrash", true)
+            .Set("isDeleted", true);
+        await mailCollection.UpdateManyAsync(filter, update);
         return;
     }
 
@@ -301,6 +357,30 @@ public class MailData
         var filter = Builders<MailModel>.Filter.In(x => x.id, mailIds);
         var update = Builders<MailModel>.Update.Set(x => x.labels, labelIds);
         await mailCollection.UpdateManyAsync(filter, update);
+        return;
+    }
+
+    public static async Task RemoveLabels(List<string> mailIds, List<string> labelIds)
+    {
+        var filter = Builders<MailModel>.Filter.In(x => x.id, mailIds);
+        var update = Builders<MailModel>.Update.PullAll(x => x.labels, labelIds);
+        await mailCollection.UpdateManyAsync(filter, update);
+        return;
+    }
+
+    public static async Task AddLabel(string mailId, string labelId)
+    {
+        var filter = Builders<MailModel>.Filter.Eq(x => x.id, mailId);
+        var update = Builders<MailModel>.Update.AddToSet(x => x.labels, labelId);
+        await mailCollection.UpdateOneAsync(filter, update);
+        return;
+    }
+
+    public static async Task RemoveLabel(string mailId, string labelId)
+    {
+        var filter = Builders<MailModel>.Filter.Eq(x => x.id, mailId);
+        var update = Builders<MailModel>.Update.Pull(x => x.labels, labelId);
+        await mailCollection.UpdateOneAsync(filter, update);
         return;
     }
 
@@ -315,4 +395,30 @@ public class MailData
         return;
     }
 
+
+    public static async Task<MailModel> GetReply(string originalMail, string author)
+    {
+        var findOriginalMail = await mailCollection.Find(x => x.id == originalMail).FirstOrDefaultAsync();
+        if(string.IsNullOrEmpty(findOriginalMail.originalMailId))
+        {
+            return await mailCollection.Find(x => x.from == author && x.originalMailId == originalMail).SortByDescending(x => x.created_at).FirstOrDefaultAsync();
+        }
+        return await mailCollection.Find(x => x.from == author && x.originalMailId == findOriginalMail.originalMailId).SortByDescending(x => x.created_at).FirstOrDefaultAsync();
+    }
+
+    public static async Task<long> RepliesCount(string originalMail, string author)
+    {
+        
+        var findOriginalMail = await mailCollection.Find(x => x.id == originalMail).FirstOrDefaultAsync();
+        List<MailModel> mails = new List<MailModel>();
+        if (string.IsNullOrEmpty(findOriginalMail.originalMailId))
+        {
+            mails = await mailCollection.Find(x => x.author == author &&  x.isReply == true && x.originalMailId == originalMail).ToListAsync();
+        }
+        else 
+        {
+            mails = await mailCollection.Find(x => x.author == author &&  x.isReply == true && x.originalMailId == findOriginalMail.originalMailId).ToListAsync();
+        }
+        return mails.Count;
+    }
 }

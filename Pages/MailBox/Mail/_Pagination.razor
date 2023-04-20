@@ -1,21 +1,19 @@
 <div class="is-flex is-align-items-center is-justify-content-center">
     <nav class="pagination is-small" role="navigation" aria-label="pagination">
         <ul class="pagination-list">
-            <li>
+            <li class="is-pointer" @onclick="() => SetCurrentPage(page-=1)">
                 <span class="icon">
                     <span class="material-icons-outlined is-secondary-40">navigate_before</span>
                 </span>
             </li>
-            <li>
-                <a class="pagination-link is_sub2 is-current" aria-label="Page 1" aria-current="page">1</a>
-            </li>
-            <li>
-                <a class="pagination-link is_sub2" aria-label="Goto page 2">2</a>
-            </li>
-            <li>
-                <a class="pagination-link is_sub2" aria-label="Goto page 3">3</a>
-            </li>
-            <li>
+            @for (int i = 1; i <=pages; i++)
+            {
+                var index = i;
+                <li @onclick="() => SetCurrentPage(index)" class="is-pointer">
+                    <a class="pagination-link is_sub2 @(page == index ? "is-current" : "" )" aria-label="Goto page @index" aria-current="page">@index</a>
+                </li>
+            }
+            <li class="is-pointer" @onclick="() => SetCurrentPage(page+=1)">
                 <span class="icon">
                     <span class="material-icons-outlined is-secondary-40">navigate_next</span>
                 </span>
@@ -23,3 +21,22 @@
         </ul>
     </nav>
 </div>
+
+@code{
+
+    [Parameter] public int pages { get; set; }
+    [Parameter] public int page { get; set; }
+    [Parameter] public EventCallback<int> HandlePagination { get;  set;}
+
+    public void SetCurrentPage(int i)
+    {
+        page = i;
+        if(page ==  0 || page > pages) 
+        {
+            page = 1;
+        }
+        HandlePagination.InvokeAsync(page);
+        StateHasChanged();
+
+    }
+}

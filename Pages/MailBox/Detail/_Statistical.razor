@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <div class="dropdown-menu" style="min-width: 90%;">
-                        <_DropdownPoll members="getMembersUnvote"/>
+                        <_DropdownPoll memberIds="@getMembersUnvote"/>
                     </div>
                 </div>
                 <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding: 10px 20px 0px 20px;">
@@ -41,7 +41,7 @@
                                             </div>
                                         </div>
                                         <div class="dropdown-menu" style="min-width: 250px;">
-                                            <_DropdownPoll members="@item.voters"/>
+                                            <_DropdownPoll memberIds="item.voters"/>
                                         </div>
                                     </div>
                                     <progress class="progress is-small @SharedHelper.ProgressColor(valueProgress)" style="max-width: 180px;"
@@ -66,17 +66,16 @@
     [Parameter] 
     public List<QuestionModel> questions { get; set; }
     [Parameter]
-    public List<MemberModel> to { get; set; } = new List<MemberModel>();
+    public string author { get; set; }
     [Parameter]
-    public List<MemberModel> cc { get; set; } = new List<MemberModel>();
-    [Parameter]
-    public List<MemberModel> bcc { get; set; } = new List<MemberModel>();
+    public MailModel mail {get; set;} = new MailModel();
     private ToggleHelper toggleViewVote = new ToggleHelper();
     private ToggleHelper toggleViewUnvote = new ToggleHelper();
     private string idToogleUnvote = String.Empty;
     private string idToogleVote = String.Empty;
-    private List<MemberModel> getMembersUnvote = new List<MemberModel>();
+    private List<string> getMembersUnvote = new List<string>();
     private int totalMembers = 0;
+    
 
     private void HandleToggleViewVote(string idChoice)
     { 
@@ -86,25 +85,32 @@
 
     protected override void OnInitialized()
     {
-        getMembersUnvote = GetMembersUnvote();
+        
     }
 
-
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            getMembersUnvote = GetMembersUnvote();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+    
     private void HandleToggleViewUnvote(string idQuestion)
     {
         idToogleUnvote = idQuestion;
         toggleViewUnvote.Toggle();
     }
 
-
-    public List<MemberModel> GetMembersUnvote()   
+    public List<string> GetMembersUnvote()   
     {
         var allVoters = questions.SelectMany(q => q.choices).SelectMany(c => c.voters).ToList();
-        var membersReceived = to.Concat(cc).Concat(bcc).Distinct().ToList();
+        var membersReceived = mail.to.Concat(mail.cc).Concat(mail.bcc).Distinct().ToList();
+        membersReceived.Add(author);
         totalMembers = membersReceived.Count();
-        var unvotedMembers = membersReceived.Where(m => !allVoters.Any(v => v.id == m.id)).ToList();
+        var unvotedMembers = membersReceived.Where(m => !allVoters.Any(v => v == m)).ToList();
         return unvotedMembers;
     }
-
-    
 }
+

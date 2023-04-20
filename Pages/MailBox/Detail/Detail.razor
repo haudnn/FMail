@@ -7,42 +7,31 @@
 @inject IJSRuntime JSRuntime
 
 <section class="is-padding-20">
-    <_Header
-        mail="mail"
-        labels="labels"
-        labelsSelected="labelsSelected"
-    />
+    <_Header mail="mail" />
 
     <main class="is-padding-top-20">
         <p class="is-secondary-20 is_h6">@mail.subject</p>
         <div class="is-padding-top-20">
-            <_MailActionsBar
+            <_Info
+                mail="mail"
                 author="author"
-                sentDate="@sentDateFormat"
-                to="membersTo"
-                cc="membersCC"
-                bcc="membersBCC"
                 SetCurrentAction="SetCurrentAction"
             />
         </div>
-        <div class="is-padding-top-20" style="margin-left: 40px;">
-            <div style="padding-bottom: 20px">
-                <BlazoredTextEditor Placeholder="" ReadOnly>
-                     <EditorContent>
-                        @((MarkupString)QuillHTMLContentBody)
-                    </EditorContent>
-                </BlazoredTextEditor>
+        <div class="is-padding-top-20">
+            <div style="padding-bottom: 20px; margin-left: 40px;" >
+                @((MarkupString)mail.body)
             </div>
-            @if(mail.pollId != null)
+            @if(!string.IsNullOrEmpty(mail.pollId))
             {
-                <div class="is-padding-top-20">
-                        @if (isStopSurvey)
+                <div class="is-padding-top-20" style="margin-left: 40px;">
+                        @if (poll.isStopped)
                         {
                             <div class="is-flex is-align-items-center is-gap-4" style="margin-bottom: 10px;">
                                 <span class="icon is-small">
                                     <i class="material-icons-outlined is-error-40">info</i>
                                 </span>
-                                <span class="is_sub2 is-error-40">Hiện tại đã dừng khảo sát. Vậy nên bạn chỉ có thể xem thống kê.</span>
+                                <span class="is_sub2 is-error-40">Khảo sát này đã được dừng hoặc hết thời gian.</span>
                             </div>
                         }
                     <div class="is-flex is-align-items-center" style="gap: 0 20px">
@@ -57,13 +46,13 @@
                                 <span class="is_body2 is-secondary-40">Thời gian kết thúc khảo sát: </span>
                             </div>
                             <div class="is-flex is-align-items-center is-gap-4">
-                                <div class="is-flex is-align-items-center @(isStopSurvey ? " stop-survey" : "" )">
+                                <div class="is-flex is-align-items-center @(isStopSurvey ? "stop-survey" : "" )">
                                     <span class="icon">
                                         <i class="material-icons-outlined is-secondary-10">calendar_today</i>
                                     </span>
                                     <span class="is_caption is-black">@poll.endDate</span>
                                 </div>
-                                <div class="is-flex is-align-items-center @(isStopSurvey ? " stop-survey" : "" )">
+                                <div class="is-flex is-align-items-center @(isStopSurvey ? "stop-survey" : "" )">
                                     <span class="icon">
                                         <i class="material-icons-outlined is-secondary-10">schedule</i>
                                     </span>
@@ -74,39 +63,36 @@
                     </div>
                     <div class="is-padding-top-20">
                         <div class="is-flex is-align-items-center is-gap-4">
-                            <button disabled="@isStopSurvey" class="wrapper-header-poll @(isStopSurvey ? " stop-survey" : ""
-                                    ) @(!toggleViewStatistical.IsToggled ? "active" : "" ) is-pointer"
-                                    @onclick="HandleToggleViewStatistical">
+                            <button 
+                                disabled="@(poll.author == Layout.User.id ? false : isStopSurvey)"
+                                class="wrapper-header-poll @(isStopSurvey ? "stop-survey" : "" ) @(currentType == 0 ? "active" : "" ) is-pointer"
+                                @onclick="() => HandleToggleViewStatistical(0)"
+                            >
                                 <span class="is_sub2">Khảo sát</span>
                             </button>
-                            @if(mail.author == Layout.User.id) { 
+                            @if(poll.author == Layout.User.id) { 
                                 <button 
-                                        disabled="@isStopSurvey"
-                                        class="wrapper-header-poll @(toggleViewStatistical.IsToggled ? " active" : "" ) is-pointer"
-                                        @onclick="HandleToggleViewStatistical">
+                                        disabled="@(poll.author == Layout.User.id ? false : isStopSurvey)"
+                                        class="wrapper-header-poll @(currentType == 1 ? "active" : "" ) is-pointer"
+                                        @onclick="() => HandleToggleViewStatistical(1)">
                                         <span class="is_sub2">Thống kê</span>
                                 </button>
                             }
 
                         </div>
-                            @if (!toggleViewStatistical.IsToggled)
+                            @if (currentType == 0)
                             {
-                                <_Survey poll="poll" />
+                                <_Survey isStopped="@isStopSurvey" poll="poll"  questions="questions"/>
                             }
                             else
                             {  
-                                <_Statistical 
-                                    questions="questions"
-                                    cc="@mail.cc"
-                                    bcc="@mail.bcc" 
-                                    to="@mail.to"
-                                />
+                                <_Statistical author="@poll.author" mail="mail" questions="questions"/>
                             }
                     </div>
                 </div>
-                @if(mail.author == Layout.User.id) 
+                @if(poll.author == Layout.User.id) 
                 {
-                    <div class="is-padding-top-20">
+                    <div class="is-padding-top-20" style="margin-left: 40px;">
                         <button disabled="@isStopSurvey" style="border: none;"
                             class="wrapper-button error-btn @(isStopSurvey ? " disable" : "" ) is-inline-flex"
                             @onclick="() => HandleToggleActiveModal(true)">
@@ -128,7 +114,7 @@
             }
             @if(attachments.Count > 0)
             { 
-                <div style="padding: 40px 0px 20px 0px">
+                <div style="padding: 40px 0px 20px 0px; margin-left: 40px;" >
                     <ul class="attachments-list mt-0">
                         @foreach (var attachment in attachments)
                         {
@@ -140,66 +126,49 @@
                     </ul>
                 </div>
             }
-            <div  class="is_sub2 is-secondary-10 is-padding-20-x">
-               @((MarkupString)QuillHTMLContentSignature)
+            <div class="is_sub2 is-secondary-10 is-padding-20-x" style="margin-left: 40px;">
+                @((MarkupString)mail.signature?.body)
             </div>
-            @if(string.IsNullOrEmpty(currentAction))
-            {
-                <div class="is-flex is-align-items-center is-gap-10-y ">
-                    <div class="wrapper-button btn-outlined" @onclick='() => SetCurrentAction("reply")'>
-                        <span class="icon">
-                            <i class="material-icons-outlined is-secondary-40">reply</i>
-                        </span>
-                        <span class="is_caption is-secondary-40">Trả lời</span>
-                    </div>
-                    <div class="wrapper-button btn-outlined" @onclick='() => SetCurrentAction("reply_all")'>
-                        <span class="icon">
-                            <i class="material-icons-outlined is-secondary-40">reply_all</i>
-                        </span>
-                        <span class="is_caption is-secondary-40">Trả lời tất cả</span>
-                    </div>
-                    <div class="wrapper-button btn-outlined" @onclick='() => SetCurrentAction("forward")'>
-                        <span class="icon">
-                            <i class="material-icons-outlined is-secondary-40">forward</i>
-                        </span>
-                        <span class="is_caption is-secondary-40">Chuyển tiếp</span>
-                    </div>
-                </div>
-            }
-
-        </div>
-        <div>
             <ul>
-                
+               @foreach (var item in mails)
+               {
+                    <_ReplyItem SetCurrentAction="SetCurrentAction" mail="item"/>
+               }
             </ul>
         </div>
         @switch (currentAction)
             {
                 case "reply":
-                    <_MailAction
+                    <_ActionItem
                         iconName="reply"
-                        displayName="Đặng Ngọc Hậu"
-                        isShowTextTo=@false
+                        isShowTextTo=false
                         actionName="Trả lời"
                         SetCurrentAction="SetCurrentAction"
+                        HandleCreate="HandleCreate"
+                        mail="@currentModelAction.action"
+                        toList="toList"
                     />
                     break;
                 case "reply_all":
-                    <_MailAction
+                    <_ActionItem
                         iconName="reply_all"
-                        displayName="Đặng Ngọc Hậu"
-                        isShowTextTo=@false
+                        isShowTextTo=false
                         actionName="Trả lời tất cả"
                         SetCurrentAction="SetCurrentAction"
+                        HandleCreate="HandleCreate"
+                        mail="@currentModelAction.action"
+                        toList="toList"
                     />
                     break;
                 case "forward":
-                    <_MailAction
+                    <_ActionItem
                         iconName="forward"
-                        displayName="Đặng Ngọc Hậu"
-                        isShowTextTo=@true
+                        isShowTextTo=true
                         actionName="Chuyển tiếp"
                         SetCurrentAction="SetCurrentAction"
+                        HandleCreate="HandleCreate"
+                        mail="@currentModelAction.action"
+                        toList="toList"
                     />
                     break;
                 default:
@@ -212,51 +181,48 @@
     [CascadingParameter]
     public LayoutMain Layout { get; set; }
     [Parameter]
-    public string? id { get; set; }
-    BlazoredTextEditor QuillHtml;
-    string QuillHTMLContentBody;
-    string QuillHTMLContentSignature;
+    public string id { get; set; }
     public string currentAction = String.Empty;
     public bool toggleActiveModal = false;
-    public MailModel mail = new MailModel();
-    public List<MemberModel> membersTo = new List<MemberModel>();
-    public List<MemberModel> membersCC = new List<MemberModel>();
-    public List<MemberModel> membersBCC = new List<MemberModel>();
+    public MailModel mail { get; set; } = new MailModel();
     public List<AttachmentModel> attachments = new List<AttachmentModel>();
     public PollModel poll = new();
     public List<QuestionModel> questions = new();
     public List<LabelModel> labels = new List<LabelModel>();
     public List<LabelModel> labelsSelected  = new List<LabelModel>();
-    public bool isStopSurvey = false;
+    public bool isStopSurvey;
     public UserModel author  = new();
-    public string sentDateFormat;
     private ToggleHelper toggleViewStatistical = new ToggleHelper();
+    public ActionModel currentModelAction = new ActionModel();
+    public List<MailModel> mails = new List<MailModel>();
 
-
+    public List<string> toList = new List<string>();
+    public int currentType = 0;
     protected override async Task OnParametersSetAsync()
     {
         mail = await MailData.GetMailById(id);
-        if(mail.pollId != null) { 
+        mails = await MailData.GetMailThread(mail.originalMailId != "" ? mail.originalMailId : id, Layout.User.id);
+        await MailData.Read(id, true);
+        if(!string.IsNullOrEmpty(mail.pollId)) 
+        { 
             poll = await PollData.GetPollById(mail.pollId);
             questions= poll.questions;
+            isStopSurvey = poll.isStopped;
         }
-        author = await UserData.Get(mail.author);
+
+        author = await UserData.Get(mail.from);
         labelsSelected  = await LabelData.FindLabelsByIds(mail.labels);
         labels = await LabelData.GetAllLabels(Layout.User.id);
         attachments = mail.attachments;
-        sentDateFormat = DateTimeHelper.FormatDateTimeDetailView(mail.sentDate);
-        membersTo = mail.to;
-        membersCC = mail.cc;
-        membersBCC = mail.bcc;
-        QuillHTMLContentBody = mail.body;
-        QuillHTMLContentSignature = mail.signature.body;
+        StateHasChanged();
+
     }
-    
 
 
-    private void HandleToggleViewStatistical()
+
+    private void HandleToggleViewStatistical(int type)
     {
-        toggleViewStatistical.Toggle();
+       currentType = type;
     }
 
     private void HandleToggleActiveModal(bool isActiveModal)
@@ -264,24 +230,79 @@
         toggleActiveModal = isActiveModal;
     }
 
-    private void HandleStopSurvey()
+    private async Task HandleStopSurvey()
     {
+        await PollData.Stop(poll.id);
         toggleActiveModal = false;
-        toggleViewStatistical.Toggle();
+        HandleToggleViewStatistical(0);
         isStopSurvey = true;
     }
 
 
-    public void SetCurrentAction(string actionName)
+    public void SetCurrentAction(ActionModel action)
     {
-        currentAction = actionName;
+        currentAction = action.action;
+        currentModelAction = action;
+        AddListReceiver(action);
+        StateHasChanged();
+
     }
+
 
     private async Task DownloadFileFromStream(AttachmentModel attachment)
     {
         var fileName = attachment.name;
         var fileURL = "https://localhost:2023" + attachment.filePath;
         await JSRuntime.InvokeVoidAsync("triggerFileDownload", fileName, fileURL);
+    }
+
+
+    public async Task HandleCreate(MailModel mailToCreate)
+    {
+        mailToCreate.originalMailId = id;
+        var mailIdClicked = currentModelAction.mail;
+        await MailData.Reply(mailToCreate, id, mailIdClicked);
+        @* bug will create here *@
+        mails.Add(mailToCreate);
+        currentAction = String.Empty;
+        currentModelAction = new ActionModel();
+        StateHasChanged();
+    }
+
+
+    public void AddListReceiver(ActionModel action)
+    {
+        var mailReply = mails.Where(x => x.id == action.mail).FirstOrDefault();
+        switch (action.action)
+        {
+            case "reply":
+                if(mailReply == null)
+                {
+                    toList = new List<string>();
+                    if(mail.from == Layout.User.id)
+                    {
+                        toList.AddRange(mail.to);
+                    }
+                    else
+                    {
+                        toList.Add(mail.from);
+                    }
+                }
+                else
+                {
+                    toList = new List<string>();
+                    toList.Add(mailReply.from);
+                }
+                break;
+            case "reply_all":
+                toList = new List<string>();
+                toList.AddRange(mail.to);
+                toList.Add(mail.from);
+                toList.Remove(Layout.User.id);
+                break;
+            default:
+                break;
+        }
     }
     
 }

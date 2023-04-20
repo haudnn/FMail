@@ -1,6 +1,6 @@
 @inject NavigationManager navigation
-<tr class="mail-item @(mail.isDraft ? "drafts" : "") @(isRead ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px">
-    <td class="mail-td mail-checkbox">
+<div class="mail-item @(mail.isDraft ? "drafts" : "") @(isRead ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px; box-sizing: border-box;">
+    <div class="mail-td mail-checkbox">
         @if (isChecked)
             {
                 <span class="icon is-small" @onclick="SelectedMail">
@@ -13,8 +13,8 @@
                     <i class="material-icons-outlined is-secondary-60">check_box_outline_blank</i>
                 </span>
             }
-    </td>
-    <td class="mail-td mail-Important">
+    </div>
+    <div class="mail-td">
         @if (isImportant)
             { 
                 <span class="icon is-small is-warning-20" @onclick="() => Important(false)">
@@ -27,26 +27,57 @@
                     <i class="material-symbols-outlined "  style="font-size: 12px;">star</i>
                 </span>
             }
-    </td>
-    <td class="mail-td mail-from">
+    </div>
+    <div class="mail-td mail-from">
         <span class="is_sub2 @(isRead ? "read" : "unread") text-ellipsis">
-            @if(isSentMail) 
+            @if(currentPage == "sent")
             {
-                <span class="mr-1">Đến: </span>
+                <span>Đến:</span>
             }
-            @foreach (var item in @mail.to.Take(1))
+            @if(mail.from != Layout.User.id)
             {
-                @item.name;
+                <span class="text-ellipsis">@fromMember.name</span>
             }
-            <span class="ml-1">...</span>
+            else
+            {
+                <span>
+                    @foreach (var item in toList)
+                    {
+                        @item.last_name
+                        <span>,</span>                    
+                    }
+                    @if(ccList.Count > 0)
+                    {
+                        <span>cc:</span> 
+                        @foreach (var item in ccList)
+                        {
+                           @item.last_name
+                            <span>,</span>                    
+                        }
+                    }
+                    @if(bccList.Count > 0)
+                    {
+                        <span>bcc:</span> 
+                        @foreach (var item in bccList)
+                        {
+                            @item.last_name
+                            <span>,</span>                    
+                        }
+                    }
+                </span>
+            }
+            @if(replyCount > 0)
+            {
+                <span class="is-secondary-60" style="margin-left: 6px;">@replyCount</span>
+            }
         </span>
-    </td>
-    <td class="mail-td mail-main" @onclick="HandleViewDetail">
+    </div>
+    <div class="mail-td mail-main" @onclick="HandleViewDetail">
         <div>
             <div class="mail-main-content" style="gap: 0 10px">
                 <div class="is-flex is-align-items-center" style="gap: 0 5px">
 
-                    @foreach (var item in mail.tags)
+                    @foreach (var item in tags)
                     {
                         <div style="background-color: @item.backgroundColor ;" class="mailtag-item">
                             <span style="color: @item.textColor ;">
@@ -78,16 +109,16 @@
                             <span>@attachment.name</span>
                         </li>
                     }
-            @if (mail.attachments.Count() > 2)
+                @if (mail.attachments.Count() > 2)
                 {
                     <li class="attachment-item count">
                         <span class="is_sub2 is-secondary-40">+@(mail.attachments.Count() - 3)</span>
                     </li>
                  }
-        </ul>
+            </ul>
         }
-    </td>
-    <td class="mail-td">
+    </div>
+    <div class="mail-td">
         <div class="mail-actions is-align-content-center">
             @if (isRead)
                 {
@@ -105,8 +136,8 @@
                     <i class="material-icons-outlined">delete</i>
                 </span>
         </div>
-    </td>
-    <td class="mail-td tags-list">
+    </div>
+    <div class="mail-td tags-list">
         @foreach (var label in labels.Take(2))
             {
                 <div style="background-color: @(label.color + "33")" class="tag-item">
@@ -116,34 +147,64 @@
             @if (labels.Count() > 2)
             {
                 <div class="tag-item count">
-                        <span class="is_sub2 is-secondary-40">+@(labels.Count() - 2)</span>
+                    <span class="is_sub2 is-secondary-40">+@(labels.Count() - 2)</span>
                 </div>
             }
 
-    </td>
-    <td class="mail-td mail__item-datetime">
+    </div>
+    <div class="mail-td mail__item-datetime">
         <span class="is-block @(isRead ? "read" : "unread")">@sentDate</span>
-    </td>
-</tr>
+    </div>
+</div>
 @code {
-
-    [Parameter] public bool isSentMail { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public string currentPage { get; set; }
+    [Parameter] public List<MailModel> mails { get; set; } = new List<MailModel>(); 
     [Parameter] public MailModel mail  { get; set; } = new ();
     [Parameter] public bool isChecked { get; set; }
     [Parameter] public EventCallback<SelectedModel> HandleSelectedMail { get; set; }
     [Parameter] public EventCallback<MailModel> HandleTrashItem { get; set; }
+    public List<TagMailModel> tags { get; set; } = new List<TagMailModel>();
 
     public bool isImportant { get; set; }
+    public long replyCount{ get; set; } = 0;
     public bool isRead { get; set; }
     public string sentDate { get; set; }
-    public List<LabelModel> labels = new List<LabelModel>();
+    [Parameter] public List<LabelModel> labels { get; set; } = new List<LabelModel>();
+    public List<MemberModel> toList = new List<MemberModel>();
+    public List<MemberModel> ccList = new List<MemberModel>();
+    public List<MemberModel> bccList = new List<MemberModel>();
+    public MemberModel fromMember = new MemberModel();
 
     protected override async Task OnInitializedAsync()
     {
-        isImportant  = mail.isImportant;
+
+        isImportant = mail.isImportant;
         isRead = mail.isRead;
         sentDate = DateTimeHelper.FormatDateTime(mail.sentDate);
-        labels = await LabelData.FindLabelsByIds(mail.labels);
+        replyCount = await MailData.RepliesCount(mail.id, Layout.User.id);
+        toList = InitDataFakeHelper.GetMembersById(mail.to);
+        toList.Take(1);
+        ccList = InitDataFakeHelper.GetMembersById(mail.cc);
+        ccList.Take(1);
+        bccList = InitDataFakeHelper.GetMembersById(mail.bcc);
+        bccList.Take(1);
+        if(currentPage != "inbox")
+        {
+            tags = MailHelper.TagsMailHelper(mail.pollId, mail.isDraft, replyCount);
+        }
+        fromMember = InitDataFakeHelper.GetMemberById(mail.from);
+        if(replyCount > 0)
+        {
+            var mailReplyNewest = await MailData.GetReply(mail.id, Layout.User.id);
+            if(mailReplyNewest != null)
+            {
+            sentDate =  DateTimeHelper.FormatDateTime(mailReplyNewest.sentDate);
+            mail.shortBody = mailReplyNewest.shortBody;
+            }
+
+        }
+
     }
 
 
@@ -175,7 +236,7 @@
     {
         if(!mail.isDraft)
         {
-            navigation.NavigateTo("inbox/" + mail.id, true);
+            navigation.NavigateTo("inbox/" + mail.id, true);   
         }
         else
         {

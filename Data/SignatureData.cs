@@ -91,11 +91,10 @@ public class SignatureData
 
     public static async Task<SignatureModel> GetDefaultSignature(string author)
     {
-        SignatureModel signature = new SignatureModel();
-        var isFoundSignature = await signatureCollection.Find(x => x.author == author && x.isDefault == true ).FirstOrDefaultAsync();
-        if (isFoundSignature != null)
+        var signature = await signatureCollection.Find(x => x.author == author && x.isDefault == true ).FirstOrDefaultAsync();
+        if(signature == null)
         {
-            signature = isFoundSignature;
+            return new SignatureModel();
         }
         return signature;
     }

@@ -36,6 +36,6 @@ public class GroupSelectedModel
 public class MemberSelectedModel
 {
     public List<MemberModel> members { get; set; }
+    // to or cc or bcc: type
     public string name { get; set; }
-    public MemberModel member { get; set; }
 }
