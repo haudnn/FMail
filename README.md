@@ -52,6 +52,12 @@
       Trong lúc test sẽ cõ những lỗi vặt do chưa handle hết các phần đó, lúc test anh sẽ gặp lỗi "Cannot remove child last..." anh nhấn thử lại là được lỗi này xuất hiện trong thằng
       blazor editors nhưng chưa khắc phục được .   
     </p>
+
+
+<strong>Tuần 5 + Tuần 6: 10/4/2023 - 22/4/2023</strong>
+  <h4>Công việc thực hiện được: </h4>
+  <p>Cơ bản tất cả chức năng đã xong, những thứ chưa làm: forward tầm 50%, fix ui các thứ vặt vặt</p>
+  <p>Tuần sau: fix ui và hoàn thành chặng 2</p>
     
     
   

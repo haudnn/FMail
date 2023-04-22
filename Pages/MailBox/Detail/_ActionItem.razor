@@ -3,7 +3,7 @@
 <div class="container-actions is-padding-20-x">
     <div class="is-flex is-align-items-center" style="gap: 0 12px">
         <figure class="image is-32x32">
-            <img class="is-rounded" src="@Layout.User.avatar">
+            <img style="min-width: 32px; min-height:  32px;" class="is-rounded" src="@Layout.User.avatar">
         </figure>
         <div class="is-flex is-flex-direction-column" style="gap: 5px 0">
             <p class="is_sub2 is-secondary-10">@Layout.User.FullName</p>
@@ -67,7 +67,7 @@
 
     </div>
     <div class="write-zone">
-        <_MailWriteZone HandleCreate="Create" SetCurrentAction="SetCurrentAction"/>
+        <_MailWriteZone forwardMessage="@forwardMessage" forwardBody="@forwardBody" HandleCreate="Create" SetCurrentAction="SetCurrentAction"/>
     </div>
 </div>
 @code {
@@ -75,11 +75,14 @@
     public LayoutMain Layout { get; set; }
     [Parameter] public string iconName { get; set; }
     [Parameter] public string actionName { get; set; }
+
     [Parameter] public EventCallback<ActionModel> SetCurrentAction {get; set;}
     [Parameter] public EventCallback<MailModel> HandleCreate {get; set;}
     [Parameter] public bool isShowTextTo { get; set; }
     [Parameter] public string mail { get; set; }
     [Parameter] public List<string> toList { get; set; } = new List<string>();
+    [Parameter] public string forwardMessage { get; set; } = String.Empty;
+    [Parameter] public string forwardBody { get; set; } = String.Empty;
     public List<MemberModel> originalMembers = new List<MemberModel>(); 
     public List<GroupModel> groups = new List<GroupModel>();
     public List<MemberModel> members = new List<MemberModel>();
@@ -135,12 +138,14 @@
 
     public void HandleClickAction(string action)
     {
+        StateHasChanged();
         ActionModel model =  
             new ActionModel {
                 mail = mail,
                 action = action
             };
         SetCurrentAction.InvokeAsync(model);
+
     }
 
 

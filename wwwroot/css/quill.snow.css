@@ -980,6 +980,11 @@
   /* right: 10px; */
   font-size: 14px;
 }
-.create__main-container .ql-container.ql-snow{
-  min-height: 300px !important;
+
+.create__main-container .forward-message .ql-container.ql-snow{
+  min-height: unset !important;
 }
+/* .create__main-container .ql-container.ql-snow{
+  min-height: 300px !important;
+} */
+

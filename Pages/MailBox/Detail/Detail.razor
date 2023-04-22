@@ -147,6 +147,8 @@
                         HandleCreate="HandleCreate"
                         mail="@currentModelAction.action"
                         toList="toList"
+                        forwardMessage="@forwardMessage"
+                        forwardBody="@forwardBody"
                     />
                     break;
                 case "reply_all":
@@ -158,6 +160,8 @@
                         HandleCreate="HandleCreate"
                         mail="@currentModelAction.action"
                         toList="toList"
+                        forwardMessage="@forwardMessage"
+                        forwardBody="@forwardBody"
                     />
                     break;
                 case "forward":
@@ -169,6 +173,8 @@
                         HandleCreate="HandleCreate"
                         mail="@currentModelAction.action"
                         toList="toList"
+                        forwardMessage="@forwardMessage"
+                        forwardBody="@forwardBody"
                     />
                     break;
                 default:
@@ -196,6 +202,8 @@
     public ActionModel currentModelAction = new ActionModel();
     public List<MailModel> mails = new List<MailModel>();
 
+    public string forwardMessage = String.Empty;
+    public string forwardBody = String.Empty;
     public List<string> toList = new List<string>();
     public int currentType = 0;
     protected override async Task OnParametersSetAsync()
@@ -222,7 +230,7 @@
 
     private void HandleToggleViewStatistical(int type)
     {
-       currentType = type;
+        currentType = type;
     }
 
     private void HandleToggleActiveModal(bool isActiveModal)
@@ -243,8 +251,31 @@
     {
         currentAction = action.action;
         currentModelAction = action;
-        AddListReceiver(action);
-        StateHasChanged();
+        if(currentAction == "forward")
+        {
+                
+            var mailFind = mails.Where(x => x.id == action.mail).FirstOrDefault();
+            var mailToForward = mailFind == null ? mail : mailFind;
+            if(mailToForward != null)
+            {
+                var member = InitDataFakeHelper.GetMemberById(mailToForward.from);
+    
+                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">---------- Forwarded message ---------</span></p>";
+                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">Từ:&nbsp;<strong style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">" + member.name + "</strong><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">&nbsp;&lt;" + member.email + "&gt;</span></p>";
+                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">Date: " + mail.sentDate + "</span></p>";
+                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">Subject: " + mail.subject + "</span></p>";
+                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">To: " + Layout.User.email + "</span></p>";
+                forwardBody = mailToForward.body;
+            }
+            AddListReceiver(null);
+        }
+        else 
+        {
+            forwardMessage = String.Empty;
+            forwardBody = String.Empty;
+            AddListReceiver(action);
+        }
+            StateHasChanged();
 
     }
 
@@ -262,7 +293,6 @@
         mailToCreate.originalMailId = id;
         var mailIdClicked = currentModelAction.mail;
         await MailData.Reply(mailToCreate, id, mailIdClicked);
-        @* bug will create here *@
         mails.Add(mailToCreate);
         currentAction = String.Empty;
         currentModelAction = new ActionModel();
@@ -272,6 +302,10 @@
 
     public void AddListReceiver(ActionModel action)
     {
+        if(action == null) 
+        {
+            return;
+        }
         var mailReply = mails.Where(x => x.id == action.mail).FirstOrDefault();
         switch (action.action)
         {

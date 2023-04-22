@@ -68,6 +68,9 @@ public class MailData
 
         return await mailCollection.Find(filtered).ToListAsync();
     }
+
+
+
     public static async Task<List<MailModel>> GetMailsTrash(string userid)
     {
 
@@ -174,37 +177,39 @@ public class MailData
     {
         return await mailCollection.Find(x => x.id == id).FirstOrDefaultAsync();
     }
-    public static async Task CreateMail(MailModel mail)
+
+
+    public static async Task CreateMail(MailModel mail, bool isDraft = false, string mailDraftId = "")
     {
-        var id = GenerateIDHelper.GenerateID("19012001");
-        mail.id = id;
-        await mailCollection.InsertOneAsync(mail);
+        if(isDraft && !string.IsNullOrEmpty(mailDraftId))
+        {
+            var filter = Builders<MailModel>.Filter.Eq(x => x.id, mailDraftId);
+            mail.id = mailDraftId;
+            await mailCollection.ReplaceOneAsync(filter, mail);
+        }
+        else
+        {
+            var id = GenerateIDHelper.GenerateID("19012001");
+            mail.id = id;
+            await mailCollection.InsertOneAsync(mail);
+        }
+
         var members = mail.to.Concat(mail.cc).Concat(mail.bcc).GroupBy(m => m).Select(g => g.First()).ToList();
         var recipientMails = new List<MailModel>();
         foreach (var recipient in members)
         {
-            var recipientMail = CreateRecipientMail(mail, recipient, members);
+            var recipientMail = CreateRecipientMail(mail, recipient, members, mailDraftId);
             recipientMails.Add(recipientMail);
         }
-        // foreach (var recipient in mail.cc)
-        // {
-        //     var recipientMail = CreateRecipientMail(mail, recipient, members);
-        //     recipientMails.Add(recipientMail);
-        // }
-        // foreach (var recipient in mail.bcc)
-        // {
-        //     var recipientMail = CreateRecipientMail(mail, recipient, members);
-        //     recipientMails.Add(recipientMail);
-        // }
-
         foreach (var recipientMail in recipientMails)
         {
             await mailCollection.InsertOneAsync(recipientMail);
         }
     }
 
-    private static MailModel CreateRecipientMail(MailModel mail, string recipient, List<string> members)
+    private static MailModel CreateRecipientMail(MailModel mail, string recipient, List<string> members , string mailDraftId = "")
     {
+        var originalMailId = !String.IsNullOrEmpty(mailDraftId) ? mailDraftId : mail.id;
         var recipientMail = new MailModel
         {
             attachments = mail.attachments,
@@ -212,7 +217,7 @@ public class MailData
             from = mail.from,
             isDeleted = false,
             isDraft = false,
-            originalMailId = mail.id,
+            originalMailId = originalMailId,
             isRead = false,
             category = mail.category,
             pollId = mail.pollId,
@@ -235,18 +240,30 @@ public class MailData
         return recipientMail;
     }
 
-    public static async Task Reply(MailModel mail, string idMailToReply, string mailIdClicked)
-    {
+
+    public static async Task Reply(MailModel mail, string idMailToReply, string mailIdClicked, bool isReplyMail = true)
+    {  
+
+        // forward the mail
+        if(!isReplyMail)
+        {
+
+        }
 
         var currentMailReply = await mailCollection.Find(x => x.id == mailIdClicked).FirstOrDefaultAsync();
         string customHtml = "";
+        DateTime datetime = DateTime.Parse(currentMailReply.sentDate);
+        string output = datetime.ToString("dd 'thg' M',' yyyy 'vào lúc' HH:mm");
+        MemberModel member = InitDataFakeHelper.GetMemberById(currentMailReply.from);
         if(currentMailReply.parentId == null)
         {
-            customHtml = "<div style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">" + currentMailReply.body + "</div>";
+            customHtml = "<div>" + "<div>" + "Vào" + " " + output + " " + member.name + " "  + $"{member.email}"  + " " +  "đã viết:" +  "<div style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">" + currentMailReply.body + "</div>" + "</div>"  + "</div>";
         }
         else
         {
-            customHtml = "<div style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">" + currentMailReply.body + currentMailReply.parentId + "</div>";
+
+            customHtml = "<div>" + "<div>" + "Vào" + " " + output + " " + member.name + " " + $"{member.email}" + " " + "đã viết:" + "<div style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">" + currentMailReply.body +  currentMailReply.parentId + "</div>" + "</div>" + "</div>";
+
         }
         var mailReply = await mailCollection.Find(x => x.id == idMailToReply).FirstOrDefaultAsync();
         mail.id = GenerateIDHelper.GenerateID("19012001"); ;
@@ -291,7 +308,10 @@ public class MailData
     }
 
 
-    // Gắn sao cho mail
+
+
+
+    // GẮN SAO
     public static async Task Important(string id, bool isImportant)
     {
         var filter = Builders<MailModel>.Filter.Eq(x => x.id, id);
@@ -307,6 +327,8 @@ public class MailData
         await mailCollection.UpdateOneAsync(filter, update);
         return;
     }
+
+
     public static async Task ReadMails(List<string> mailIds, bool isReads) 
     {
         var filter = Builders<MailModel>.Filter.In("id", mailIds);

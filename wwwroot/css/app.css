@@ -3696,6 +3696,8 @@ button.dropdown-item {
   white-space: nowrap;
   text-overflow: ellipsis;
   flex: 1;
+  max-width: 500px;
+  width: 500px;
 }
 .ellipsis-text {
   overflow: hidden;
@@ -3869,4 +3871,10 @@ button.dropdown-item {
   padding: 5px 10px;
   max-height: 25px;
   border-radius: 4px;
+}
+
+.container-body-forward{ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

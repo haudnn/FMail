@@ -288,6 +288,7 @@
     private List<AttachmentModel> files = new List<AttachmentModel>();
 
 
+
     protected override async Task OnInitializedAsync()
     {
         categories = await CategoryData.GetAllCategory();
@@ -331,7 +332,27 @@
             }            
 
         }
+
+        StateHasChanged();
+
+
     }  
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+           
+
+        }
+        else
+        {
+            if (!String.IsNullOrEmpty(mailId))
+            {
+                await QuillHtml.LoadHTMLContent(QuillHTMLContent);
+            }
+        }
+    }
+
     private void HandleShowCategories() 
     {
         toogleShowCategories.Toggle();
@@ -367,11 +388,6 @@
             }
         };
         toggleCreatePoll.Toggle();
-    }
-
-    protected override async Task OnParametersSetAsync()
-    {
-
     }
 
     private void ToggleAddCC()
@@ -568,7 +584,7 @@
                 mailToCreate.pollId = poll.id;
             };
         }
-        await MailData.CreateMail(mailToCreate);
+        await MailData.CreateMail(mailToCreate, true, mailId);
         await JSRuntime.InvokeVoidAsync("tagline", true, "Tạo mail thành công!");  
         navigation.NavigateTo("/mail/inbox", true);
     }
@@ -583,6 +599,7 @@
         }
         return true;
     }
+
 
 
 
