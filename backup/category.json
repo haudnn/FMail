@@ -1,0 +1,29 @@
+[{
+  "_id": "190120010329c40fc49d",
+  "name": "Nhân sự",
+  "position": 1,
+  "createdAt": {
+    "$date": "2023-03-29T16:28:20.725Z"
+  }
+},{
+  "_id": "19012001032916cfde49",
+  "name": "Vận hành",
+  "position": 2,
+  "createdAt": {
+    "$date": "2023-03-29T16:28:27.099Z"
+  }
+},{
+  "_id": "190120010329f3ce2f6f",
+  "name": "Kế toán",
+  "position": 3,
+  "createdAt": {
+    "$date": "2023-03-29T16:28:31.674Z"
+  }
+},{
+  "_id": "190120010330a050b97a",
+  "name": "Khác",
+  "position": 4,
+  "createdAt": {
+    "$date": "2023-03-30T07:41:29.633Z"
+  }
+}]
