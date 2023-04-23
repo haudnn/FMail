@@ -1529,103 +1529,6 @@
         }
       },
       {
-        "HashCode": -484638959,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail._Info",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "_Info"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "author",
-            "TypeName": "Workdo.Models.UserModel",
-            "Metadata": {
-              "Common.PropertyName": "author",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.UserModel"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "SetCurrentAction",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.ActionModel>",
-            "Metadata": {
-              "Common.PropertyName": "SetCurrentAction",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.ActionModel>",
-              "Components.EventCallback": "True"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "mail",
-            "TypeName": "Workdo.Models.MailModel",
-            "Metadata": {
-              "Common.PropertyName": "mail",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Info",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "_Info"
-        }
-      },
-      {
-        "HashCode": -1825827254,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail._Info",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Detail._Info"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "author",
-            "TypeName": "Workdo.Models.UserModel",
-            "Metadata": {
-              "Common.PropertyName": "author",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.UserModel"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "SetCurrentAction",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.ActionModel>",
-            "Metadata": {
-              "Common.PropertyName": "SetCurrentAction",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.ActionModel>",
-              "Components.EventCallback": "True"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "mail",
-            "TypeName": "Workdo.Models.MailModel",
-            "Metadata": {
-              "Common.PropertyName": "mail",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Info",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "_Info",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
         "HashCode": 660472912,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._ReplyItem",
@@ -1891,6 +1794,103 @@
           "Common.TypeName": "Workdo.Pages.MailBox.Detail._Survey",
           "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
           "Common.TypeNameIdentifier": "_Survey",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": -484638959,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail._Info",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "_Info"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "author",
+            "TypeName": "Workdo.Models.UserModel",
+            "Metadata": {
+              "Common.PropertyName": "author",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.UserModel"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "SetCurrentAction",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.ActionModel>",
+            "Metadata": {
+              "Common.PropertyName": "SetCurrentAction",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.ActionModel>",
+              "Components.EventCallback": "True"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "mail",
+            "TypeName": "Workdo.Models.MailModel",
+            "Metadata": {
+              "Common.PropertyName": "mail",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Info",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "_Info"
+        }
+      },
+      {
+        "HashCode": -1825827254,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail._Info",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Detail._Info"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "author",
+            "TypeName": "Workdo.Models.UserModel",
+            "Metadata": {
+              "Common.PropertyName": "author",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.UserModel"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "SetCurrentAction",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.ActionModel>",
+            "Metadata": {
+              "Common.PropertyName": "SetCurrentAction",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.ActionModel>",
+              "Components.EventCallback": "True"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "mail",
+            "TypeName": "Workdo.Models.MailModel",
+            "Metadata": {
+              "Common.PropertyName": "mail",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Info",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "_Info",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },

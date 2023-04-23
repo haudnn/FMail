@@ -60,6 +60,8 @@
   <p>Tuần sau: fix ui và hoàn thành chặng 2</p>
   <p>Account for test: username: admin1@gmail.com password: admin1</p>
   <p>Các accounts khác tương tự ví dụ: admin2@gmail.com password: admin2 |  admin3@gmail.com password: admin3 | ... có tổng cộng 20 users</p>
+  <p>ConnectDB trong folder: Helpers/ConnectDB.cs, backup trong folder "backup", mỗi file .json là 1 model</p>
+
     
     
   

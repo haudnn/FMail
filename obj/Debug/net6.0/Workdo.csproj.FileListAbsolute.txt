@@ -76,3 +76,9 @@ C:\Conando\WorkdoTemplate\Workdo\obj\Debug\net6.0\refint\Workdo.dll
 C:\Conando\WorkdoTemplate\Workdo\obj\Debug\net6.0\Workdo.pdb
 C:\Conando\WorkdoTemplate\Workdo\obj\Debug\net6.0\Workdo.genruntimeconfig.cache
 C:\Conando\WorkdoTemplate\Workdo\obj\Debug\net6.0\ref\Workdo.dll
+C:\Conando\WorkdoTemplate\Workdo\bin\Debug\net6.0\backup\category.json
+C:\Conando\WorkdoTemplate\Workdo\bin\Debug\net6.0\backup\group.json
+C:\Conando\WorkdoTemplate\Workdo\bin\Debug\net6.0\backup\label.json
+C:\Conando\WorkdoTemplate\Workdo\bin\Debug\net6.0\backup\mail.json
+C:\Conando\WorkdoTemplate\Workdo\bin\Debug\net6.0\backup\poll.json
+C:\Conando\WorkdoTemplate\Workdo\bin\Debug\net6.0\backup\signature.json

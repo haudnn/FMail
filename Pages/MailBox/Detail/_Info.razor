@@ -138,12 +138,19 @@
     {
         if (firstRender)
         {
-            sentDateTime = DateTime.Parse(mail.sentDate);
-            convertDate = SharedHelper.ConvertDate(sentDateTime);
-            toList = InitDataFakeHelper.GetMembersById(mail.to);
-            ccList = InitDataFakeHelper.GetMembersById(mail.cc);
-            bccList = InitDataFakeHelper.GetMembersById(mail.bcc);
-            await InvokeAsync(StateHasChanged);
+
+        }
+        else
+        {
+            if(!String.IsNullOrEmpty(mail.sentDate))
+            {
+                sentDateTime = DateTime.Parse(mail.sentDate);
+                convertDate = SharedHelper.ConvertDate(sentDateTime);
+                toList = InitDataFakeHelper.GetMembersById(mail.to);
+                ccList = InitDataFakeHelper.GetMembersById(mail.cc);
+                bccList = InitDataFakeHelper.GetMembersById(mail.bcc);
+                await InvokeAsync(StateHasChanged);
+            }
         }
  
     }

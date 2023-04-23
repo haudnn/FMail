@@ -7,7 +7,8 @@ public class ConnectDB
     private static readonly IMongoClient _client;
     static ConnectDB()
     {
-        string DB_NAME = "mongodb://localhost:27017/mailbox";
+        
+        string DB_NAME = "mongodb+srv://dnhau191:L0ojM4eciv1rD9Km@mailbox.gzf7jht.mongodb.net/test";
         var settings = MongoClientSettings.FromConnectionString(DB_NAME);
         _client = new MongoClient(settings);
     }
