@@ -58,6 +58,8 @@
   <h4>Công việc thực hiện được: </h4>
   <p>Cơ bản tất cả chức năng đã xong, những thứ chưa làm: forward tầm 50%, fix ui các thứ vặt vặt</p>
   <p>Tuần sau: fix ui và hoàn thành chặng 2</p>
+  <p>Account for test: username: admin1@gmail.com password: admin1</p>
+  <p>Các accounts khác tương tự ví dụ: admin2@gmail.com password: admin2 |  admin3@gmail.com password: admin3 | ... có tổng cộng 20 users</p>
     
     
   
