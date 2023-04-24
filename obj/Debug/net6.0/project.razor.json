@@ -13,7 +13,7 @@
   "ProjectWorkspaceState": {
     "TagHelpers": [
       {
-        "HashCode": -341850069,
+        "HashCode": 697627925,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.Home",
         "AssemblyName": "Workdo",
@@ -31,7 +31,7 @@
         }
       },
       {
-        "HashCode": -1235415952,
+        "HashCode": 1444956427,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.Home",
         "AssemblyName": "Workdo",
@@ -50,7 +50,7 @@
         }
       },
       {
-        "HashCode": 1303061849,
+        "HashCode": -1968042371,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.Login",
         "AssemblyName": "Workdo",
@@ -68,7 +68,7 @@
         }
       },
       {
-        "HashCode": -733363396,
+        "HashCode": -2001203129,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.Login",
         "AssemblyName": "Workdo",
@@ -87,7 +87,7 @@
         }
       },
       {
-        "HashCode": 882543690,
+        "HashCode": -362272912,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.Logout",
         "AssemblyName": "Workdo",
@@ -105,7 +105,7 @@
         }
       },
       {
-        "HashCode": -1239830886,
+        "HashCode": 67852294,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.Logout",
         "AssemblyName": "Workdo",
@@ -124,7 +124,7 @@
         }
       },
       {
-        "HashCode": 209368825,
+        "HashCode": -2004282585,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Config.Category",
         "AssemblyName": "Workdo",
@@ -142,7 +142,7 @@
         }
       },
       {
-        "HashCode": -1568548179,
+        "HashCode": 1916491199,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Config.Category",
         "AssemblyName": "Workdo",
@@ -161,7 +161,7 @@
         }
       },
       {
-        "HashCode": 1525008610,
+        "HashCode": 974380458,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Config._Item",
         "AssemblyName": "Workdo",
@@ -210,7 +210,7 @@
         }
       },
       {
-        "HashCode": 416653402,
+        "HashCode": 1359095142,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Config._Item",
         "AssemblyName": "Workdo",
@@ -260,7 +260,7 @@
         }
       },
       {
-        "HashCode": -1921782915,
+        "HashCode": -751242637,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Config._ModalData",
         "AssemblyName": "Workdo",
@@ -336,7 +336,7 @@
         }
       },
       {
-        "HashCode": 50005210,
+        "HashCode": -971999318,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Config._ModalData",
         "AssemblyName": "Workdo",
@@ -413,7 +413,7 @@
         }
       },
       {
-        "HashCode": -1096580575,
+        "HashCode": -321402706,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create.Create",
         "AssemblyName": "Workdo",
@@ -431,7 +431,7 @@
         }
       },
       {
-        "HashCode": 468906132,
+        "HashCode": 278395176,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create.Create",
         "AssemblyName": "Workdo",
@@ -450,7 +450,7 @@
         }
       },
       {
-        "HashCode": 674984946,
+        "HashCode": -1752404101,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create._ChoiceItem",
         "AssemblyName": "Workdo",
@@ -517,7 +517,7 @@
         }
       },
       {
-        "HashCode": 1105533608,
+        "HashCode": 1205380306,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create._ChoiceItem",
         "AssemblyName": "Workdo",
@@ -585,7 +585,7 @@
         }
       },
       {
-        "HashCode": 75232910,
+        "HashCode": -1594025719,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create._ContentPoll",
         "AssemblyName": "Workdo",
@@ -624,7 +624,7 @@
         }
       },
       {
-        "HashCode": 888265203,
+        "HashCode": -983882516,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create._ContentPoll",
         "AssemblyName": "Workdo",
@@ -664,7 +664,7 @@
         }
       },
       {
-        "HashCode": 939991999,
+        "HashCode": -408190988,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create._Poll",
         "AssemblyName": "Workdo",
@@ -713,7 +713,7 @@
         }
       },
       {
-        "HashCode": -745365092,
+        "HashCode": -2036766420,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create._Poll",
         "AssemblyName": "Workdo",
@@ -763,7 +763,7 @@
         }
       },
       {
-        "HashCode": 1430228100,
+        "HashCode": 237634463,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create._QuestionItem",
         "AssemblyName": "Workdo",
@@ -840,7 +840,7 @@
         }
       },
       {
-        "HashCode": -895602665,
+        "HashCode": -1414562768,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Create._QuestionItem",
         "AssemblyName": "Workdo",
@@ -918,7 +918,7 @@
         }
       },
       {
-        "HashCode": -1338079212,
+        "HashCode": -2063085706,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail.Detail",
         "AssemblyName": "Workdo",
@@ -947,7 +947,7 @@
         }
       },
       {
-        "HashCode": 1563926308,
+        "HashCode": 1882244965,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail.Detail",
         "AssemblyName": "Workdo",
@@ -977,7 +977,7 @@
         }
       },
       {
-        "HashCode": -1407931308,
+        "HashCode": -823760581,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._ActionItem",
         "AssemblyName": "Workdo",
@@ -1080,7 +1080,7 @@
         }
       },
       {
-        "HashCode": -1185251058,
+        "HashCode": -114253265,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._ActionItem",
         "AssemblyName": "Workdo",
@@ -1184,7 +1184,7 @@
         }
       },
       {
-        "HashCode": -616676134,
+        "HashCode": 114363556,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._Actions",
         "AssemblyName": "Workdo",
@@ -1241,7 +1241,7 @@
         }
       },
       {
-        "HashCode": 175660200,
+        "HashCode": -643151741,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._Actions",
         "AssemblyName": "Workdo",
@@ -1299,7 +1299,7 @@
         }
       },
       {
-        "HashCode": 1138442169,
+        "HashCode": -1485008873,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._ChoiceItem",
         "AssemblyName": "Workdo",
@@ -1384,7 +1384,7 @@
         }
       },
       {
-        "HashCode": -1442296712,
+        "HashCode": -118211915,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._ChoiceItem",
         "AssemblyName": "Workdo",
@@ -1470,7 +1470,7 @@
         }
       },
       {
-        "HashCode": 878942942,
+        "HashCode": -1520881212,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._Header",
         "AssemblyName": "Workdo",
@@ -1499,7 +1499,7 @@
         }
       },
       {
-        "HashCode": -1810880388,
+        "HashCode": -462877057,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._Header",
         "AssemblyName": "Workdo",
@@ -1529,276 +1529,7 @@
         }
       },
       {
-        "HashCode": 660472912,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail._ReplyItem",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "_ReplyItem"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "mail",
-            "TypeName": "Workdo.Models.MailModel",
-            "Metadata": {
-              "Common.PropertyName": "mail",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "SetCurrentAction",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.ActionModel>",
-            "Metadata": {
-              "Common.PropertyName": "SetCurrentAction",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.ActionModel>",
-              "Components.EventCallback": "True"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail._ReplyItem",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "_ReplyItem"
-        }
-      },
-      {
-        "HashCode": 1833764920,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail._ReplyItem",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Detail._ReplyItem"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "mail",
-            "TypeName": "Workdo.Models.MailModel",
-            "Metadata": {
-              "Common.PropertyName": "mail",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "SetCurrentAction",
-            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.ActionModel>",
-            "Metadata": {
-              "Common.PropertyName": "SetCurrentAction",
-              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.ActionModel>",
-              "Components.EventCallback": "True"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail._ReplyItem",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "_ReplyItem",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": -24395934,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail._Statistical",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "_Statistical"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "questions",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.QuestionModel>",
-            "Metadata": {
-              "Common.PropertyName": "questions",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.QuestionModel>"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "author",
-            "TypeName": "System.String",
-            "Metadata": {
-              "Common.PropertyName": "author",
-              "Common.GloballyQualifiedTypeName": "global::System.String"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "mail",
-            "TypeName": "Workdo.Models.MailModel",
-            "Metadata": {
-              "Common.PropertyName": "mail",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Statistical",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "_Statistical"
-        }
-      },
-      {
-        "HashCode": 1524475704,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail._Statistical",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Detail._Statistical"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "questions",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.QuestionModel>",
-            "Metadata": {
-              "Common.PropertyName": "questions",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.QuestionModel>"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "author",
-            "TypeName": "System.String",
-            "Metadata": {
-              "Common.PropertyName": "author",
-              "Common.GloballyQualifiedTypeName": "global::System.String"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "mail",
-            "TypeName": "Workdo.Models.MailModel",
-            "Metadata": {
-              "Common.PropertyName": "mail",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Statistical",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "_Statistical",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": 303678821,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail._Survey",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "_Survey"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "poll",
-            "TypeName": "Workdo.Models.PollModel",
-            "Metadata": {
-              "Common.PropertyName": "poll",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.PollModel"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "isStopped",
-            "TypeName": "System.Boolean",
-            "Metadata": {
-              "Common.PropertyName": "isStopped",
-              "Common.GloballyQualifiedTypeName": "global::System.Boolean"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "questions",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.QuestionModel>",
-            "Metadata": {
-              "Common.PropertyName": "questions",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.QuestionModel>"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Survey",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "_Survey"
-        }
-      },
-      {
-        "HashCode": 1360063747,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Detail._Survey",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Detail._Survey"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "poll",
-            "TypeName": "Workdo.Models.PollModel",
-            "Metadata": {
-              "Common.PropertyName": "poll",
-              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.PollModel"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "isStopped",
-            "TypeName": "System.Boolean",
-            "Metadata": {
-              "Common.PropertyName": "isStopped",
-              "Common.GloballyQualifiedTypeName": "global::System.Boolean"
-            }
-          },
-          {
-            "Kind": "Components.Component",
-            "Name": "questions",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.QuestionModel>",
-            "Metadata": {
-              "Common.PropertyName": "questions",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.QuestionModel>"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Survey",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
-          "Common.TypeNameIdentifier": "_Survey",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": -484638959,
+        "HashCode": -865752461,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._Info",
         "AssemblyName": "Workdo",
@@ -1846,7 +1577,7 @@
         }
       },
       {
-        "HashCode": -1825827254,
+        "HashCode": 653558834,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Detail._Info",
         "AssemblyName": "Workdo",
@@ -1895,7 +1626,276 @@
         }
       },
       {
-        "HashCode": -1403707711,
+        "HashCode": 887529570,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail._ReplyItem",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "_ReplyItem"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "mail",
+            "TypeName": "Workdo.Models.MailModel",
+            "Metadata": {
+              "Common.PropertyName": "mail",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "SetCurrentAction",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.ActionModel>",
+            "Metadata": {
+              "Common.PropertyName": "SetCurrentAction",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.ActionModel>",
+              "Components.EventCallback": "True"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail._ReplyItem",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "_ReplyItem"
+        }
+      },
+      {
+        "HashCode": -301055832,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail._ReplyItem",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Detail._ReplyItem"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "mail",
+            "TypeName": "Workdo.Models.MailModel",
+            "Metadata": {
+              "Common.PropertyName": "mail",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "SetCurrentAction",
+            "TypeName": "Microsoft.AspNetCore.Components.EventCallback<Workdo.Models.ActionModel>",
+            "Metadata": {
+              "Common.PropertyName": "SetCurrentAction",
+              "Common.GloballyQualifiedTypeName": "global::Microsoft.AspNetCore.Components.EventCallback<global::Workdo.Models.ActionModel>",
+              "Components.EventCallback": "True"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail._ReplyItem",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "_ReplyItem",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 1458366185,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail._Statistical",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "_Statistical"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "questions",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.QuestionModel>",
+            "Metadata": {
+              "Common.PropertyName": "questions",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.QuestionModel>"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "author",
+            "TypeName": "System.String",
+            "Metadata": {
+              "Common.PropertyName": "author",
+              "Common.GloballyQualifiedTypeName": "global::System.String"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "mail",
+            "TypeName": "Workdo.Models.MailModel",
+            "Metadata": {
+              "Common.PropertyName": "mail",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Statistical",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "_Statistical"
+        }
+      },
+      {
+        "HashCode": 693501092,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail._Statistical",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Detail._Statistical"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "questions",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.QuestionModel>",
+            "Metadata": {
+              "Common.PropertyName": "questions",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.QuestionModel>"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "author",
+            "TypeName": "System.String",
+            "Metadata": {
+              "Common.PropertyName": "author",
+              "Common.GloballyQualifiedTypeName": "global::System.String"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "mail",
+            "TypeName": "Workdo.Models.MailModel",
+            "Metadata": {
+              "Common.PropertyName": "mail",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.MailModel"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Statistical",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "_Statistical",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 1243787846,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail._Survey",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "_Survey"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "poll",
+            "TypeName": "Workdo.Models.PollModel",
+            "Metadata": {
+              "Common.PropertyName": "poll",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.PollModel"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "isStopped",
+            "TypeName": "System.Boolean",
+            "Metadata": {
+              "Common.PropertyName": "isStopped",
+              "Common.GloballyQualifiedTypeName": "global::System.Boolean"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "questions",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.QuestionModel>",
+            "Metadata": {
+              "Common.PropertyName": "questions",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.QuestionModel>"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Survey",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "_Survey"
+        }
+      },
+      {
+        "HashCode": -1917639112,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Detail._Survey",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Detail._Survey"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "poll",
+            "TypeName": "Workdo.Models.PollModel",
+            "Metadata": {
+              "Common.PropertyName": "poll",
+              "Common.GloballyQualifiedTypeName": "global::Workdo.Models.PollModel"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "isStopped",
+            "TypeName": "System.Boolean",
+            "Metadata": {
+              "Common.PropertyName": "isStopped",
+              "Common.GloballyQualifiedTypeName": "global::System.Boolean"
+            }
+          },
+          {
+            "Kind": "Components.Component",
+            "Name": "questions",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.QuestionModel>",
+            "Metadata": {
+              "Common.PropertyName": "questions",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.QuestionModel>"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Detail._Survey",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Detail",
+          "Common.TypeNameIdentifier": "_Survey",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": 1371956027,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Drafts",
         "AssemblyName": "Workdo",
@@ -1913,7 +1913,7 @@
         }
       },
       {
-        "HashCode": -264999259,
+        "HashCode": -152577305,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Drafts",
         "AssemblyName": "Workdo",
@@ -1932,7 +1932,7 @@
         }
       },
       {
-        "HashCode": 637291614,
+        "HashCode": -2069437586,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Important",
         "AssemblyName": "Workdo",
@@ -1950,7 +1950,7 @@
         }
       },
       {
-        "HashCode": 1731925111,
+        "HashCode": 756279757,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Important",
         "AssemblyName": "Workdo",
@@ -1969,7 +1969,7 @@
         }
       },
       {
-        "HashCode": -1765665721,
+        "HashCode": 382704830,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Inbox",
         "AssemblyName": "Workdo",
@@ -1987,7 +1987,7 @@
         }
       },
       {
-        "HashCode": -1173777217,
+        "HashCode": 1369583453,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Inbox",
         "AssemblyName": "Workdo",
@@ -2006,7 +2006,7 @@
         }
       },
       {
-        "HashCode": 1027311287,
+        "HashCode": 2020984412,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Label",
         "AssemblyName": "Workdo",
@@ -2035,7 +2035,7 @@
         }
       },
       {
-        "HashCode": 659690535,
+        "HashCode": -957839362,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Label",
         "AssemblyName": "Workdo",
@@ -2065,7 +2065,7 @@
         }
       },
       {
-        "HashCode": 1522219575,
+        "HashCode": 840454865,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Sent",
         "AssemblyName": "Workdo",
@@ -2083,7 +2083,7 @@
         }
       },
       {
-        "HashCode": 1874969973,
+        "HashCode": 1210619643,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Sent",
         "AssemblyName": "Workdo",
@@ -2102,7 +2102,7 @@
         }
       },
       {
-        "HashCode": -1267240202,
+        "HashCode": -1239959407,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Trash",
         "AssemblyName": "Workdo",
@@ -2120,7 +2120,7 @@
         }
       },
       {
-        "HashCode": -494030519,
+        "HashCode": -1842061292,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail.Trash",
         "AssemblyName": "Workdo",
@@ -2139,7 +2139,7 @@
         }
       },
       {
-        "HashCode": 1820405952,
+        "HashCode": -2102767501,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Actions",
         "AssemblyName": "Workdo",
@@ -2265,7 +2265,7 @@
         }
       },
       {
-        "HashCode": -327116598,
+        "HashCode": 675928272,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Actions",
         "AssemblyName": "Workdo",
@@ -2392,7 +2392,7 @@
         }
       },
       {
-        "HashCode": -1508199815,
+        "HashCode": -1838731159,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Category",
         "AssemblyName": "Workdo",
@@ -2431,7 +2431,7 @@
         }
       },
       {
-        "HashCode": -212611407,
+        "HashCode": -1828796528,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Category",
         "AssemblyName": "Workdo",
@@ -2471,7 +2471,7 @@
         }
       },
       {
-        "HashCode": -857200083,
+        "HashCode": -1770907237,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Header",
         "AssemblyName": "Workdo",
@@ -2574,7 +2574,7 @@
         }
       },
       {
-        "HashCode": -885527518,
+        "HashCode": -1986075900,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Header",
         "AssemblyName": "Workdo",
@@ -2678,7 +2678,7 @@
         }
       },
       {
-        "HashCode": -1145223739,
+        "HashCode": -1559378782,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Item",
         "AssemblyName": "Workdo",
@@ -2763,7 +2763,7 @@
         }
       },
       {
-        "HashCode": 851073504,
+        "HashCode": -876126533,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Item",
         "AssemblyName": "Workdo",
@@ -2849,7 +2849,7 @@
         }
       },
       {
-        "HashCode": -1759648677,
+        "HashCode": -403366541,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Pagination",
         "AssemblyName": "Workdo",
@@ -2897,7 +2897,7 @@
         }
       },
       {
-        "HashCode": 1449162363,
+        "HashCode": 621417546,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Mail._Pagination",
         "AssemblyName": "Workdo",
@@ -2946,7 +2946,7 @@
         }
       },
       {
-        "HashCode": 387948666,
+        "HashCode": 945162491,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings.Settings",
         "AssemblyName": "Workdo",
@@ -2964,7 +2964,7 @@
         }
       },
       {
-        "HashCode": 630128273,
+        "HashCode": 1040152523,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings.Settings",
         "AssemblyName": "Workdo",
@@ -2983,7 +2983,7 @@
         }
       },
       {
-        "HashCode": 1904182212,
+        "HashCode": -716023520,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._GroupItem",
         "AssemblyName": "Workdo",
@@ -3050,7 +3050,7 @@
         }
       },
       {
-        "HashCode": 1404312825,
+        "HashCode": 1212258804,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._GroupItem",
         "AssemblyName": "Workdo",
@@ -3118,7 +3118,66 @@
         }
       },
       {
-        "HashCode": 1627792159,
+        "HashCode": -1348776696,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings._ManagerCategory",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "_ManagerCategory"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "categories",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.CategoryModel>",
+            "Metadata": {
+              "Common.PropertyName": "categories",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.CategoryModel>"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerCategory",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "_ManagerCategory"
+        }
+      },
+      {
+        "HashCode": -296157270,
+        "Kind": "Components.Component",
+        "Name": "Workdo.Pages.MailBox.Settings._ManagerCategory",
+        "AssemblyName": "Workdo",
+        "CaseSensitive": true,
+        "TagMatchingRules": [
+          {
+            "TagName": "Workdo.Pages.MailBox.Settings._ManagerCategory"
+          }
+        ],
+        "BoundAttributes": [
+          {
+            "Kind": "Components.Component",
+            "Name": "categories",
+            "TypeName": "System.Collections.Generic.List<Workdo.Models.CategoryModel>",
+            "Metadata": {
+              "Common.PropertyName": "categories",
+              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.CategoryModel>"
+            }
+          }
+        ],
+        "Metadata": {
+          "Runtime.Name": "Components.IComponent",
+          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerCategory",
+          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
+          "Common.TypeNameIdentifier": "_ManagerCategory",
+          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
+        }
+      },
+      {
+        "HashCode": -2066948820,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._ManagerGroup",
         "AssemblyName": "Workdo",
@@ -3166,7 +3225,7 @@
         }
       },
       {
-        "HashCode": -675537155,
+        "HashCode": -521307351,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._ManagerGroup",
         "AssemblyName": "Workdo",
@@ -3215,7 +3274,7 @@
         }
       },
       {
-        "HashCode": -986175378,
+        "HashCode": -1950128660,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._ManagerLabel",
         "AssemblyName": "Workdo",
@@ -3244,7 +3303,7 @@
         }
       },
       {
-        "HashCode": 1059801813,
+        "HashCode": -1982539368,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._ManagerLabel",
         "AssemblyName": "Workdo",
@@ -3274,7 +3333,7 @@
         }
       },
       {
-        "HashCode": 927345896,
+        "HashCode": -277284830,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._ManagerSignature",
         "AssemblyName": "Workdo",
@@ -3313,7 +3372,7 @@
         }
       },
       {
-        "HashCode": -1692367570,
+        "HashCode": -1873391176,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._ManagerSignature",
         "AssemblyName": "Workdo",
@@ -3353,7 +3412,7 @@
         }
       },
       {
-        "HashCode": 1935617697,
+        "HashCode": 639197254,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._MemberItem",
         "AssemblyName": "Workdo",
@@ -3392,7 +3451,7 @@
         }
       },
       {
-        "HashCode": -1723016691,
+        "HashCode": -100966304,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox.Settings._MemberItem",
         "AssemblyName": "Workdo",
@@ -3432,66 +3491,7 @@
         }
       },
       {
-        "HashCode": -711785850,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings._ManagerCategory",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "_ManagerCategory"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "categories",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.CategoryModel>",
-            "Metadata": {
-              "Common.PropertyName": "categories",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.CategoryModel>"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerCategory",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "_ManagerCategory"
-        }
-      },
-      {
-        "HashCode": -1382219365,
-        "Kind": "Components.Component",
-        "Name": "Workdo.Pages.MailBox.Settings._ManagerCategory",
-        "AssemblyName": "Workdo",
-        "CaseSensitive": true,
-        "TagMatchingRules": [
-          {
-            "TagName": "Workdo.Pages.MailBox.Settings._ManagerCategory"
-          }
-        ],
-        "BoundAttributes": [
-          {
-            "Kind": "Components.Component",
-            "Name": "categories",
-            "TypeName": "System.Collections.Generic.List<Workdo.Models.CategoryModel>",
-            "Metadata": {
-              "Common.PropertyName": "categories",
-              "Common.GloballyQualifiedTypeName": "global::System.Collections.Generic.List<global::Workdo.Models.CategoryModel>"
-            }
-          }
-        ],
-        "Metadata": {
-          "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Workdo.Pages.MailBox.Settings._ManagerCategory",
-          "Common.TypeNamespace": "Workdo.Pages.MailBox.Settings",
-          "Common.TypeNameIdentifier": "_ManagerCategory",
-          "Components.NameMatch": "Components.FullyQualifiedNameMatch"
-        }
-      },
-      {
-        "HashCode": -103653005,
+        "HashCode": 569670765,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._AddGroupMember",
         "AssemblyName": "Workdo",
@@ -3539,7 +3539,7 @@
         }
       },
       {
-        "HashCode": 1922022319,
+        "HashCode": -1950735706,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._AddGroupMember",
         "AssemblyName": "Workdo",
@@ -3588,7 +3588,7 @@
         }
       },
       {
-        "HashCode": 912660420,
+        "HashCode": 1945888501,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._AddMember",
         "AssemblyName": "Workdo",
@@ -3646,7 +3646,7 @@
         }
       },
       {
-        "HashCode": 950537262,
+        "HashCode": -887446002,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._AddMember",
         "AssemblyName": "Workdo",
@@ -3705,7 +3705,7 @@
         }
       },
       {
-        "HashCode": -540286248,
+        "HashCode": -790567182,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._AddReceiver",
         "AssemblyName": "Workdo",
@@ -3789,7 +3789,7 @@
         }
       },
       {
-        "HashCode": -93065774,
+        "HashCode": 1294244325,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._AddReceiver",
         "AssemblyName": "Workdo",
@@ -3874,7 +3874,7 @@
         }
       },
       {
-        "HashCode": -1341696663,
+        "HashCode": 71557029,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._DropdownPoll",
         "AssemblyName": "Workdo",
@@ -3903,7 +3903,7 @@
         }
       },
       {
-        "HashCode": -761417114,
+        "HashCode": 106057144,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._DropdownPoll",
         "AssemblyName": "Workdo",
@@ -3933,7 +3933,7 @@
         }
       },
       {
-        "HashCode": -1616113718,
+        "HashCode": 2114511451,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._LabelPicker",
         "AssemblyName": "Workdo",
@@ -3989,7 +3989,7 @@
         }
       },
       {
-        "HashCode": 1157376357,
+        "HashCode": 726167087,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._LabelPicker",
         "AssemblyName": "Workdo",
@@ -4046,7 +4046,7 @@
         }
       },
       {
-        "HashCode": 1498771737,
+        "HashCode": 1805018737,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._MailHeader",
         "AssemblyName": "Workdo",
@@ -4064,7 +4064,7 @@
         }
       },
       {
-        "HashCode": -647307490,
+        "HashCode": -1573920172,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._MailHeader",
         "AssemblyName": "Workdo",
@@ -4083,7 +4083,7 @@
         }
       },
       {
-        "HashCode": -1734894116,
+        "HashCode": -912090275,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._MailWriteZone",
         "AssemblyName": "Workdo",
@@ -4141,7 +4141,7 @@
         }
       },
       {
-        "HashCode": 1800688257,
+        "HashCode": 154971225,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._MailWriteZone",
         "AssemblyName": "Workdo",
@@ -4200,7 +4200,7 @@
         }
       },
       {
-        "HashCode": -1231005451,
+        "HashCode": -104302333,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._ModalConfirmation",
         "AssemblyName": "Workdo",
@@ -4276,7 +4276,7 @@
         }
       },
       {
-        "HashCode": -1666919822,
+        "HashCode": -1063294877,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._ModalConfirmation",
         "AssemblyName": "Workdo",
@@ -4353,7 +4353,7 @@
         }
       },
       {
-        "HashCode": -341873922,
+        "HashCode": -1238069131,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._SelectedLabels",
         "AssemblyName": "Workdo",
@@ -4401,7 +4401,7 @@
         }
       },
       {
-        "HashCode": -1568738733,
+        "HashCode": -866969552,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._SelectedLabels",
         "AssemblyName": "Workdo",
@@ -4450,7 +4450,7 @@
         }
       },
       {
-        "HashCode": -2146261407,
+        "HashCode": -2075980460,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._SignatureZone",
         "AssemblyName": "Workdo",
@@ -4480,7 +4480,7 @@
         }
       },
       {
-        "HashCode": 367022794,
+        "HashCode": 652998753,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._SignatureZone",
         "AssemblyName": "Workdo",
@@ -4511,7 +4511,7 @@
         }
       },
       {
-        "HashCode": -1983115079,
+        "HashCode": -444659929,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._StarMail",
         "AssemblyName": "Workdo",
@@ -4559,7 +4559,7 @@
         }
       },
       {
-        "HashCode": -914188163,
+        "HashCode": -1076221898,
         "Kind": "Components.Component",
         "Name": "Workdo.Pages.MailBox._StarMail",
         "AssemblyName": "Workdo",
@@ -4608,7 +4608,7 @@
         }
       },
       {
-        "HashCode": -1821108477,
+        "HashCode": 1023725156,
         "Kind": "Components.Component",
         "Name": "Workdo.App",
         "AssemblyName": "Workdo",
@@ -4626,7 +4626,7 @@
         }
       },
       {
-        "HashCode": -1103205541,
+        "HashCode": 1609364448,
         "Kind": "Components.Component",
         "Name": "Workdo.App",
         "AssemblyName": "Workdo",
@@ -4645,7 +4645,7 @@
         }
       },
       {
-        "HashCode": 829777053,
+        "HashCode": 1429625920,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.HeaderMain",
         "AssemblyName": "Workdo",
@@ -4663,7 +4663,7 @@
         }
       },
       {
-        "HashCode": -1170707624,
+        "HashCode": -271984076,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.HeaderMain",
         "AssemblyName": "Workdo",
@@ -4682,7 +4682,7 @@
         }
       },
       {
-        "HashCode": 991023611,
+        "HashCode": -879815444,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.LayoutLogin",
         "AssemblyName": "Workdo",
@@ -4713,7 +4713,7 @@
         }
       },
       {
-        "HashCode": -814194100,
+        "HashCode": 2025761927,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.LayoutLogin",
         "AssemblyName": "Workdo",
@@ -4745,7 +4745,7 @@
         }
       },
       {
-        "HashCode": -188207906,
+        "HashCode": 1539707265,
         "Kind": "Components.ChildContent",
         "Name": "Workdo.Shared.LayoutLogin.Body",
         "AssemblyName": "Workdo",
@@ -4766,7 +4766,7 @@
         }
       },
       {
-        "HashCode": -137428600,
+        "HashCode": 1146351048,
         "Kind": "Components.ChildContent",
         "Name": "Workdo.Shared.LayoutLogin.Body",
         "AssemblyName": "Workdo",
@@ -4788,7 +4788,7 @@
         }
       },
       {
-        "HashCode": -235538956,
+        "HashCode": 312734053,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.LayoutMain",
         "AssemblyName": "Workdo",
@@ -4819,7 +4819,7 @@
         }
       },
       {
-        "HashCode": 940982772,
+        "HashCode": -1565964289,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.LayoutMain",
         "AssemblyName": "Workdo",
@@ -4851,7 +4851,7 @@
         }
       },
       {
-        "HashCode": -1503065423,
+        "HashCode": -1082279226,
         "Kind": "Components.ChildContent",
         "Name": "Workdo.Shared.LayoutMain.Body",
         "AssemblyName": "Workdo",
@@ -4872,7 +4872,7 @@
         }
       },
       {
-        "HashCode": 1367119418,
+        "HashCode": -1670260810,
         "Kind": "Components.ChildContent",
         "Name": "Workdo.Shared.LayoutMain.Body",
         "AssemblyName": "Workdo",
@@ -4894,7 +4894,7 @@
         }
       },
       {
-        "HashCode": 915377252,
+        "HashCode": 982099012,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.MailSideBar",
         "AssemblyName": "Workdo",
@@ -4934,7 +4934,7 @@
         }
       },
       {
-        "HashCode": 1319286617,
+        "HashCode": -1992385163,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.MailSideBar",
         "AssemblyName": "Workdo",
@@ -4975,7 +4975,7 @@
         }
       },
       {
-        "HashCode": -289667530,
+        "HashCode": 1334160655,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.PopupNoti",
         "AssemblyName": "Workdo",
@@ -5023,7 +5023,7 @@
         }
       },
       {
-        "HashCode": 369678541,
+        "HashCode": -1435885265,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.PopupNoti",
         "AssemblyName": "Workdo",
@@ -5072,7 +5072,7 @@
         }
       },
       {
-        "HashCode": 1560733799,
+        "HashCode": -441330975,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.Sidebar",
         "AssemblyName": "Workdo",
@@ -5102,7 +5102,7 @@
         }
       },
       {
-        "HashCode": 1236390033,
+        "HashCode": 652307179,
         "Kind": "Components.Component",
         "Name": "Workdo.Shared.Sidebar",
         "AssemblyName": "Workdo",
@@ -5133,7 +5133,7 @@
         }
       },
       {
-        "HashCode": -750740537,
+        "HashCode": 704885955,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker.Calendar",
         "AssemblyName": "BlazorDateRangePicker",
@@ -5201,7 +5201,7 @@
         }
       },
       {
-        "HashCode": 2069186083,
+        "HashCode": 928710421,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker.Calendar",
         "AssemblyName": "BlazorDateRangePicker",
@@ -5270,7 +5270,7 @@
         }
       },
       {
-        "HashCode": -1412956528,
+        "HashCode": -500874080,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker.DateRangePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -5889,7 +5889,7 @@
         }
       },
       {
-        "HashCode": -243228903,
+        "HashCode": -991920800,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker.DateRangePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6509,7 +6509,7 @@
         }
       },
       {
-        "HashCode": 308689601,
+        "HashCode": -1268812297,
         "Kind": "Components.ChildContent",
         "Name": "BlazorDateRangePicker.DateRangePicker.PickerTemplate",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6541,7 +6541,7 @@
         }
       },
       {
-        "HashCode": 1916166169,
+        "HashCode": -1125040921,
         "Kind": "Components.ChildContent",
         "Name": "BlazorDateRangePicker.DateRangePicker.PickerTemplate",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6574,7 +6574,7 @@
         }
       },
       {
-        "HashCode": -105468031,
+        "HashCode": -99233977,
         "Kind": "Components.ChildContent",
         "Name": "BlazorDateRangePicker.DateRangePicker.ButtonsTemplate",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6606,7 +6606,7 @@
         }
       },
       {
-        "HashCode": 1766895856,
+        "HashCode": 1804549429,
         "Kind": "Components.ChildContent",
         "Name": "BlazorDateRangePicker.DateRangePicker.ButtonsTemplate",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6639,7 +6639,7 @@
         }
       },
       {
-        "HashCode": -1183498245,
+        "HashCode": 1582098056,
         "Kind": "Components.ChildContent",
         "Name": "BlazorDateRangePicker.DateRangePicker.DayTemplate",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6671,7 +6671,7 @@
         }
       },
       {
-        "HashCode": 788298475,
+        "HashCode": 1568518468,
         "Kind": "Components.ChildContent",
         "Name": "BlazorDateRangePicker.DateRangePicker.DayTemplate",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6704,7 +6704,7 @@
         }
       },
       {
-        "HashCode": -286302152,
+        "HashCode": 1781016691,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker.TimePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6762,7 +6762,7 @@
         }
       },
       {
-        "HashCode": -248905882,
+        "HashCode": -143475196,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker.TimePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6821,7 +6821,7 @@
         }
       },
       {
-        "HashCode": 378105955,
+        "HashCode": 2069445217,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker.PickerContainer",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6839,7 +6839,7 @@
         }
       },
       {
-        "HashCode": -1607091358,
+        "HashCode": 1303241137,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker.PickerContainer",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6858,7 +6858,7 @@
         }
       },
       {
-        "HashCode": -1629619630,
+        "HashCode": 921951874,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker._Imports",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6876,7 +6876,7 @@
         }
       },
       {
-        "HashCode": 391222244,
+        "HashCode": -204688289,
         "Kind": "Components.Component",
         "Name": "BlazorDateRangePicker._Imports",
         "AssemblyName": "BlazorDateRangePicker",
@@ -6895,7 +6895,7 @@
         }
       },
       {
-        "HashCode": -1740010116,
+        "HashCode": -1105699921,
         "Kind": "Components.Component",
         "Name": "Blazored.TextEditor.BlazoredTextEditor",
         "AssemblyName": "Blazored.TextEditor",
@@ -6980,7 +6980,7 @@
         }
       },
       {
-        "HashCode": -1999666789,
+        "HashCode": -1244887321,
         "Kind": "Components.Component",
         "Name": "Blazored.TextEditor.BlazoredTextEditor",
         "AssemblyName": "Blazored.TextEditor",
@@ -7066,7 +7066,7 @@
         }
       },
       {
-        "HashCode": 1679042521,
+        "HashCode": -356714464,
         "Kind": "Components.ChildContent",
         "Name": "Blazored.TextEditor.BlazoredTextEditor.EditorContent",
         "AssemblyName": "Blazored.TextEditor",
@@ -7086,7 +7086,7 @@
         }
       },
       {
-        "HashCode": 1855150832,
+        "HashCode": 308921418,
         "Kind": "Components.ChildContent",
         "Name": "Blazored.TextEditor.BlazoredTextEditor.EditorContent",
         "AssemblyName": "Blazored.TextEditor",
@@ -7107,7 +7107,7 @@
         }
       },
       {
-        "HashCode": 210664948,
+        "HashCode": -1094137627,
         "Kind": "Components.ChildContent",
         "Name": "Blazored.TextEditor.BlazoredTextEditor.ToolbarContent",
         "AssemblyName": "Blazored.TextEditor",
@@ -7127,7 +7127,7 @@
         }
       },
       {
-        "HashCode": 1935182901,
+        "HashCode": -1598317676,
         "Kind": "Components.ChildContent",
         "Name": "Blazored.TextEditor.BlazoredTextEditor.ToolbarContent",
         "AssemblyName": "Blazored.TextEditor",
@@ -7148,7 +7148,7 @@
         }
       },
       {
-        "HashCode": 1369019831,
+        "HashCode": 1634927415,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeRouteView",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7232,7 +7232,7 @@
         }
       },
       {
-        "HashCode": -1869814482,
+        "HashCode": 1775194348,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeRouteView",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7317,7 +7317,7 @@
         }
       },
       {
-        "HashCode": 659448994,
+        "HashCode": -1637418281,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeRouteView.NotAuthorized",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7350,7 +7350,7 @@
         }
       },
       {
-        "HashCode": -857890047,
+        "HashCode": -1342090079,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeRouteView.NotAuthorized",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7384,7 +7384,7 @@
         }
       },
       {
-        "HashCode": -397653913,
+        "HashCode": 1841478949,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeRouteView.Authorizing",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7405,7 +7405,7 @@
         }
       },
       {
-        "HashCode": -468007390,
+        "HashCode": -1101590173,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeRouteView.Authorizing",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7427,7 +7427,7 @@
         }
       },
       {
-        "HashCode": 642674876,
+        "HashCode": -1893121151,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7532,7 +7532,7 @@
         }
       },
       {
-        "HashCode": -482757560,
+        "HashCode": 120524108,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7638,7 +7638,7 @@
         }
       },
       {
-        "HashCode": -597093870,
+        "HashCode": 820920300,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7671,7 +7671,7 @@
         }
       },
       {
-        "HashCode": 492025943,
+        "HashCode": -714978504,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7705,7 +7705,7 @@
         }
       },
       {
-        "HashCode": 231017840,
+        "HashCode": 413000123,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView.NotAuthorized",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7738,7 +7738,7 @@
         }
       },
       {
-        "HashCode": -218691166,
+        "HashCode": -591825709,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView.NotAuthorized",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7772,7 +7772,7 @@
         }
       },
       {
-        "HashCode": 2015022041,
+        "HashCode": -871750433,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView.Authorized",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7805,7 +7805,7 @@
         }
       },
       {
-        "HashCode": -1024728334,
+        "HashCode": 1329384221,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView.Authorized",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7839,7 +7839,7 @@
         }
       },
       {
-        "HashCode": 608551464,
+        "HashCode": -1503498707,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView.Authorizing",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7860,7 +7860,7 @@
         }
       },
       {
-        "HashCode": 158003542,
+        "HashCode": -128183245,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.AuthorizeView.Authorizing",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7882,7 +7882,7 @@
         }
       },
       {
-        "HashCode": 1017852854,
+        "HashCode": -2090914123,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7913,7 +7913,7 @@
         }
       },
       {
-        "HashCode": -2040007883,
+        "HashCode": 1155851162,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7945,7 +7945,7 @@
         }
       },
       {
-        "HashCode": -1879515247,
+        "HashCode": -1539052673,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7966,7 +7966,7 @@
         }
       },
       {
-        "HashCode": 1510344871,
+        "HashCode": 2062360877,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Authorization",
@@ -7988,7 +7988,7 @@
         }
       },
       {
-        "HashCode": 1911104218,
+        "HashCode": -1245612275,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.CascadingValue<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8063,7 +8063,7 @@
         }
       },
       {
-        "HashCode": -1809360822,
+        "HashCode": 275788164,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.CascadingValue<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8139,7 +8139,7 @@
         }
       },
       {
-        "HashCode": -1629792691,
+        "HashCode": -198417462,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.CascadingValue<TValue>.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8160,7 +8160,7 @@
         }
       },
       {
-        "HashCode": 1620325061,
+        "HashCode": 1654541582,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.CascadingValue<TValue>.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8182,7 +8182,7 @@
         }
       },
       {
-        "HashCode": -1792854986,
+        "HashCode": 2077948709,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.DynamicComponent",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8224,7 +8224,7 @@
         }
       },
       {
-        "HashCode": -1805821959,
+        "HashCode": -1051140499,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.DynamicComponent",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8267,7 +8267,7 @@
         }
       },
       {
-        "HashCode": -1923445651,
+        "HashCode": 226174291,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.LayoutView",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8309,7 +8309,7 @@
         }
       },
       {
-        "HashCode": 816929911,
+        "HashCode": 82528573,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.LayoutView",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8352,7 +8352,7 @@
         }
       },
       {
-        "HashCode": 1397441950,
+        "HashCode": 1317850152,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.LayoutView.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8373,7 +8373,7 @@
         }
       },
       {
-        "HashCode": -299860900,
+        "HashCode": 2022672101,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.LayoutView.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8395,7 +8395,7 @@
         }
       },
       {
-        "HashCode": -288417352,
+        "HashCode": 1866351113,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.RouteView",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8437,7 +8437,7 @@
         }
       },
       {
-        "HashCode": -489648730,
+        "HashCode": 518361885,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.RouteView",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8480,7 +8480,7 @@
         }
       },
       {
-        "HashCode": 824211206,
+        "HashCode": 1987276214,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Routing.Router",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8588,7 +8588,7 @@
         }
       },
       {
-        "HashCode": 1270717985,
+        "HashCode": -1997200251,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Routing.Router",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8697,7 +8697,7 @@
         }
       },
       {
-        "HashCode": -860277781,
+        "HashCode": 162930141,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Routing.Router.NotFound",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8718,7 +8718,7 @@
         }
       },
       {
-        "HashCode": -884865544,
+        "HashCode": 863569695,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Routing.Router.NotFound",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8740,7 +8740,7 @@
         }
       },
       {
-        "HashCode": 549670978,
+        "HashCode": 1599050091,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Routing.Router.Found",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8773,7 +8773,7 @@
         }
       },
       {
-        "HashCode": -1765401109,
+        "HashCode": 1621337366,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Routing.Router.Found",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8807,7 +8807,7 @@
         }
       },
       {
-        "HashCode": 528953633,
+        "HashCode": -1214401773,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Routing.Router.Navigating",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8828,7 +8828,7 @@
         }
       },
       {
-        "HashCode": 779973705,
+        "HashCode": -505448245,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Routing.Router.Navigating",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -8850,7 +8850,7 @@
         }
       },
       {
-        "HashCode": -1597189326,
+        "HashCode": -475372749,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.DataAnnotationsValidator",
         "AssemblyName": "Microsoft.AspNetCore.Components.Forms",
@@ -8869,7 +8869,7 @@
         }
       },
       {
-        "HashCode": -681275151,
+        "HashCode": 1685590336,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.DataAnnotationsValidator",
         "AssemblyName": "Microsoft.AspNetCore.Components.Forms",
@@ -8889,7 +8889,7 @@
         }
       },
       {
-        "HashCode": 892679032,
+        "HashCode": -333173196,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.EditForm",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -8994,7 +8994,7 @@
         }
       },
       {
-        "HashCode": -1093250567,
+        "HashCode": 1653707737,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.EditForm",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9100,7 +9100,7 @@
         }
       },
       {
-        "HashCode": 92579973,
+        "HashCode": 1519782381,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Forms.EditForm.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9133,7 +9133,7 @@
         }
       },
       {
-        "HashCode": -486873392,
+        "HashCode": -676304923,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Forms.EditForm.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9167,7 +9167,7 @@
         }
       },
       {
-        "HashCode": 1341628003,
+        "HashCode": 1304185749,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputCheckbox",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9239,7 +9239,7 @@
         }
       },
       {
-        "HashCode": -1334204273,
+        "HashCode": -36554819,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputCheckbox",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9312,7 +9312,7 @@
         }
       },
       {
-        "HashCode": -1431168828,
+        "HashCode": 1017548320,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputDate<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9420,7 +9420,7 @@
         }
       },
       {
-        "HashCode": 2141969837,
+        "HashCode": 382911519,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputDate<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9529,7 +9529,7 @@
         }
       },
       {
-        "HashCode": -1337112137,
+        "HashCode": -1069926986,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputFile",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9571,7 +9571,7 @@
         }
       },
       {
-        "HashCode": -1133539692,
+        "HashCode": 840110871,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputFile",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9614,7 +9614,7 @@
         }
       },
       {
-        "HashCode": -33627913,
+        "HashCode": -1342370598,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputNumber<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9711,7 +9711,7 @@
         }
       },
       {
-        "HashCode": -1547375318,
+        "HashCode": 347051629,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputNumber<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9809,7 +9809,7 @@
         }
       },
       {
-        "HashCode": 1350650330,
+        "HashCode": 2076011337,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputRadio<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9873,7 +9873,7 @@
         }
       },
       {
-        "HashCode": 2103960574,
+        "HashCode": -1345878261,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputRadio<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -9938,7 +9938,7 @@
         }
       },
       {
-        "HashCode": 1631598157,
+        "HashCode": -1382878208,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputRadioGroup<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10046,7 +10046,7 @@
         }
       },
       {
-        "HashCode": -1695711680,
+        "HashCode": -1847295646,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputRadioGroup<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10155,7 +10155,7 @@
         }
       },
       {
-        "HashCode": -1676644675,
+        "HashCode": 435628113,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputRadioGroup<TValue>.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10176,7 +10176,7 @@
         }
       },
       {
-        "HashCode": 523379226,
+        "HashCode": 206876390,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputRadioGroup<TValue>.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10198,7 +10198,7 @@
         }
       },
       {
-        "HashCode": -1118256360,
+        "HashCode": -466134802,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputSelect<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10296,7 +10296,7 @@
         }
       },
       {
-        "HashCode": 1294343795,
+        "HashCode": 41576076,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputSelect<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10395,7 +10395,7 @@
         }
       },
       {
-        "HashCode": 864252149,
+        "HashCode": 1521988600,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputSelect<TValue>.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10416,7 +10416,7 @@
         }
       },
       {
-        "HashCode": -1429634149,
+        "HashCode": 86807319,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputSelect<TValue>.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10438,7 +10438,7 @@
         }
       },
       {
-        "HashCode": -1679189463,
+        "HashCode": 1518856088,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputText",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10510,7 +10510,7 @@
         }
       },
       {
-        "HashCode": 259896740,
+        "HashCode": 1481693455,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputText",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10583,7 +10583,7 @@
         }
       },
       {
-        "HashCode": 1701501859,
+        "HashCode": -838279238,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputTextArea",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10655,7 +10655,7 @@
         }
       },
       {
-        "HashCode": 672650869,
+        "HashCode": 2124210768,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputTextArea",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10728,7 +10728,7 @@
         }
       },
       {
-        "HashCode": -301334165,
+        "HashCode": -904196025,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.ValidationMessage<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10782,7 +10782,7 @@
         }
       },
       {
-        "HashCode": 164065816,
+        "HashCode": -466663767,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.ValidationMessage<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10837,7 +10837,7 @@
         }
       },
       {
-        "HashCode": -1152896400,
+        "HashCode": 1884717040,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.ValidationSummary",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10878,7 +10878,7 @@
         }
       },
       {
-        "HashCode": 781600677,
+        "HashCode": 626373720,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Forms.ValidationSummary",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10920,7 +10920,7 @@
         }
       },
       {
-        "HashCode": -1207816318,
+        "HashCode": -974109972,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Routing.FocusOnNavigate",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -10961,7 +10961,7 @@
         }
       },
       {
-        "HashCode": -2005615938,
+        "HashCode": -1862187084,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Routing.FocusOnNavigate",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11003,7 +11003,7 @@
         }
       },
       {
-        "HashCode": 2139044096,
+        "HashCode": 1471242862,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Routing.NavLink",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11066,7 +11066,7 @@
         }
       },
       {
-        "HashCode": 65318250,
+        "HashCode": 1827858408,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Routing.NavLink",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11130,7 +11130,7 @@
         }
       },
       {
-        "HashCode": -1017930509,
+        "HashCode": 75542530,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Routing.NavLink.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11151,7 +11151,7 @@
         }
       },
       {
-        "HashCode": -421657658,
+        "HashCode": -1869195895,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Routing.NavLink.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11173,7 +11173,7 @@
         }
       },
       {
-        "HashCode": 1595394642,
+        "HashCode": -717196002,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.HeadContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11205,7 +11205,7 @@
         }
       },
       {
-        "HashCode": 718528264,
+        "HashCode": -1550586586,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.HeadContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11238,7 +11238,7 @@
         }
       },
       {
-        "HashCode": 1264868698,
+        "HashCode": -777015732,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.HeadContent.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11259,7 +11259,7 @@
         }
       },
       {
-        "HashCode": 1441681479,
+        "HashCode": 1405416213,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.HeadContent.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11281,7 +11281,7 @@
         }
       },
       {
-        "HashCode": -168409611,
+        "HashCode": 1868174285,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.HeadOutlet",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11300,7 +11300,7 @@
         }
       },
       {
-        "HashCode": -286030120,
+        "HashCode": 439934093,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.HeadOutlet",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11320,7 +11320,7 @@
         }
       },
       {
-        "HashCode": 1295003337,
+        "HashCode": -1798582731,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.PageTitle",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11352,7 +11352,7 @@
         }
       },
       {
-        "HashCode": 1317366303,
+        "HashCode": -314558654,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.PageTitle",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11385,7 +11385,7 @@
         }
       },
       {
-        "HashCode": -42611521,
+        "HashCode": -360524215,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.PageTitle.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11406,7 +11406,7 @@
         }
       },
       {
-        "HashCode": 507589998,
+        "HashCode": 1166807994,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.PageTitle.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11428,7 +11428,7 @@
         }
       },
       {
-        "HashCode": -612572602,
+        "HashCode": -1055700695,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.ErrorBoundary",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11491,7 +11491,7 @@
         }
       },
       {
-        "HashCode": 1410544168,
+        "HashCode": 1099010556,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.ErrorBoundary",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11555,7 +11555,7 @@
         }
       },
       {
-        "HashCode": 254689162,
+        "HashCode": -117564249,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.ErrorBoundary.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11576,7 +11576,7 @@
         }
       },
       {
-        "HashCode": 1196506526,
+        "HashCode": -985092052,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.ErrorBoundary.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11598,7 +11598,7 @@
         }
       },
       {
-        "HashCode": 1700104866,
+        "HashCode": -403304164,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.ErrorBoundary.ErrorContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11631,7 +11631,7 @@
         }
       },
       {
-        "HashCode": 710568615,
+        "HashCode": -1466060051,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.ErrorBoundary.ErrorContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11665,7 +11665,7 @@
         }
       },
       {
-        "HashCode": 1563841473,
+        "HashCode": -1672049484,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<TItem>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11787,7 +11787,7 @@
         }
       },
       {
-        "HashCode": 1183663047,
+        "HashCode": -273036492,
         "Kind": "Components.Component",
         "Name": "Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<TItem>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11910,7 +11910,7 @@
         }
       },
       {
-        "HashCode": -707117149,
+        "HashCode": -49894334,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<TItem>.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11943,7 +11943,7 @@
         }
       },
       {
-        "HashCode": 163854934,
+        "HashCode": 1644034070,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<TItem>.ChildContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -11977,7 +11977,7 @@
         }
       },
       {
-        "HashCode": -638584243,
+        "HashCode": 1514220245,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<TItem>.ItemContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -12010,7 +12010,7 @@
         }
       },
       {
-        "HashCode": 1244319363,
+        "HashCode": -1842667368,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<TItem>.ItemContent",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -12044,7 +12044,7 @@
         }
       },
       {
-        "HashCode": -1345604942,
+        "HashCode": 259069609,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<TItem>.Placeholder",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -12077,7 +12077,7 @@
         }
       },
       {
-        "HashCode": 1663820025,
+        "HashCode": 1124961084,
         "Kind": "Components.ChildContent",
         "Name": "Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<TItem>.Placeholder",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -12111,7 +12111,7 @@
         }
       },
       {
-        "HashCode": -1903248778,
+        "HashCode": -279999252,
         "Kind": "Components.Component",
         "Name": "Plk.Blazor.DragDrop.Dropzone<TItem>",
         "AssemblyName": "Plk.Blazor.DragDrop",
@@ -12314,7 +12314,7 @@
         }
       },
       {
-        "HashCode": 1546985215,
+        "HashCode": 2134005693,
         "Kind": "Components.Component",
         "Name": "Plk.Blazor.DragDrop.Dropzone<TItem>",
         "AssemblyName": "Plk.Blazor.DragDrop",
@@ -12518,7 +12518,7 @@
         }
       },
       {
-        "HashCode": 1243559172,
+        "HashCode": -1306280996,
         "Kind": "Components.ChildContent",
         "Name": "Plk.Blazor.DragDrop.Dropzone<TItem>.ChildContent",
         "AssemblyName": "Plk.Blazor.DragDrop",
@@ -12550,7 +12550,7 @@
         }
       },
       {
-        "HashCode": 2086282683,
+        "HashCode": -62776568,
         "Kind": "Components.ChildContent",
         "Name": "Plk.Blazor.DragDrop.Dropzone<TItem>.ChildContent",
         "AssemblyName": "Plk.Blazor.DragDrop",
@@ -12583,7 +12583,7 @@
         }
       },
       {
-        "HashCode": -1644127426,
+        "HashCode": 1506920934,
         "Kind": "Components.Component",
         "Name": "Plk.Blazor.DragDrop._Imports",
         "AssemblyName": "Plk.Blazor.DragDrop",
@@ -12601,7 +12601,7 @@
         }
       },
       {
-        "HashCode": -1726853725,
+        "HashCode": 1320997003,
         "Kind": "Components.Component",
         "Name": "Plk.Blazor.DragDrop._Imports",
         "AssemblyName": "Plk.Blazor.DragDrop",
@@ -12620,7 +12620,7 @@
         }
       },
       {
-        "HashCode": 277678912,
+        "HashCode": 937342122,
         "Kind": "Components.Component",
         "Name": "WMBlazorSlickCarousel.WMBSC.BlazorSlickCarousel",
         "AssemblyName": "WMBlazorSlickCarousel",
@@ -12813,7 +12813,7 @@
         }
       },
       {
-        "HashCode": -951466982,
+        "HashCode": 1487716496,
         "Kind": "Components.Component",
         "Name": "WMBlazorSlickCarousel.WMBSC.BlazorSlickCarousel",
         "AssemblyName": "WMBlazorSlickCarousel",
@@ -13007,7 +13007,7 @@
         }
       },
       {
-        "HashCode": -1537429339,
+        "HashCode": 650088859,
         "Kind": "Components.ChildContent",
         "Name": "WMBlazorSlickCarousel.WMBSC.BlazorSlickCarousel.BlazorSlickCarouselContent",
         "AssemblyName": "WMBlazorSlickCarousel",
@@ -13027,7 +13027,7 @@
         }
       },
       {
-        "HashCode": 192166003,
+        "HashCode": -932467168,
         "Kind": "Components.ChildContent",
         "Name": "WMBlazorSlickCarousel.WMBSC.BlazorSlickCarousel.BlazorSlickCarouselContent",
         "AssemblyName": "WMBlazorSlickCarousel",
@@ -13048,7 +13048,7 @@
         }
       },
       {
-        "HashCode": -1258083809,
+        "HashCode": -1861649716,
         "Kind": "Components.ChildContent",
         "Name": "WMBlazorSlickCarousel.WMBSC.BlazorSlickCarousel.BlazorSlickCarouselLoading",
         "AssemblyName": "WMBlazorSlickCarousel",
@@ -13068,7 +13068,7 @@
         }
       },
       {
-        "HashCode": 997472061,
+        "HashCode": -2109590680,
         "Kind": "Components.ChildContent",
         "Name": "WMBlazorSlickCarousel.WMBSC.BlazorSlickCarousel.BlazorSlickCarouselLoading",
         "AssemblyName": "WMBlazorSlickCarousel",
@@ -13089,7 +13089,7 @@
         }
       },
       {
-        "HashCode": -1577734446,
+        "HashCode": -17938528,
         "Kind": "Components.EventHandler",
         "Name": "onfocus",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13172,7 +13172,7 @@
         }
       },
       {
-        "HashCode": -365206371,
+        "HashCode": -1433018865,
         "Kind": "Components.EventHandler",
         "Name": "onblur",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13255,7 +13255,7 @@
         }
       },
       {
-        "HashCode": -1970302008,
+        "HashCode": -141478786,
         "Kind": "Components.EventHandler",
         "Name": "onfocusin",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13338,7 +13338,7 @@
         }
       },
       {
-        "HashCode": 1776871125,
+        "HashCode": -1096806162,
         "Kind": "Components.EventHandler",
         "Name": "onfocusout",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13421,7 +13421,7 @@
         }
       },
       {
-        "HashCode": 1806356711,
+        "HashCode": -1258792937,
         "Kind": "Components.EventHandler",
         "Name": "onmouseover",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13504,7 +13504,7 @@
         }
       },
       {
-        "HashCode": -1620737893,
+        "HashCode": -494157326,
         "Kind": "Components.EventHandler",
         "Name": "onmouseout",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13587,7 +13587,7 @@
         }
       },
       {
-        "HashCode": -16686229,
+        "HashCode": 971160565,
         "Kind": "Components.EventHandler",
         "Name": "onmousemove",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13670,7 +13670,7 @@
         }
       },
       {
-        "HashCode": -651914744,
+        "HashCode": 478428602,
         "Kind": "Components.EventHandler",
         "Name": "onmousedown",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13753,7 +13753,7 @@
         }
       },
       {
-        "HashCode": 120328791,
+        "HashCode": -710093504,
         "Kind": "Components.EventHandler",
         "Name": "onmouseup",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13836,7 +13836,7 @@
         }
       },
       {
-        "HashCode": 1419038119,
+        "HashCode": -1645904818,
         "Kind": "Components.EventHandler",
         "Name": "onclick",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -13919,7 +13919,7 @@
         }
       },
       {
-        "HashCode": 426882309,
+        "HashCode": 1135939299,
         "Kind": "Components.EventHandler",
         "Name": "ondblclick",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14002,7 +14002,7 @@
         }
       },
       {
-        "HashCode": -133400789,
+        "HashCode": -79139288,
         "Kind": "Components.EventHandler",
         "Name": "onwheel",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14085,7 +14085,7 @@
         }
       },
       {
-        "HashCode": -1409530484,
+        "HashCode": -76005060,
         "Kind": "Components.EventHandler",
         "Name": "onmousewheel",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14168,7 +14168,7 @@
         }
       },
       {
-        "HashCode": 694533480,
+        "HashCode": 1645585913,
         "Kind": "Components.EventHandler",
         "Name": "oncontextmenu",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14251,7 +14251,7 @@
         }
       },
       {
-        "HashCode": 1922081592,
+        "HashCode": 267755458,
         "Kind": "Components.EventHandler",
         "Name": "ondrag",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14334,7 +14334,7 @@
         }
       },
       {
-        "HashCode": 689453601,
+        "HashCode": 2094514900,
         "Kind": "Components.EventHandler",
         "Name": "ondragend",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14417,7 +14417,7 @@
         }
       },
       {
-        "HashCode": 1819875694,
+        "HashCode": -2120611136,
         "Kind": "Components.EventHandler",
         "Name": "ondragenter",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14500,7 +14500,7 @@
         }
       },
       {
-        "HashCode": -1381424170,
+        "HashCode": 1208661621,
         "Kind": "Components.EventHandler",
         "Name": "ondragleave",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14583,7 +14583,7 @@
         }
       },
       {
-        "HashCode": -1744217619,
+        "HashCode": -494669120,
         "Kind": "Components.EventHandler",
         "Name": "ondragover",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14666,7 +14666,7 @@
         }
       },
       {
-        "HashCode": -1149875467,
+        "HashCode": -1070316507,
         "Kind": "Components.EventHandler",
         "Name": "ondragstart",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14749,7 +14749,7 @@
         }
       },
       {
-        "HashCode": -1172924092,
+        "HashCode": 402741466,
         "Kind": "Components.EventHandler",
         "Name": "ondrop",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14832,7 +14832,7 @@
         }
       },
       {
-        "HashCode": -178519552,
+        "HashCode": -1713492082,
         "Kind": "Components.EventHandler",
         "Name": "onkeydown",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14915,7 +14915,7 @@
         }
       },
       {
-        "HashCode": -672663220,
+        "HashCode": -2047631671,
         "Kind": "Components.EventHandler",
         "Name": "onkeyup",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -14998,7 +14998,7 @@
         }
       },
       {
-        "HashCode": -429881712,
+        "HashCode": -698364219,
         "Kind": "Components.EventHandler",
         "Name": "onkeypress",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15081,7 +15081,7 @@
         }
       },
       {
-        "HashCode": -1756618095,
+        "HashCode": -352369797,
         "Kind": "Components.EventHandler",
         "Name": "onchange",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15164,7 +15164,7 @@
         }
       },
       {
-        "HashCode": 16276704,
+        "HashCode": 1560302431,
         "Kind": "Components.EventHandler",
         "Name": "oninput",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15247,7 +15247,7 @@
         }
       },
       {
-        "HashCode": -301043350,
+        "HashCode": -560931715,
         "Kind": "Components.EventHandler",
         "Name": "oninvalid",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15330,7 +15330,7 @@
         }
       },
       {
-        "HashCode": 676704925,
+        "HashCode": 10064369,
         "Kind": "Components.EventHandler",
         "Name": "onreset",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15413,7 +15413,7 @@
         }
       },
       {
-        "HashCode": -476145277,
+        "HashCode": 629654019,
         "Kind": "Components.EventHandler",
         "Name": "onselect",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15496,7 +15496,7 @@
         }
       },
       {
-        "HashCode": -605724514,
+        "HashCode": -58136584,
         "Kind": "Components.EventHandler",
         "Name": "onselectstart",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15579,7 +15579,7 @@
         }
       },
       {
-        "HashCode": -900107723,
+        "HashCode": 163016546,
         "Kind": "Components.EventHandler",
         "Name": "onselectionchange",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15662,7 +15662,7 @@
         }
       },
       {
-        "HashCode": 298238788,
+        "HashCode": 1359099628,
         "Kind": "Components.EventHandler",
         "Name": "onsubmit",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15745,7 +15745,7 @@
         }
       },
       {
-        "HashCode": -1175644880,
+        "HashCode": -697721669,
         "Kind": "Components.EventHandler",
         "Name": "onbeforecopy",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15828,7 +15828,7 @@
         }
       },
       {
-        "HashCode": -1609206168,
+        "HashCode": 690339221,
         "Kind": "Components.EventHandler",
         "Name": "onbeforecut",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15911,7 +15911,7 @@
         }
       },
       {
-        "HashCode": 1009830107,
+        "HashCode": -620365686,
         "Kind": "Components.EventHandler",
         "Name": "onbeforepaste",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -15994,7 +15994,7 @@
         }
       },
       {
-        "HashCode": 1739852225,
+        "HashCode": -62004325,
         "Kind": "Components.EventHandler",
         "Name": "oncopy",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16077,7 +16077,7 @@
         }
       },
       {
-        "HashCode": 1476677133,
+        "HashCode": 383217752,
         "Kind": "Components.EventHandler",
         "Name": "oncut",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16160,7 +16160,7 @@
         }
       },
       {
-        "HashCode": -89851533,
+        "HashCode": 305323657,
         "Kind": "Components.EventHandler",
         "Name": "onpaste",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16243,7 +16243,7 @@
         }
       },
       {
-        "HashCode": 1660868554,
+        "HashCode": -329765578,
         "Kind": "Components.EventHandler",
         "Name": "ontouchcancel",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16326,7 +16326,7 @@
         }
       },
       {
-        "HashCode": 799443117,
+        "HashCode": -1077010851,
         "Kind": "Components.EventHandler",
         "Name": "ontouchend",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16409,7 +16409,7 @@
         }
       },
       {
-        "HashCode": 782729536,
+        "HashCode": -1841192560,
         "Kind": "Components.EventHandler",
         "Name": "ontouchmove",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16492,7 +16492,7 @@
         }
       },
       {
-        "HashCode": -2070606919,
+        "HashCode": 511680926,
         "Kind": "Components.EventHandler",
         "Name": "ontouchstart",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16575,7 +16575,7 @@
         }
       },
       {
-        "HashCode": -1573079702,
+        "HashCode": 713599419,
         "Kind": "Components.EventHandler",
         "Name": "ontouchenter",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16658,7 +16658,7 @@
         }
       },
       {
-        "HashCode": -1822538785,
+        "HashCode": 1968967335,
         "Kind": "Components.EventHandler",
         "Name": "ontouchleave",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16741,7 +16741,7 @@
         }
       },
       {
-        "HashCode": -592520587,
+        "HashCode": -517136600,
         "Kind": "Components.EventHandler",
         "Name": "ongotpointercapture",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16824,7 +16824,7 @@
         }
       },
       {
-        "HashCode": 410782137,
+        "HashCode": 1218444554,
         "Kind": "Components.EventHandler",
         "Name": "onlostpointercapture",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16907,7 +16907,7 @@
         }
       },
       {
-        "HashCode": -1300822910,
+        "HashCode": 888675608,
         "Kind": "Components.EventHandler",
         "Name": "onpointercancel",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -16990,7 +16990,7 @@
         }
       },
       {
-        "HashCode": -2059093845,
+        "HashCode": -1930550942,
         "Kind": "Components.EventHandler",
         "Name": "onpointerdown",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17073,7 +17073,7 @@
         }
       },
       {
-        "HashCode": 702934602,
+        "HashCode": 803223850,
         "Kind": "Components.EventHandler",
         "Name": "onpointerenter",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17156,7 +17156,7 @@
         }
       },
       {
-        "HashCode": 649729070,
+        "HashCode": -1592968942,
         "Kind": "Components.EventHandler",
         "Name": "onpointerleave",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17239,7 +17239,7 @@
         }
       },
       {
-        "HashCode": -616551965,
+        "HashCode": 1366531580,
         "Kind": "Components.EventHandler",
         "Name": "onpointermove",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17322,7 +17322,7 @@
         }
       },
       {
-        "HashCode": -80388908,
+        "HashCode": -1070014459,
         "Kind": "Components.EventHandler",
         "Name": "onpointerout",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17405,7 +17405,7 @@
         }
       },
       {
-        "HashCode": 1484853458,
+        "HashCode": 1303525948,
         "Kind": "Components.EventHandler",
         "Name": "onpointerover",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17488,7 +17488,7 @@
         }
       },
       {
-        "HashCode": 1841481750,
+        "HashCode": 1019361465,
         "Kind": "Components.EventHandler",
         "Name": "onpointerup",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17571,7 +17571,7 @@
         }
       },
       {
-        "HashCode": 979768042,
+        "HashCode": -1966928818,
         "Kind": "Components.EventHandler",
         "Name": "oncanplay",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17654,7 +17654,7 @@
         }
       },
       {
-        "HashCode": -635087387,
+        "HashCode": 1865418868,
         "Kind": "Components.EventHandler",
         "Name": "oncanplaythrough",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17737,7 +17737,7 @@
         }
       },
       {
-        "HashCode": 1725630363,
+        "HashCode": -1144293285,
         "Kind": "Components.EventHandler",
         "Name": "oncuechange",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17820,7 +17820,7 @@
         }
       },
       {
-        "HashCode": 1102222506,
+        "HashCode": -715020782,
         "Kind": "Components.EventHandler",
         "Name": "ondurationchange",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17903,7 +17903,7 @@
         }
       },
       {
-        "HashCode": -1066492328,
+        "HashCode": 925442614,
         "Kind": "Components.EventHandler",
         "Name": "onemptied",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -17986,7 +17986,7 @@
         }
       },
       {
-        "HashCode": -875620989,
+        "HashCode": -1374338207,
         "Kind": "Components.EventHandler",
         "Name": "onpause",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18069,7 +18069,7 @@
         }
       },
       {
-        "HashCode": 29411191,
+        "HashCode": -576031574,
         "Kind": "Components.EventHandler",
         "Name": "onplay",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18152,7 +18152,7 @@
         }
       },
       {
-        "HashCode": -514957521,
+        "HashCode": 252662895,
         "Kind": "Components.EventHandler",
         "Name": "onplaying",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18235,7 +18235,7 @@
         }
       },
       {
-        "HashCode": -1732614948,
+        "HashCode": 1227449815,
         "Kind": "Components.EventHandler",
         "Name": "onratechange",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18318,7 +18318,7 @@
         }
       },
       {
-        "HashCode": 2095434267,
+        "HashCode": 500349753,
         "Kind": "Components.EventHandler",
         "Name": "onseeked",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18401,7 +18401,7 @@
         }
       },
       {
-        "HashCode": -1471437463,
+        "HashCode": 1113738341,
         "Kind": "Components.EventHandler",
         "Name": "onseeking",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18484,7 +18484,7 @@
         }
       },
       {
-        "HashCode": 913685141,
+        "HashCode": 1028065871,
         "Kind": "Components.EventHandler",
         "Name": "onstalled",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18567,7 +18567,7 @@
         }
       },
       {
-        "HashCode": 1503816768,
+        "HashCode": -464450174,
         "Kind": "Components.EventHandler",
         "Name": "onstop",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18650,7 +18650,7 @@
         }
       },
       {
-        "HashCode": -443813116,
+        "HashCode": -199053678,
         "Kind": "Components.EventHandler",
         "Name": "onsuspend",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18733,7 +18733,7 @@
         }
       },
       {
-        "HashCode": 1720547510,
+        "HashCode": -975256959,
         "Kind": "Components.EventHandler",
         "Name": "ontimeupdate",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18816,7 +18816,7 @@
         }
       },
       {
-        "HashCode": 170171967,
+        "HashCode": -1357108901,
         "Kind": "Components.EventHandler",
         "Name": "onvolumechange",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18899,7 +18899,7 @@
         }
       },
       {
-        "HashCode": 190000059,
+        "HashCode": 1498682912,
         "Kind": "Components.EventHandler",
         "Name": "onwaiting",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -18982,7 +18982,7 @@
         }
       },
       {
-        "HashCode": -387081497,
+        "HashCode": 578899791,
         "Kind": "Components.EventHandler",
         "Name": "onloadstart",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19065,7 +19065,7 @@
         }
       },
       {
-        "HashCode": -284326698,
+        "HashCode": -621875363,
         "Kind": "Components.EventHandler",
         "Name": "ontimeout",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19148,7 +19148,7 @@
         }
       },
       {
-        "HashCode": 261421467,
+        "HashCode": -1055786175,
         "Kind": "Components.EventHandler",
         "Name": "onabort",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19231,7 +19231,7 @@
         }
       },
       {
-        "HashCode": 1428592709,
+        "HashCode": -1487617278,
         "Kind": "Components.EventHandler",
         "Name": "onload",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19314,7 +19314,7 @@
         }
       },
       {
-        "HashCode": -320616605,
+        "HashCode": -1777481414,
         "Kind": "Components.EventHandler",
         "Name": "onloadend",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19397,7 +19397,7 @@
         }
       },
       {
-        "HashCode": -1750292770,
+        "HashCode": 1821356542,
         "Kind": "Components.EventHandler",
         "Name": "onprogress",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19480,7 +19480,7 @@
         }
       },
       {
-        "HashCode": 1084567244,
+        "HashCode": 1401146725,
         "Kind": "Components.EventHandler",
         "Name": "onerror",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19563,7 +19563,7 @@
         }
       },
       {
-        "HashCode": -260638038,
+        "HashCode": -1247339370,
         "Kind": "Components.EventHandler",
         "Name": "onactivate",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19646,7 +19646,7 @@
         }
       },
       {
-        "HashCode": -1726891547,
+        "HashCode": -896265893,
         "Kind": "Components.EventHandler",
         "Name": "onbeforeactivate",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19729,7 +19729,7 @@
         }
       },
       {
-        "HashCode": -308381672,
+        "HashCode": 885346675,
         "Kind": "Components.EventHandler",
         "Name": "onbeforedeactivate",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19812,7 +19812,7 @@
         }
       },
       {
-        "HashCode": -1812830774,
+        "HashCode": -297892843,
         "Kind": "Components.EventHandler",
         "Name": "ondeactivate",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19895,7 +19895,7 @@
         }
       },
       {
-        "HashCode": -1689164038,
+        "HashCode": 388641765,
         "Kind": "Components.EventHandler",
         "Name": "onended",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -19978,7 +19978,7 @@
         }
       },
       {
-        "HashCode": 2137353199,
+        "HashCode": 217010740,
         "Kind": "Components.EventHandler",
         "Name": "onfullscreenchange",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20061,7 +20061,7 @@
         }
       },
       {
-        "HashCode": -1218414577,
+        "HashCode": 577211003,
         "Kind": "Components.EventHandler",
         "Name": "onfullscreenerror",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20144,7 +20144,7 @@
         }
       },
       {
-        "HashCode": -75225920,
+        "HashCode": 588920509,
         "Kind": "Components.EventHandler",
         "Name": "onloadeddata",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20227,7 +20227,7 @@
         }
       },
       {
-        "HashCode": 1436632366,
+        "HashCode": -1989233536,
         "Kind": "Components.EventHandler",
         "Name": "onloadedmetadata",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20310,7 +20310,7 @@
         }
       },
       {
-        "HashCode": -1524287854,
+        "HashCode": 418840915,
         "Kind": "Components.EventHandler",
         "Name": "onpointerlockchange",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20393,7 +20393,7 @@
         }
       },
       {
-        "HashCode": 1652477002,
+        "HashCode": 340857955,
         "Kind": "Components.EventHandler",
         "Name": "onpointerlockerror",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20476,7 +20476,7 @@
         }
       },
       {
-        "HashCode": 1296814625,
+        "HashCode": -1161719011,
         "Kind": "Components.EventHandler",
         "Name": "onreadystatechange",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20559,7 +20559,7 @@
         }
       },
       {
-        "HashCode": 1700054205,
+        "HashCode": -1819473810,
         "Kind": "Components.EventHandler",
         "Name": "onscroll",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20642,7 +20642,7 @@
         }
       },
       {
-        "HashCode": 894722686,
+        "HashCode": -1445476439,
         "Kind": "Components.EventHandler",
         "Name": "ontoggle",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20725,7 +20725,7 @@
         }
       },
       {
-        "HashCode": -1690090574,
+        "HashCode": 1751481198,
         "Kind": "Components.Splat",
         "Name": "Attributes",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -20764,7 +20764,7 @@
         }
       },
       {
-        "HashCode": -1025892084,
+        "HashCode": 1713537515,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.Razor",
@@ -21081,7 +21081,7 @@
         }
       },
       {
-        "HashCode": 2039943280,
+        "HashCode": 1369227925,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -21280,7 +21280,7 @@
         }
       },
       {
-        "HashCode": -440667793,
+        "HashCode": -745478615,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.CacheTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -21409,7 +21409,7 @@
         }
       },
       {
-        "HashCode": -1145750063,
+        "HashCode": -1522354384,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ComponentTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -21466,7 +21466,7 @@
         }
       },
       {
-        "HashCode": 1191105491,
+        "HashCode": -1590568716,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.DistributedCacheTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -21600,7 +21600,7 @@
         }
       },
       {
-        "HashCode": 1687209382,
+        "HashCode": 876644704,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.EnvironmentTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -21648,7 +21648,7 @@
         }
       },
       {
-        "HashCode": 112164400,
+        "HashCode": -1576157312,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.FormActionTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22067,7 +22067,7 @@
         }
       },
       {
-        "HashCode": 2094085707,
+        "HashCode": -1599383540,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.FormTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22171,7 +22171,7 @@
         }
       },
       {
-        "HashCode": -86163494,
+        "HashCode": -721908005,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ImageTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22219,7 +22219,7 @@
         }
       },
       {
-        "HashCode": 718076119,
+        "HashCode": 779395424,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.InputTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22291,7 +22291,7 @@
         }
       },
       {
-        "HashCode": 1147202933,
+        "HashCode": 1706037394,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.LabelTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22326,7 +22326,7 @@
         }
       },
       {
-        "HashCode": -41166843,
+        "HashCode": 1660474490,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.LinkTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22524,7 +22524,7 @@
         }
       },
       {
-        "HashCode": -1658443776,
+        "HashCode": 989945985,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22554,7 +22554,7 @@
         }
       },
       {
-        "HashCode": 1392884882,
+        "HashCode": 216081729,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.PartialTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22637,7 +22637,7 @@
         }
       },
       {
-        "HashCode": 1095270472,
+        "HashCode": 1605369932,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.PersistComponentStateTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22668,7 +22668,7 @@
         }
       },
       {
-        "HashCode": 1977728879,
+        "HashCode": -1935926501,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ScriptTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22823,7 +22823,7 @@
         }
       },
       {
-        "HashCode": -145180643,
+        "HashCode": 1640448677,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.SelectTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22884,7 +22884,7 @@
         }
       },
       {
-        "HashCode": 69292704,
+        "HashCode": 1800411207,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.TextAreaTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22928,7 +22928,7 @@
         }
       },
       {
-        "HashCode": -167757211,
+        "HashCode": 974847221,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ValidationMessageTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22963,7 +22963,7 @@
         }
       },
       {
-        "HashCode": -1312938816,
+        "HashCode": 1967076392,
         "Kind": "ITagHelper",
         "Name": "Microsoft.AspNetCore.Mvc.TagHelpers.ValidationSummaryTagHelper",
         "AssemblyName": "Microsoft.AspNetCore.Mvc.TagHelpers",
@@ -22999,7 +22999,7 @@
         }
       },
       {
-        "HashCode": 1529996559,
+        "HashCode": -315626889,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -23095,7 +23095,7 @@
         }
       },
       {
-        "HashCode": -329346583,
+        "HashCode": -1074154031,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -23217,7 +23217,7 @@
         }
       },
       {
-        "HashCode": -1835829467,
+        "HashCode": -1066114489,
         "Kind": "Components.Bind",
         "Name": "Bind_value",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -23339,7 +23339,7 @@
         }
       },
       {
-        "HashCode": 1609534925,
+        "HashCode": 1325198446,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -23472,7 +23472,7 @@
         }
       },
       {
-        "HashCode": -786315013,
+        "HashCode": 715623192,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -23605,7 +23605,7 @@
         }
       },
       {
-        "HashCode": -697209710,
+        "HashCode": -128318181,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -23738,7 +23738,7 @@
         }
       },
       {
-        "HashCode": -515473200,
+        "HashCode": 821476555,
         "Kind": "Components.Bind",
         "Name": "Bind_value",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -23871,7 +23871,7 @@
         }
       },
       {
-        "HashCode": 1765077531,
+        "HashCode": -1556269519,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -24004,7 +24004,7 @@
         }
       },
       {
-        "HashCode": -1956881291,
+        "HashCode": 2065173261,
         "Kind": "Components.Bind",
         "Name": "Bind_value",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -24137,7 +24137,7 @@
         }
       },
       {
-        "HashCode": 1959071072,
+        "HashCode": 1740685777,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -24270,7 +24270,7 @@
         }
       },
       {
-        "HashCode": 1522814775,
+        "HashCode": -2053281403,
         "Kind": "Components.Bind",
         "Name": "Bind_value",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -24403,7 +24403,7 @@
         }
       },
       {
-        "HashCode": 557014132,
+        "HashCode": 120455207,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -24536,7 +24536,7 @@
         }
       },
       {
-        "HashCode": -1456918578,
+        "HashCode": 47662091,
         "Kind": "Components.Bind",
         "Name": "Bind_value",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -24669,7 +24669,7 @@
         }
       },
       {
-        "HashCode": -742366339,
+        "HashCode": -2098257089,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -24802,7 +24802,7 @@
         }
       },
       {
-        "HashCode": -1430252708,
+        "HashCode": 1113319282,
         "Kind": "Components.Bind",
         "Name": "Bind_value",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -24935,7 +24935,7 @@
         }
       },
       {
-        "HashCode": 1370036997,
+        "HashCode": 1167410326,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -25057,7 +25057,7 @@
         }
       },
       {
-        "HashCode": 1209611446,
+        "HashCode": 1410694002,
         "Kind": "Components.Bind",
         "Name": "Bind",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -25179,7 +25179,7 @@
         }
       },
       {
-        "HashCode": 1147817905,
+        "HashCode": -535118039,
         "Kind": "Components.Bind",
         "Name": "BlazorDateRangePicker.DateRangePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -25265,7 +25265,7 @@
         }
       },
       {
-        "HashCode": -900305161,
+        "HashCode": 411932423,
         "Kind": "Components.Bind",
         "Name": "BlazorDateRangePicker.DateRangePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -25351,7 +25351,7 @@
         }
       },
       {
-        "HashCode": -849439070,
+        "HashCode": -73924769,
         "Kind": "Components.Bind",
         "Name": "BlazorDateRangePicker.DateRangePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -25438,7 +25438,7 @@
         }
       },
       {
-        "HashCode": 316372556,
+        "HashCode": -1610902134,
         "Kind": "Components.Bind",
         "Name": "BlazorDateRangePicker.DateRangePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -25525,7 +25525,7 @@
         }
       },
       {
-        "HashCode": 541622771,
+        "HashCode": 1628382605,
         "Kind": "Components.Bind",
         "Name": "BlazorDateRangePicker.TimePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -25611,7 +25611,7 @@
         }
       },
       {
-        "HashCode": 1332655692,
+        "HashCode": -1157655166,
         "Kind": "Components.Bind",
         "Name": "BlazorDateRangePicker.TimePicker",
         "AssemblyName": "BlazorDateRangePicker",
@@ -25698,7 +25698,7 @@
         }
       },
       {
-        "HashCode": 589067773,
+        "HashCode": -529018156,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputCheckbox",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -25785,7 +25785,7 @@
         }
       },
       {
-        "HashCode": 1764162229,
+        "HashCode": -1268695884,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputCheckbox",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -25873,7 +25873,7 @@
         }
       },
       {
-        "HashCode": 248704022,
+        "HashCode": -530815513,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputDate<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -25960,7 +25960,7 @@
         }
       },
       {
-        "HashCode": 442197029,
+        "HashCode": 214547648,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputDate<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26048,7 +26048,7 @@
         }
       },
       {
-        "HashCode": -1327693726,
+        "HashCode": 1976484388,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputNumber<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26135,7 +26135,7 @@
         }
       },
       {
-        "HashCode": 305211301,
+        "HashCode": 125001690,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputNumber<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26223,7 +26223,7 @@
         }
       },
       {
-        "HashCode": -1126149023,
+        "HashCode": -1073246631,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputRadioGroup<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26310,7 +26310,7 @@
         }
       },
       {
-        "HashCode": -1472017587,
+        "HashCode": -2005523567,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputRadioGroup<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26398,7 +26398,7 @@
         }
       },
       {
-        "HashCode": -1427951506,
+        "HashCode": -1404307220,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputSelect<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26485,7 +26485,7 @@
         }
       },
       {
-        "HashCode": -389319613,
+        "HashCode": 1217784192,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputSelect<TValue>",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26573,7 +26573,7 @@
         }
       },
       {
-        "HashCode": 773014440,
+        "HashCode": 24661658,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputText",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26660,7 +26660,7 @@
         }
       },
       {
-        "HashCode": 1160035317,
+        "HashCode": -86094761,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputText",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26748,7 +26748,7 @@
         }
       },
       {
-        "HashCode": -1322872295,
+        "HashCode": 1083592253,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputTextArea",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26835,7 +26835,7 @@
         }
       },
       {
-        "HashCode": 1211363071,
+        "HashCode": 1008235880,
         "Kind": "Components.Bind",
         "Name": "Microsoft.AspNetCore.Components.Forms.InputTextArea",
         "AssemblyName": "Microsoft.AspNetCore.Components.Web",
@@ -26923,7 +26923,7 @@
         }
       },
       {
-        "HashCode": 1495285370,
+        "HashCode": -622277516,
         "Kind": "Components.Ref",
         "Name": "Ref",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -26962,7 +26962,7 @@
         }
       },
       {
-        "HashCode": 1077244728,
+        "HashCode": 205782088,
         "Kind": "Components.Key",
         "Name": "Key",
         "AssemblyName": "Microsoft.AspNetCore.Components",
@@ -27006,138 +27006,8 @@
   "RootNamespace": "Workdo",
   "Documents": [
     {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_LabelPicker.razor",
-      "TargetPath": "Pages\\MailBox\\_LabelPicker.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_ActionItem.razor",
-      "TargetPath": "Pages\\MailBox\\Detail\\_ActionItem.razor",
-      "FileKind": "component"
-    },
-    {
       "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_Survey.razor",
       "TargetPath": "Pages\\MailBox\\Detail\\_Survey.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_ManagerLabel.razor",
-      "TargetPath": "Pages\\MailBox\\Settings\\_ManagerLabel.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_Header.razor",
-      "TargetPath": "Pages\\MailBox\\Detail\\_Header.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_SelectedLabels.razor",
-      "TargetPath": "Pages\\MailBox\\_SelectedLabels.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\_Item.razor",
-      "TargetPath": "Pages\\MailBox\\Mail\\_Item.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_DropdownPoll.razor",
-      "TargetPath": "Pages\\MailBox\\_DropdownPoll.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\_ContentPoll.razor",
-      "TargetPath": "Pages\\MailBox\\Create\\_ContentPoll.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\Error.cshtml",
-      "TargetPath": "Pages\\Error.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\_Host.cshtml",
-      "TargetPath": "Pages\\_Host.cshtml",
-      "FileKind": "mvc"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_AddGroupMember.razor",
-      "TargetPath": "Pages\\MailBox\\_AddGroupMember.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\_QuestionItem.razor",
-      "TargetPath": "Pages\\MailBox\\Create\\_QuestionItem.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_Statistical.razor",
-      "TargetPath": "Pages\\MailBox\\Detail\\_Statistical.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\Logout.razor",
-      "TargetPath": "Pages\\Logout.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_Actions.razor",
-      "TargetPath": "Pages\\MailBox\\Detail\\_Actions.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\Login.razor",
-      "TargetPath": "Pages\\Login.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\LayoutLogin.razor",
-      "TargetPath": "Shared\\LayoutLogin.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Label.razor",
-      "TargetPath": "Pages\\MailBox\\Mail\\Label.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Config\\_ModalData.razor",
-      "TargetPath": "Pages\\MailBox\\Config\\_ModalData.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_StarMail.razor",
-      "TargetPath": "Pages\\MailBox\\_StarMail.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\PopupNoti.razor",
-      "TargetPath": "Shared\\PopupNoti.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\_Poll.razor",
-      "TargetPath": "Pages\\MailBox\\Create\\_Poll.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Sent.razor",
-      "TargetPath": "Pages\\MailBox\\Mail\\Sent.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\Settings.razor",
-      "TargetPath": "Pages\\MailBox\\Settings\\Settings.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_ManagerSignature.razor",
-      "TargetPath": "Pages\\MailBox\\Settings\\_ManagerSignature.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Config\\Category.razor",
-      "TargetPath": "Pages\\MailBox\\Config\\Category.razor",
       "FileKind": "component"
     },
     {
@@ -27146,88 +27016,18 @@
       "FileKind": "component"
     },
     {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Trash.razor",
-      "TargetPath": "Pages\\MailBox\\Mail\\Trash.razor",
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_Statistical.razor",
+      "TargetPath": "Pages\\MailBox\\Detail\\_Statistical.razor",
       "FileKind": "component"
     },
     {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\_ChoiceItem.razor",
-      "TargetPath": "Pages\\MailBox\\Create\\_ChoiceItem.razor",
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_ManagerSignature.razor",
+      "TargetPath": "Pages\\MailBox\\Settings\\_ManagerSignature.razor",
       "FileKind": "component"
     },
     {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_ManagerCategory.razor",
-      "TargetPath": "Pages\\MailBox\\Settings\\_ManagerCategory.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\MailSideBar.razor",
-      "TargetPath": "Shared\\MailSideBar.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_MailHeader.razor",
-      "TargetPath": "Pages\\MailBox\\_MailHeader.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_AddReceiver.razor",
-      "TargetPath": "Pages\\MailBox\\_AddReceiver.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\Create.razor",
-      "TargetPath": "Pages\\MailBox\\Create\\Create.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Important.razor",
-      "TargetPath": "Pages\\MailBox\\Mail\\Important.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\_Imports.razor",
-      "TargetPath": "_Imports.razor",
-      "FileKind": "componentImport"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\_Actions.razor",
-      "TargetPath": "Pages\\MailBox\\Mail\\_Actions.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_GroupItem.razor",
-      "TargetPath": "Pages\\MailBox\\Settings\\_GroupItem.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\_Header.razor",
-      "TargetPath": "Pages\\MailBox\\Mail\\_Header.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_MailWriteZone.razor",
-      "TargetPath": "Pages\\MailBox\\_MailWriteZone.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_Info.razor",
-      "TargetPath": "Pages\\MailBox\\Detail\\_Info.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\Home.razor",
-      "TargetPath": "Pages\\Home.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\App.razor",
-      "TargetPath": "App.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\LayoutMain.razor",
-      "TargetPath": "Shared\\LayoutMain.razor",
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_AddGroupMember.razor",
+      "TargetPath": "Pages\\MailBox\\_AddGroupMember.razor",
       "FileKind": "component"
     },
     {
@@ -27236,23 +27036,33 @@
       "FileKind": "component"
     },
     {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Config\\_Item.razor",
-      "TargetPath": "Pages\\MailBox\\Config\\_Item.razor",
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Important.razor",
+      "TargetPath": "Pages\\MailBox\\Mail\\Important.razor",
       "FileKind": "component"
     },
     {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\HeaderMain.razor",
-      "TargetPath": "Shared\\HeaderMain.razor",
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\Error.cshtml",
+      "TargetPath": "Pages\\Error.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\_Actions.razor",
+      "TargetPath": "Pages\\MailBox\\Mail\\_Actions.razor",
       "FileKind": "component"
     },
     {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_ChoiceItem.razor",
-      "TargetPath": "Pages\\MailBox\\Detail\\_ChoiceItem.razor",
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Config\\Category.razor",
+      "TargetPath": "Pages\\MailBox\\Config\\Category.razor",
       "FileKind": "component"
     },
     {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_AddMember.razor",
-      "TargetPath": "Pages\\MailBox\\_AddMember.razor",
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\LayoutLogin.razor",
+      "TargetPath": "Shared\\LayoutLogin.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_AddReceiver.razor",
+      "TargetPath": "Pages\\MailBox\\_AddReceiver.razor",
       "FileKind": "component"
     },
     {
@@ -27261,23 +27071,48 @@
       "FileKind": "component"
     },
     {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\_Header.razor",
+      "TargetPath": "Pages\\MailBox\\Mail\\_Header.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\HeaderMain.razor",
+      "TargetPath": "Shared\\HeaderMain.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_ManagerCategory.razor",
+      "TargetPath": "Pages\\MailBox\\Settings\\_ManagerCategory.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_ActionItem.razor",
+      "TargetPath": "Pages\\MailBox\\Detail\\_ActionItem.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\_Host.cshtml",
+      "TargetPath": "Pages\\_Host.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\_ChoiceItem.razor",
+      "TargetPath": "Pages\\MailBox\\Create\\_ChoiceItem.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_Actions.razor",
+      "TargetPath": "Pages\\MailBox\\Detail\\_Actions.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Label.razor",
+      "TargetPath": "Pages\\MailBox\\Mail\\Label.razor",
+      "FileKind": "component"
+    },
+    {
       "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_SignatureZone.razor",
       "TargetPath": "Pages\\MailBox\\_SignatureZone.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_ModalConfirmation.razor",
-      "TargetPath": "Pages\\MailBox\\_ModalConfirmation.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\Sidebar.razor",
-      "TargetPath": "Shared\\Sidebar.razor",
-      "FileKind": "component"
-    },
-    {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Drafts.razor",
-      "TargetPath": "Pages\\MailBox\\Mail\\Drafts.razor",
       "FileKind": "component"
     },
     {
@@ -27286,8 +27121,28 @@
       "FileKind": "component"
     },
     {
-      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_ManagerGroup.razor",
-      "TargetPath": "Pages\\MailBox\\Settings\\_ManagerGroup.razor",
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_ManagerLabel.razor",
+      "TargetPath": "Pages\\MailBox\\Settings\\_ManagerLabel.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Trash.razor",
+      "TargetPath": "Pages\\MailBox\\Mail\\Trash.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\LayoutMain.razor",
+      "TargetPath": "Shared\\LayoutMain.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\MailSideBar.razor",
+      "TargetPath": "Shared\\MailSideBar.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\Create.razor",
+      "TargetPath": "Pages\\MailBox\\Create\\Create.razor",
       "FileKind": "component"
     },
     {
@@ -27296,8 +27151,153 @@
       "FileKind": "component"
     },
     {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Config\\_Item.razor",
+      "TargetPath": "Pages\\MailBox\\Config\\_Item.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\Sidebar.razor",
+      "TargetPath": "Shared\\Sidebar.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\Logout.razor",
+      "TargetPath": "Pages\\Logout.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_MailHeader.razor",
+      "TargetPath": "Pages\\MailBox\\_MailHeader.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_AddMember.razor",
+      "TargetPath": "Pages\\MailBox\\_AddMember.razor",
+      "FileKind": "component"
+    },
+    {
       "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\Detail.razor",
       "TargetPath": "Pages\\MailBox\\Detail\\Detail.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\Home.razor",
+      "TargetPath": "Pages\\Home.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Sent.razor",
+      "TargetPath": "Pages\\MailBox\\Mail\\Sent.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\_ContentPoll.razor",
+      "TargetPath": "Pages\\MailBox\\Create\\_ContentPoll.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_Info.razor",
+      "TargetPath": "Pages\\MailBox\\Detail\\_Info.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\Login.razor",
+      "TargetPath": "Pages\\Login.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_MailWriteZone.razor",
+      "TargetPath": "Pages\\MailBox\\_MailWriteZone.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_DropdownPoll.razor",
+      "TargetPath": "Pages\\MailBox\\_DropdownPoll.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\_Poll.razor",
+      "TargetPath": "Pages\\MailBox\\Create\\_Poll.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_SelectedLabels.razor",
+      "TargetPath": "Pages\\MailBox\\_SelectedLabels.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Create\\_QuestionItem.razor",
+      "TargetPath": "Pages\\MailBox\\Create\\_QuestionItem.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_StarMail.razor",
+      "TargetPath": "Pages\\MailBox\\_StarMail.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Config\\_ModalData.razor",
+      "TargetPath": "Pages\\MailBox\\Config\\_ModalData.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\_Item.razor",
+      "TargetPath": "Pages\\MailBox\\Mail\\_Item.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_GroupItem.razor",
+      "TargetPath": "Pages\\MailBox\\Settings\\_GroupItem.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\App.razor",
+      "TargetPath": "App.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_ChoiceItem.razor",
+      "TargetPath": "Pages\\MailBox\\Detail\\_ChoiceItem.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\_ManagerGroup.razor",
+      "TargetPath": "Pages\\MailBox\\Settings\\_ManagerGroup.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Mail\\Drafts.razor",
+      "TargetPath": "Pages\\MailBox\\Mail\\Drafts.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Detail\\_Header.razor",
+      "TargetPath": "Pages\\MailBox\\Detail\\_Header.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\_Imports.razor",
+      "TargetPath": "_Imports.razor",
+      "FileKind": "componentImport"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_ModalConfirmation.razor",
+      "TargetPath": "Pages\\MailBox\\_ModalConfirmation.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\_LabelPicker.razor",
+      "TargetPath": "Pages\\MailBox\\_LabelPicker.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Shared\\PopupNoti.razor",
+      "TargetPath": "Shared\\PopupNoti.razor",
+      "FileKind": "component"
+    },
+    {
+      "FilePath": "c:\\Conando\\WorkdoTemplate\\Workdo\\Pages\\MailBox\\Settings\\Settings.razor",
+      "TargetPath": "Pages\\MailBox\\Settings\\Settings.razor",
       "FileKind": "component"
     }
   ],
