@@ -10,10 +10,7 @@ using System.Collections.Generic;
 
 public class GroupData {
 
-    private static IMongoClient _client = ConnectDB.GetClient();
-    private static IMongoDatabase database = _client.GetDatabase("mailbox");
-    private static IMongoCollection<GroupModel> groupCollection = database.GetCollection<GroupModel>("group");
-
+    public static IMongoCollection<GroupModel> groupCollection = ConnectDB<GroupModel>.GetClient("mailbox", "group");
 
 
     public static async Task<bool> CreateGroup(GroupModel group)

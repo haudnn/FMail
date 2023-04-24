@@ -13,9 +13,8 @@ namespace Workdo.Data;
 
 public class PollData
 {
-    private static IMongoClient _client = ConnectDB.GetClient();
-    private static IMongoDatabase database = _client.GetDatabase("mailbox");
-    private static IMongoCollection<PollModel> pollCollection = database.GetCollection<PollModel>("poll");
+
+    public static IMongoCollection<PollModel> pollCollection = ConnectDB<PollModel>.GetClient("mailbox", "poll");
 
 
     public static async Task<bool> CreatePoll(PollModel pollToCreate)

@@ -13,11 +13,8 @@ namespace Workdo.Data;
 
 public class SignatureData
 {
-    private static IMongoClient _client = ConnectDB.GetClient();
-    private static IMongoDatabase database = _client.GetDatabase("mailbox");
-    private static IMongoCollection<SignatureModel> signatureCollection = database.GetCollection<SignatureModel>("signature");
 
-
+    public static IMongoCollection<SignatureModel> signatureCollection = ConnectDB<SignatureModel>.GetClient("mailbox", "signature");
 
     public static async Task<bool> CreateSignature(SignatureModel signature) 
     {

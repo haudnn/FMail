@@ -15,10 +15,9 @@ namespace Workdo.Data;
 public class MailData 
 {
 
-    private static IMongoClient _client = ConnectDB.GetClient();
-    private static IMongoDatabase database = _client.GetDatabase("mailbox");
-    private static IMongoCollection<MailModel> mailCollection = database.GetCollection<MailModel>("mail");
-    private static IMongoCollection<LabelModel> labelCollection = database.GetCollection<LabelModel>("label");
+    public static IMongoCollection<MailModel> mailCollection = ConnectDB<MailModel>.GetClient("mailbox", "mail");
+
+    public static IMongoCollection<LabelModel> labelCollection = ConnectDB<LabelModel>.GetClient("mailbox", "label");
 
     public static async Task<List<MailModel>> GetList(string folderName, string userid, string category = "all")
     {

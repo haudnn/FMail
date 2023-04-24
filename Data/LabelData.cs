@@ -9,9 +9,7 @@ using System;
 
 
 public class LabelData {
-    private static IMongoClient _client = ConnectDB.GetClient();
-    private static IMongoDatabase database = _client.GetDatabase("mailbox");
-    private static IMongoCollection<LabelModel> labelCollection = database.GetCollection<LabelModel>("label");
+    public static IMongoCollection<LabelModel> labelCollection = ConnectDB<LabelModel>.GetClient("mailbox", "label");
 
 
     public static async Task CreateLabel(LabelModel label)
@@ -23,9 +21,7 @@ public class LabelData {
 
     public static async Task<List<LabelModel>> GetAllLabels(string author) 
     {
-        List<LabelModel> labels = new List<LabelModel>();
-        labels = await labelCollection.Find(x => x.author == author).ToListAsync();
-        return labels;
+        return await labelCollection.Find(x => x.author == author).ToListAsync();
     }
 
 

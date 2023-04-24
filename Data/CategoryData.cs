@@ -9,9 +9,8 @@ using System.Collections.Generic;
 
 public class CategoryData
 {
-    private static IMongoClient _client = ConnectDB.GetClient();
-    private static IMongoDatabase database = _client.GetDatabase("mailbox");
-    private static IMongoCollection<CategoryModel> categoryCollection = database.GetCollection<CategoryModel>("category");
+
+    public static IMongoCollection<CategoryModel> categoryCollection = ConnectDB<CategoryModel>.GetClient("mailbox", "category");
 
     public static async Task CreateCategory(CategoryModel category)
     {
