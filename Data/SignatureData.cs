@@ -30,9 +30,7 @@ public class SignatureData
 
     public static async Task<List<SignatureModel>> GetAllSignatures(string author) 
     { 
-        List<SignatureModel> signatures = new List<SignatureModel>();
-        signatures = await signatureCollection.Find(x => x.author == author).ToListAsync();
-        return signatures;
+        return await signatureCollection.Find(x => x.author == author).ToListAsync();
     }
 
     

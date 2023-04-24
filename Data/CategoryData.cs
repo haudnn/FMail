@@ -18,24 +18,17 @@ public class CategoryData
             .SortByDescending(x => x.position)
             .ToListAsync()
             .ContinueWith(t => t.Result.Count > 0 ? t.Result[0].position : 0);
-        CategoryModel categoryToCreate = new CategoryModel
-        {
-            id = GenerateIDHelper.GenerateID("19012001"),
-            name = category.name,
-            position = maxPosition + 1,
-            createdAt = DateTime.UtcNow
-
-    };
-        await categoryCollection.InsertOneAsync(categoryToCreate);
+        category.id = GenerateIDHelper.GenerateID("19012001");
+        category.position = maxPosition + 1;
+        category.createdAt = DateTime.UtcNow;
+        await categoryCollection.InsertOneAsync(category);
         return;
     }
 
 
     public static async Task<List<CategoryModel>> GetAllCategory() 
     {
-        List<CategoryModel> categories = new List<CategoryModel>();
-        categories = await categoryCollection.Find(_ => true).ToListAsync();
-        return categories;
+        return await categoryCollection.Find(_ => true).ToListAsync();
     }
 
 

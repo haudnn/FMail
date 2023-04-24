@@ -26,9 +26,7 @@ public class GroupData {
 
     public static async Task<List<GroupModel>> GetAllGroups() 
     { 
-        List<GroupModel> groups = new List<GroupModel>();
-        groups = await groupCollection.Find(_ => true).ToListAsync();
-        return groups;
+        return await groupCollection.Find(_ => true).ToListAsync();
     } 
 
 
