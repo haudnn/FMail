@@ -1,5 +1,5 @@
 <div class="mail__footer-actions">
-    <div class="is-flex is-align-items-center is-pointer" style="gap: 0 8px;" @onclick="HandleCancleSelect">
+    <div class="is-flex is-align-items-center is-pointer" style="gap: 0 8px;" @onclick="CancelSelect">
         <span class="icon is-small">
             <i class="material-icons-sharp is-secondary-60">check_box</i>
         </span>
@@ -8,7 +8,7 @@
     <div class="is-flex is-align-items-center" style="gap: 0 10px;">
         <div class="is-flex is-align-items-center is-pointer">
             <div class="dropdown is-up is-right click @(toggleShowAction.IsToggled ? "is-active" : "" )">
-                <div class="dropdown-trigger" @onclick='HandelToggleShowAction'>
+                <div class="dropdown-trigger" @onclick='ToggleShowAction'>
                     <span class="icon">
                         <i class="material-icons-outlined read">more_vert</i>
                     </span>
@@ -16,13 +16,13 @@
                 </div>
                 <div class="dropdown-menu" style="width: 250px;">
                     <div class="dropdown-content px-3" style="z-index: 20;">
-                        <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => ReadMails(true)">
+                        <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => Read(true)">
                             <span class="icon">
                                 <i class="material-icons-outlined read">drafts</i>
                             </span>
                             <span class="read has-text-weight-medium">Đánh dấu đã đọc</span>
                         </div>
-                        <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => ReadMails(false)">
+                        <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => Read(false)">
                             <span class="icon">
                                 <i class="material-icons-outlined read">mail</i>
                             </span>
@@ -30,7 +30,7 @@
                         </div>
                         @if(!isImportantMails)
                         {
-                            <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => ImportantMails(true)">
+                            <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => Important(true)">
                                     <span class="icon">
                                         <i class="material-icons-sharp read">star</i>
                                     </span>
@@ -38,14 +38,14 @@
                             </div>
                         }
 
-                        <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => ImportantMails(false)">
+                        <div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 0 5px; padding: 5px;" @onclick="() => Important(false)">
                             <span class="icon">
                                 <i class="material-icons-outlined read">star_outline</i>
                             </span>
                             <span class="read has-text-weight-medium">Đánh dấu không quan trọng</span>
                         </div>
                         <div class="dropdown-item unhover is-flex is-align-items-center"
-                            style="gap: 0 5px; padding: 5px;" @onclick='HandelToggleShowLabels'>
+                            style="gap: 0 5px; padding: 5px;" @onclick='ToggleShowLabels'>
                             <span class="icon">
                                 <i class="material-icons-sharp read">label_outline</i>
                             </span>
@@ -65,12 +65,12 @@
                         {
                             <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-10-y">
                                 @if(labelsSelected.Contains(label.id)) {
-                                    <span class="icon is-small" @onclick="() => HandelToggleIconCheckbox(label.id)">
+                                    <span class="icon is-small" @onclick="() => ToggleIconCheckbox(label.id)">
                                         <i class="material-icons-sharp is-secondary-40">check_box</i>
                                     </span>  
                                 }
                                 else { 
-                                    <span class="icon is-small" @onclick="() => HandelToggleIconCheckbox(label.id)">
+                                    <span class="icon is-small" @onclick="() => ToggleIconCheckbox(label.id)">
                                         <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
                                     </span>
                                 }
@@ -84,7 +84,7 @@
                         }
                     </ul>
                     <div class="is-flex is-align-items-center is-justify-content-flex-end" style="gap: 0 10px;">
-                        <div class="wrapper-button" @onclick="HandelToggleShowLabels" style="max-height: 24px;">
+                        <div class="wrapper-button" @onclick="ToggleShowLabels" style="max-height: 24px;">
                             <span class="is_caption is-error-60">Hủy</span>
                         </div>
                         <div class="wrapper-button primary-btn" style="max-height: 24px;" @onclick="UpdateLabels">
@@ -99,7 +99,7 @@
         </div>
         @if(isTrashMails) 
         {
-            <div class="is-flex is-align-items-center is-pointer mail__footer-drafs restore" @onclick="RestoreMails">
+            <div class="is-flex is-align-items-center is-pointer mail__footer-drafs restore" @onclick="Restore">
                 <span class="icon is-secondary-40">
                     <i class="material-icons-outlined">mark_email_read</i>
                 </span>
@@ -114,7 +114,7 @@
         }
         else
         { 
-            <div class="is-flex is-align-items-center is-pointer mail__footer-drafs" @onclick="TrashMails">
+            <div class="is-flex is-align-items-center is-pointer mail__footer-drafs" @onclick="Trash">
                 <span class="icon has-text-white">
                     <i class="material-icons-outlined">delete_forever</i>
                 </span>
@@ -128,22 +128,28 @@
     private ToggleHelper toggleShowAction = new ToggleHelper();
     private ToggleHelper toggleShowLabels = new ToggleHelper();
     private List<string> labelsSelected = new List<string>();
+
     [Parameter] public List<LabelModel> labels { get; set; }
     [Parameter] public bool isTrashMails { get; set; }
     [Parameter] public bool isImportantMails { get; set; }
     [Parameter] public int mailCount { get; set; } 
-    [Parameter] public EventCallback HandleCancelSelectedMail { get; set; }
-    [Parameter] public EventCallback HandleTrashMails { get; set; }
-    [Parameter] public EventCallback<bool> HandleReadMails { get; set; }
-    [Parameter] public EventCallback<bool> HandleImportantMails { get; set; }
-    [Parameter] public EventCallback HandleRestoreMails { get; set; }
-    [Parameter] public EventCallback<List<string>> HandleUpdateLabels {get; set;}
-    [Parameter]
-    public EventCallback<bool> HandleToggleActiveModal { get; set; }
+
+    [Parameter] public EventCallback CancelSelected { get; set; }
+
+    
+    [Parameter] public EventCallback OnTrash { get; set; }
+    [Parameter] public EventCallback<bool> OnRead { get; set; }
+    [Parameter] public EventCallback<bool> OnImportant{ get; set; }
+    [Parameter] public EventCallback OnRestore { get; set; }
+    [Parameter] public EventCallback<List<string>> OnUpdateLabels {get; set;}
+
+
+    [Parameter] public EventCallback<bool> OnToggleModal { get; set; }
+    
 
 
 
-    private void HandelToggleShowAction() 
+    private void ToggleShowAction() 
     { 
         toggleShowAction.Toggle();
         if (toggleShowLabels.IsToggled)
@@ -153,7 +159,7 @@
     }
 
 
-    private void HandelToggleIconCheckbox(string id) 
+    private void ToggleIconCheckbox(string id) 
     {
         if (!labelsSelected.Contains(id))
         {
@@ -166,48 +172,54 @@
     }
 
 
-    private void HandelToggleShowLabels() 
+    private void ToggleShowLabels() 
     { 
         toggleShowLabels.Toggle();
     }
     
     
 
-    private void HandleCancleSelect() 
+    private void CancelSelect() 
     {
-        HandleCancelSelectedMail.InvokeAsync();
+        CancelSelected.InvokeAsync();
     }
 
+
+    // Xóa vĩnh viễn
     private void PermanentlyDeleted()
     {
-        HandleToggleActiveModal.InvokeAsync(true);
+        OnToggleModal.InvokeAsync(true);
     }
 
-    private void TrashMails() 
+
+    // Thêm vào thùng rác
+    private void Trash() 
     { 
-        HandleTrashMails.InvokeAsync();
+        OnTrash.InvokeAsync();
     }
 
-
-    public void ReadMails(bool isReads)
+    // Đánh dâu đã đọc
+    public void Read(bool isRead)
     {
-        HandleReadMails.InvokeAsync(isReads);
+        OnRead.InvokeAsync(isRead);
     }
 
-    public void ImportantMails(bool isImportants)
+    // Đánh dâu quan trọng
+    public void Important(bool isImportant)
     {
-        HandleImportantMails.InvokeAsync(isImportants);
+        OnImportant.InvokeAsync(isImportant);
     }
 
-    public void RestoreMails()
+    // Phục hồi mail
+    public void Restore()
     {
-        HandleRestoreMails.InvokeAsync();
+        OnRestore.InvokeAsync();
     }
 
-
+    // Cập nhật nhãn
     public void UpdateLabels()
     {
-        HandleUpdateLabels.InvokeAsync(labelsSelected);
+        OnUpdateLabels.InvokeAsync(labelsSelected);
         labelsSelected = new List<string>();
         toggleShowLabels.Toggle();
     }

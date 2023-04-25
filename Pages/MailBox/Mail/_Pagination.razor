@@ -26,7 +26,7 @@
 
     [Parameter] public int pages { get; set; }
     [Parameter] public int page { get; set; }
-    [Parameter] public EventCallback<int> HandlePagination { get;  set;}
+    [Parameter] public EventCallback<int> Pagination { get;  set;}
 
     public void SetCurrentPage(int i)
     {
@@ -35,7 +35,7 @@
         {
             page = 1;
         }
-        HandlePagination.InvokeAsync(page);
+        Pagination.InvokeAsync(page);
         StateHasChanged();
 
     }

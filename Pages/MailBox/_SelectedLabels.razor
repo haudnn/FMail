@@ -1,5 +1,5 @@
-<div class="dropdown is-left @(toggleShowLabel.IsToggled ? "is-active" : "" )">
-    <div class="dropdown-trigger is-flex is-align-items-center is-gap-8 is-pointer" @onclick="HandleToggleShowLabel">
+<div class="dropdown is-left @(toggleLabel.IsToggled ? "is-active" : "" )">
+    <div class="dropdown-trigger is-flex is-align-items-center is-gap-8 is-pointer" @onclick="ToggleLabel">
         <span class="icon">
             <i class="material-icons-outlined is-error-40">label</i>
         </span>
@@ -54,17 +54,17 @@
 @code {
     [Parameter] public List<LabelModel> labels {get; set;} = new List<LabelModel>();
     [Parameter] public List<LabelModel> labelsSelected {get; set;} = new List<LabelModel>();
-    [Parameter] public EventCallback<LabelModel> HandleChooseLabel {get; set;}
-    private ToggleHelper toggleShowLabel = new ToggleHelper();
+    [Parameter] public EventCallback<LabelModel> OnSetLabel {get; set;}
+    private ToggleHelper toggleLabel = new ToggleHelper();
 
-    private void HandleToggleShowLabel() 
+    private void ToggleLabel() 
     { 
-        toggleShowLabel.Toggle();
+        toggleLabel.Toggle();
     }
 
     private void Selected(LabelModel label)
     {
-        HandleChooseLabel.InvokeAsync(label);
+        OnSetLabel.InvokeAsync(label);
         StateHasChanged();
     }
     

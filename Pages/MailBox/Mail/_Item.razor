@@ -3,13 +3,13 @@
     <div class="mail-td mail-checkbox">
         @if (isChecked)
             {
-                <span class="icon is-small" @onclick="SelectedMail">
+                <span class="icon is-small" @onclick="OnSelectedMail">
                     <i class="material-icons-sharp is-secondary-60">check_box</i>
                 </span>  
             }
         else
             {
-                <span class="icon is-small" @onclick="SelectedMail">
+                <span class="icon is-small" @onclick="OnSelectedMail">
                     <i class="material-icons-outlined is-secondary-60">check_box_outline_blank</i>
                 </span>
             }
@@ -72,7 +72,7 @@
             }
         </span>
     </div>
-    <div class="mail-td mail-main" @onclick="HandleViewDetail">
+    <div class="mail-td mail-main" @onclick="ViewDetail">
         <div>
             <div class="mail-main-content" style="gap: 0 10px">
                 <div class="is-flex is-align-items-center" style="gap: 0 5px">
@@ -162,15 +162,16 @@
     [Parameter] public List<MailModel> mails { get; set; } = new List<MailModel>(); 
     [Parameter] public MailModel mail  { get; set; } = new ();
     [Parameter] public bool isChecked { get; set; }
-    [Parameter] public EventCallback<SelectedModel> HandleSelectedMail { get; set; }
-    [Parameter] public EventCallback<MailModel> HandleTrashItem { get; set; }
+    [Parameter] public EventCallback<SelectedModel> OnSelected { get; set; }
+    [Parameter] public EventCallback<MailModel> OnTrashItem { get; set; }
+    [Parameter] public List<LabelModel> labels { get; set; } = new List<LabelModel>();
+        
     public List<TagMailModel> tags { get; set; } = new List<TagMailModel>();
-
     public bool isImportant { get; set; }
     public long replyCount{ get; set; } = 0;
     public bool isRead { get; set; }
     public string sentDate { get; set; }
-    [Parameter] public List<LabelModel> labels { get; set; } = new List<LabelModel>();
+
     public List<MemberModel> toList = new List<MemberModel>();
     public List<MemberModel> ccList = new List<MemberModel>();
     public List<MemberModel> bccList = new List<MemberModel>();
@@ -178,22 +179,25 @@
 
     protected override async Task OnInitializedAsync()
     {
-
+        // Phục vụ việc hiển thị
         isImportant = mail.isImportant;
         isRead = mail.isRead;
         sentDate = DateTimeHelper.FormatDateTime(mail.sentDate);
         replyCount = await MailData.RepliesCount(mail.id, Layout.User.id);
+        fromMember = InitDataFakeHelper.GetMemberById(mail.from);
         toList = InitDataFakeHelper.GetMembersById(mail.to);
         toList.Take(1);
         ccList = InitDataFakeHelper.GetMembersById(mail.cc);
         ccList.Take(1);
         bccList = InitDataFakeHelper.GetMembersById(mail.bcc);
         bccList.Take(1);
+
         if(currentPage != "inbox")
         {
             tags = MailHelper.TagsMailHelper(mail.pollId, mail.isDraft, replyCount);
         }
-        fromMember = InitDataFakeHelper.GetMemberById(mail.from);
+
+        // Lấy mail reply mới nhát để hiển thị
         if(replyCount > 0)
         {
             var mailReplyNewest = await MailData.GetReply(mail.id, Layout.User.id);
@@ -202,23 +206,24 @@
             sentDate =  DateTimeHelper.FormatDateTime(mailReplyNewest.sentDate);
             mail.shortBody = mailReplyNewest.shortBody;
             }
-
         }
 
     }
 
 
-    private async Task SelectedMail()
+    // Chọn Mail
+    private async Task OnSelectedMail()
     {
         var selected = new SelectedModel
             {
                 isChecked = !isChecked,
                 itemId = mail.id,
             };
-        await HandleSelectedMail.InvokeAsync(selected);
+        await  OnSelected.InvokeAsync(selected);
     }
 
 
+    // Đánh dâu quan trọng
     private async Task Important(bool isImportantMail)
     {
         isImportant = isImportantMail;
@@ -226,13 +231,16 @@
     }
 
 
+    // Đánh dấu đã đọc
     private async Task Read(bool isReadMail)
     {
         isRead = isReadMail;
         await MailData.Read(mail.id, isRead);
-    }
+    }  
 
-    private void HandleViewDetail() 
+
+    // Xem chi tiết mail
+    private void ViewDetail() 
     {
         if(!mail.isDraft)
         {
@@ -240,14 +248,16 @@
         }
         else
         {
-            navigation.NavigateTo($"create?mailId={mail.id}");
+            navigation.NavigateTo($"create/{mail.id}");
         }
         
     }
 
+
+    //  Đưa vào thùng rác
     private void Trash()
     {
-        HandleTrashItem.InvokeAsync(mail);
+        OnTrashItem.InvokeAsync(mail);
     }   
 
 }

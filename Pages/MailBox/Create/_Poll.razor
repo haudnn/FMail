@@ -44,18 +44,19 @@
                 }
                 @foreach (var question in poll.questions)
                 {
+                    var isMultipleChoice = question.isMultipleChoice;
                     <_QuestionItem 
                         questionIndex="questionIndex" 
-                        question="@question" 
-                        OnQuestionValueChanged="HandleQuestionValueChanged"
-                        OnDeleteQuestion="HandleDeleteQuestion"
-                        isMultipleChoice ="question.isMultipleChoice"
-                        HandleChangeMultipleChoice="HandleChangeMultipleChoice"
-                        />
+                        question="question" 
+                        isMultipleChoice ="isMultipleChoice"
+                        OnQuestionValueChanged="QuestionValueChanged"
+                        OnDeleteQuestion="DeleteQuestion"
+                        OnChangeMultipleChoice="ChangeMultipleChoice"
+                    />
                     questionIndex = questionIndex + 1;
                 }
             </ul>
-            <div class="is-flex is-align-items-center is-pointer is-padding-top-20 is-justify-content-center" @onclick="HandleAddQuestion">
+            <div class="is-flex is-align-items-center is-pointer is-padding-top-20 is-justify-content-center" @onclick="AddQuestion">
                 <span class="icon">
                     <i class="material-icons-outlined  is-primary-40">add</i>
                 </span>
@@ -63,13 +64,13 @@
             </div>
         </div>
         <div class="is-flex is-align-content-center is-padding-top-20 is-gap-10-y">
-            <div class="wrapper-button primary-btn" style="display: inline-flex;" @onclick="HandleCreate">
+            <div class="wrapper-button primary-btn" style="display: inline-flex;" @onclick="Create">
                 <span class="icon has-text-white">
                     <i class="material-icons-outlined">done</i>
                 </span>
                 <span class="is_caption">Cập nhật</span>
             </div>
-            <div class="wrapper-button" style="display: inline-flex" @onclick="HandleCancleCreate">
+            <div class="wrapper-button" style="display: inline-flex" @onclick="CancleCreate">
                 <span class="icon is-error-40">
                     <i class="material-icons-outlined">cancel</i>
                 </span>
@@ -80,15 +81,13 @@
 
 @code {
 
-    [Parameter] 
-    public EventCallback HandleToogleCreatePoll {get; set;}
-
-    [Parameter] 
-    public PollModel poll {get; set;}
-    [Parameter] 
-    public EventCallback<PollModel> HandelCreatePoll {get; set;}
+    [Parameter]  public EventCallback<bool> OnInitPoll {get; set;}
+    [Parameter] public PollModel poll {get; set;}
+    [Parameter] public EventCallback<PollModel> OnCreate {get; set;}
+    
     DateTimeOffset? StartDate { get; set; } = DateTime.Today;
-    public void HandleAddQuestion()
+
+    public void AddQuestion()
     {
         poll.questions.Add(new QuestionModel
         {
@@ -107,20 +106,20 @@
     }
 
 
-    private void HandleCancleCreate() 
+    private void CancleCreate() 
     {
-        HandleToogleCreatePoll.InvokeAsync();
+        OnInitPoll.InvokeAsync(false);
     }
 
 
-    private void HandleCreate() 
+    private void Create() 
     {
-        HandelCreatePoll.InvokeAsync();
+        OnCreate.InvokeAsync();
 
     }
 
 
-    private void HandleQuestionValueChanged(QuestionModel question) 
+    private void QuestionValueChanged(QuestionModel question) 
     {
         var questionToUpdate = poll.questions.FirstOrDefault(q => q.id == question.id);
         if (questionToUpdate != null) {
@@ -130,7 +129,7 @@
 
 
 
-    private void HandleDeleteQuestion(QuestionModel question)
+    private void DeleteQuestion(QuestionModel question)
     { 
         var questionToDelete = poll.questions.FirstOrDefault(c => c.id == question.id);
         if (questionToDelete != null)
@@ -141,13 +140,8 @@
 
 
 
-    private void HandleTitleChanged(ChangeEventArgs args) 
-    {
-        poll.title = args.Value.ToString();
-    }
 
-
-    public void HandleChangeMultipleChoice(QuestionChoice questionChange) 
+    public void ChangeMultipleChoice(QuestionChoice questionChange) 
     {
         QuestionModel questionToUpdate = poll.questions.FirstOrDefault(q => q.id == questionChange.id);
         if (questionToUpdate != null)

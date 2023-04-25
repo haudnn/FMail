@@ -1,51 +1,46 @@
 <li class="group-item">
     <div class="is-flex is-align-items-center container-group-item">
         <div class="is-flex-1 is-flex is-align-items-center is-gap-10-y is-pointer">
-            <span class="is_sub1 is-secondary-20 has-text-weight-medium">@name</span>
-            <span class="is_body2 is-primary-40" @onclick="HandleViewDetail">@membersCount thành viên</span>
+            <span class="is_sub1 is-secondary-20 has-text-weight-medium">@group.name</span>
+            <span class="is_body2 is-primary-40" @onclick="ViewDetail">@group.members.Count thành viên</span>
         </div>
-        <span class="icon is-pointer" @onclick="() => HandleToggleActiveModal(true)">
+        <span class="icon is-pointer" @onclick="() => OnToggleModal(true)">
             <i class="material-icons-outlined is-error-40">delete</i>
         </span>
     </div>
 </li>
+
 <_ModalConfirmation
     nameModal="Xác nhận việc xóa nhóm"
-    toggleActiveModal="toggleActiveModal"
+    isShowModal="toggleModal"
     contentButton="Xóa"
     contentModal="Thao tác này sẽ ảnh hưởng đến việc hiển thị danh sách người nhận thư, bạn có chắc chắn muốn xóa không?"
-    HandleToggleActiveModal="HandleToggleActiveModal"
-    HandleConfirmation="HandleConfirmation"
+    OnToggleModal="OnToggleModal"
+    OnConfirmation="ConfirmationDelete"
 />
 
 @code {
-    private bool toggleActiveModal = false;
-    [Parameter] 
-    public string id { get; set; }
-    [Parameter] 
-    public string name { get; set; }
-    [Parameter] 
-    public int membersCount { get; set; }
-    [Parameter]
-    public EventCallback<string> HandleViewDetailGroup { get;  set; }
-    [Parameter]
-    public EventCallback<string> HandleConfirmationDeleteGroup { get; set; }
 
-    private void HandleToggleActiveModal(bool isActiveModal)
+    [Parameter] public EventCallback<string> OnView { get;  set; }
+    [Parameter] public EventCallback<string> OnDelete { get; set; }
+    [Parameter] public GroupModel group { get; set; }
+
+    private bool toggleModal = false;
+    private void OnToggleModal(bool isActiveModal)
     {
-        toggleActiveModal = isActiveModal;
+        toggleModal = isActiveModal;
     }
 
 
-    private void HandleViewDetail() 
+    private void ViewDetail() 
     {
-        HandleViewDetailGroup.InvokeAsync(id);
+        OnView.InvokeAsync(group.id);
     }
 
 
-    private void HandleConfirmation() 
+    private void ConfirmationDelete() 
     {
-        HandleConfirmationDeleteGroup.InvokeAsync(id);
-        toggleActiveModal = !toggleActiveModal;
+        OnDelete.InvokeAsync(group.id);
+        toggleModal = !toggleModal;
     }
 }

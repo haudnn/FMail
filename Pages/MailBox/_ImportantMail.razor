@@ -1,0 +1,27 @@
+<div class="is-flex is-align-items-center is-gap-8 is-pointer">
+    @if(isImportant) 
+        { 
+            <span class="icon" @onclick="() => Important(false)">
+                <i class="material-icons-sharp is-warning-20">star_purple500</i>
+            </span>
+            <span class="is_body2 is-secondary-40">Đánh dấu không quan trọng</span>
+        }
+    else 
+        {
+            <span class="icon star" @onclick="() => Important(true)">
+                <i class="material-symbols-outlined">star</i>
+            </span>
+            <span class="is_body2 is-secondary-40">Đánh dấu quan trọng</span>
+        }
+</div>
+
+@code {
+    [Parameter] public EventCallback<bool> OnImportant { get;  set; }
+    [Parameter] public bool isImportant { get; set; }
+
+
+    private void Important(bool important)
+    {
+        OnImportant.InvokeAsync(important);
+    }  
+}

@@ -19,14 +19,14 @@
             <div class="search-wrapper question">
                 <input 
                     class="search-input question" 
-                    @bind="@choice.text" 
+                    @bind="choice.text" 
                     type="text" 
                     placeholder="Lựa chọn @index" 
                     @oninput="HandleValueChanged">
             </div>
         </label>
     </div>
-    <span class="icon is-pointer" @onclick="HandleDeleteChoice">
+    <span class="icon is-pointer" @onclick="DeleteChoice">
         <i class="material-icons-outlined is-error-40">delete</i>
     </span>
 </li>
@@ -50,7 +50,7 @@
     }
 
 
-    private void HandleDeleteChoice() 
+    private void DeleteChoice() 
     {
         OnDeleteChoice.InvokeAsync(choice);
     }

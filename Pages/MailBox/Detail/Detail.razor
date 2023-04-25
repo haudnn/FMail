@@ -130,7 +130,7 @@
                 @((MarkupString)mail.signature?.body)
             </div>
             <ul>
-               @foreach (var item in mails)
+               @foreach (var item in replies)
                {
                     <_ReplyItem SetCurrentAction="SetCurrentAction" mail="item"/>
                }
@@ -142,10 +142,10 @@
                     <_ActionItem
                         iconName="reply"
                         isShowTextTo=false
-                        actionName="Trả lời"
+                        action=1
                         SetCurrentAction="SetCurrentAction"
                         HandleCreate="HandleCreate"
-                        mail="@currentModelAction.action"
+                        mail="@currentModelAction.mail"
                         toList="toList"
                         forwardMessage="@forwardMessage"
                         forwardBody="@forwardBody"
@@ -155,10 +155,10 @@
                     <_ActionItem
                         iconName="reply_all"
                         isShowTextTo=false
-                        actionName="Trả lời tất cả"
+                        action=2
                         SetCurrentAction="SetCurrentAction"
                         HandleCreate="HandleCreate"
-                        mail="@currentModelAction.action"
+                        mail="@currentModelAction.mail"
                         toList="toList"
                         forwardMessage="@forwardMessage"
                         forwardBody="@forwardBody"
@@ -168,10 +168,10 @@
                     <_ActionItem
                         iconName="forward"
                         isShowTextTo=true
-                        actionName="Chuyển tiếp"
+                        action=3
                         SetCurrentAction="SetCurrentAction"
                         HandleCreate="HandleCreate"
-                        mail="@currentModelAction.action"
+                        mail="@currentModelAction.mail"
                         toList="toList"
                         forwardMessage="@forwardMessage"
                         forwardBody="@forwardBody"
@@ -200,7 +200,7 @@
     public UserModel author  = new();
     private ToggleHelper toggleViewStatistical = new ToggleHelper();
     public ActionModel currentModelAction = new ActionModel();
-    public List<MailModel> mails = new List<MailModel>();
+    public List<MailModel> replies = new List<MailModel>();
 
     public string forwardMessage = String.Empty;
     public string forwardBody = String.Empty;
@@ -209,7 +209,7 @@
     protected override async Task OnParametersSetAsync()
     {
         mail = await MailData.GetMailById(id);
-        mails = await MailData.GetMailThread(mail.originalMailId != "" ? mail.originalMailId : id, Layout.User.id);
+        replies = await MailData.GetMailThread(mail.originalMailId != "" ? mail.originalMailId : id, Layout.User.id);
         await MailData.Read(id, true);
         if(!string.IsNullOrEmpty(mail.pollId)) 
         { 
@@ -253,19 +253,21 @@
         currentModelAction = action;
         if(currentAction == "forward")
         {
-                
-            var mailFind = mails.Where(x => x.id == action.mail).FirstOrDefault();
+
+            var mailFind = replies.Where(x => x.id == action.mail).FirstOrDefault();
             var mailToForward = mailFind == null ? mail : mailFind;
             if(mailToForward != null)
             {
                 var member = InitDataFakeHelper.GetMemberById(mailToForward.from);
-    
-                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">---------- Forwarded message ---------</span></p>";
-                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">Từ:&nbsp;<strong style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">" + member.name + "</strong><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">&nbsp;&lt;" + member.email + "&gt;</span></p>";
-                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">Date: " + mail.sentDate + "</span></p>";
-                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">Subject: " + mail.subject + "</span></p>";
-                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34); background-color: rgb(255, 255, 255);\">To: " + Layout.User.email + "</span></p>";
-                forwardBody = mailToForward.body;
+
+                forwardMessage += "<p style=\"margin: 20px 0;\"><p><span style=\"color: rgb(34, 34, 34);\">---------- Forwarded message ---------</span></p>";
+                forwardMessage += "<p><span style=\"color: rgb(34, 34   , 34);\">Từ:&nbsp;<strong style=\"color: rgb(34, 34, 34);\">" + member.name + "</strong><span style=\"color: rgb(34, 34, 34);\">&nbsp;&lt;" + member.email + "&gt;</span></p>";
+                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34);\">Date: " + mail.sentDate + "</span></p>";
+                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34);\">Subject: " + mail.subject + "</span></p>";
+                forwardMessage += "<p><span style=\"color: rgb(34, 34, 34);\">To: " + Layout.User.email + "</span></p></p>";
+
+                forwardBody += mailToForward.body;
+                forwardBody += mailToForward.parentId;
             }
             AddListReceiver(null);
         }
@@ -292,21 +294,50 @@
     {
         mailToCreate.originalMailId = id;
         var mailIdClicked = currentModelAction.mail;
-        await MailData.Reply(mailToCreate, id, mailIdClicked);
-        mails.Add(mailToCreate);
+        string subject = String.Empty;
+        var findMail = replies.Where(x => x.id == mailIdClicked).FirstOrDefault();
+        
+        if(findMail != null)
+        {
+            subject = findMail.subject;
+        }
+        else
+        {
+            subject = mail.subject;
+        }
+
+
+        // Reply và reply all
+        if(currentModelAction.action == "reply" || currentModelAction.action == "reply_all")
+        {
+
+            mailToCreate.subject = $"Re: {subject}";
+                    await MailData.Reply(mailToCreate, id, mailIdClicked);
+        }
+        // forward
+        else
+        {  
+            mailToCreate.subject = $"Fwd: {subject}";
+            await MailData.Reply(mailToCreate, id, mailIdClicked, false);
+        }
+
+        replies.Add(mailToCreate);
+
         currentAction = String.Empty;
         currentModelAction = new ActionModel();
         StateHasChanged();
     }
 
 
+
+    // Khởi tạo danh sách người nhận khi thực hiện các action
     public void AddListReceiver(ActionModel action)
     {
         if(action == null) 
         {
             return;
         }
-        var mailReply = mails.Where(x => x.id == action.mail).FirstOrDefault();
+        var mailReply = replies.Where(x => x.id == action.mail).FirstOrDefault();
         switch (action.action)
         {
             case "reply":

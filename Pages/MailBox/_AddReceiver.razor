@@ -1,77 +1,65 @@
         @if(membersSelected.Count > 0)
         {
-        <ul class="is-flex is-align-items-center" style="flex-wrap: wrap; gap: 8px">
-            @foreach (var member in membersSelected)
-            {
-                <li class="is-flex is-align-items-center container-to">
-                    <figure class="image is-16x16">
-                        <img class="is-rounded" src="@member.avatar">
-                    </figure>
-                    <span class="is-inline-block  is-secondary-10 is_label2" style="line-height: 16px; margin: 0 4px;">
-                        @member.name
-                    </span>
-                    <span class="icon is-pointer is-small" @onclick="() => DeleteMember(member)">
-                        <i class="material-icons-outlined is-secondary-10" style="font-size: 16px;">
-                            close
-                        </i>
-                    </span>
-                </li>
-            }
-        </ul>
+            <ul class="is-flex is-align-items-center" style="flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+                @foreach (var member in membersSelected)
+                {
+                    <li class="is-flex is-align-items-center container-to">
+                        <figure class="image is-16x16">
+                            <img class="is-rounded" src="@member.avatar">
+                        </figure>
+                        <span class="is-inline-block  is-secondary-10 is_label2" style="line-height: 16px; margin: 0 4px;">
+                            @member.name
+                        </span>
+                        <span class="icon is-pointer is-small" @onclick="() => DeleteMember(member)">
+                            <i class="material-icons-outlined is-secondary-10" style="font-size: 16px;">
+                                close
+                            </i>
+                        </span>
+                    </li>
+                }
+            </ul>
         }
-        @if(groupsSelected.Count > 0 )
-        {
-        <ul class="is-flex is-align-items-center" style="flex-wrap: wrap; gap: 8px">
-            @foreach (var group in groupsSelected)
-            {
-                <li class="is-flex is-align-items-center container-to">
-                    <span class="is_caption is-secondary-40">Nhóm</span>
-                    <span style="margin: 0px 8px 0px 4px; max-width: 75px;"
-                        class="is-inline-block text-ellipsis is-secondary-10 is_label2">
-                        @group.name
-                    </span>
-                    <span class="icon is-pointer" @onclick="() => DeleteGroup(group)">
-                        <i class="material-icons-outlined is-secondary-10">
-                            close
-                        </i>
-                    </span>
-                </li>
-            }
-        </ul>
-        }
-        <_AddMember 
-            SearchMembers="SearchMembers" 
-            members="members" 
-            directionDropdown="is-left"
-            HandleSelectedMember="SelectedMember" 
-        />
-        <_AddGroupMember 
-            groups="groups" 
-            directionDropdown="is-left" 
-            HandleSelectedGroup="SelectedGroup" 
-        />
-@code {
-    [Parameter]
-    public string nameReceiver {get; set;}
-    [Parameter]
-    public List<MemberModel> membersSelected {get; set;}
-    [Parameter]
-    public List<GroupModel> groupsSelected {get; set; }
-    [Parameter]
-    public List<MemberModel> members { get; set; } = new List<MemberModel>();
-    [Parameter]
-    public List<GroupModel> groups { get; set; } = new List<GroupModel>();
-    [Parameter] 
-    public List<MemberModel> originalMembers { get; set; } = new List<MemberModel>(); 
-    [Parameter] 
-    public EventCallback<MemberSelectedModel> OnUpdateMembersSelected { get; set;}
+        <div class="is-flex is-gap-8 is-flex-1 is-justify-content-end">
+            <_AddMember 
+                SearchMembers="SearchMembers" 
+                members="members" 
+                directionDropdown="is-left"
+                HandleSelectedMember="SelectedMember" 
+            />
+            <_AddGroupMember 
+                groups="groups" 
+                directionDropdown="is-left" 
+                HandleSelectedGroup="SelectedGroup" 
+            />
+            <div style="white-space:nowrap; cursor: pointer;" class="is-flex is-align-content-center is-gap-10-y" @onclick="DeleteAllMembers">
+                <span class="icon is-error-40 is-small">
+                    <i class="material-icons-outlined">
+                        close
+                    </i>
+                 </span>
+                <p class="is-error-40 is_caption" style="line-height: 16px;">Xóa tất cả</p>
+            </div>
+        </div>
 
-    private void DeleteGroup(GroupModel group) 
+@code {
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
+    [Parameter] public string nameReceiver {get; set;}
+    [Parameter] public List<MemberModel> membersSelected {get; set;}
+    [Parameter]  public EventCallback<MemberSelectedModel> OnUpdateMembersSelected { get; set;}
+
+    public List<MemberModel> originalMembers { get; set; } = new List<MemberModel>(); 
+    public List<GroupModel> groups { get; set; } = new List<GroupModel>();
+    public List<MemberModel> members { get; set; } = new List<MemberModel>();
+
+    protected override async Task OnInitializedAsync()
     {
-        groupsSelected.Remove(group);
-        groups.Add(group);
+        groups = await GroupData.GetAllGroups(Layout.User.id);
+        originalMembers =  InitDataFakeHelper.InitMembers();
+        members = originalMembers.ToList();
     }
 
+    
 
     private void DeleteMember(MemberModel member) 
     {
@@ -87,9 +75,14 @@
 
     private void SelectedMember(List<MemberModel> membersList) 
     { 
-        List<MemberModel> clonedList = new List<MemberModel>(membersSelected);
-        clonedList.AddRange(membersList);
-        membersSelected = clonedList.ToList();
+        foreach (var member in membersList)
+        {
+            if (!membersSelected.Any(m => m.id == member.id))
+            {
+                membersSelected.Add(member);
+            }
+        }
+
         OnUpdateMembersSelected.InvokeAsync(
             new MemberSelectedModel {
                 name = nameReceiver,
@@ -114,9 +107,31 @@
     }
 
     private void SelectedGroup(List<GroupModel> groupsList) 
-    { 
-        List<GroupModel> clonedList = new List<GroupModel>(groupsSelected);
-        clonedList.AddRange(groupsList);
-        groupsSelected = clonedList.ToList();
+    {
+        foreach (var group in groupsList)
+        {
+            List<MemberModel> members = InitDataFakeHelper.GetMembersById(group.members);
+            foreach (var member in members)
+            {
+                if (!membersSelected.Any(m => m.id == member.id))
+                {
+                    membersSelected.Add(member);
+                }
+            }
+        }
     }
+
+
+    private void DeleteAllMembers()
+    {
+        members.AddRange(membersSelected);
+        membersSelected.Clear();
+        OnUpdateMembersSelected.InvokeAsync(new MemberSelectedModel {
+            name = nameReceiver,
+            members = membersSelected
+        });
+        StateHasChanged();
+    }
+
 }
+

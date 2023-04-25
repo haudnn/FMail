@@ -53,7 +53,7 @@
             }
         </ul>
     </div>
-    <div class="wrapper-button primary-btn" style="display: inline-flex;" @onclick="OnEditPoll">
+    <div class="wrapper-button primary-btn" style="display: inline-flex;" @onclick="EditPoll">
         <span class="icon">
             <i class="material-icons-outlined">edit</i>
         </span>
@@ -63,11 +63,11 @@
 
 @code {
     [Parameter] public PollModel poll { get; set; }  
-    [Parameter] public EventCallback HandleEditPoll { get; set; }  
+    [Parameter] public EventCallback OnEditPoll { get; set; }  
 
-    private void OnEditPoll() 
+    private void EditPoll() 
     {
-        HandleEditPoll.InvokeAsync();
+        OnEditPoll.InvokeAsync();
     }
 }
 

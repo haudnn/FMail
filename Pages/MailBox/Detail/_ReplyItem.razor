@@ -3,13 +3,13 @@
     { 
         <div class="columns" @onclick="ToogleShow">
             <div class="column is-9">
-                <div class="is-flex-1 is-flex is-align-items-center is-gap-10-y">
+                <div class="is-flex-1 is-flex is-gap-10-y">
                     <figure class="image is-32x32 is-rounded" style="min-width: 32px;">
                         <img src="@member.avatar">
                     </figure>
                     <div class="is-flex-auto">
                         <p class="is_sub2 is-secondary-10" style="margin-bottom: 5px;">@member.name</p>
-                        @((MarkupString)mail.body)
+                        @((MarkupString)mail.shortBody)
                     </div>
                 </div>
             </div>
@@ -25,28 +25,33 @@
     else
     {
         <ul>
-            <_Info
-                author="author"
-                mail="mail"
-                SetCurrentAction="SetCurrentAction"
-            />
+        <_Info
+            author="author"
+            mail="mail"
+            SetCurrentAction="SetCurrentAction"
+        />
             <li class="is-padding-20-x" style="gap: 0 12px">
                     <div style="margin-left: 45px;">
-                        <div>
+                        <div  @onclick="ToogleShow">
                             @((MarkupString)mail.body)
                               <div class="is-padding-20-x">
                                     @((MarkupString)mail.signature.body)
                                 </div>
-                            <div @onclick="ToogleShow">
+                            @if(!String.IsNullOrEmpty(mail.parentId))
+                            {
+                            <div>
                                 <div class="dots">
                                     <span class="icon">
                                         <i class="material-icons-outlined is-secondary-10">more_horiz</i>
                                     </span>
                                 </div>
                                 <div class="container-reply">
-                                    @((MarkupString)mail.parentId)
+                                   <div class="bordy-reply">
+                                     @((MarkupString)mail.parentId)
+                                   </div>
                                 </div>
                             </div>
+                            }
                         </div>
                     </div>
             </li> 
@@ -75,7 +80,7 @@
     public void ToogleShow() 
     {
         isShow = !isShow;
-        StateHasChanged();
+        InvokeAsync(StateHasChanged);
     }
 
 

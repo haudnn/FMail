@@ -15,7 +15,7 @@ public class GroupData {
 
     public static async Task<bool> CreateGroup(GroupModel group)
     {
-        var isExistGroup = await groupCollection.Find(x => x.name == group.name).FirstOrDefaultAsync();
+        var isExistGroup = await groupCollection.Find(x => x.name == group.name && x.author == group.author).FirstOrDefaultAsync();
         if( isExistGroup == null ) 
         {
             await groupCollection.InsertOneAsync(group);
@@ -24,16 +24,16 @@ public class GroupData {
         return false;
     }
 
-    public static async Task<List<GroupModel>> GetAllGroups() 
+    public static async Task<List<GroupModel>> GetAllGroups(string author) 
     { 
-        return await groupCollection.Find(_ => true).ToListAsync();
+        return await groupCollection.Find(x => x.author == author).ToListAsync();
     } 
 
 
 
-    public static async Task<bool> UpdateGroup(string groupName, string groupId)
+    public static async Task<bool> UpdateGroup(string groupName, string groupId, string author)
     {
-        var isExistGroup = await groupCollection.Find(x => x.name ==groupName).FirstOrDefaultAsync();
+        var isExistGroup = await groupCollection.Find(x => x.name == groupName && x.author == author).FirstOrDefaultAsync();
         if (isExistGroup == null)
         {
             var filter = Builders<GroupModel>.Filter.Eq(x => x.id, groupId);
@@ -58,11 +58,13 @@ public class GroupData {
     {
         var isFoundGroup = await groupCollection.Find(x => x.id == groupId).FirstOrDefaultAsync();
         List<MemberModel> members = InitDataFakeHelper.GetMembersById(isFoundGroup.members);
+
         GroupModelDetail groupUpdating = new GroupModelDetail{
             id = isFoundGroup.id,
             name = isFoundGroup.name,
             members = members
         };
+        
         return groupUpdating;
     }
 

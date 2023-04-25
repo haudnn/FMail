@@ -6,19 +6,17 @@
              </figure>
              <span class="is_body2 is-secondary-20">@member.name</span>
          </div>
-         <span class="icon is-pointer" @onclick="HandleDelete">
+         <span class="icon is-pointer" @onclick="Delete">
              <i class="material-icons-outlined is-error-60">delete</i>
          </span>
      </div>
 </li>
 @code { 
-    [Parameter]
-    public MemberModel member { get; set; }
-    [Parameter]
-    public EventCallback<MemberModel> HandleDeleteMember { get; set; }
+    [Parameter] public MemberModel member { get; set; }
+    [Parameter] public EventCallback<MemberModel> OnDeleteMember { get; set; }
     
-    public void HandleDelete() 
+    public void Delete() 
     {
-        HandleDeleteMember.InvokeAsync(member);
+        OnDeleteMember.InvokeAsync(member);
     }
 }

@@ -13,7 +13,7 @@
             <div class="dropdown-menu" style="min-width: 185px;">
                 <div class="dropdown-content" style="padding: 10px;">
                     <div class="dropdown-item is-flex is-align-items-center is-gap-4"
-                        @onclick="() => Choose(null)">
+                        @onclick="() => Set(null)">
                         <span class="icon">
                             <i class="material-icons-sharp is_body2">@(currentSignature.name == null ? "done" : "")</i>
                         </span>
@@ -22,7 +22,7 @@
                     @foreach ( var signature in signatures)
                     {
                     <div class="dropdown-item is-flex is-align-items-center is-gap-4"
-                        @onclick="() => Choose(signature)">
+                        @onclick="() => Set(signature)">
                         <span class="icon">
                             <i class="material-icons-sharp is_body2">@(currentSignature.name != null && currentSignature.id == signature.id ? "done" : "")</i>
                         </span>
@@ -39,13 +39,13 @@
 </div>
 
 @code{
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public EventCallback<SignatureModel> OnSetSignature  {get; set; }
     string QuillHTMLContentSignature;  
     private bool toggleActiveSign = false;
     public SignatureModel currentSignature  = new SignatureModel();
     public List<SignatureModel> signatures =  new List<SignatureModel>();
-    [Parameter] public EventCallback<SignatureModel> HandleChooseSignature  {get; set; }
+
 
     private void ToggleActiveSign()
     {
@@ -59,7 +59,7 @@
         QuillHTMLContentSignature = currentSignature?.body;
     }
 
-    private async Task Choose(SignatureModel signature) 
+    private async Task Set(SignatureModel signature) 
     {
         if(signature == null) {
             currentSignature = new SignatureModel();
@@ -67,13 +67,11 @@
             toggleActiveSign = !toggleActiveSign;
             return;
         }
-        SignatureModel getSignature =  await SignatureData.GetSignatureById(signature.id);
+        SignatureModel getSignature =  await SignatureData.GetSignatureById(signature.id).ConfigureAwait(false);
         currentSignature = getSignature;
-        await HandleChooseSignature.InvokeAsync(currentSignature);
+        await OnSetSignature.InvokeAsync(currentSignature);
         QuillHTMLContentSignature = getSignature.body;
         toggleActiveSign = !toggleActiveSign;
-
-        StateHasChanged();
     }
 
 }

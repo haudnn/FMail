@@ -30,14 +30,4 @@
     public List<CategoryModel> categories { get; set;}
     [CascadingParameter]
     public LayoutMain Layout { get; set; }
-
-    private async Task sortCategory(int currentPosition, int newPosition)
-    {
-        var categoriesStorage = await storage.GetAsync<List<string>>("categoriesSorted");
-        var movedCategoryId = categories[currentPosition].id;
-        categories[currentPosition].id = categories[newPosition].id;
-        categories[newPosition].id = movedCategoryId;
-        await storage.SetAsync("categoriesSorted", categories.Select(c => c.id).ToList());
-        StateHasChanged();
-    }
 }

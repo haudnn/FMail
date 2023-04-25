@@ -65,12 +65,13 @@
 @code {
     [Parameter]
     public List<LabelModel> labels { get; set; }
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
     private string labelName { get; set; } = String.Empty;
     private string labelColor { get; set; } = String.Empty;
     private string labelId { get; set; } = String.Empty;
     private bool isEditLabel = false;
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
+
 
 
     private void Update(LabelModel label) 

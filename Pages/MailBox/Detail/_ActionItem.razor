@@ -74,8 +74,7 @@
     [CascadingParameter]
     public LayoutMain Layout { get; set; }
     [Parameter] public string iconName { get; set; }
-    [Parameter] public string actionName { get; set; }
-
+    [Parameter] public int action { get; set; }
     [Parameter] public EventCallback<ActionModel> SetCurrentAction {get; set;}
     [Parameter] public EventCallback<MailModel> HandleCreate {get; set;}
     [Parameter] public bool isShowTextTo { get; set; }
@@ -89,6 +88,7 @@
     private List<MemberModel> membersSelected = new List<MemberModel>();
     private List<GroupModel> groupsSelected = new List<GroupModel>();
     private ToggleHelper toggleViewAllActions = new ToggleHelper();
+    public string actionName = String.Empty;
 
     private void HandleToggleViewAllActions()
     {
@@ -100,20 +100,21 @@
         mailToCreate.to = membersSelected.Select(l => l.id).ToList();
         mailToCreate.cc = new List<string>();
         mailToCreate.bcc = new List<string>(); 
-        mailToCreate.subject = "Re: ";
         mailToCreate.isReply = true;
         mailToCreate.pollId = String.Empty;
         await HandleCreate.InvokeAsync(mailToCreate);
-
     }
 
     protected override void OnInitialized()
     {
+
         var membersReceiver = InitDataFakeHelper.GetMembersById(toList);
         membersSelected.AddRange(membersReceiver);
         originalMembers = InitDataFakeHelper.InitMembers();
         members = originalMembers.ToList();
         groups = InitDataFakeHelper.InitGroups();
+        actionName = MailHelper.GetActionName(action);
+        
     }
 
     public void OnUpdateMembersSelected(MemberSelectedModel memberModel) 
@@ -121,7 +122,6 @@
         if(memberModel.name == "To")
         { 
             membersSelected = memberModel.members;
-            return;
         }
     }
 
@@ -139,16 +139,14 @@
     public void HandleClickAction(string action)
     {
         StateHasChanged();
-        ActionModel model =  
-            new ActionModel {
-                mail = mail,
-                action = action
-            };
+        ActionModel model =
+            new ActionModel
+                {
+                    mail = mail,
+                    action = action
+                };
         SetCurrentAction.InvokeAsync(model);
 
     }
-
-
-    
 }
 

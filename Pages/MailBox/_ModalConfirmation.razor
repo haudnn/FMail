@@ -1,4 +1,4 @@
-<div class="modal delete-group @(toggleActiveModal ? "is-active" : "" )">
+<div class="modal delete-group @(isShowModal ? "is-active" : "" )">
     <div class="modal-background"></div>
     <div class="modal-card">
         <header class="modal-card-head">
@@ -27,31 +27,23 @@
 </div>
 
 @code {
-    [Parameter]
-    public string nameModal { get; set; }
-    [Parameter]
-    public string contentModal { get; set; }
-    [Parameter]
-    public string contentButton { get; set; }
-
-    [Parameter] 
-    public bool toggleActiveModal { get; set; }
-    [Parameter]
-    public EventCallback<bool> HandleToggleActiveModal { get; set; }
-
-    [Parameter]
-    public EventCallback HandleConfirmation { get; set; }
+    [Parameter] public string nameModal { get; set; }
+    [Parameter] public string contentModal { get; set; }
+    [Parameter] public string contentButton { get; set; }
+    [Parameter] public bool isShowModal { get; set; }
+    [Parameter] public EventCallback<bool> OnToggleModal { get; set; }
+    [Parameter] public EventCallback OnConfirmation { get; set; }
 
 
     private void ToggleActiveModal(bool isActiveModal) 
     {
-        HandleToggleActiveModal.InvokeAsync(isActiveModal);
+        OnToggleModal.InvokeAsync(isActiveModal);
     }
     
     
     private void HandleConfirmationModal() 
     {
-        HandleConfirmation.InvokeAsync();
+        OnConfirmation.InvokeAsync();
     }
 
 

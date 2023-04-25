@@ -1,4 +1,4 @@
-<div class="dropdown @(toggleViewAdd.IsToggled ? "is-active" : "" )">
+<div class="dropdown  @directionDropdown @(toggleViewAdd.IsToggled ? "is-active" : "" )">
     <div class="dropdown-trigger" @onclick='HandleToggleViewAdd'>
         <div class="is-flex is-align-items-center is-pointer is-gap-8">
             <span class="icon is-primary-40 is-small">
@@ -7,7 +7,7 @@
             <span class="is-primary-40 is_caption" style="line-height: 16px;">Thêm nhóm người nhận</span>
         </div>
     </div>
-    <div class="dropdown-menu" style="min-width: 350px;">
+    <div class="dropdown-menu" style="min-width: 250px;">
         <div class="dropdown-content is-flex is-flex-direction-column is-padding-20" style="height: 100%;">
             <div class="dropdown-item unhover is-flex is-align-items-center is-justify-content-space-between" style="padding: 0;">
                 <span class="is_sub2 is-secondary-40">Thêm nhóm người nhận</span>
@@ -81,8 +81,7 @@
     </div>
 </div>
 @code {
-    [Parameter]
-    public string directionDropdown {get; set;}
+    [Parameter] public string directionDropdown {get; set;}
     [Parameter]
     public List<GroupModel> groups {get; set;} 
     [Parameter]
@@ -134,7 +133,7 @@
         }
         toggleViewAdd.Toggle();
         groupsSelected.Clear();
-        toggleCheckBox.Toggle();
+        toggleCheckBox.ToggleFalse();
 
     }
     

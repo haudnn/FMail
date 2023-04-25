@@ -1,4 +1,5 @@
 @page "/create"
+@page "/create/{mailId}"
 @layout LayoutMain
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigation
@@ -10,8 +11,14 @@
 @inject ProtectedLocalStorage storage
 
 <PageTitle>Tạo thư mới</PageTitle>
-<section class="is-padding-20">
+@if(isLoading)
+{
+    <section class="loading-section">
+        <button class="is-primary-40 button is-loading">Loading..</button>
+    </section>
+}
 
+<section class="is-padding-20">
     <div class="is-flex is-align-items-center is-justify-content-flex-start is-gap-20">
         <a href="mail/inbox" class="is-flex is-align-items-center is-gap-8 is-pointer ">
             <span class="icon">
@@ -24,7 +31,7 @@
                 Danh mục:
             </span>
             <div class="dropdown is-right @(toogleShowCategories.IsToggled ? "is-active" : "" )">
-                <div class="dropdown-trigger is-hover drop-border is-flex is-align-items-center" style="padding: 0 8px;" @onclick="HandleShowCategories">
+                <div class="dropdown-trigger is-hover drop-border is-flex is-align-items-center" style="padding: 0 8px;" @onclick="ShowCategories">
                     <span class="is-secondary-20 is_caption" style="line-height: 24px;">@currentCategory.name</span>
                     <span class="icon is-secondary-20">
                         <i class="material-icons-sharp">arrow_drop_down</i>
@@ -34,27 +41,19 @@
                     <ul class="dropdown-content" style="padding: 8px">
                         @foreach (var category in categories.Where(c => c.name != "Khác"))
                         {
-                            <li class="dropdown-item" style="padding: 4px 8px;" @onclick="() => HandleChooseCategory(category)">
+                            <li class="dropdown-item" style="padding: 4px 8px;" @onclick="() => SetCategory(category)">
                                 <span class="is_caption is-secondary-20">@category.name</span>
                             </li>
                         }
-                            <li class="dropdown-item" style="padding: 4px 8px;" @onclick="() => HandleChooseCategory(null)">
+                            <li class="dropdown-item" style="padding: 4px 8px;" @onclick="() => SetCategory(null)">
                                 <span class="is_caption is-secondary-20">Khác</span>
                             </li>
                     </ul>
                 </div>
             </div>
         </div>
-        <_StarMail
-            isShowText="true"
-            isStared="@isStar"
-            HandleStarMail="HandleStarMail"
-        />
-        <_SelectedLabels 
-            labels="labels"
-            labelsSelected="labelsSelected"
-            HandleChooseLabel="HandleChooseLabel"
-        />
+        <_ImportantMail isImportant="@mail.isImportant" OnImportant="Important" />
+        <_SelectedLabels labels="labels" labelsSelected="labelsSelected" OnSetLabel="SetLabel"/>
     </div>
 
     <main class="create">
@@ -62,16 +61,15 @@
             <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
                 <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
                     <p class="is-secondary-40 is-font-14" style="width: 60px;">To</p>
-                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
-                        <_AddReceiver
-                            nameReceiver="To"
-                            groups="groups"
-                            members="members"
-                            groupsSelected="groupsSelected"
-                            membersSelected="membersSelected"
-                            originalMembers="originalMembers"
-                            OnUpdateMembersSelected="OnUpdateMembersSelected"
-                        />
+                    <div class="textarea-mail is-flex-1 is-flex" style="height: 100%; gap: 8px">
+                        <div class="is-flex is-flex-1 is-align-items-center is-gap-10-y is-flex-wrap-wrap">
+                            <_AddReceiver
+                                nameReceiver="To"
+                                membersSelected="membersSelected"
+                                OnUpdateMembersSelected="OnUpdateMembersSelected"
+                            />
+                        </div>
+
                     </div>
                 </div>
                 @if(!toggleAddCC) 
@@ -90,11 +88,7 @@
                     <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
                         <_AddReceiver
                             nameReceiver="CC"
-                            groups="groupsCC"
-                            groupsSelected="groupsCCSelected"
                             membersSelected="membersCCSelected"
-                            members="membersBCC"
-                            originalMembers="originalMembers"
                             OnUpdateMembersSelected="OnUpdateMembersSelected"
                         />
                     </div>
@@ -105,11 +99,7 @@
                     <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
                     <_AddReceiver
                         nameReceiver="BCC"
-                        groups="groupsBCC"
-                        groupsSelected="groupsBCCSelected"
                         membersSelected="membersBCCSelected"
-                        members="membersCC"
-                        originalMembers="originalMembers"
                         OnUpdateMembersSelected="OnUpdateMembersSelected"
                     />
                     </div>
@@ -117,7 +107,7 @@
             }
             <div class="is-flex is-align-items-center is-gap-10-y">
                 <p class="is-secondary-40 is-font-14" style="width: 60px;">Tiêu đề</p>
-                <textarea placeholder="Tiêu đề thư" class="textarea-mail" @bind="@subject"></textarea>
+                <textarea placeholder="Tiêu đề thư" class="textarea-mail" @bind="@mail.subject"></textarea>
             </div>
         </div>
         <div class="create__main-container">
@@ -127,7 +117,7 @@
                         <ToolbarContent>
                             <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? "80" : "220" )px">
                                 <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
-                                    style="padding: 10px 40px;" @onclick="CreateMail">
+                                    style="padding: 10px 40px;" @onclick="() => CreateMail()">
                                     <span class="is-font-14">Gửi</span>
                                 </div>
                                 <div class="is-flex-1">
@@ -179,7 +169,7 @@
                                 
                                 </div>
                                 <div class="is-flex is-align-items-center is-gap-8">
-                                    <div @onclick="Draft" class="wrapper-button is-justify-content-center is-inline-flex" style="padding: 9px 10px">
+                                    <div @onclick="() => CreateMail(true)" class="wrapper-button is-justify-content-center is-inline-flex" style="padding: 9px 10px">
                                         <span class="icon">
                                             <i class="material-icons-outlined is-primary-40">mail</i>
                                         </span>
@@ -212,12 +202,12 @@
                         application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
                 <div style="padding: 40px 0px 20px 0px">
                     <ul class="attachments-list mt-0">
-                        @foreach (var file in files)
+                        @foreach (var attachment in mail.attachments)
                         {
                             <li class="attachment-item">
-                                <img style="width: 16px; height: 16px;" src="@string.Concat("images/", file.icon, ".png")">
-                                <span>@file.name</span>
-                                <span class="icon is-pointer" @onclick="() => HandleDeleteFile(file)">
+                                <img style="width: 16px; height: 16px;" src="@string.Concat("images/", attachment.icon, ".png")">
+                                <span>@attachment.name</span>
+                                <span class="icon is-pointer" @onclick="() => DeleteAttachment(attachment)">
                                     <i class="material-icons-outlined">close</i>    
                                 </span>
                             </li>
@@ -225,9 +215,10 @@
                     </ul>
                 </div>
 
-                @if(!toggleCreatePoll.IsToggled) {
+                @if(!toggleCreatePoll.IsToggled) 
+                {
                     <div class="wrapper-button primary-btn is-bg-main is-pointer"
-                        style="display: inline-flex; margin-bottom: 20px;" @onclick="HandleToogleCreatePoll">
+                        style="display: inline-flex; margin-bottom: 20px;" @onclick="() => InitPoll(true)">
                         <span class="icon has-text-white">
                             <i class="material-icons-outlined">poll</i>
                         </span>
@@ -236,112 +227,83 @@
                 }
                 else
                 {
-                    @if(!isDoneCreatePoll){
-                        <_Poll poll="poll" HandleToogleCreatePoll="HandleToogleCreatePoll" HandelCreatePoll="HandelCreatePoll"/>
+                    @if(!isDoneCreatePoll)
+                    {
+                        <_Poll poll="poll" OnInitPoll="InitPoll" OnCreate="CreatePoll"/>
                     }
-                    else{ 
-                        <_ContentPoll poll="poll" HandleEditPoll="HandleEditPoll"/>
+                    else
+                    { 
+                        <_ContentPoll poll="poll" OnEditPoll="EditPoll"/>
                     }
                  
                 }
             </div>
         </div>
-            <_SignatureZone HandleChooseSignature="HandleChooseSignature" />
+            <_SignatureZone OnSetSignature="SetSignature" />
     </main>
 </section>
 @code {
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public string mailId { get; set; }
     private CategoryModel currentCategory = new CategoryModel();
-    private SignatureModel currentSignature = new SignatureModel();
     public ToggleHelper toggleCreatePoll = new ToggleHelper();
     private ToggleHelper toogleShowCategories = new ToggleHelper();
     private List<LabelModel> labelsSelected = new List<LabelModel>();
     private List<MemberModel> membersSelected = new List<MemberModel>();
-    private List<GroupModel> groupsSelected = new List<GroupModel>();
     private List<MemberModel> membersCCSelected = new List<MemberModel>();
-    private List<GroupModel> groupsCCSelected = new List<GroupModel>();
     private List<MemberModel> membersBCCSelected = new List<MemberModel>();
-    private List<GroupModel> groupsBCCSelected = new List<GroupModel>();
     public List<CategoryModel> categories = new List<CategoryModel>();
     public List<LabelModel> labels = new List<LabelModel>();
-    public List<SignatureModel> signatures = new List<SignatureModel>();
-    public List<MemberModel> members  = new List<MemberModel>();
-    public List<GroupModel> groups = new List<GroupModel>();
-    public List<MemberModel> membersCC =  new List<MemberModel>();
-    public List<GroupModel> groupsCC = new List<GroupModel>();
-    public List<MemberModel> membersBCC =  new List<MemberModel>();
-    public List<GroupModel> groupsBCC = new List<GroupModel>();
-    private List<MemberModel> originalMembers = new List<MemberModel>(); 
-    private List<GroupModel> originalGroups = new List<GroupModel>(); 
     public PollModel poll = new();
+    public bool isLoading = false;
     private long maxFileSize = 25 * 1024 * 1024; 
     private long totalFileSize;
-    private bool isStar = false;
     private bool toggleAddCC = false;
     private bool isDoneCreatePoll = false;
-    public string subject = String.Empty;
-    public string mailId = String.Empty;
     BlazoredTextEditor QuillHtml;
     string QuillHTMLContent;
-    string QuillHTMLContentSignature;
-    private List<AttachmentModel> files = new List<AttachmentModel>();
-
-
+    public MailModel mail = new MailModel();
 
     protected override async Task OnInitializedAsync()
     {
         categories = await CategoryData.GetAllCategory();
         labels = await LabelData.GetAllLabels(Layout.User.id);
         currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
-        currentSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
+        mail.signature = await SignatureData.GetDefaultSignature(Layout.User.id);
 
-        originalGroups = await GroupData.GetAllGroups();
-        groups = originalGroups.ToList();
-        groupsCC = originalGroups.ToList();
-        groupsBCC = originalGroups.ToList();
+    }  
 
-        originalMembers = InitDataFakeHelper.InitMembersHasCondition(Layout.User.id);
-        members = originalMembers.ToList();
-        membersCC = originalMembers.ToList();
-        membersBCC = originalMembers.ToList();
-
-
-
-        var uri = navigation.ToAbsoluteUri(navigation.Uri);
-        var queryParams = QueryHelpers.ParseQuery(uri.Query);
-        if(queryParams.ContainsKey("mailId")) 
+    // Nếu là thư nháp
+    protected override async Task OnParametersSetAsync()
+    {
+        if(mailId != default)
         {
-            mailId = queryParams["mailId"];
-            MailModel mail = await MailData.GetMailById(mailId);
-            isStar = mail.isImportant;
+            mail = await MailData.GetMailById(mailId);
             QuillHTMLContent = mail.body;
+
             membersSelected = InitDataFakeHelper.GetMembersById(mail.to);
             membersCCSelected = InitDataFakeHelper.GetMembersById(mail.cc);
             membersBCCSelected = InitDataFakeHelper.GetMembersById(mail.bcc);
-            subject = mail.subject;
-            files = mail.attachments;
-            currentSignature = mail.signature;
+
             currentCategory = await CategoryData.GetCategoryById(mail.category);
             labelsSelected = await LabelData.FindLabelsByIds(mail.labels);
+
             if(!string.IsNullOrEmpty((mail.pollId)))
             {
                 poll = await PollData.GetPollById(mail.pollId);
                 toggleCreatePoll.Toggle();
                 isDoneCreatePoll = true;
-            }            
-
+            }
+            StateHasChanged();
         }
+    }
 
-        StateHasChanged();
-
-
-    }  
+    // Load content nếu là thư nháp
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-           
+
 
         }
         else
@@ -353,57 +315,70 @@
         }
     }
 
-    private void HandleShowCategories() 
+    private void ShowCategories() 
     {
         toogleShowCategories.Toggle();
     }
 
-    private void HandleToogleCreatePoll() 
+
+    // Khởi tạo poll
+    private void InitPoll(bool isInit) 
     {
-        poll = new PollModel
+        if(isInit)
         {
-            id = GenerateIDHelper.GenerateID("19012001"),
-            title = "",
-            endDate = DateTime.Today.ToString("dd/MM/yyyy"),
-            endTime = DateTime.Today.ToString("23:59"),
-            isStopped = false,
-            author= Layout.User.id,
-            questions = new List<QuestionModel>
+            poll = new PollModel
             {
-                new QuestionModel
+                id = GenerateIDHelper.GenerateID("19012001"),
+                title = "",
+                endDate = DateTime.Today.ToString("dd/MM/yyyy"),
+                endTime = DateTime.Today.ToString("23:59"),
+                isStopped = false,
+                author= Layout.User.id,
+                questions = new List<QuestionModel>
                 {
-                    id = GenerateIDHelper.GenerateID("19012001"),
-                    text = "",
-                    isMultipleChoice = false,
-                    choices  = new List<ChoiceModel> 
-                        {
-                            new ChoiceModel 
+                    new QuestionModel
+                    {
+                        id = GenerateIDHelper.GenerateID("19012001"),
+                        text = "",
+                        isMultipleChoice = false,
+                        choices  = new List<ChoiceModel> 
                             {
-                                id = GenerateIDHelper.GenerateID("19012001"),
-                                text = "",
-                                voters = new List<string>(),
-                            }
-                        },
+                                new ChoiceModel 
+                                {
+                                    id = GenerateIDHelper.GenerateID("19012001"),
+                                    text = "",
+                                    voters = new List<string>(),
+                                }
+                            },
+                    }
                 }
-            }
-        };
+            };
+        }
+        else 
+        {
+            poll = new PollModel();
+        }
+
         toggleCreatePoll.Toggle();
     }
 
+
+    // Thêm cc + bcc
     private void ToggleAddCC()
     {
         toggleAddCC = true;
     }
 
 
-
-    private void HandleStarMail(bool isStarMail)
+    // Đánh dấu quan trọng
+    private void Important(bool isImportantMail)
     {
-        isStar = isStarMail;
+        mail.isImportant = isImportantMail;
+        StateHasChanged();
     }
 
-
-    private void HandleChooseLabel(LabelModel label) 
+    // Xử lý user chọn nhãn
+    private void SetLabel(LabelModel label) 
     {
         if (labelsSelected.Contains(label))
         {
@@ -415,16 +390,17 @@
         }
     }
 
-
-    private void HandleChooseSignature(SignatureModel signature) 
+    // Xử ly việc user thay đổi chữ ký
+    private void SetSignature(SignatureModel signature) 
     {
-        currentSignature = signature;
+        mail.signature = signature;
     }
 
-    public async Task HandelCreatePoll() 
+    public async Task CreatePoll() 
     {
         bool isValidPoll = await IsValidPoll();
-        if (!isValidPoll) { 
+        if (!isValidPoll)
+        { 
             return;
         }
         isDoneCreatePoll = true;
@@ -433,7 +409,7 @@
 
 
 
-
+    // Xử lý việc upload file
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
         try {
@@ -453,8 +429,8 @@
                 var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
                 string filePath = await FileHelper.SaveFileAsync(fileContent, file.Name);
                 await JSRuntime.InvokeVoidAsync("alert", "Upload thành công");
-                files.Add(new AttachmentModel {
-                    id = "1",
+                mail.attachments.Add(new AttachmentModel {
+                    id = Guid.NewGuid().ToString(),
                     name = file.Name,
                     size = file.Size,
                     contentType = file.ContentType,
@@ -467,25 +443,25 @@
         }
     }
 
-
-    private void HandleDeleteFile(AttachmentModel fileDelete) 
+    // Xử lý việc xóa file
+    private void DeleteAttachment(AttachmentModel fileDelete) 
     {
         FileHelper.DeleteFile(fileDelete.filePath);
-        AttachmentModel fileToDelete = files.FirstOrDefault(file => file.filePath == fileDelete.filePath);
+        AttachmentModel fileToDelete = mail.attachments.FirstOrDefault(file => file.filePath == fileDelete.filePath);
         if (fileToDelete != null)
         {
-            files.Remove(fileToDelete);
+            mail.attachments.Remove(fileToDelete);
         }
         StateHasChanged();
     }
 
 
-    private void HandleEditPoll()
+    private void EditPoll()
     {
         isDoneCreatePoll = false;
     }
 
-
+    // Validate poll
     private async Task<bool> IsValidPoll()
     {
         if (string.IsNullOrEmpty(poll.title))
@@ -493,30 +469,23 @@
             await JSRuntime.InvokeVoidAsync("alert", "Tên khảo sát không được trống!");
             return false;
         }
-
-        int questionCount = poll.questions.Count;
-        if( questionCount == 0) 
+        foreach (var question in poll.questions)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Vui lòng thêm câu hỏi!");
-            return false;
-        }
-        for (int i = 0; i < questionCount; i++)
-        {
-            var question = poll.questions[i];
             if (string.IsNullOrEmpty(question.text))
             {
                 await JSRuntime.InvokeVoidAsync("alert", "Nội dung câu hỏi không được trống!");
                 return false;
             }
 
-            int choiceCount = question.choices.Count;
-            if( choiceCount == 0) {
+            if (question.choices.Count == 0)
+            {
                 await JSRuntime.InvokeVoidAsync("alert", "Vui lòng thêm lựa chọn!");
                 return false;
             }
-            for (int j = 0; j < choiceCount; j++)
+
+            foreach (var choice in question.choices)
             {
-                if (string.IsNullOrEmpty(question.choices[j].text))
+                if (string.IsNullOrEmpty(choice.text))
                 {
                     await JSRuntime.InvokeVoidAsync("alert", "Lựa chọn không được trống!");
                     return false;
@@ -526,70 +495,82 @@
         return true;
     }
 
-
-    private void HandleChooseCategory(CategoryModel categorySelected) 
+    // Xử lý việc user chọn danh mục
+    private void SetCategory(CategoryModel categorySelected)
     {
-        if(categorySelected == null)
-        { 
+        if (categorySelected == null)
+        {
             currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
-            toogleShowCategories.ToggleFalse();
-            return;
         }
-        currentCategory = categorySelected;
+        else
+        {
+            currentCategory = categorySelected;
+        }
+
         toogleShowCategories.ToggleFalse();
     }
 
-
-
-    public async Task CreateMail() 
+    // Xử lý việc tạo mới + lưu nháp
+    // default là tạo, nếu isDraft = true thì là thư nháp
+    public async Task CreateMail(bool isDraft = false) 
     {
-        bool isValidMail = await IsValidMail();
-        if(!isValidMail) 
+        QuillHTMLContent = await QuillHtml.GetHTML();
+        string shortBody = await QuillHtml.GetText();
+
+        if (!isDraft && !await IsValidMail()) 
         {
             return;
         }
-        QuillHTMLContent = await QuillHtml.GetHTML();
-        string shortBody = await QuillHtml.GetText();
-        MailModel mailToCreate = new MailModel
-            {
-                from = Layout.User.id,
-                category = currentCategory.id,
-                isImportant = isStar,
-                labels = labelsSelected.Select(l => l.id).ToList(),
-                to = membersSelected.Select(l => l.id).ToList(),
-                cc = membersCCSelected.Select(l => l.id).ToList(),
-                bcc = membersBCCSelected.Select(l => l.id).ToList(),
-                subject = subject == String.Empty ? "Không có chủ đề" : subject,
-                body = QuillHTMLContent,
-                attachments = files,
-                signature = currentSignature,
-                sentDate = DateTimeHelper.FormatDateTimeUTC(),
-                author = Layout.User.id,
-                shortBody = shortBody.Length > 150 ? shortBody.Substring(0, 150) : shortBody,
-                isDraft = false,
-                isDeleted = false,
-                isRead = false,
-                isReply = false,
-                originalMailId = "",
-                isTrash = false,
-                pollId = "",
-                created_at = DateTime.Now.Ticks,
-                parentId = String.Empty,    
-            };
-        if(toggleCreatePoll.IsToggled) 
+        mail.from = Layout.User.id;
+        mail.labels = labelsSelected.Select(l => l.id).ToList();
+        mail.category = currentCategory.id;
+        mail.to = membersSelected.Select(l => l.id).ToList();
+        mail.cc = membersCCSelected.Select(l => l.id).ToList();
+        mail.bcc = membersBCCSelected.Select(l => l.id).ToList();
+        mail.isRead = false;
+        mail.body = QuillHTMLContent;
+        mail.sentDate = DateTimeHelper.FormatDateTimeUTC();
+        mail.author = Layout.User.id;
+        mail.shortBody = shortBody.Length > 200 ? shortBody.Substring(0, 200) : shortBody;
+        mail.isDraft = isDraft;
+        mail.isDeleted = false;
+        mail.originalMailId = String.Empty;
+        mail.created_at = DateTime.Now.Ticks;
+        mail.parentId = String.Empty;
+
+        // Kiểm tra có poll hay không và tạo
+        if(!string.IsNullOrEmpty(poll.id)) 
         {
             bool isCreatedPollSuccess = await PollData.CreatePoll(poll);
             if(isCreatedPollSuccess) 
             {
-                mailToCreate.pollId = poll.id;
+                mail.pollId = poll.id;
             };
         }
-        await MailData.CreateMail(mailToCreate, true, mailId);
-        await JSRuntime.InvokeVoidAsync("tagline", true, "Tạo mail thành công!");  
-        navigation.NavigateTo("/mail/inbox", true);
+
+        // Tạo mới
+        if (!isDraft)
+        {
+            // Nếu có mailid => gủi thư nháp
+            isLoading = true;
+            await MailData.CreateMail(mail, false, mailId);
+            isLoading = false;
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Tạo mail thành công!");  
+        } 
+
+        // Lưu nháp
+        else 
+        {
+            isLoading = true;
+            await MailData.Draft(mail);
+            isLoading = false;
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Lưu nháp thành công");
+        }
+        await JSRuntime.InvokeVoidAsync("history.back");
+
     }
 
-
+    // Validate mail
     private async Task<bool> IsValidMail() 
     {
         if(membersSelected.Count == 0) 
@@ -602,14 +583,15 @@
 
 
 
-
-    private void CancelCreate() 
+    // Hủy tạo
+    private async Task CancelCreate() 
     { 
-        navigation.NavigateTo("/mail/inbox", true);
+        await JSRuntime.InvokeVoidAsync("history.back");
     }
 
 
-
+    // Cập nhật receiver
+    // name dùng để phân biệt to cc bcc
     public void OnUpdateMembersSelected(MemberSelectedModel memberModel) 
     { 
         if(memberModel.name == "To")
@@ -627,46 +609,5 @@
             membersBCCSelected = memberModel.members;
             return;
         }
-    }
-
-    public async Task Draft()
-    {
-        QuillHTMLContent = await QuillHtml.GetHTML();
-        string shortBody = await QuillHtml.GetText();
-        MailModel mailToDraft = new MailModel
-            {
-                from = Layout.User.id,
-                category = currentCategory.id,
-                isImportant = isStar,
-                labels = labelsSelected.Select(l => l.id).ToList(),
-                to = membersSelected.Select(l => l.id).ToList(),
-                cc = membersCCSelected.Select(l => l.id).ToList(),
-                bcc = membersBCCSelected.Select(l => l.id).ToList(),
-                subject = subject == String.Empty ? "Không có chủ đề" : subject,
-                body = QuillHTMLContent,
-                attachments = files,
-                signature = currentSignature,
-                sentDate = DateTimeHelper.FormatDateTimeUTC(),
-                author = Layout.User.id,
-                shortBody = shortBody.Length > 50 ? shortBody.Substring(0, 50) : shortBody,
-                isDraft = true,
-                isReply = false,
-                originalMailId = "",
-                isDeleted = false,
-                isRead = false,
-                isTrash = false,
-                created_at = DateTime.Now.Ticks,
-            };
-        if(toggleCreatePoll.IsToggled) 
-        {
-            bool isCreatedPollSuccess = await PollData.CreatePoll(poll);
-            if(isCreatedPollSuccess) 
-            {
-                mailToDraft.pollId = poll.id;
-            };
-        }
-        await MailData.Draft(mailToDraft);
-        await JSRuntime.InvokeVoidAsync("tagline", true, "Lưu nháp thành công");
-        navigation.NavigateTo("/mail/inbox", true);
     }
 }

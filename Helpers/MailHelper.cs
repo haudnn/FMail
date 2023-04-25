@@ -93,4 +93,16 @@ public class MailHelper
             DateTimeOffset.ParseExact(m.sentDate, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture) <= end).ToList();
     }
 
+    // Action name: Trả lời, trả lời tất cả, chuyển tiếp
+    public static string GetActionName(int action)
+    {
+        if(action == 1)
+            return "Trả lời";
+        if (action == 2)
+            return "Trả lời tất cả";
+        if (action == 3)
+            return "Chuyển tiếp";
+        return "";
+    }
+
 }

@@ -17,8 +17,6 @@ public class MailData
 
     public static IMongoCollection<MailModel> mailCollection = ConnectDB<MailModel>.GetClient("mailbox", "mail");
 
-    public static IMongoCollection<LabelModel> labelCollection = ConnectDB<LabelModel>.GetClient("mailbox", "label");
-
     public static async Task<List<MailModel>> GetList(string folderName, string userid, string category = "all")
     {
         List<MailModel> mails = new List<MailModel>();
@@ -54,7 +52,7 @@ public class MailData
     {
 
         var builder = Builders<MailModel>.Filter;
-
+        var sorted = Builders<MailModel>.Sort.Descending("created_at");
         var filtered = 
             builder.Eq("isDraft", true) 
             & builder.Eq("isTrash", false)
@@ -65,7 +63,7 @@ public class MailData
             filtered = filtered & builder.Eq("category", category);
         }
 
-        return await mailCollection.Find(filtered).ToListAsync();
+        return await mailCollection.Find(filtered).Sort(sorted).ToListAsync();
     }
 
 
@@ -74,13 +72,13 @@ public class MailData
     {
 
         var builder = Builders<MailModel>.Filter;
-
+        var sorted = Builders<MailModel>.Sort.Descending("created_at");
         var filtered =
             builder.Eq("isDeleted", false)
             & builder.Eq("isTrash", true)
             & builder.Eq("author", userid);
 
-        return await mailCollection.Find(filtered).ToListAsync();
+        return await mailCollection.Find(filtered).Sort(sorted).ToListAsync();
     }
 
 
@@ -89,12 +87,13 @@ public class MailData
     public static async Task<List<MailModel>> GetMailsInbox(string category, string userId)
     {
         var builder = Builders<MailModel>.Filter;
+        var sorted = Builders<MailModel>.Sort.Descending("created_at");
         var filtered = builder.Eq("author", userId) & builder.Eq("isTrash", false) & builder.Eq("isReply", false);
         if (category != "all")
         {
             filtered = filtered & builder.Eq("category", category);
         }
-        var mails = await mailCollection.Find(filtered).ToListAsync();
+        var mails = await mailCollection.Find(filtered).Sort(sorted).ToListAsync();
 
         var mailsFiltered = new List<MailModel>();
         foreach (var mail in mails)
@@ -115,13 +114,15 @@ public class MailData
     public static async Task<List<MailModel>> GetMailsSent(string category, string userid)
     {
         var mailsFiltered = new List<MailModel>();
+
         var builder = Builders<MailModel>.Filter;
+        var sorted = Builders<MailModel>.Sort.Descending("created_at");
         var filtered = builder.Eq("author", userid) & builder.Eq("isTrash" , false) & builder.Eq("isReply", false);
         if (category != "all")
         {
             filtered = filtered & builder.Eq("category", category);
         }
-        var mails = await mailCollection.Find(filtered).ToListAsync();
+        var mails = await mailCollection.Find(filtered).Sort(sorted).ToListAsync();
         foreach (var mail in mails)
         {
             if ((mail.from == mail.author) && (mail.originalMailId == ""))
@@ -146,6 +147,7 @@ public class MailData
     public static async Task<List<MailModel>> GetMailsImportant(string category, string userid)
     {
         var builder = Builders<MailModel>.Filter;
+        var sorted = Builders<MailModel>.Sort.Descending("created_at");
         var filtered =
             builder.Eq("author", userid) &
             builder.Eq("isTrash", false) &
@@ -156,19 +158,19 @@ public class MailData
             filtered = filtered & builder.Eq("category", category);
         }
 
-        return await mailCollection.Find(filtered).ToListAsync();
+        return await mailCollection.Find(filtered).Sort(sorted).ToListAsync();
     }
 
     public static async Task<List<MailModel>> GetMailsByLabel(string labelId, string userid)
     {
         var builder = Builders<MailModel>.Filter;
-
+        var sorted = Builders<MailModel>.Sort.Descending("created_at");
         var filtered =
             builder.Where(x => x.labels.Any(t => t == labelId)) &
             builder.Eq("isTrash", false) &
             builder.Eq("author", userid);
 
-        return await mailCollection.Find(filtered).ToListAsync();
+        return await mailCollection.Find(filtered).Sort(sorted).ToListAsync();
     }
 
 
@@ -243,25 +245,24 @@ public class MailData
     public static async Task Reply(MailModel mail, string idMailToReply, string mailIdClicked, bool isReplyMail = true)
     {  
 
-        // forward the mail
-        if(!isReplyMail)
-        {
-
-        }
-
+    
         var currentMailReply = await mailCollection.Find(x => x.id == mailIdClicked).FirstOrDefaultAsync();
         string customHtml = "";
         DateTime datetime = DateTime.Parse(currentMailReply.sentDate);
         string output = datetime.ToString("dd 'thg' M',' yyyy 'vào lúc' HH:mm");
         MemberModel member = InitDataFakeHelper.GetMemberById(currentMailReply.from);
-        if(currentMailReply.parentId == null)
+        if(String.IsNullOrEmpty(currentMailReply.parentId))
         {
-            customHtml = "<div>" + "<div>" + "Vào" + " " + output + " " + member.name + " "  + $"{member.email}"  + " " +  "đã viết:" +  "<div style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">" + currentMailReply.body + "</div>" + "</div>"  + "</div>";
+            if(isReplyMail)
+            {
+                customHtml += $"<p> Vào {output} {member.name} {member.email} đã viết: </p>";
+                customHtml += $"<blockquote class='border-reply'> {currentMailReply.body} </blockquote>"  ;
+                // <p class='border-reply'> {currentMailReply.body} </p>
+            }
         }
         else
         {
-
-            customHtml = "<div>" + "<div>" + "Vào" + " " + output + " " + member.name + " " + $"{member.email}" + " " + "đã viết:" + "<div style=\"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex\">" + currentMailReply.body +  currentMailReply.parentId + "</div>" + "</div>" + "</div>";
+            customHtml = "<p>" + "<p>" + "Vào" + " " + output + " " + member.name + " " + $"{member.email}" + " " + "đã viết:" + "<p class=\"border-reply\">" + currentMailReply.body + currentMailReply.parentId + "</p>" + "</p>" + "</p>";
 
         }
         var mailReply = await mailCollection.Find(x => x.id == idMailToReply).FirstOrDefaultAsync();

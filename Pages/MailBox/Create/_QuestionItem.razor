@@ -7,9 +7,9 @@
                     @bind="@question.text" 
                     type="text" 
                     placeholder="Nhập câu hỏi" 
-                    @oninput="HandleValueChanged">
+                    @oninput="ValueChanged">
         </div>
-        <div class="wrapper-button is-justify-content-center is-inline-flex error-btn" style="padding: 7px" @onclick="HandleDeleteQuestion">
+        <div class="wrapper-button is-justify-content-center is-inline-flex error-btn" style="padding: 7px" @onclick="DeleteQuestion">
             <span class="icon">
                 <i class="material-icons-outlined">delete</i>
             </span>
@@ -65,14 +65,14 @@
             <_ChoiceItem 
                 index="index" 
                 isMultipleChoice="isMultipleChoice" 
-                choice="@item" 
-                OnChoiceValueChanged="HandleChoiceValueChanged"
-                OnDeleteChoice="HandleDeleteChoice"
+                choice="item" 
+                OnChoiceValueChanged="ChoiceValueChanged"
+                OnDeleteChoice="DeleteChoice"
                 />
             index = index + 1;
         }
     </ul>
-    <div class="is-flex is-align-items-center is-pointer is-padding-top-20" @onclick="HandleAddChoice">
+    <div class="is-flex is-align-items-center is-pointer is-padding-top-20" @onclick="AddChoice">
         <span class="icon">
             <i class="material-icons-outlined is-primary-40">add</i>
         </span>
@@ -84,7 +84,7 @@
     [Parameter] public QuestionModel question { get; set; }
     [Parameter] public EventCallback<QuestionModel> OnQuestionValueChanged { get; set; }
     [Parameter] public EventCallback<QuestionModel> OnDeleteQuestion { get; set; }
-    [Parameter] public EventCallback<QuestionChoice> HandleChangeMultipleChoice { get; set; }
+    [Parameter] public EventCallback<QuestionChoice> OnChangeMultipleChoice { get; set; }
     [Parameter] public bool isMultipleChoice { get; set; }
     
     
@@ -96,7 +96,7 @@
             id = question.id,
             isMultipleChoice = isMultiple
         };
-        HandleChangeMultipleChoice.InvokeAsync(questionToUpdate);
+        OnChangeMultipleChoice.InvokeAsync(questionToUpdate);
         isMultipleChoiceClone = !isMultipleChoiceClone;
     }
 
@@ -107,7 +107,7 @@
 
      
 
-    public void HandleAddChoice()
+    public void AddChoice()
     {
         question.choices.Add(new ChoiceModel
         {
@@ -117,7 +117,7 @@
         });
     }
 
-    private void HandleChoiceValueChanged(ChoiceModel choice) 
+    private void ChoiceValueChanged(ChoiceModel choice) 
     {
         var choiceToUpdate = question.choices.FirstOrDefault(c => c.id == choice.id);
         if (choiceToUpdate != null) {
@@ -127,7 +127,7 @@
 
 
 
-    private void HandleDeleteChoice(ChoiceModel choice)
+    private void DeleteChoice(ChoiceModel choice)
     {
         var choiceToDelete = question.choices.FirstOrDefault(c => c.id == choice.id);
         if (choiceToDelete != null)
@@ -137,14 +137,14 @@
     }
 
 
-    private void HandleDeleteQuestion() 
+    private void DeleteQuestion() 
     {
         OnDeleteQuestion.InvokeAsync(question);
     }
     
 
 
-    private void HandleValueChanged(ChangeEventArgs args) 
+    private void ValueChanged(ChangeEventArgs args) 
     {
         OnQuestionValueChanged.InvokeAsync(question);
     }

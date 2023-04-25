@@ -7,7 +7,7 @@
     <div  class="mail__main">
         <HeaderMain />
         <section class="is-padding-20 is-flex is-flex-direction-column" style="gap: 20px 0">
-            <_ManagerGroup groups="groups" members="members" getAllGroups="getAllGroups"/>
+            <_ManagerGroup/>
             <_ManagerCategory categories="categories"/>
             <_ManagerLabel labels="labels"/>
             <_ManagerSignature signatures="signatures" getAllSignatures="getAllSignatures"/>
@@ -19,8 +19,7 @@
     public LayoutMain Layout { get; set; }
     private List<LabelModel> labels = new();
     private List<CategoryModel> categories = new();
-    private List<GroupModel> groups = new List<GroupModel>();
-    private List<MemberModel> members = new List<MemberModel>();
+
     private List<SignatureModel> signatures = new List<SignatureModel>();
 
 
@@ -30,8 +29,6 @@
         categories = await CategoryData.GetAllCategory();
         labels = await LabelData.GetAllLabels(Layout.User.id);
 
-        groups = await GroupData.GetAllGroups();
-        members = InitDataFakeHelper.InitMembers();
     }
 
 
@@ -42,9 +39,4 @@
     }
 
 
-    private async Task<List<GroupModel>> getAllGroups() 
-    {
-        groups = await GroupData.GetAllGroups();
-        return groups;
-    }
 }

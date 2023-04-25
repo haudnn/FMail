@@ -48,7 +48,7 @@
                             <div class="dropdown-menu" style="top: 20px; min-width: 400px;">
                                 <div class="dropdown-content is-padding-20">
                                     <div class="is-flex is-mb-10">
-                                        <span class="is_body2 is-secondary-10 is-block" style="width: 55px;">Từ:</span>
+                                        <span class="is_body2 is-secondary-10 is-block"style="width: 60px; white-space: nowrap;">Từ:</span>
                                         <div class="is-flex-1 is-flex is-align-items-center" style="gap: 0 5px">
                                             <span class="is_sub2 is-secondary-10">@author.FullName</span>
                                             <span class="is_caption is-secondary-10">@( "<" + author.email + ">" )</span>
@@ -57,7 +57,7 @@
                                     @if (toList.Count > 0)
                                     {
                                         <div class="is-flex is-mb-10">
-                                            <span class="is_body2 is-secondary-10 is-block" style="width: 55px;">Đến:</span>
+                                            <span class="is_body2 is-secondary-10 is-block" style="width: 60px; white-space: nowrap;">Đến:</span>
                                             <div class="is-flex-1">
                                                 @foreach (var item in toList)
                                                 {
@@ -69,7 +69,7 @@
                                     @if(ccList.Count > 0) 
                                     {
                                         <div class="is-flex is-mb-10">
-                                            <span class="is_body2 is-secondary-10 is-block" style="width: 55px;">CC:</span>
+                                            <span class="is_body2 is-secondary-10 is-block" style="width: 60px; white-space: nowrap;">CC:</span>
                                             <div class="is-flex-1">
                                                 @foreach (var item in ccList)
                                                 {  
@@ -81,7 +81,7 @@
                                     @if(bccList.Count > 0)
                                     {
                                         <div class="is-flex is-mb-10">
-                                            <span class="is_body2 is-secondary-10 is-block" style="width: 55px;">BCC:</span>
+                                            <span class="is_body2 is-secondary-10 is-block" style="width: 60px; white-space: nowrap;">BCC:</span>
                                             <div class="is-flex-1">
                                                 @foreach (var item in bccList)
                                                 {  
@@ -90,8 +90,14 @@
                                             </div>
                                         </div>
                                     }
+                                        <div class="is-flex">
+                                        <p class="is_body2 is-secondary-10" style="width: 60px; white-space: nowrap;">Tiều đề:</p>
+                                        <div class="is-flex-1">
+                                            <span style="line-height: 17px;" class="is-block is-has-virgule is_caption is-secondary-40">@mail.subject</span> 
+                                        </div>
+                                    </div>
                                     <div class="is-flex is-align-items-center">
-                                        <p class="is_body2 is-secondary-10" style="width: 55px;">Ngày:</p>
+                                        <p class="is_body2 is-secondary-10" style="width: 60px; white-space: nowrap;">Ngày:</p>
                                         <div class="is-flex-1 is-flex is-align-items-center">
                                                 <span class="is_body2 is-secondary-40">@sentDateTime.ToString("HH:mm")</span>
                                                 <span class="mr-1">,</span>
@@ -138,7 +144,7 @@
     {
         if (firstRender)
         {
-
+            await InvokeAsync(StateHasChanged);
         }
         else
         {

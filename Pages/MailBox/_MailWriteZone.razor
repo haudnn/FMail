@@ -3,9 +3,7 @@
 <div class="create__main-container">
         <div>
             <BlazoredTextEditor @ref="@QuillHtml" Placeholder="">
-                <EditorContent>
-                    @((MarkupString)forwardMessage)
-                    @((MarkupString)forwardBody)
+                <EditorContent >
                 </EditorContent>
                 <ToolbarContent>
                     <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? " 80" : "220" )px">
@@ -127,11 +125,26 @@
     {
         currentSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
     }
+
+
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+
+        }
+        else if(!String.IsNullOrEmpty(forwardBody) || !String.IsNullOrEmpty(forwardMessage) )
+        {
+            QuillHTMLContent = forwardMessage + forwardBody;
+            await QuillHtml.LoadHTMLContent(QuillHTMLContent);
+        }
+
+    }
     
     public async Task Create()
     {
         QuillHTMLContent = await QuillHtml.GetHTML();
-    
         string shortBody = await QuillHtml.GetText();
         MailModel mailToCreate = new MailModel
             {
