@@ -105,7 +105,7 @@
             </ul>
         </div>
 </div>
-<_SignatureZone HandleChooseSignature="HandleChooseSignature"/>
+<_SignatureZone OnSetSignature="SetSignature"/>
 
 @code{
 
@@ -121,9 +121,10 @@
     string QuillHTMLContent;
     private SignatureModel currentSignature = new SignatureModel();
 
+
     protected override async Task OnInitializedAsync()
     {
-        currentSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
+        currentSignature = await SignatureData.GetDefault(Layout.User.id);
     }
 
 
@@ -141,6 +142,7 @@
         }
 
     }
+
     
     public async Task Create()
     {
@@ -168,10 +170,13 @@
 
     }
 
+
     public void Cancel()
     {
         SetCurrentAction.InvokeAsync(new ActionModel());
     }
+
+
 
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
@@ -193,7 +198,7 @@
                 string filePath = await FileHelper.SaveFileAsync(fileContent, file.Name);
                 await JSRuntime.InvokeVoidAsync("alert", "Upload thành công");
                 files.Add(new AttachmentModel {
-                    id = "1",
+                    id = Guid.NewGuid().ToString(),
                     name = file.Name,
                     size = file.Size,
                     contentType = file.ContentType,
@@ -206,6 +211,7 @@
         }
     }
 
+
     private void DeleteFile(AttachmentModel fileDelete) 
     {
         FileHelper.DeleteFile(fileDelete.filePath);
@@ -217,13 +223,10 @@
         StateHasChanged();
     }
 
-
-    private void HandleChooseSignature(SignatureModel signature) 
+    private void SetSignature(SignatureModel signature) 
     {
         currentSignature = signature;
     }
-
-
 
 }
 

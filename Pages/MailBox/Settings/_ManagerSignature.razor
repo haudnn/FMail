@@ -11,12 +11,12 @@
                         {
                             <li 
                                 class="is-flex is-align-items-center is-padding-10 is-pointer signature-item @(signatureCurrent.id == signature.id ? "active" : "" )" 
-                                @onclick="() => HandleChooseSignature(signature)">
+                                @onclick="() => Get(signature)">
                                 <span class="is_caption is-secondary-10">@signature.name</span>
                             </li>   
                         }
                     </ul>
-                    <div class="wrapper-button primary-btn is-justify-content-center is-mt-10" @onclick="HandleClickCreate">
+                    <div class="wrapper-button primary-btn is-justify-content-center is-mt-10" @onclick="OnCreate">
                         <span class="icon">
                             <i class="material-symbols-outlined" style="font-size: 15px;">add</i>
                         </span>
@@ -86,7 +86,7 @@
                     <div style="margin-top: 80px;" class="is-flex is-align-items-center is-gap-8 is-justify-content-flex-end">
                         @if(!isEditSignature) 
                         { 
-                            <div class="wrapper-button is-justify-content-center is-inline-flex" @onclick="HandelCreateSignature">
+                            <div class="wrapper-button is-justify-content-center is-inline-flex" @onclick="Create">
                                 <span class="icon">
                                     <i class="material-icons-outlined is-primary-40">edit</i>
                                 </span>
@@ -95,7 +95,7 @@
                         }
                         else 
                         {
-                            <div class="wrapper-button is-justify-content-center is-inline-flex" @onclick="UpdateSignature">
+                            <div class="wrapper-button is-justify-content-center is-inline-flex" @onclick="Update">
                                 <span class="icon">
                                     <i class="material-icons-outlined is-primary-40">edit</i>
                                 </span>
@@ -103,7 +103,7 @@
                             </div>
                         }
 
-                        <div class="wrapper-button is-justify-content-center is-inline-flex error-btn" @onclick="HandleDeleteSignature">
+                        <div class="wrapper-button is-justify-content-center is-inline-flex error-btn" @onclick="Delete">
                             <span class="icon">
                                 <i class="material-icons-outlined">delete</i>
                             </span>
@@ -117,8 +117,8 @@
         <div class="is-mb-20">
             <span class="is-uppercase is_h6 is-secondary-10">Thiết lập chữ ký mặc định</span>
         </div>
-        <div class="dropdown is-up @(toggleSignature.IsToggled ? "is-active" : "" )">
-            <div class="dropdown-trigger is-hover drop-border" style="padding: 4px 12px;" @onclick="ToggleSignature">
+        <div class="dropdown is-up @(toggle.IsToggled ? "is-active" : "" )">
+            <div class="dropdown-trigger is-hover drop-border" style="padding: 4px 12px;" @onclick="Toggle">
                 <div class="is-flex is-align-items-center">
                     <span class="is-secondary-20 is_body2">@(String.IsNullOrEmpty(defaultSignature.name) ? "Không chọn" : defaultSignature.name)</span>
                     <span class="icon">
@@ -150,81 +150,91 @@
 </div>
 @code {
     [CascadingParameter] public LayoutMain Layout { get; set; }
-    [Parameter] public List<SignatureModel> signatures { get; set;}
-    [Parameter] public EventCallback<List<SignatureModel>> getAllSignatures {get; set;}
+    public List<SignatureModel> signatures { get; set; } = new();
     BlazoredTextEditor QuillHtml;
     string QuillHTMLContent = String.Empty;
     public string signatureName = String.Empty;
     public bool isEditSignature = false;
     public SignatureModel defaultSignature = new SignatureModel();
     private SignatureModel signatureCurrent = new SignatureModel();
-    private ToggleHelper toggleSignature = new ToggleHelper();
+    private ToggleHelper toggle = new ToggleHelper();
 
-    private void ToggleSignature() 
+
+    protected override async Task OnInitializedAsync()
+    {   
+        // get all chữ ký của user
+        signatures = await SignatureData.GetList(Layout.User.id);
+
+        // Lấy chữ ký mặc định
+        defaultSignature = await SignatureData.GetDefault(Layout.User.id);
+        StateHasChanged();
+    }
+
+    private void Toggle() 
     {
-        toggleSignature.Toggle();
+        toggle.Toggle();
     }
 
 
-    private async Task HandleChooseSignature(SignatureModel signature) 
+    // Hàm get chữ ký
+    private async Task Get(SignatureModel signature) 
     {
-        SignatureModel getSignature =  await SignatureData.GetSignatureById(signature.id);
-        signatureCurrent = getSignature;
+        signatureCurrent = await SignatureData.Get(signature.id);
+
         signatureName = signatureCurrent.name;
-        string QuillContent = signatureCurrent.body;
-        await QuillHtml.LoadHTMLContent(QuillContent);
+        QuillHTMLContent = signatureCurrent.body;
+
+        await QuillHtml.LoadHTMLContent(QuillHTMLContent);
+
         isEditSignature = true;
         StateHasChanged();
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        defaultSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
-        StateHasChanged();
-    }
 
-    private async Task HandelCreateSignature() 
+    // Tạo chữ ký
+    private async Task Create() 
     {
+        // validation
         bool isValidSignature = await IsValidSignature();
         if(!isValidSignature)
         {
             return;
         }
-        QuillHTMLContent = await QuillHtml.GetHTML();
+
         SignatureModel signatureToCreate = new SignatureModel
         {
             id = GenerateIDHelper.GenerateID("19012001"),
             name = signatureName,
-            body = QuillHTMLContent,
+            body = await QuillHtml.GetHTML(),
             author = Layout.User.id,
             isDefault = false,
         };
-        bool isValidSignatureName = await SignatureData.CreateSignature(signatureToCreate);
+
+        // check chữ ký của user đã có trước đó hay chưa?
+        bool isValidSignatureName = await SignatureData.Create(signatureToCreate, Layout.User.id);
         if(!isValidSignatureName) 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Tên chữ ký bạn chọn đã tồn tại!");
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên chữ ký bạn chọn đã tồn tại trong hệ thống!");
             return;
         }
+
+
         signatures.Add(signatureToCreate);
-        signatureName = String.Empty;
-        QuillHTMLContent = String.Empty;
-        await QuillHtml.LoadHTMLContent(String.Empty);
+        await Reset();
         StateHasChanged();
     }
 
 
-
-    private async Task HandleDeleteSignature() 
+    // Hàm xóa chữ ký
+    private async Task Delete() 
     { 
-        await SignatureData.DeleteSignature(signatureCurrent.id);
-        signatureCurrent = new SignatureModel();
-        signatureName = String.Empty;
-        await QuillHtml.LoadHTMLContent(String.Empty);
-        await getAllSignatures.InvokeAsync();
-        StateHasChanged();
+        await SignatureData.Delete(signatureCurrent.id);
+        signatures.RemoveAll(x => x.id == signatureCurrent.id);
+        await Reset();
+
     }
 
-
+    // Validate chữ ký
     private async Task<bool> IsValidSignature() 
     {
         if (await QuillHtml.GetHTML() == "<p><br></p>") 
@@ -245,58 +255,51 @@
         return true;
     }
 
-
-    private async Task UpdateSignature() 
+    // Cập nhật chữ ký
+    private async Task Update() 
     {
+        // validate chữ ký
         bool isValidSignature = await IsValidSignature();
         if(!isValidSignature) 
         {
             return;
         }
-        QuillHTMLContent = await QuillHtml.GetHTML();
-        SignatureModel signatureToUpdate = new SignatureModel
-        {
-            id = signatureCurrent.id,
-            name = signatureName,
-            body = QuillHTMLContent,
-            isDefault = signatureCurrent.isDefault,
-            author = signatureCurrent.author
-        };
-        await SignatureData.UpdateSignature(signatureToUpdate);
-        signatureCurrent = new SignatureModel();
-        signatureName = String.Empty;
-        await QuillHtml.LoadHTMLContent(String.Empty);
-        await getAllSignatures.InvokeAsync();
+
+        signatureCurrent.name = signatureName;
+        signatureCurrent.body = await QuillHtml.GetHTML();
+        await SignatureData.Update(signatureCurrent);
+        await Reset();
         StateHasChanged();
     }
 
-    public async Task HandleClickCreate() 
+    // Click tạo chữ ký
+    public async Task OnCreate() 
     {
         isEditSignature = false;
-        signatureCurrent = new SignatureModel();
+        await Reset();
+    }
+
+    // reset các trường
+    public async Task Reset()
+    {
+        signatureCurrent = new();
         signatureName = String.Empty;
         await QuillHtml.LoadHTMLContent(String.Empty);
     }
 
-
+    // set chữ ký mặc định
     public async Task SetDefault(SignatureModel signature)
     {
+        await SignatureData.SetDefault(signature, Layout.User.id);
         if(signature == null)
         {
-            await SignatureData.SetDefaultSignature(new SignatureModel{},defaultSignature);
-            defaultSignature = new SignatureModel{ };
-            return;
+            defaultSignature = new();
         }
-        SignatureModel signatureToUpdate = new SignatureModel
+        else
         {
-            id = signature.id,
-            name = signature.name,
-            body = signature.body,
-            isDefault = true,
-            author = signature.author
-        };
-        await SignatureData.SetDefaultSignature(signatureToUpdate, defaultSignature);
-        defaultSignature = signatureToUpdate;
-        return;
+            defaultSignature = signature;
+        }
+ 
+        Toggle();
     }
 }

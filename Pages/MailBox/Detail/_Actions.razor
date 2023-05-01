@@ -4,27 +4,27 @@
         <span class="mr-1">,</span>
         <span class="is_caption is-secondary-40">@sentDateTime.ToString("dd/MM/yyyy") (@convertDate)</span>
     </li>
-    <li class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("reply")'>
+    <li class="is-flex is-align-items-center is-pointer" @onclick='() => Action("reply")'>
         <span class="icon">
             <i class="material-icons-outlined is-primary-40">reply</i>
         </span>
         <span class="is_caption is-primary-40">Trả lời</span>
     </li>
-    <li class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("reply_all")'>
+    <li class="is-flex is-align-items-center is-pointer" @onclick='() => Action("reply_all")'>
         <span class="icon">
             <i class="material-icons-outlined is-primary-40">reply_all</i>
         </span>
         <span class="is_caption is-primary-40">Trả lời tất cả</span>
     </li>
-    <li class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("forward")'>
+    <li class="is-flex is-align-items-center is-pointer" @onclick='() => Action("forward")'>
         <span class="icon">
             <i class="material-icons-outlined is-primary-40">forward</i>
         </span>
         <span class="is_caption is-primary-40">Chuyển tiếp</span>
     </li>
     <li>
-        <div class="dropdown is-right @(toggleViewButtonAnother.IsToggled ? " is-active" : "" )">
-            <div class="dropdown-trigger is-flex is-align-items-center is-pointer" @onclick="HandleToggleButtonAnother">
+        <div class="dropdown is-right @(toggle.IsToggled ? " is-active" : "" )">
+            <div class="dropdown-trigger is-flex is-align-items-center is-pointer" @onclick="OnToggle">
                 <span class="icon">
                     <i class="material-icons-outlined is-primary-40 is_caption">more_vert</i>
                 </span>
@@ -51,25 +51,32 @@
 </ul>
 
 @code{
+    // Dùng để callback action lên cha
     [Parameter] public EventCallback<ActionModel> SetCurrentAction { get; set; }
+    
+    // Dùng để set ngày tháng
     [Parameter] public DateTime sentDateTime { get; set; }
     [Parameter] public string convertDate { get; set; }
 
-    [Parameter] public string mail { get; set; }
-    private ToggleHelper toggleViewButtonAnother = new ToggleHelper();
+    // Dùng để xác định đang thực hiên action lên mail nào
+    [Parameter] public string mailId { get; set; }
 
+    private ToggleHelper toggle = new ToggleHelper();
 
-    private void HandleToggleButtonAnother()
+    // Togglev việc thêm các chức nắng
+    private void OnToggle()
     {
-        toggleViewButtonAnother.Toggle();
+        toggle.Toggle();
     }
     
-
-    public void HandleClickAction(string action)
+    // Dùng để biết đang thực hiện action nào
+    // reply / reply_all / forward
+    // trường mail dùng để xác định mail id nào
+    public void Action(string action)
     {
         ActionModel model =  
             new ActionModel {
-                mail = mail,
+                mail = mailId,
                 action = action
             };
         SetCurrentAction.InvokeAsync(model);

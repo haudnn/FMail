@@ -2,6 +2,7 @@
     <ul class="is-flex is-flex-direction-column" style="gap: 20px 0">
         @foreach ( var question in questions)
         {
+            var memberUnvote = GetMembersUnvote(question, membersReceived);
         <li>
             <div class="is-flex is-align-items-center is-gap-8">
                 <span class="is_sub2">1.</span>
@@ -12,7 +13,7 @@
                     <div class="dropdown-trigger" @onclick="() => HandleToggleViewUnvote(question.id)">   
                         <div class="is-flex is-align-items-center">
                             <span class="is_body2 is-secondary-40">Số người chưa thực hiện khảo sát:
-                                <span class="is_sub2 is-secondary-20">@getMembersUnvote.Count()</span>
+                                <span class="is_sub2 is-secondary-20">@memberUnvote.Count()</span>
                             </span>
                             <span class="icon">
                                 <i class="material-icons-outlined is-secondary-20">arrow_drop_down</i>
@@ -20,7 +21,7 @@
                         </div>
                     </div>
                     <div class="dropdown-menu" style="min-width: 90%;">
-                        <_DropdownPoll memberIds="@getMembersUnvote"/>
+                        <_DropdownPoll memberIds="memberUnvote"/>
                     </div>
                 </div>
                 <ul class="is-flex is-flex-direction-column is-gap-10-x" style="padding: 10px 20px 0px 20px;">
@@ -63,19 +64,16 @@
 </div>
 
 @code{
-    [Parameter] 
-    public List<QuestionModel> questions { get; set; }
-    [Parameter]
-    public string author { get; set; }
-    [Parameter]
-    public MailModel mail {get; set;} = new MailModel();
+
+    [Parameter] public string author { get; set; }
+    [Parameter] public MailModel mail {get; set;} = new MailModel();
+    [Parameter] public List<QuestionModel> questions { get; set; } = new();
     private ToggleHelper toggleViewVote = new ToggleHelper();
     private ToggleHelper toggleViewUnvote = new ToggleHelper();
     private string idToogleUnvote = String.Empty;
     private string idToogleVote = String.Empty;
-    private List<string> getMembersUnvote = new List<string>();
     private int totalMembers = 0;
-    
+    private List<string> membersReceived { get; set; } = new();
 
     private void HandleToggleViewVote(string idChoice)
     { 
@@ -83,33 +81,30 @@
         toggleViewVote.Toggle();
     }
 
-    protected override void OnInitialized()
-    {
-        
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
         {
-            getMembersUnvote = GetMembersUnvote();
-            await InvokeAsync(StateHasChanged);
+            membersReceived = mail.to.Concat(mail.cc).Concat(mail.bcc).Distinct().ToList();
+            membersReceived.Add(author);
+            totalMembers = membersReceived.Count();
+            StateHasChanged();
         }
     }
-    
+
     private void HandleToggleViewUnvote(string idQuestion)
     {
         idToogleUnvote = idQuestion;
         toggleViewUnvote.Toggle();
     }
 
-    public List<string> GetMembersUnvote()   
+    // Hàm kiểm tra những người chưa vote
+    // Lấy tất cả người đã vote và tất cả những ngươi nhận thư => người chưa vote
+    public static List<string> GetMembersUnvote(QuestionModel question, List<string>  membersReceived)   
     {
-        var allVoters = questions.SelectMany(q => q.choices).SelectMany(c => c.voters).ToList();
-        var membersReceived = mail.to.Concat(mail.cc).Concat(mail.bcc).Distinct().ToList();
-        membersReceived.Add(author);
-        totalMembers = membersReceived.Count();
-        var unvotedMembers = membersReceived.Where(m => !allVoters.Any(v => v == m)).ToList();
+        var allVoters = question.choices.SelectMany(c => c.voters).ToList();
+        var unvotedMembers = membersReceived.Where(m => !allVoters.Contains(m)).ToList();
         return unvotedMembers;
     }
 }

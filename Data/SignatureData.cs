@@ -16,36 +16,34 @@ public class SignatureData
 
     public static IMongoCollection<SignatureModel> signatureCollection = ConnectDB<SignatureModel>.GetClient("mailbox", "signature");
 
-    public static async Task<bool> CreateSignature(SignatureModel signature) 
+    public static async Task<bool> Create(SignatureModel signature, string author) 
     {
-        var isExistSignature = await signatureCollection.Find(x => x.name == signature.name).FirstOrDefaultAsync();
+        var isExistSignature = await signatureCollection.Find(x => x.name == signature.name && x.author == author).FirstOrDefaultAsync();
+
         if (isExistSignature == null)
         {
             signatureCollection.InsertOne(signature);
             return true;
         }
+
         return false;
     }
     
 
-    public static async Task<List<SignatureModel>> GetAllSignatures(string author) 
+    public static async Task<List<SignatureModel>> GetList(string author) 
     { 
         return await signatureCollection.Find(x => x.author == author).ToListAsync();
     }
 
-    
-    public static async Task<SignatureModel> GetSignatureById(string id)
+
+    public static async Task<SignatureModel> Get(string id)
     {
-        SignatureModel signature = new SignatureModel();
-        var isFoundSignature = await signatureCollection.Find(x => x.id == id).FirstOrDefaultAsync();
-        if( isFoundSignature != null ){
-            signature = isFoundSignature;
-        }
-        return signature;
+        var signature = await signatureCollection.Find(x => x.id == id).FirstOrDefaultAsync();
+        return signature ?? new SignatureModel();
     }
     
 
-    public static async Task DeleteSignature(string id)
+    public static async Task Delete(string id)
     {
         var filter = Builders<SignatureModel>.Filter.Eq(signature => signature.id, id);
         await signatureCollection.DeleteOneAsync(filter);
@@ -53,44 +51,36 @@ public class SignatureData
     }
 
 
-    public static async Task SetDefaultSignature(SignatureModel signature, SignatureModel signatureDefaultPrev)
+    public static async Task SetDefault(SignatureModel signature, string author)
     {
+        var builder = Builders<SignatureModel>.Filter;
+        var filter = builder.Eq("author", author) & builder.Ne("id", signature?.id);
 
-        if(!string.IsNullOrEmpty(signatureDefaultPrev.name))
-        {
-            var filterPrev = Builders<SignatureModel>.Filter.Eq(x => x.id, signatureDefaultPrev.id);
-            var updatePrev = Builders<SignatureModel>.Update.Set(s => s.isDefault, false);
-            await signatureCollection.UpdateOneAsync(filterPrev, updatePrev);
-        }
-        if(string.IsNullOrEmpty(signature.name))
-        {
-            return;
-        }
-        var filter = Builders<SignatureModel>.Filter.Eq(x => x.id, signature.id);
-        var update = Builders<SignatureModel>.Update.Set(s => s.isDefault, signature.isDefault);
+        var update = Builders<SignatureModel>.Update.Set("isDefault", false);
         await signatureCollection.UpdateOneAsync(filter, update);
-        return;
+
+        if (signature != null)
+        {
+            filter = builder.Eq("author", author) & builder.Eq("id", signature.id);
+            update = Builders<SignatureModel>.Update.Set("isDefault", true);
+            await signatureCollection.UpdateOneAsync(filter, update);
+        }
     }
 
 
-    public static async Task UpdateSignature(SignatureModel signature) 
+    public static async Task Update(SignatureModel signature)
     {
-
         var filter = Builders<SignatureModel>.Filter.Eq(x => x.id, signature.id);
         var update = Builders<SignatureModel>.Update
             .Set(s => s.name, signature.name)
             .Set(s => s.body, signature.body);
-        await signatureCollection.ReplaceOneAsync(filter, signature);
-        return;
+        await signatureCollection.UpdateOneAsync(filter, update);
     }
 
-    public static async Task<SignatureModel> GetDefaultSignature(string author)
+    public static async Task<SignatureModel> GetDefault(string author)
     {
-        var signature = await signatureCollection.Find(x => x.author == author && x.isDefault == true ).FirstOrDefaultAsync();
-        if(signature == null)
-        {
-            return new SignatureModel();
-        }
-        return signature;
+        var filter = Builders<SignatureModel>.Filter.Eq(x => x.author, author) & Builders<SignatureModel>.Filter.Eq(x => x.isDefault, true);
+        var signature = await signatureCollection.Find(filter).FirstOrDefaultAsync();
+        return signature ?? new SignatureModel();
     }
 }

@@ -8,8 +8,8 @@
         <div class="is-flex is-flex-direction-column" style="gap: 5px 0">
             <p class="is_sub2 is-secondary-10">@Layout.User.FullName</p>
             <div class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 10px 20px">
-                <div class="dropdown is-left @(toggleViewAllActions.IsToggled ? " is-active" : "" )">
-                    <div class="dropdown-trigger" @onclick="HandleToggleViewAllActions">
+                <div class="dropdown is-left @(toggle.IsToggled ? " is-active" : "" )">
+                    <div class="dropdown-trigger" @onclick="Toggle">
                         <div class="is_flex is-flex-wrap-wrap is-gap-10-y">
                             <div class="is-flex is-align-items-center is-pointer">
                                 <div class="is-flex is-align-items-center" style="gap: 0 5px">
@@ -27,19 +27,19 @@
                     </div>
                     <div class="dropdown-menu" style="min-width: 220px;">
                         <div class="dropdown-content is-padding-20 is-flex is-flex-direction-column" style="gap: 10px 0">
-                            <div class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("reply")'>
+                            <div class="is-flex is-align-items-center is-pointer" @onclick='() => SetAction("reply")'>
                                 <span class="icon is-secondary-40">
                                     <i class="material-icons-outlined">reply</i>
                                 </span>
                                 <span class="is-secondary-40 is_sub2">Trả lời</span>
                             </div>
-                            <div class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("reply_all")'>
+                            <div class="is-flex is-align-items-center is-pointer" @onclick='() => SetAction("reply_all")'>
                                 <span class="icon is-secondary-40">
                                     <i class="material-icons-outlined">reply_all</i>
                                 </span>
                                 <span class="is-secondary-40 is_sub2">Trả lời tất cả</span>
                             </div>
-                            <div class="is-flex is-align-items-center is-pointer" @onclick='() => HandleClickAction("forward")'>
+                            <div class="is-flex is-align-items-center is-pointer" @onclick='() => SetAction("forward")'>
                                 <span class="icon is-secondary-40">
                                     <i class="material-icons-outlined">forward</i>
                                 </span>
@@ -54,11 +54,7 @@
                 }
                         <_AddReceiver
                             nameReceiver="To"
-                            groups="groups"
-                            members="members"
-                            groupsSelected="groupsSelected"
                             membersSelected="membersSelected"
-                            originalMembers="originalMembers"
                             OnUpdateMembersSelected="OnUpdateMembersSelected"
                         />
         </div>
@@ -67,34 +63,50 @@
 
     </div>
     <div class="write-zone">
-        <_MailWriteZone forwardMessage="@forwardMessage" forwardBody="@forwardBody" HandleCreate="Create" SetCurrentAction="SetCurrentAction"/>
+        <_MailWriteZone 
+            forwardMessage="@forwardMessage" 
+            forwardBody="@forwardBody" 
+            HandleCreate="Create" 
+            SetCurrentAction="SetCurrentAction"
+        />
     </div>
 </div>
 @code {
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
     [Parameter] public string iconName { get; set; }
     [Parameter] public int action { get; set; }
     [Parameter] public EventCallback<ActionModel> SetCurrentAction {get; set;}
-    [Parameter] public EventCallback<MailModel> HandleCreate {get; set;}
+    [Parameter] public EventCallback<MailModel> OnCreate {get; set;}
     [Parameter] public bool isShowTextTo { get; set; }
     [Parameter] public string mail { get; set; }
-    [Parameter] public List<string> toList { get; set; } = new List<string>();
-    [Parameter] public string forwardMessage { get; set; } = String.Empty;
-    [Parameter] public string forwardBody { get; set; } = String.Empty;
-    public List<MemberModel> originalMembers = new List<MemberModel>(); 
-    public List<GroupModel> groups = new List<GroupModel>();
-    public List<MemberModel> members = new List<MemberModel>();
-    private List<MemberModel> membersSelected = new List<MemberModel>();
-    private List<GroupModel> groupsSelected = new List<GroupModel>();
-    private ToggleHelper toggleViewAllActions = new ToggleHelper();
+    [Parameter] public List<string> toList { get; set; } = new();
+    [Parameter] public string forwardMessage { get; set; }
+    [Parameter] public string forwardBody { get; set; }
+    private List<MemberModel> membersSelected = new();
+    private ToggleHelper toggle = new ToggleHelper();
     public string actionName = String.Empty;
 
-    private void HandleToggleViewAllActions()
+
+    protected override void OnInitialized()
     {
-        toggleViewAllActions.Toggle();
+        // Chuyển đổi từ user id sang member model từ list cha truyền xuống
+        var membersReceiver = InitDataFakeHelper.GetMembersById(toList);
+
+        // Add vào list member đang được chọn
+        membersSelected.AddRange(membersReceiver);
+
+        // Chuyển đổi từ int action sang string action
+        actionName = MailHelper.GetActionName(action);
+        
     }
 
+    // Toggle thay đổi action
+    private void Toggle()
+    {
+        toggle.Toggle();
+    }
+
+    //  Hàm tạo thư
     public async Task Create(MailModel mailToCreate)
     {
         mailToCreate.to = membersSelected.Select(l => l.id).ToList();
@@ -102,21 +114,11 @@
         mailToCreate.bcc = new List<string>(); 
         mailToCreate.isReply = true;
         mailToCreate.pollId = String.Empty;
-        await HandleCreate.InvokeAsync(mailToCreate);
+        await OnCreate.InvokeAsync(mailToCreate);
     }
 
-    protected override void OnInitialized()
-    {
 
-        var membersReceiver = InitDataFakeHelper.GetMembersById(toList);
-        membersSelected.AddRange(membersReceiver);
-        originalMembers = InitDataFakeHelper.InitMembers();
-        members = originalMembers.ToList();
-        groups = InitDataFakeHelper.InitGroups();
-        actionName = MailHelper.GetActionName(action);
-        
-    }
-
+    // Hàm dùng để update danh sách member nhận mail
     public void OnUpdateMembersSelected(MemberSelectedModel memberModel) 
     { 
         if(memberModel.name == "To")
@@ -125,6 +127,7 @@
         }
     }
 
+    // Validate mail
     private async Task<bool> IsValidMail() 
     {
         if(membersSelected.Count == 0) 
@@ -135,10 +138,10 @@
         return true;
     }
 
-
-    public void HandleClickAction(string action)
+    // Hàm dùng để cập nhật hành động
+    public void SetAction(string action)
     {
-        StateHasChanged();
+
         ActionModel model =
             new ActionModel
                 {
@@ -146,6 +149,7 @@
                     action = action
                 };
         SetCurrentAction.InvokeAsync(model);
+        StateHasChanged();
 
     }
 }

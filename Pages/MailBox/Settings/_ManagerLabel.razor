@@ -63,10 +63,8 @@
 </div>
 
 @code {
-    [Parameter]
-    public List<LabelModel> labels { get; set; }
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    private List<LabelModel> labels = new();
     private string labelName { get; set; } = String.Empty;
     private string labelColor { get; set; } = String.Empty;
     private string labelId { get; set; } = String.Empty;
@@ -74,6 +72,14 @@
 
 
 
+    protected override async Task OnInitializedAsync()
+    {
+
+        labels = await LabelData.GetList(Layout.User.id);
+
+    }
+
+    // Set các trường khi update
     private void Update(LabelModel label) 
     { 
         labelId = label.id;
@@ -82,16 +88,20 @@
         isEditLabel = true;
     }
 
-
+    // Xử lý đồng ý cập nhật
 
     private async Task AcceptUpdate()
     {
-        if(labelName == String.Empty) 
+
+        // validate
+        if(string.IsNullOrEmpty(labelName)) 
         {
             await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên của nhãn!");
             return;
         }
-        await LabelData.UpdateLabel(
+
+        // Update label
+        await LabelData.Update(
             new LabelModel 
             {
                 id = labelId,
@@ -99,68 +109,80 @@
                 name = labelName,
                 author = Layout.User.id,
             });
-        LabelModel labelToUpdate = labels.FirstOrDefault(label => label.id ==  labelId);
-        if (labelToUpdate != null)
-        {
-            labelToUpdate.name = labelName;
-            labelToUpdate.color = labelColor;
-        }
+
+        // update trên UI
+        var labelToUpdate = labels.FirstOrDefault(label => label.id ==  labelId);
+        labelToUpdate.name = labelName;
+        labelToUpdate.color = labelColor;
+
         isEditLabel = false;
-        labelId =  String.Empty;
-        labelName = String.Empty;
-        labelColor = String.Empty;
+        // Cập nhật trường
+        Reset();
     }
 
-
+    // Xóa nhãn
 
     private async Task Delete(LabelModel label) 
     {
-        await LabelData.DeleteLabel(label);
-        LabelModel labelToDelete = labels.FirstOrDefault(l => l.id == label.id);
-        labels.Remove(labelToDelete);
+        await LabelData.Delete(label);
+        // update trên UI
+        labels.Remove(labels.FirstOrDefault(l => l.id == label.id));
+
         StateHasChanged();
     }
 
 
-
+    // Hủy tạo
     private void CancelEdit() 
     { 
         isEditLabel = false;
-        labelName = String.Empty;
-        labelColor = String.Empty;
-        labelId = String.Empty;
+        Reset();
     }
 
 
-
+    // Tạo nhãn
     private async Task Create() 
     {
-        if( labelName == String.Empty ) 
+        // validation
+        if(string.IsNullOrEmpty(labelName)) 
         { 
             await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên của nhãn!");
             return;
         }
-        if(labelColor == String.Empty) 
+        if(string.IsNullOrEmpty(labelColor)) 
         {
             labelColor = GenerateColorHelper.RandomColor();
         }
-        LabelModel labelToCreate = new LabelModel{ 
+        // Tạo nhãn
+        LabelModel labelToCreate = new LabelModel
+        { 
             id = GenerateIDHelper.GenerateID("19012001"),
             name = labelName,
             color = labelColor,
             author = Layout.User.id
         };
-        await LabelData.CreateLabel(labelToCreate);
+
+        await LabelData.Create(labelToCreate);
+        // Cập nhật trên UI
         labels.Add(labelToCreate);
-        labelName = String.Empty;
-        labelColor = String.Empty;
+        Reset();
         StateHasChanged();
     }
 
 
 
+    // Đổi màu label
     private void ChangeColor(ChangeEventArgs e) 
     {
         labelColor = e.Value.ToString();
+    }
+
+
+    // Reset trường
+    private void Reset()
+    {
+        labelId =  String.Empty;
+        labelName = String.Empty;
+        labelColor = String.Empty;
     }
 }

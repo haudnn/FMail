@@ -1,72 +1,92 @@
+@inject IJSRuntime JSRuntime
+
 <li class="is-flex is-align-items-center is-justify-content-space-between is-padding-10-y border-bottom">
     <div class="is-flex is-align-items-center is-gap-10-y">
         <span class="is_sub2 is-secondary-20">@category.name</span>
     </div>
      <div class="is-flex is-align-items-center is-gap-10-y">
-            <span class="icon is-pointer is-primary-40" @onclick="() => HandleToggleShowModalEdit(true)">
+            <span class="icon is-pointer is-primary-40" @onclick="() => ToggleEdit(true)">
                 <i class="material-icons-outlined">edit</i>
             </span>
-            <span class="icon is-pointer is-error-60" @onclick="() => HandleToggleShowModalConfirm(true)">
+            <span class="icon is-pointer is-error-60" @onclick="() => ToggleConfirm(true)">
                 <i class="material-icons-outlined">delete</i>
             </span>
     </div>
 </li>
-
+    <!-- Modal xác nhận việc xóa danh mục  -->
     <_ModalConfirmation
         nameModal="Xác nhận việc xóa danh mục"
         contentButton="Xóa"
         contentModal="Thao tác này sẽ ảnh hưởng đến các thư nằm trong danh mục “Nhân sự”, bạn có chắc chắn muốn xóa không?"
-        toggleActiveModal="@isShowModalConfirm"
-        HandleToggleActiveModal="HandleToggleShowModalConfirm"
-        HandleConfirmation="HandleConfirmDelete"
+        isShowModal="isConfirm"
+        OnToggleModal="ToggleConfirm"
+        OnConfirmation="ConfirmDelete"
     />
-
+    <!-- Modal xác nhận việc câp nhật danh mục  -->
     <_ModalData
         nameModal="Chỉnh sửa danh mục"
         contentButton="Cập nhật"
-        toggleActiveModal="@isShowModalEdit"
-        HandleToggleActiveModal="HandleToggleShowModalEdit"
+        isShowModal="isEdit"
         categoryName="@category.name"
-        HandleConfirmation="HandleUpdate"
+        OnToggleModal="ToggleEdit"
+        OnConfirmation="Update"
     />
 
 @code{
 
-    [Parameter] 
-    public CategoryModel category { get; set; }
-    [Parameter]
-    public EventCallback<CategoryModel> HandleDeleteCategory {get; set; }
-    [Parameter]
-    public EventCallback<CategoryModel> HandleUpdateCategory {get; set; }
-    public bool isShowModalConfirm = false;
-    public bool isShowModalAdd = false;
-    public bool isShowModalEdit = false;
+    [Parameter] public CategoryModel category { get; set; }
+    [Parameter] public EventCallback<CategoryModel> OnDelete {get; set; }
+    [Parameter] public EventCallback<CategoryModel> OnUpdate {get; set; }
+    public bool isConfirm = false;
+    public bool isEdit = false;
 
-    public void HandleToggleShowModalConfirm(bool isShow) 
+    // Toggle hiển thị modal xác nhận xóa danh mục
+    public void ToggleConfirm(bool isShow) 
     {
-        isShowModalConfirm = isShow;
+        isConfirm = isShow;
     }
 
-    public void HandleToggleShowModalEdit(bool isShow)
+    // Toggle hiển thị modal chỉnh sửa danh mục
+    public void ToggleEdit(bool isShow)
     {
-        isShowModalEdit = isShow;
+        isEdit = isShow;
     }
 
-
-    public void HandleConfirmDelete()
+    // Xác nhận xóa danh mục
+    public void ConfirmDelete()
     {
-        HandleDeleteCategory.InvokeAsync(category);
-        isShowModalConfirm = !isShowModalConfirm;
+        OnDelete.InvokeAsync(category);
+        isConfirm = !isConfirm;
     }
 
-
-    public void HandleUpdate(string categoryNewName)
+    // Update danh mục
+    public async Task Update(string name)
     {
-        CategoryModel categoryToEdit = new CategoryModel{
-            id =  category.id,
-            name = categoryNewName,
-        };
-        HandleUpdateCategory.InvokeAsync(categoryToEdit);
-        isShowModalEdit = !isShowModalEdit;
+        // validate
+        bool isValid = await IsValidCategory(name);
+        if(!isValid)
+        {
+            return;
+        }
+        category.name = name; 
+        await OnUpdate.InvokeAsync(category);
+        isEdit = !isEdit;
+    }
+
+    // Validate tên danh mục
+    public async Task<bool> IsValidCategory(string name)
+    { 
+        if(string.IsNullOrEmpty(name)) 
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên danh mục!");
+            return false;
+        }
+
+        if( name.Length >  30) 
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Tên danh mục tối đa 30 ký tự!");
+            return false;
+        }
+        return true;
     }
 }

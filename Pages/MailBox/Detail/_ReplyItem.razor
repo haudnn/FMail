@@ -37,7 +37,7 @@
                               <div class="is-padding-20-x">
                                     @((MarkupString)mail.signature.body)
                                 </div>
-                            @if(!String.IsNullOrEmpty(mail.parentId))
+                            @if(!String.IsNullOrEmpty(mail.replyBody))
                             {
                             <div>
                                 <div class="dots">
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="container-reply">
                                    <div class="bordy-reply">
-                                     @((MarkupString)mail.parentId)
+                                     @((MarkupString)mail.replyBody)
                                    </div>
                                 </div>
                             </div>

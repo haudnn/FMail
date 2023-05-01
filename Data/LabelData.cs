@@ -12,27 +12,27 @@ public class LabelData {
     public static IMongoCollection<LabelModel> labelCollection = ConnectDB<LabelModel>.GetClient("mailbox", "label");
 
 
-    public static async Task CreateLabel(LabelModel label)
+    public static async Task Create(LabelModel label)
     {
         await labelCollection.InsertOneAsync(label);
         return;
     }
     
 
-    public static async Task<List<LabelModel>> GetAllLabels(string author) 
+    public static async Task<List<LabelModel>> GetList(string author) 
     {
         return await labelCollection.Find(x => x.author == author).ToListAsync();
     }
 
 
-    public static async Task DeleteLabel(LabelModel label) 
+    public static async Task Delete(LabelModel label) 
     {
         var filter = Builders<LabelModel>.Filter.Eq(x => x.id, label.id);
         await labelCollection.DeleteOneAsync(filter);
         return;
     }
 
-    public static async Task UpdateLabel(LabelModel label)
+    public static async Task Update(LabelModel label)
     {
         var filter = Builders<LabelModel>.Filter.Eq(x => x.id, label.id);
         var update = Builders<LabelModel>.Update
@@ -43,7 +43,7 @@ public class LabelData {
     }
 
 
-    public static async Task<List<LabelModel>> FindLabelsByIds(List<string> ids)
+    public static async Task<List<LabelModel>> GetLabelsById(List<string> ids)
     {
         if (ids == null || ids.Count == 0)
         {

@@ -24,7 +24,7 @@
                 SearchMembers="SearchMembers" 
                 members="members" 
                 directionDropdown="is-left"
-                HandleSelectedMember="SelectedMember" 
+                OnSelectedMember="SelectedMember" 
             />
             <_AddGroupMember 
                 groups="groups" 
@@ -42,8 +42,7 @@
         </div>
 
 @code {
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
     [Parameter] public string nameReceiver {get; set;}
     [Parameter] public List<MemberModel> membersSelected {get; set;}
     [Parameter]  public EventCallback<MemberSelectedModel> OnUpdateMembersSelected { get; set;}
@@ -54,13 +53,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        groups = await GroupData.GetAllGroups(Layout.User.id);
+        // Khởi tạo groups và members
+        groups = await GroupData.GetList(Layout.User.id);
         originalMembers =  InitDataFakeHelper.InitMembers();
         members = originalMembers.ToList();
     }
 
     
-
+    // Xóa thành viên
     private void DeleteMember(MemberModel member) 
     {
         membersSelected.Remove(member);

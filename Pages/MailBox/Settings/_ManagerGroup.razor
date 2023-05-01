@@ -153,7 +153,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        groups = await GroupData.GetAllGroups(Layout.User.id);
+        groups = await GroupData.GetList(Layout.User.id);
         originalMembers =  InitDataFakeHelper.InitMembers();
         members = originalMembers.ToList();
     }
@@ -168,9 +168,10 @@
     // Xem chi tiết nhóm
     private async Task ViewGroup(string groupId) 
     {
-        var foundGroup = await GroupData.GetGroupById(groupId);
-        groupSelected = foundGroup;
-        membersUnique = InitDataFakeHelper.GetMembersUnion(members, foundGroup.members);
+        groupSelected = await GroupData.Get(groupId);
+        // Lấy danh sách users ngoại trừ những người đã có
+        membersUnique = InitDataFakeHelper.GetMembersUnion(members, groupSelected.members);
+        // Chuyển sang trang chi tiết
         ChangeAction("detail");
     }
 
@@ -185,7 +186,7 @@
     // Xác nhận xóa nhóm
     private async Task ConfirmationDeleteGroup(string groupId)
     {
-        await GroupData.DeleteGroup(groupId);
+        await GroupData.Delete(groupId);
         await JSRuntime.InvokeVoidAsync("tagline", true, "Xóa nhóm thành công!");
         await GoBack();
     }
@@ -196,7 +197,7 @@
     private async Task SelectedMember(List<MemberModel> membersList) 
     { 
         membersSelected.AddRange(membersList);
-        if (groupSelected != null) 
+        if (groupSelected != null && membersList.Any()) 
         {
             groupSelected.members.AddRange(membersList);
             await GroupData.AddMembers(groupSelected.id, membersList.Select(m => m.id).ToList());
@@ -214,11 +215,11 @@
         membersSelected = new();
         groupName = String.Empty;
         ChangeAction("static");
-        groups = await GroupData.GetAllGroups(Layout.User.id);
+        groups = await GroupData.GetList(Layout.User.id);
         StateHasChanged();
     }
 
-
+    // Xóa members khỏi nhóm
     private async Task DeleteMember(MemberModel member)
     {
         if (groupSelected != null)
@@ -236,31 +237,27 @@
 
     private async Task SaveGroup()
     {
-
-        bool isValid = await IsValidGroup();
-        if (!isValid)
+        // Vaalidate nhóm
+        bool isValidGroup = await IsValidGroup();
+        if (!isValidGroup)
         {
             return;
         }
 
-        // edit
+        // edit nhóm
         if (isEditGroup)
         {
             groupSelected.name = groupName;
-            bool isValidGroupName = await GroupData.UpdateGroup(groupName, groupSelected.id, Layout.User.id);
-            
-            if(!isValidGroupName)
-            {
-                await JSRuntime.InvokeVoidAsync("tagline", false, "Tên nhóm bạn chọn đã tồn tại trong hệ thống!");
-            }
-            else
-            {
-                await JSRuntime.InvokeVoidAsync("tagline", true, "Cập nhật nhóm thành công!");
-            }
+            // check Tên nhóm đã tồn tại trong db hay chưa?
+            bool isValidGroupName = await GroupData.Update(groupName, groupSelected.id, Layout.User.id);
+
+            string message = isValidGroupName ? "Cập nhật nhóm thành công!" : "Tên nhóm bạn chọn đã tồn tại trong hệ thống!";
+            await JSRuntime.InvokeVoidAsync("tagline", isValidGroupName, message);
+
             isEditGroup = false;
         }
 
-        // create
+        // Tạo mới nhóm
         else
         {
             GroupModel groupToCreate = new GroupModel
@@ -270,18 +267,13 @@
                 members = membersSelected.Select(m => m.id).ToList(),
                 author = Layout.User.id,
             };
+            // check Tên nhóm đã tồn tại trong db hay chưa?
+            bool isValidGroupName = await GroupData.Create(groupToCreate);
 
-            bool isValidGroupName = await GroupData.CreateGroup(groupToCreate);
-            // Đã có
-            if(!isValidGroupName)
-            {
-                await JSRuntime.InvokeVoidAsync("tagline", false, "Tên nhóm bạn chọn đã tồn tại trong hệ thống!");
-            }
-            else
-            {
-                await JSRuntime.InvokeVoidAsync("tagline", true, "Cập nhật nhóm thành công!");
-            }
-            groupName = String.Empty;
+            string message = isValidGroupName ? "Tạo nhóm thành công!" : "Tên nhóm bạn chọn đã tồn tại trong hệ thống!";
+            await JSRuntime.InvokeVoidAsync("tagline", isValidGroupName, message);
+
+            groupName = string.Empty;
             membersSelected.Clear();
         }
     }
@@ -289,6 +281,7 @@
 
 
 
+    // Validate nhóm
     private async Task<bool> IsValidGroup() 
     {
         if(groupName == string.Empty) 
@@ -304,6 +297,8 @@
         return true;
     }
 
+
+    // Tìm kiếm member
     private void SearchMembers(string memberName)
     {
         string normalizedInput = memberName.ToLower();

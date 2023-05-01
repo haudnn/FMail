@@ -26,8 +26,13 @@
 
 </div>
 @code{
-    [Parameter]
-    public List<CategoryModel> categories { get; set;}
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
+    public List<CategoryModel> categories { get; set;} = new();
+
+        
+    protected override async Task OnInitializedAsync ()
+    {
+
+        categories = await CategoryData.GetList();
+    }
+
 }

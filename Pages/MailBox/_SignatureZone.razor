@@ -1,8 +1,8 @@
 <div class="is-padding-top-20" style="padding-bottom: 100px;">
     <div class="is-flex is-align-items-center is-gap-10-y">
         <span>Chữ ký:</span>
-        <div class="dropdown is-up click @(toggleActiveSign ? " is-active" : "" )">
-            <div class="dropdown-trigger is-hover drop-border" @onclick='ToggleActiveSign'>
+        <div class="dropdown is-up click @(toggle ? " is-active" : "" )">
+            <div class="dropdown-trigger is-hover drop-border" @onclick='Toggle'>
                 <div class=" is-flex is-align-items-center">
                     <span class="is-secondary-20 is-font-14">@(currentSignature.name != null ? currentSignature.name : "Không có chữ ký" )</span>
                     <span class="icon">
@@ -42,36 +42,37 @@
     [CascadingParameter] public LayoutMain Layout { get; set; }
     [Parameter] public EventCallback<SignatureModel> OnSetSignature  {get; set; }
     string QuillHTMLContentSignature;  
-    private bool toggleActiveSign = false;
+    private bool toggle = false;
     public SignatureModel currentSignature  = new SignatureModel();
     public List<SignatureModel> signatures =  new List<SignatureModel>();
 
-
-    private void ToggleActiveSign()
+    // Toogle dropdown chọn chữ ký
+    private void Toggle()
     {
-        toggleActiveSign = !toggleActiveSign;
+        toggle = !toggle;
     }
 
     protected override async Task OnInitializedAsync()
     {
-        signatures = await SignatureData.GetAllSignatures(Layout.User.id);
-        currentSignature = await SignatureData.GetDefaultSignature(Layout.User.id);
+        signatures = await SignatureData.GetList(Layout.User.id);
+        currentSignature = await SignatureData.GetDefault(Layout.User.id);
         QuillHTMLContentSignature = currentSignature?.body;
     }
 
+    
+    // Set chữ ký
     private async Task Set(SignatureModel signature) 
     {
-        if(signature == null) {
-            currentSignature = new SignatureModel();
-            QuillHTMLContentSignature = String.Empty;
-            toggleActiveSign = !toggleActiveSign;
-            return;
-        }
-        SignatureModel getSignature =  await SignatureData.GetSignatureById(signature.id).ConfigureAwait(false);
-        currentSignature = getSignature;
+        // Kiểm tra chữ ký mặc định có null
+        signature ??= new SignatureModel();
+
+        // Set chữ ký hiện tại để hiển thị
+        currentSignature = signature;
+        // Callback update
         await OnSetSignature.InvokeAsync(currentSignature);
-        QuillHTMLContentSignature = getSignature.body;
-        toggleActiveSign = !toggleActiveSign;
+        
+        QuillHTMLContentSignature = currentSignature.body;
+        toggle = !toggle;
     }
 
 }

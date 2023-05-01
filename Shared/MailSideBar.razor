@@ -7,7 +7,6 @@
             <i class="material-icons-outlined">menu</i>
         </span>
     </div>
-
     <div class="mail__sidebar-menu scrolly">
         <div class="mail__sidebar-add" style="margin-right: 10px;">
             <a href="create" class="is-flex is-align-items-center is-justify-content-center is-full">
@@ -17,15 +16,19 @@
                 <span class="has-text-weight-medium has-text-white">Tạo thư mới</span>
             </a>
         </div>
-        @foreach (var item in NavMap.Values)
+        @foreach (var main in ListNav)
         {
-            <div  style="margin-right: 10px;" class="mail__sidebar-item is-flex is-align-items-center @(currentPath == item.link ? "active" : "")">
-                <a href="@item.link" @onclick="SetActiveNavItem">
-                    <span class="icon">
-                        <i class="material-icons-sharp is-secondary-40">@item.icon</i>
+            <div style="margin-right: 10px;" class="mail__sidebar-item is-flex is-justify-content-space-between @(main.active ? "active" : "")">
+                <a class="is-flex is-align-items-center is-gap-10-y" href="@main.link" @onclick="() => main.active = !main.active">
+                    <span class="icon is-secondary-40 is-small">
+                        <i class="material-icons-sharp">@main.icon</i>
                     </span>
-                    <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@item.name</span>
-                </a> 
+                    <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@main.name</span>
+                </a>
+                @if (main.count > 0 && !navLess)
+                {
+                    <span class="is-flex is-align-items-center is-justify-content-center is-secondary-40 is_sub2">@main.count</span>
+                }
             </div>
         }
         <div style="margin-right: 10px;" class="mail__sidebar-item border is-flex is-align-items-center is-gap-10-y">
@@ -37,8 +40,8 @@
         <div class="labels-list">
             @foreach (var label in labels)
             {
-                <div class="label-item @(label.id == activeLabel ? "label-active" : "")">
-                    <a href="mail/label/@label.id" class="is-flex is-gap-10-y is-align-items-center" @onclick="() => HandleActiveLabel(label)">
+                <div class="label-item @(label.active ? "label-active" : "")">
+                    <a href="mail/label/@label.id" class="is-flex is-gap-10-y is-align-items-center" @onclick="() =>  label.active = !label.active">
                         <span class="icon">
                             <i class="material-icons-sharp" style="color: @label.color">label</i>
                         </span>
@@ -62,84 +65,117 @@
 </nav>
 
 @code{
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
-    [Parameter]
-    public EventCallback<int> HandleActiveTab { get; set; }
-    [Parameter]
-    public EventCallback<bool> HandleToggleSidebarMail { get; set; }
-    private Dictionary<int, NavModel> NavMap = new Dictionary<int, NavModel>();
-    public string activeLabel { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public EventCallback<bool> Toggle { get; set; }
+    private List<NavModel> ListNav = new();
     private bool navLess = false;
     private List<LabelModel> labels = new();
-    private NavModel prevActiveNavItem;
-    public string currentPath { get; set;}
+    public string activeLabel { get; set; }
+
+
+
+
+    protected override async Task OnInitializedAsync()
+    {        
+        await Navigation();
+        labels = await LabelData.GetList(Layout.User.id);
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                var navStorage = await storage.GetAsync<string>("navLessMail");
+                if (navStorage.Success && !string.IsNullOrEmpty(navStorage.Value))
+                navLess = Convert.ToBoolean(navStorage.Value);
+                await Toggle.InvokeAsync(navLess);
+                StateHasChanged();
+            }
+        }
+        catch (Exception)
+        {
+            return;
+        }
+    }
 
     private async Task ToggleSidebar()
     {
         navLess = !navLess;
-        await HandleToggleSidebarMail.InvokeAsync(navLess);
+        await storage.SetAsync("navLessMail", navLess.ToString());
+        await Toggle.InvokeAsync(navLess);
     }
-
-    protected override async Task OnInitializedAsync()
+    
+    protected override void OnParametersSet()
     {
-        labels = await LabelData.GetAllLabels(Layout.User.id);
-        var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
-        Navigation();
-        SetActiveNavItem();
-    }
-
-    private void SetActiveNavItem()
-    {
-        var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
-        if(relativePath.StartsWith("mail/label/"))
+        var url = navigation.Uri.Replace(navigation.BaseUri, "");
+        
+        if (url.StartsWith("mail/label/"))
         {
-            var label = labels.FirstOrDefault(item => item.id == relativePath?.Split('/').Last());
-            activeLabel = label?.id;
+            foreach (var label in labels)
+            {
+                label.active = url.EndsWith(label.id);
+            }
+            
+            foreach (var main in ListNav)
+            {
+                main.active = false;
+            }
         }
         else
         {
-            currentPath = relativePath;
+            foreach (var main in ListNav)
+            {
+                main.active = url.StartsWith(main.link.Replace("#", ""));
+            }
+            foreach (var label in labels)
+            {
+                label.active = false;
+            }
         }
     }
 
-    private void Navigation() 
+
+
+
+    private async Task Navigation() 
     {
-        NavMap.Add(1, new NavModel
+        ListNav = new();
+        Dictionary<string, int> countMails = await MailData.CountMail(Layout.User.id);
+        ListNav.Add(new NavModel
             {
-                id = 1,
                 name = "Thư đã nhận",
                 icon = "inbox",
                 link = "mail/inbox",
                 active = false,
+                count = countMails["inbox"],
             });
-        NavMap.Add(2, new NavModel
+        ListNav.Add(new NavModel
             {
-                id = 2,
                 name = "Thư đã gửi",
                 icon = "send",
                 link = "mail/sent",
                 active = false,
             });
-        NavMap.Add(3, new NavModel
+        ListNav.Add(new NavModel
             {
-                id = 3,
                 name = "Thư quan trọng",
                 icon = "star",
                 link = "mail/important",
                 active = false,
             });
-        NavMap.Add(4, new NavModel
+        ListNav.Add(new NavModel
             {
-                id = 4,
                 name = "Thư nháp",
                 icon = "drafts",
                 link = "mail/drafts",
                 active = false,
+                count = countMails["draft"],
             });
-        NavMap.Add(5,new NavModel
+        ListNav.Add(new NavModel
             {
-                id = 5,
                 name = "Thùng rác ",
                 icon = "delete",
                 link = "mail/trash",
@@ -147,10 +183,10 @@
             });
     }
 
+    
 
 
-
-    protected override void OnAfterRender(bool firstRender)
+    @* protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
@@ -164,7 +200,7 @@
             }
             else
             {
-                foreach (var item in NavMap.Values)
+                foreach (var item in ListNav.Values)
                 {
                     if (item.link == relativePath)
                     {
@@ -176,12 +212,12 @@
             }
             StateHasChanged();
         }
-    }
+    } *@
 
-
+@* 
     private void HandleActiveLabel(LabelModel clickedLabel) {
         activeLabel = clickedLabel.id;
-    }
+    } *@
 }
 
 

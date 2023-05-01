@@ -128,11 +128,9 @@
 </section>
 
 @code {
-  [CascadingParameter]
-  public LayoutMain Layout { get; set; }
+  [CascadingParameter] public LayoutMain Layout { get; set; }
 
-  [Parameter]
-  public EventCallback<bool> HandleToggleSidebar { get; set; }
+  [Parameter] public EventCallback<bool> HandleToggleSidebar { get; set; }
   private List<NavModel> ListNav = new();
   private bool navLess = false;
   private bool navMobile = false;

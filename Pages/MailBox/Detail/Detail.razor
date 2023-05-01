@@ -7,24 +7,131 @@
 @inject IJSRuntime JSRuntime
 
 <section class="is-padding-20">
-    <_Header mail="mail" />
+
+    <header class="is-flex is-align-items-center is-justify-content-space-between">
+        <div class="is-flex is-align-items-center is-gap-20">
+            <a @onclick="GoBack" class="is-flex is-align-items-center is-gap-8 is-pointer ">
+                <span class="icon is-small">
+                    <i class="material-icons-outlined is-primary-40">arrow_back</i>
+                </span>
+                <span class="is-primary-40 is_button">Trở về</span>
+            </a>
+            <div class="is-flex is-align-items-center is-gap-8 is-pointer">
+                @if(mail.isImportant) 
+                { 
+                    <div class="is-flex is-align-items-center is-gap-8 is-pointer" @onclick="() => OnImportant(false)">
+                        <span class="icon is-small is-warning-20" >
+                            <i class="material-icons-sharp" style="font-size: 12px;">star_purple500</i>
+                        </span>
+                        <span class="is_body2 is-secondary-40">Đánh dấu không quan trọng</span>
+                    </div>
+                }
+                else 
+                {
+                    <div class="is-flex is-align-items-center is-gap-8 is-pointer" @onclick="() => OnImportant(true)">
+                        <span class="icon is-small is-warning-20" >
+                            <i class="material-symbols-outlined "style="font-size: 12px;">star</i>
+                        </span>
+                        <span class="is_body2 is-secondary-40">Đánh dấu quan trọng</span>
+                    </div>
+
+                }
+
+            </div>
+            <div class="dropdown is-left @(toggle.IsToggled ? "is-active" : "" )">
+                <div class="dropdown-trigger is-flex is-align-items-center is-gap-8 is-pointer" @onclick="Toggle">
+                    <span class="icon">
+                        <i class="material-icons-outlined is-error-40">label</i>
+                    </span>
+                    <span class="is_body2 is-secondary-20">Nhãn</span>
+                </div>
+                <div class="dropdown-menu" style="min-width: 250px; min-height: 280px;">
+                    <div class="dropdown-content is-padding-10">
+                        <p class="is_sub2 is-secondary-10 is-padding-bottom-20">Danh sách nhãn</p>
+                        <ul class="is-flex is-flex-direction-column is-gap-10-x">
+                            @foreach (var label in labels)
+                            {
+                                <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
+                                    @if(labelsSelected.Any(l => l.id == label.id))
+                                    {
+                                        <span class="icon is-small" @onclick="() => SetLabel(label)">
+                                            <i class="material-icons-sharp is-secondary-40">check_box</i>
+                                        </span>  
+                                    }
+                                    else 
+                                    { 
+                                        <span class="icon is-small" @onclick="() => SetLabel(label)">
+                                            <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
+                                        </span>
+                                    }
+                                    <div class="is-flex is-align-items-center">
+                                        <span class="icon">
+                                            <i class="material-symbols-sharp" style="color: @label.color; font-size: 12px">label</i>
+                                        </span>
+                                        <span class="is_body2 is-secondary-10">@label.name</span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ul class="is-flex is-align-items-center is-gap-8">
+                @foreach (var label in labelsSelected)
+                {
+                    <li class="is-flex is-align-items-center is-gap-4" style="border-radius: 5px; padding: 5px ;background-color: @(label.color + "33")">
+                        <span class="is_caption" style="color: @label.color">@label.name</span>
+                        <div class="wrapper-icon-24-rounded is-flex is-align-items-center is-justify-content-center" style="width: 16px; height: 16px;" @onclick="() => SetLabel(label)">
+                            <span class="icon">
+                                <i class="material-icons-outlined has-text-white" style="font-size: 9px;">close</i>
+                            </span>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="is-flex is-align-items-center is-gap-8 is-pointer">
+            @if(mail.isRead) 
+            { 
+                <div class="is-flex is-align-items-center is-gap-8 is-pointer" @onclick="() => OnRead(false)">
+                    <span class="icon is-primary-40" >
+                        <i class="material-icons-outlined">drafts</i>
+                    </span>
+                    <span class="is_caption is-primary-40">Đánh dấu chưa đọc</span>
+                </div>
+
+            }
+            else 
+            {
+                <div class="is-flex is-align-items-center is-gap-8 is-pointer" @onclick="() => OnRead(true)">
+                    <span class="icon is-primary-40" >
+                        <i class="material-icons-outlined">email</i>
+                    </span>
+                    <span class="is_caption is-primary-40">Đánh dấu đã đọc</span>
+                </div>
+            }
+
+        </div>
+    </header>
 
     <main class="is-padding-top-20">
         <p class="is-secondary-20 is_h6">@mail.subject</p>
         <div class="is-padding-top-20">
-            <_Info
-                mail="mail"
-                author="author"
-                SetCurrentAction="SetCurrentAction"
-            />
+            @* Thông tìn của mail *@
+            <_Info author="author" mail="mail" SetCurrentAction="SetCurrentAction"/>
         </div>
         <div class="is-padding-top-20">
             <div style="padding-bottom: 20px; margin-left: 40px;" >
                 @((MarkupString)mail.body)
             </div>
+
+
+            @* Kiểm tra mail có khảo sát hay không? *@
             @if(!string.IsNullOrEmpty(mail.pollId))
             {
                 <div class="is-padding-top-20" style="margin-left: 40px;">
+
+                        @* Kiểm tra khảo sát đã được dừng hay chưa? *@
                         @if (poll.isStopped)
                         {
                             <div class="is-flex is-align-items-center is-gap-4" style="margin-bottom: 10px;">
@@ -34,25 +141,26 @@
                                 <span class="is_sub2 is-error-40">Khảo sát này đã được dừng hoặc hết thời gian.</span>
                             </div>
                         }
+
                     <div class="is-flex is-align-items-center" style="gap: 0 20px">
-                        <p class="is-flex-1 is-secondary-10 is_typhography @(isStopSurvey ? "stop-survey" : "" )">
+                        <p class="is-flex-1 is-secondary-10 is_typhography @(isStopPoll ? "stop-survey" : "" )">
                             @poll.title
                         </p>
                         <div class="is-flex is-align-items-center" style="gap: 0 20px">
-                            <div class="is-flex is-align-items-center @(isStopSurvey ? "stop-survey" : "" )">
+                            <div class="is-flex is-align-items-center @(isStopPoll ? "stop-survey" : "" )">
                                 <span class="icon is-secondary-40 is_body2">
                                     <i class="material-icons-outlined">info</i>
                                 </span>
                                 <span class="is_body2 is-secondary-40">Thời gian kết thúc khảo sát: </span>
                             </div>
                             <div class="is-flex is-align-items-center is-gap-4">
-                                <div class="is-flex is-align-items-center @(isStopSurvey ? "stop-survey" : "" )">
+                                <div class="is-flex is-align-items-center @(isStopPoll ? "stop-survey" : "" )">
                                     <span class="icon">
                                         <i class="material-icons-outlined is-secondary-10">calendar_today</i>
                                     </span>
                                     <span class="is_caption is-black">@poll.endDate</span>
                                 </div>
-                                <div class="is-flex is-align-items-center @(isStopSurvey ? "stop-survey" : "" )">
+                                <div class="is-flex is-align-items-center @(isStopPoll ? "stop-survey" : "" )">
                                     <span class="icon">
                                         <i class="material-icons-outlined is-secondary-10">schedule</i>
                                     </span>
@@ -63,27 +171,31 @@
                     </div>
                     <div class="is-padding-top-20">
                         <div class="is-flex is-align-items-center is-gap-4">
+                             @* Disabled: Nếu là chử khảo sát thì dừng rồi vẫn coi được *@
                             <button 
-                                disabled="@(poll.author == Layout.User.id ? false : isStopSurvey)"
-                                class="wrapper-header-poll @(isStopSurvey ? "stop-survey" : "" ) @(currentType == 0 ? "active" : "" ) is-pointer"
-                                @onclick="() => HandleToggleViewStatistical(0)"
+                                disabled="@(poll.author == Layout.User.id ? false : isStopPoll)"
+                                class="wrapper-header-poll @(isStopPoll ? "stop-survey" : "" ) @(currentType == 0 ? "active" : "" ) is-pointer"
+                                @onclick="() => TogglePoll(0)"
                             >
                                 <span class="is_sub2">Khảo sát</span>
                             </button>
+
                             @if(poll.author == Layout.User.id) { 
                                 <button 
-                                        disabled="@(poll.author == Layout.User.id ? false : isStopSurvey)"
-                                        class="wrapper-header-poll @(currentType == 1 ? "active" : "" ) is-pointer"
-                                        @onclick="() => HandleToggleViewStatistical(1)">
-                                        <span class="is_sub2">Thống kê</span>
+                                    disabled="@(poll.author == Layout.User.id ? false : isStopPoll)"
+                                    class="wrapper-header-poll @(currentType == 1 ? "active" : "" ) is-pointer"
+                                    @onclick="() => TogglePoll(1)"
+                                >
+                                    <span class="is_sub2">Thống kê</span>
                                 </button>
                             }
-
                         </div>
+
                             @if (currentType == 0)
                             {
-                                <_Survey isStopped="@isStopSurvey" poll="poll"  questions="questions"/>
+                                <_Survey isStopped="isStopPoll" poll="poll" questions="questions"/>
                             }
+
                             else
                             {  
                                 <_Statistical author="@poll.author" mail="mail" questions="questions"/>
@@ -93,30 +205,32 @@
                 @if(poll.author == Layout.User.id) 
                 {
                     <div class="is-padding-top-20" style="margin-left: 40px;">
-                        <button disabled="@isStopSurvey" style="border: none;"
-                            class="wrapper-button error-btn @(isStopSurvey ? " disable" : "" ) is-inline-flex"
-                            @onclick="() => HandleToggleActiveModal(true)">
+                        <button disabled="@isStopPoll" style="border: none;"
+                            class="wrapper-button error-btn @(isStopPoll ? " disable" : "" ) is-inline-flex"
+                            @onclick="() => ToggleModal(true)">
                             <span class="icon">
                                 <i class="material-icons-outlined has-text-white">poll</i>
                             </span>
                             <span class="is_caption has-text-white">Dừng khảo sát</span>
                         </button>
                     </div>
+
                     <_ModalConfirmation 
                         nameModal="Xác nhận việc dừng khảo sát" 
-                        toggleActiveModal="toggleActiveModal"
                         contentButton="Dừng khảo sát"
                         contentModal="Khi thực hiện thao tác này, người dùng sẽ không thể thực hiện khảo sát được nữa và bạn sẽ không thể mở lại cuộc khảo sát này. Bạn có chắc chắn muốn tiếp tục không?"
-                        HandleToggleActiveModal="HandleToggleActiveModal" 
-                        HandleConfirmation="HandleStopSurvey" 
+                        isShowModal="toggleModal"
+                        OnToggleModal="ToggleModal" 
+                        OnConfirmation="StopPoll" 
                     />
                 }
             }
-            @if(attachments.Count > 0)
+
+            @if(mail.attachments.Count > 0)
             { 
                 <div style="padding: 40px 0px 20px 0px; margin-left: 40px;" >
                     <ul class="attachments-list mt-0">
-                        @foreach (var attachment in attachments)
+                        @foreach (var attachment in mail.attachments)
                         {
                             <li class="attachment-item" @onclick="() => DownloadFileFromStream(attachment)">
                                 <img style="width: 16px; height: 16px;" src="@string.Concat("images/", attachment.icon, ".png")">
@@ -126,9 +240,12 @@
                     </ul>
                 </div>
             }
+            
             <div class="is_sub2 is-secondary-10 is-padding-20-x" style="margin-left: 40px;">
                 @((MarkupString)mail.signature?.body)
             </div>
+
+
             <ul>
                @foreach (var item in replies)
                {
@@ -136,6 +253,8 @@
                }
             </ul>
         </div>
+
+        @* Xác định đang ở action nào *@
         @switch (currentAction)
             {
                 case "reply":
@@ -144,11 +263,9 @@
                         isShowTextTo=false
                         action=1
                         SetCurrentAction="SetCurrentAction"
-                        HandleCreate="HandleCreate"
+                        OnCreate="Create"
                         mail="@currentModelAction.mail"
                         toList="toList"
-                        forwardMessage="@forwardMessage"
-                        forwardBody="@forwardBody"
                     />
                     break;
                 case "reply_all":
@@ -157,11 +274,9 @@
                         isShowTextTo=false
                         action=2
                         SetCurrentAction="SetCurrentAction"
-                        HandleCreate="HandleCreate"
+                        OnCreate="Create"
                         mail="@currentModelAction.mail"
                         toList="toList"
-                        forwardMessage="@forwardMessage"
-                        forwardBody="@forwardBody"
                     />
                     break;
                 case "forward":
@@ -170,7 +285,7 @@
                         isShowTextTo=true
                         action=3
                         SetCurrentAction="SetCurrentAction"
-                        HandleCreate="HandleCreate"
+                        OnCreate="Create"
                         mail="@currentModelAction.mail"
                         toList="toList"
                         forwardMessage="@forwardMessage"
@@ -184,73 +299,80 @@
 
 </section>
 @code {
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
-    [Parameter]
-    public string id { get; set; }
-    public string currentAction = String.Empty;
-    public bool toggleActiveModal = false;
-    public MailModel mail { get; set; } = new MailModel();
-    public List<AttachmentModel> attachments = new List<AttachmentModel>();
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public string id { get; set; }
+    public List<LabelModel> labels { get; set; } = new List<LabelModel>();
+    public List<LabelModel> labelsSelected { get; set; } = new List<LabelModel>();
+    private ToggleHelper toggle = new ToggleHelper();
+    public MailModel mail { get; set; } = new();
     public PollModel poll = new();
+    public ActionModel currentModelAction = new();
+    public List<MailModel> replies = new ();
     public List<QuestionModel> questions = new();
-    public List<LabelModel> labels = new List<LabelModel>();
-    public List<LabelModel> labelsSelected  = new List<LabelModel>();
-    public bool isStopSurvey;
+    public List<string> toList = new();
     public UserModel author  = new();
-    private ToggleHelper toggleViewStatistical = new ToggleHelper();
-    public ActionModel currentModelAction = new ActionModel();
-    public List<MailModel> replies = new List<MailModel>();
 
+    public int currentType = 0;
+    public bool isStopPoll;
     public string forwardMessage = String.Empty;
     public string forwardBody = String.Empty;
-    public List<string> toList = new List<string>();
-    public int currentType = 0;
+    public string currentAction = String.Empty;
+    public bool toggleModal = false;
+
+
     protected override async Task OnParametersSetAsync()
     {
-        mail = await MailData.GetMailById(id);
+        // Lấy mail
+        mail = await MailData.Get(id);
+
+        // Lấy phản hồi
         replies = await MailData.GetMailThread(mail.originalMailId != "" ? mail.originalMailId : id, Layout.User.id);
+        // Lấy danh sách labels mà user đã chọn trước đó
+        labelsSelected  = await LabelData.GetLabelsById(mail.labels);
+        // Lấy danh sách nhãn
+        labels = await LabelData.GetList(Layout.User.id);
+        author = await UserData.Get(mail.from);
+
+        // Đanh dấu mail là đã đọc
         await MailData.Read(id, true);
+
+        // Kiểm tra mail có khảo sát hay không? Nếu có thì lấy
         if(!string.IsNullOrEmpty(mail.pollId)) 
         { 
-            poll = await PollData.GetPollById(mail.pollId);
+            poll = await PollData.Get(mail.pollId);
             questions= poll.questions;
-            isStopSurvey = poll.isStopped;
+            isStopPoll = poll.isStopped;
+            StateHasChanged();
+
         }
-
-        author = await UserData.Get(mail.from);
-        labelsSelected  = await LabelData.FindLabelsByIds(mail.labels);
-        labels = await LabelData.GetAllLabels(Layout.User.id);
-        attachments = mail.attachments;
-        StateHasChanged();
-
     }
 
 
-
-    private void HandleToggleViewStatistical(int type)
+    // Hàm để toogle việc xem thống kê
+    // Tham số type dùng để xác định ở man khảo sát hay màn xem thông kê
+    // 0: Khảo sát - 1: Thống kê
+    private void TogglePoll(int type)
     {
         currentType = type;
     }
 
-    private void HandleToggleActiveModal(bool isActiveModal)
-    {
-        toggleActiveModal = isActiveModal;
-    }
 
-    private async Task HandleStopSurvey()
+    // Bật tắt modal dừng khảo sát
+    private void ToggleModal(bool isActiveModal)
     {
-        await PollData.Stop(poll.id);
-        toggleActiveModal = false;
-        HandleToggleViewStatistical(0);
-        isStopSurvey = true;
+        toggleModal = isActiveModal;
     }
 
 
+    // Hàm xử lý action hiện tại: reply, reply_all hay forward
     public void SetCurrentAction(ActionModel action)
     {
+        // model action: chứa hành động hiện tại và mail đang được click
+        // Set hành động hiện tại
         currentAction = action.action;
         currentModelAction = action;
+
+        // Nếu là forward thì tạo forwardMessage
         if(currentAction == "forward")
         {
 
@@ -260,6 +382,7 @@
             {
                 var member = InitDataFakeHelper.GetMemberById(mailToForward.from);
 
+                // custom forwardMessage
                 forwardMessage += "<p style=\"margin: 20px 0;\"><p><span style=\"color: rgb(34, 34, 34);\">---------- Forwarded message ---------</span></p>";
                 forwardMessage += "<p><span style=\"color: rgb(34, 34   , 34);\">Từ:&nbsp;<strong style=\"color: rgb(34, 34, 34);\">" + member.name + "</strong><span style=\"color: rgb(34, 34, 34);\">&nbsp;&lt;" + member.email + "&gt;</span></p>";
                 forwardMessage += "<p><span style=\"color: rgb(34, 34, 34);\">Date: " + mail.sentDate + "</span></p>";
@@ -267,21 +390,24 @@
                 forwardMessage += "<p><span style=\"color: rgb(34, 34, 34);\">To: " + Layout.User.email + "</span></p></p>";
 
                 forwardBody += mailToForward.body;
-                forwardBody += mailToForward.parentId;
+                forwardBody += mailToForward.replyBody;
             }
+            // Danh sách người nhận với forward lúc khởi tạo sẽ không có gì
             AddListReceiver(null);
         }
         else 
         {
+            // Set lại thông tin forward trước đó bằng ""
             forwardMessage = String.Empty;
             forwardBody = String.Empty;
+
             AddListReceiver(action);
         }
-            StateHasChanged();
+        StateHasChanged();
 
     }
 
-
+    // Tải file
     private async Task DownloadFileFromStream(AttachmentModel attachment)
     {
         var fileName = attachment.name;
@@ -290,13 +416,21 @@
     }
 
 
-    public async Task HandleCreate(MailModel mailToCreate)
+    // Xử ly việc tạo các thư reply forward
+    public async Task Create(MailModel mailToCreate)
     {
+        // Mail gốc là mail đang hiển thị  trang detail
         mailToCreate.originalMailId = id;
+
+        // Xác định mail đang được chọn
         var mailIdClicked = currentModelAction.mail;
         string subject = String.Empty;
+
+        // Tìm mail để xác định đang reply - forward mail gốc hay mail reply
+        // Tìm trong list mail replies: Nếu có thì là reply - forward mail reply nếu không thì là mail gốc
         var findMail = replies.Where(x => x.id == mailIdClicked).FirstOrDefault();
-        
+
+        // Set lại tiêu đề
         if(findMail != null)
         {
             subject = findMail.subject;
@@ -312,53 +446,81 @@
         {
 
             mailToCreate.subject = $"Re: {subject}";
-                    await MailData.Reply(mailToCreate, id, mailIdClicked);
+            // Hàm Reply nhận vào 4 tham số: thông tin mail được tạo, mail gốc, mail đang được chọn, isReply mặc định là true) 
+            await MailData.Reply(mailToCreate, id, mailIdClicked);
         }
         // forward
         else
         {  
             mailToCreate.subject = $"Fwd: {subject}";
+            // Hàm Reply nhận vào 4 tham số: thông tin mail được tạo, mail gốc, mail đang được chọn, isReply = false tức là forward) 
             await MailData.Reply(mailToCreate, id, mailIdClicked, false);
         }
 
         replies.Add(mailToCreate);
-
+        // Set lại các trường về mặc định
         currentAction = String.Empty;
         currentModelAction = new ActionModel();
         StateHasChanged();
     }
 
 
+    // Hàm dùng để dừng khảo sát
+    private async Task StopPoll()
+    {
+        await PollData.Stop(poll.id);
+
+        // Tắt modal
+        toggleModal = false;
+
+        // Quay về màn khảo sát
+        TogglePoll(0);
+        isStopPoll = true;
+    }
+
 
     // Khởi tạo danh sách người nhận khi thực hiện các action
     public void AddListReceiver(ActionModel action)
     {
+        // forward
         if(action == null) 
         {
             return;
         }
+
+        // Lấy thông tin mail đang được chọn
         var mailReply = replies.Where(x => x.id == action.mail).FirstOrDefault();
+
         switch (action.action)
         {
             case "reply":
+                // Nếu = null tức đang reply mail gốc
                 if(mailReply == null)
                 {
                     toList = new List<string>();
+                    // Dùng để check có phải chủ mail hay không
+
+                    // Nếu là chủ thì sẽ reply list to
                     if(mail.from == Layout.User.id)
                     {
                         toList.AddRange(mail.to);
                     }
+                    // Nếu không là chủ thì sẽ reply người gửi
                     else
                     {
                         toList.Add(mail.from);
                     }
                 }
+                // Nếu != null tức đang reply mail reply nên là add from
                 else
                 {
                     toList = new List<string>();
                     toList.Add(mailReply.from);
                 }
                 break;
+
+            // case reply_all
+            // Add tất cả trừ chính mình
             case "reply_all":
                 toList = new List<string>();
                 toList.AddRange(mail.to);
@@ -369,5 +531,50 @@
                 break;
         }
     }
-    
+
+    private async Task OnImportant(bool isImportantMail) 
+    {
+        await MailData.Important(mail.id, isImportantMail);
+        mail.isImportant = isImportantMail;
+        return;
+    }
+
+    // Đánh dấu đã đọc mail
+    private async Task OnRead(bool isRead)
+    {
+        await MailData.Read(mail.id, isRead);
+        mail.isRead = isRead;
+         return;
+    }
+
+
+    private async Task SetLabel(LabelModel label) 
+    {
+        // Kiểm tra nếu có thì xóa không có thì thêm
+
+        // Xóa
+        if (labelsSelected.Any(l => l.id == label.id))
+        {
+            await MailData.RemoveLabel(mail.id, label.id);
+            labelsSelected.Remove(labelsSelected.FirstOrDefault(l => l.id == label.id));
+        }
+
+        // Thêm
+        else
+        {
+            await MailData.AddLabel(mail.id, label.id);
+            labelsSelected.Add(label);  
+        }
+        StateHasChanged();
+
+    }
+    private void Toggle() 
+    { 
+        toggle.Toggle();
+    }
+
+    private async Task GoBack() 
+    { 
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
 }

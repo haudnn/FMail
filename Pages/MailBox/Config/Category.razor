@@ -6,7 +6,7 @@
     <div class="container-manager is-config">
         <div class="is-flex is-align-items-center">
             <p class="is-flex-1 is-uppercase is_h6 is-secondary-20">Cấu hình hộp thư</p>
-            <div class="wrapper-button primary-btn" @onclick="() => HandleToggleShowModalAdd(true)">
+            <div class="wrapper-button primary-btn" @onclick="() => Toggle(true)">
                 <span class="icon">
                     <i class="material-icons-outlined has-text-white">add</i>
                 </span>
@@ -17,11 +17,7 @@
         <ul>
             @foreach (var category in categories.Where(c => c.name != "Khác"))
             {
-                <_Item  
-                    category="category" 
-                    HandleDeleteCategory="HandleDeleteCategory" 
-                    HandleUpdateCategory="HandleUpdateCategory"
-                />
+                <_Item category="category" OnDelete="Delete" OnUpdate="Update"/>
             }
         </ul>
         <li class="is-flex is-align-items-center is-justify-content-space-between is-padding-10-y border-bottom">
@@ -30,73 +26,81 @@
                 </div>
             </li>
     </div>
+    <!-- Modal thêm danh mục  -->
     <_ModalData
         nameModal="Thêm danh mục"
         contentButton="Cập nhật"
-        toggleActiveModal="@isShowModalAdd"
-        HandleToggleActiveModal="HandleToggleShowModalAdd"
+        isShowModal="isShow"
         categoryName="@categoryName"
-        HandleConfirmation="HandleAddCategory"
+        OnToggleModal="Toggle"
+        OnConfirmation="Add"
     />
 </div>
 @code{
     public List<CategoryModel> categories = new List<CategoryModel>();
-
-    public bool isShowModalAdd = false;
+    public bool isShow = false;
     public string categoryName = String.Empty;
-    public void HandleToggleShowModalAdd(bool isShow) 
-    {
-        isShowModalAdd = isShow;
-    }
 
+    // Get list danh mục
     protected override async Task OnInitializedAsync()
     {   
-        await getAllCategories();
+        categories = await CategoryData.GetList();
     }
 
-    public async Task HandleDeleteCategory(CategoryModel categoryDelete)
+    // Bật tắt modal thêm danh mục
+    public void Toggle(bool isShowAdd) 
     {
-        await CategoryData.DeleteCategory(categoryDelete);
-        await getAllCategories();
+        isShow = isShowAdd;
+    }
+
+
+    // Xóa danh mục
+    public async Task Delete(CategoryModel category)
+    {
+        await CategoryData.Delete(category);
+        categories.Remove(categories.FirstOrDefault(x => x.id == category.id));
         StateHasChanged();
     }
 
-
-    private async Task getAllCategories() 
+    // Tạo mới danh mục
+    public async Task Add(string name)
     {
-        categories = await CategoryData.GetAllCategory();
-        return;
-    }
 
-    public async Task HandleAddCategory(string nameToAdd)
-    {
-        bool isValid = await IsValidCategory(nameToAdd);
+        bool isValid = await IsValidCategory(name);
         if(!isValid) return;
 
-        CategoryModel categoryToCreate = new CategoryModel{ 
+        CategoryModel category = new CategoryModel
+        { 
             id = GenerateIDHelper.GenerateID("19012001"),
-            name = nameToAdd,
+            name = name,
         };
-        await CategoryData.CreateCategory(categoryToCreate);
-        categories.Add(categoryToCreate);
+        await CategoryData.Create(category);
+
+        categories.Add(category);
         categoryName = String.Empty;
-        isShowModalAdd = !isShowModalAdd;
+        isShow = !isShow;
     }
 
-    public async Task HandleUpdateCategory(CategoryModel categoryUpdate) 
+
+    // Cập nhật danh mục
+    public async Task Update(CategoryModel category) 
     {
-        await CategoryData.UpdateCategory(categoryUpdate);
-        await getAllCategories();
+        await CategoryData.Update(category);
         StateHasChanged();
     }
 
-    public async Task<bool> IsValidCategory(string nameToAdd)
+
+    // Validate tên danh mục
+    public async Task<bool> IsValidCategory(string name)
     { 
-        if(nameToAdd == String.Empty) {
+        if(string.IsNullOrEmpty(name)) 
+        {
             await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên danh mục!");
             return false;
         }
-        if( nameToAdd.Length >  30) {
+
+        if( name.Length >  30) 
+        {
             await JSRuntime.InvokeVoidAsync("alert", "Tên danh mục tối đa 30 ký tự!");
             return false;
         }

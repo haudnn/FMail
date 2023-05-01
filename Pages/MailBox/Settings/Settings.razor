@@ -4,39 +4,13 @@
 <PageTitle>Thiết lập</PageTitle>
 <div class="mail-wrapper">
     <MailSideBar/>
-    <div  class="mail__main">
+    <div class="mail__main">
         <HeaderMain />
         <section class="is-padding-20 is-flex is-flex-direction-column" style="gap: 20px 0">
-            <_ManagerGroup/>
-            <_ManagerCategory categories="categories"/>
-            <_ManagerLabel labels="labels"/>
-            <_ManagerSignature signatures="signatures" getAllSignatures="getAllSignatures"/>
+            <_ManagerGroup />
+            <_ManagerCategory />
+            <_ManagerLabel />
+            <_ManagerSignature/>
         </section> 
     </div>
 </div>
-@code {
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
-    private List<LabelModel> labels = new();
-    private List<CategoryModel> categories = new();
-
-    private List<SignatureModel> signatures = new List<SignatureModel>();
-
-
-    protected override async Task OnInitializedAsync ()
-    {
-        signatures = await SignatureData.GetAllSignatures(Layout.User.id);
-        categories = await CategoryData.GetAllCategory();
-        labels = await LabelData.GetAllLabels(Layout.User.id);
-
-    }
-
-
-    private async Task<List<SignatureModel>> getAllSignatures()
-    {
-        signatures = await SignatureData.GetAllSignatures(Layout.User.id);
-        return signatures;
-    }
-
-
-}

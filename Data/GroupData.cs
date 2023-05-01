@@ -13,10 +13,10 @@ public class GroupData {
     public static IMongoCollection<GroupModel> groupCollection = ConnectDB<GroupModel>.GetClient("mailbox", "group");
 
 
-    public static async Task<bool> CreateGroup(GroupModel group)
+    public static async Task<bool> Create(GroupModel group)
     {
-        var isExistGroup = await groupCollection.Find(x => x.name == group.name && x.author == group.author).FirstOrDefaultAsync();
-        if( isExistGroup == null ) 
+        var existingGroup = await groupCollection.Find(x => x.name == group.name && x.author == group.author).FirstOrDefaultAsync();
+        if (existingGroup == null)
         {
             await groupCollection.InsertOneAsync(group);
             return true;
@@ -24,21 +24,19 @@ public class GroupData {
         return false;
     }
 
-    public static async Task<List<GroupModel>> GetAllGroups(string author) 
+    public static async Task<List<GroupModel>> GetList(string author) 
     { 
         return await groupCollection.Find(x => x.author == author).ToListAsync();
-    } 
+    }
 
 
-
-    public static async Task<bool> UpdateGroup(string groupName, string groupId, string author)
+    public static async Task<bool> Update(string groupName, string groupId, string author)
     {
-        var isExistGroup = await groupCollection.Find(x => x.name == groupName && x.author == author).FirstOrDefaultAsync();
-        if (isExistGroup == null)
+        var existingGroup = await groupCollection.Find(x => x.name == groupName && x.author == author).FirstOrDefaultAsync();
+        if (existingGroup == null)
         {
             var filter = Builders<GroupModel>.Filter.Eq(x => x.id, groupId);
-            var update = Builders<GroupModel>.Update
-                .Set(g => g.name, groupName);
+            var update = Builders<GroupModel>.Update.Set(g => g.name, groupName);
             await groupCollection.UpdateOneAsync(filter, update);
             return true;
         }
@@ -54,7 +52,7 @@ public class GroupData {
         return;
     }
 
-    public static async Task<GroupModelDetail> GetGroupById(string groupId)
+    public static async Task<GroupModelDetail> Get(string groupId)
     {
         var isFoundGroup = await groupCollection.Find(x => x.id == groupId).FirstOrDefaultAsync();
         List<MemberModel> members = InitDataFakeHelper.GetMembersById(isFoundGroup.members);
@@ -69,13 +67,13 @@ public class GroupData {
     }
 
 
-    public static async Task DeleteGroup(string groupId) 
+    public static async Task Delete(string groupId) 
     {
         var filter = Builders<GroupModel>.Filter.Eq(group => group.id, groupId);
         await groupCollection.DeleteOneAsync(filter);
         return;
     }
-
+    
     public static async Task AddMembers(string groupId, List<string> memberIds)
     {
         var filter = Builders<GroupModel>.Filter.Eq(x => x.id, groupId);

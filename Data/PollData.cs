@@ -17,7 +17,7 @@ public class PollData
     public static IMongoCollection<PollModel> pollCollection = ConnectDB<PollModel>.GetClient("mailbox", "poll");
 
 
-    public static async Task<bool> CreatePoll(PollModel pollToCreate)
+    public static async Task<bool> Create(PollModel pollToCreate)
     {
        try 
         {
@@ -31,70 +31,19 @@ public class PollData
     }
     
 
-    public static async Task<PollModel> GetPollById(string pollId) 
+    public static async Task<PollModel> Get(string pollId) 
     {
         return await pollCollection.Find(x => x.id == pollId).FirstOrDefaultAsync();
     }
 
 
-    public static async Task Vote(string pollId, string questionId, string choiceId, string voter)
+    public static async Task Vote(PollModel poll)
     {
-        try
-        {
-            var filter = Builders<PollModel>.Filter.And(
-                Builders<PollModel>.Filter.Eq("_id", pollId),
-                Builders<PollModel>.Filter.Eq("questions._id", questionId),
-                Builders<PollModel>.Filter.Eq("questions.choices._id", choiceId)
-            );
-            var update = Builders<PollModel>.Update.Push("questions.$.choices.$[choice].voters", voter);
-            var arrayFilters = new List<ArrayFilterDefinition> 
-            {
-                new BsonDocumentArrayFilterDefinition<BsonDocument>(
-                new BsonDocument("choice._id", choiceId)
-                )
-            };
-            var result = await pollCollection.UpdateOneAsync(filter, update, new UpdateOptions
-            {
-                ArrayFilters = arrayFilters
-            });
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
+        var filter = Builders<PollModel>.Filter.Eq(p => p.id, poll.id);
+        await pollCollection.ReplaceOneAsync(filter, poll);
     }
 
 
-    public static async Task<PollModel> UnVote(string pollId, string questionId, string choiceId, string voter)
-    {
-        try
-        {
-            var filter = Builders<PollModel>.Filter.And(
-                Builders<PollModel>.Filter.Eq("_id", pollId),
-                Builders<PollModel>.Filter.Eq("questions._id", questionId),
-                Builders<PollModel>.Filter.Eq("questions.choices._id", choiceId)
-            );
-            var update = Builders<PollModel>.Update.Pull("questions.$.choices.$[choice].voters", voter);
-            var arrayFilters = new List<ArrayFilterDefinition>
-        {
-            new BsonDocumentArrayFilterDefinition<BsonDocument>(
-                new BsonDocument("choice._id", choiceId)
-            )
-        };
-            var options = new FindOneAndUpdateOptions<PollModel>
-            {
-                ReturnDocument = ReturnDocument.After,
-                ArrayFilters = arrayFilters
-            };
-            var updatedPoll = await pollCollection.FindOneAndUpdateAsync(filter, update, options);
-            return updatedPoll;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-            return null;
-        }
-    }
 
 
     public static async Task Stop(string id)

@@ -1,6 +1,4 @@
 @inject IJSRuntime JSRuntime
-@if(mail != null)
-{
 <div class="columns">
         <div class="column is-6">
             <div class="is-flex is-align-items-center is-gap-10-y">
@@ -39,8 +37,8 @@
                             }
 
                         </ul>
-                        <div class="dropdown is-left @(toggleViewDetail.IsToggled ? " is-active" : "" )">
-                            <div class="dropdown-trigger is-flex is-align-items-center" @onclick="HandleToggleViewDetail">
+                        <div class="dropdown is-left @(toggle.IsToggled ? " is-active" : "" )">
+                            <div class="dropdown-trigger is-flex is-align-items-center" @onclick="Toggle">
                                 <span class="icon is-small">
                                     <i class="material-icons-outlined is-primary-40">arrow_drop_down</i>
                                 </span>
@@ -112,33 +110,34 @@
             </div>
         </div>
         <div class="column is-6">
+            <!-- Set các hành động: trả lời, trả lờ tất cả, chuyển tiếp -->
+            <!-- Trường mail id dùng để xác định đang thực hiện action với mail nào -->
             <_Actions 
                 sentDateTime="@sentDateTime" 
                 convertDate="@convertDate" 
                 SetCurrentAction="SetCurrentAction"
-                mail="@mail.id"
+                mailId="@mail.id"
             />
         </div>
 </div>
-}
 
 
 @code {
+    // Xác định thông tin người gửi
     [Parameter] public UserModel author {get; set;} = new UserModel();
+    // Set các hành động: trả lời, trả lờ tất cả, chuyển tiếp
     [Parameter] public EventCallback<ActionModel> SetCurrentAction { get; set; }
     [Parameter] public MailModel mail { get; set; } = new MailModel();
-    private ToggleHelper toggleViewButtonAnother = new ToggleHelper();
-    private ToggleHelper toggleViewDetail = new ToggleHelper();
+    private ToggleHelper toggle = new ToggleHelper();
+    
+    // Danh sách to cc bcc
     public List<MemberModel> toList = new List<MemberModel>();
     public List<MemberModel> ccList = new List<MemberModel>();
     public List<MemberModel> bccList = new List<MemberModel>();
-
+    private bool shouldRender = false;
+        
     public DateTime sentDateTime;
     public string convertDate; 
-    private void HandleToggleButtonAnother() 
-    {
-        toggleViewButtonAnother.Toggle();
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -155,16 +154,17 @@
                 toList = InitDataFakeHelper.GetMembersById(mail.to);
                 ccList = InitDataFakeHelper.GetMembersById(mail.cc);
                 bccList = InitDataFakeHelper.GetMembersById(mail.bcc);
-                await InvokeAsync(StateHasChanged);
+
             }
+             await InvokeAsync(StateHasChanged);
         }
  
     }
 
-    
-    private void HandleToggleViewDetail() 
+
+    private void Toggle() 
     {
-        toggleViewDetail.Toggle();  
+        toggle.Toggle();  
     }
 
 }

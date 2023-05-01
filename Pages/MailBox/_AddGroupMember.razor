@@ -82,10 +82,8 @@
 </div>
 @code {
     [Parameter] public string directionDropdown {get; set;}
-    [Parameter]
-    public List<GroupModel> groups {get; set;} 
-    [Parameter]
-    public EventCallback<List<GroupModel>> HandleSelectedGroup { get; set; }
+    [Parameter] public List<GroupModel> groups {get; set;} 
+    [Parameter] public EventCallback<List<GroupModel>> HandleSelectedGroup { get; set; }
     public List<GroupModel> groupsSelected = new List<GroupModel>();
 
     private ToggleHelper toggleViewAdd = new ToggleHelper();

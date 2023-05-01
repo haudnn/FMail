@@ -153,8 +153,8 @@
     {
 
         // Các hàm get data từ database
-        categorise = await CategoryData.GetAllCategory();
-        labels = await LabelData.GetAllLabels(Layout.User.id);
+        categorise = await CategoryData.GetList();
+        labels = await LabelData.GetList(Layout.User.id);
 
 
         // Khởi tạo thời gian bắt đầu và kết thúc

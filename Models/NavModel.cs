@@ -5,7 +5,6 @@ namespace Workdo.Models
 {
     public class NavModel
     {
-        public int id { get; set; }
         public string name { get; set; }
 
         public string link { get; set; }
@@ -15,5 +14,9 @@ namespace Workdo.Models
         public bool active { get; set; }
 
         public List<NavModel> childs { get; set; }
+
+        /// <summary> Đếm mail chưa đọc </summary>
+
+        public int count { get; set; }
     }
 }

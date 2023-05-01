@@ -174,15 +174,15 @@ public class MailData
     }
 
 
-    public static async Task<MailModel> GetMailById(string id)
+    public static async Task<MailModel> Get(string id)
     {
         return await mailCollection.Find(x => x.id == id).FirstOrDefaultAsync();
     }
 
 
-    public static async Task CreateMail(MailModel mail, bool isDraft = false, string mailDraftId = "")
+    public static async Task CreateMail(MailModel mail,  string mailDraftId = "")
     {
-        if(isDraft && !string.IsNullOrEmpty(mailDraftId))
+        if(!string.IsNullOrEmpty(mailDraftId))
         {
             var filter = Builders<MailModel>.Filter.Eq(x => x.id, mailDraftId);
             mail.id = mailDraftId;
@@ -230,7 +230,7 @@ public class MailData
             subject = mail.subject,
             to = mail.to,
             isImportant = false,
-            parentId = String.Empty,
+            replyBody = String.Empty,
             labels = new List<string>(),
             cc = mail.cc,
             bcc = mail.bcc,
@@ -245,30 +245,31 @@ public class MailData
     public static async Task Reply(MailModel mail, string idMailToReply, string mailIdClicked, bool isReplyMail = true)
     {  
 
-    
         var currentMailReply = await mailCollection.Find(x => x.id == mailIdClicked).FirstOrDefaultAsync();
         string customHtml = "";
         DateTime datetime = DateTime.Parse(currentMailReply.sentDate);
         string output = datetime.ToString("dd 'thg' M',' yyyy 'vào lúc' HH:mm");
         MemberModel member = InitDataFakeHelper.GetMemberById(currentMailReply.from);
-        if(String.IsNullOrEmpty(currentMailReply.parentId))
+        if(String.IsNullOrEmpty(currentMailReply.replyBody))
         {
             if(isReplyMail)
             {
-                customHtml += $"<p> Vào {output} {member.name} {member.email} đã viết: </p>";
-                customHtml += $"<blockquote class='border-reply'> {currentMailReply.body} </blockquote>"  ;
+                // customHtml += $"<p> Vào {output} {member.name} {member.email} đã viết: </p>";
+                // customHtml += $"<blockquote class='border-reply'> {currentMailReply.body} </blockquote>"  ;
                 // <p class='border-reply'> {currentMailReply.body} </p>
+
+                customHtml = "<div>" + "<div>" + "Vào" + " " + output + " " + member.name + " " + $"{member.email}" + " " + "đã viết:" + "<div class=\"border-reply\">" + currentMailReply.body + "</div>" + "</div>" + "</div>";
             }
         }
         else
         {
-            customHtml = "<p>" + "<p>" + "Vào" + " " + output + " " + member.name + " " + $"{member.email}" + " " + "đã viết:" + "<p class=\"border-reply\">" + currentMailReply.body + currentMailReply.parentId + "</p>" + "</p>" + "</p>";
+            customHtml = "<div>" + "<div>" + "Vào" + " " + output + " " + member.name + " " + $"{member.email}" + " " + "đã viết:" + "<div class=\"border-reply\">" + currentMailReply.body + currentMailReply.replyBody + "</div>" + "</div>" + "</div>";
 
         }
         var mailReply = await mailCollection.Find(x => x.id == idMailToReply).FirstOrDefaultAsync();
         mail.id = GenerateIDHelper.GenerateID("19012001"); ;
         mail.category = mailReply.category;
-        mail.parentId = customHtml;
+        mail.replyBody = customHtml;
         mail.originalMailId = mailReply.originalMailId != "" ? mailReply.originalMailId : idMailToReply;
 
         await mailCollection.InsertOneAsync(mail);
@@ -279,7 +280,7 @@ public class MailData
             mail.id = GenerateIDHelper.GenerateID("19012001");
             mail.originalMailId = mailReply.originalMailId != "" ? mailReply.originalMailId : idMailToReply;
             mail.category = mailReply.category;
-            mail.parentId = customHtml;
+            mail.replyBody = customHtml;
             mail.author = recipient;
             mail.to = mail.to;
             await mailCollection.InsertOneAsync(mail);
@@ -382,14 +383,6 @@ public class MailData
         return;
     }
 
-    public static async Task RemoveLabels(List<string> mailIds, List<string> labelIds)
-    {
-        var filter = Builders<MailModel>.Filter.In(x => x.id, mailIds);
-        var update = Builders<MailModel>.Update.PullAll(x => x.labels, labelIds);
-        await mailCollection.UpdateManyAsync(filter, update);
-        return;
-    }
-
     public static async Task AddLabel(string mailId, string labelId)
     {
         var filter = Builders<MailModel>.Filter.Eq(x => x.id, mailId);
@@ -443,4 +436,16 @@ public class MailData
         }
         return mails.Count;
     }
+
+
+    public static async Task<Dictionary<string, int>> CountMail(string author)
+    {
+        Dictionary<string, int> count = new Dictionary<string, int>();
+        var inboxs = await GetMailsInbox("all", author);
+        var drafts = await GetMailsDraft("all", author);
+        count.Add("inbox", inboxs.Count(mail => !mail.isRead));
+        count.Add("draft", drafts.Count);
+
+        return count;
+    } 
 }

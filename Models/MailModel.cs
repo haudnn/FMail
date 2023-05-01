@@ -9,16 +9,16 @@ public class MailModel
 {
     public string id { get; set; }
 
-    //// <summary> id user from </summary>
+    /// <summary> id người gửi </summary>
     public string from { get; set; }
 
-    /// <summary>List các địa chỉ người nhận</summary>
+    /// <summary> Danh sách to </summary>
     public List<string> to { get; set; }
 
-    /// <summary>List các địa chỉ người nhận cc </summary>
+    /// <summary> Danh sách cc </summary>
     public List<string> cc { get; set; }
 
-    /// <summary>List các địa chỉ người nhận bcc </summary>
+    /// <summary> Danh sách bcc </summary>
     public List<string> bcc { get; set; }
 
     /// <summary>Tiêu đề của email</summary>
@@ -30,51 +30,53 @@ public class MailModel
     /// <summary>Danh sách các file</summary>
     public List<AttachmentModel> attachments { get; set; } = new List<AttachmentModel>();
 
-    /// summary>Ngày gửi</summary>
+    /// <summary>Ngày gửi</summary>
     public string sentDate { get; set; }
 
-    /// summary>Check đã đọc </summary>     
+    /// <summary> Check đã đọc </summary>     
     public bool isRead { get; set; }
 
-    /// summary>Check thư quan trọng </summary>  
+    /// <summary> Check thư quan trọng </summary>  
     public bool isImportant { get; set; }
 
-    /// summary>Check thư nháp </summary>  
+    /// <summary>Check thư nháp </summary>  
     public bool isDraft { get; set; }
     
-    /// summary>Check thư rác </summary>  
+    /// <summary>Check thư rác </summary>  
     public bool isTrash { get; set; }
 
-    /// summary>List ids label </summary> 
+    /// <summary> Danh sách id nhãn </summary> 
     public List<string> labels { get; set; }
 
-    /// <summary>Check mail reply </summary> 
+    /// <summary> Check mail reply </summary> 
     public bool isReply { get; set; }
 
-    /// <summary>Id của email gốc </summary> 
+    /// <summary> ID của email gốc </summary> 
     public string originalMailId { get; set; }
     
-    /// summary> author of mail </summary> 
+    /// <summary> ID Chủ cùa mail </summary> 
     public string author { get; set; }
 
-    /// <summary> danh muc </summary> 
+    /// <summary> ID danh mục </summary> 
     public string category { get; set; }
 
-    /// s<ummary> Chu ky </summary> 
+    /// <summary> Chữ ký </summary> 
     public SignatureModel signature { get; set; }
     
-    /// <summary> poll id </summary> 
+    /// <summary> ID khảo sát </summary> 
     public string pollId { get; set; }
 
-    /// <summary> check xóa trong Draft </summary> 
+    /// <summary> Check xóa vĩnh viễn </summary> 
     public bool isDeleted { get; set; }
 
-    /// <summary> for home view </summary> 
+    /// <summary> Body thu gọn </summary> 
     public string shortBody { get; set; }
 
+    /// <summary> Ngày tạo </summary> 
     public long created_at { get; set; }
-    
-    public string parentId { get; set; }
+
+    /// <summary> Nội dung mail reply </summary> 
+    public string replyBody { get; set; }
 
 }
 
@@ -82,44 +84,65 @@ public class MailModel
 public class AttachmentModel
 {
     public string id { get; set; }  
-    /// <summary>file name</summary>
+
+    /// <summary> Tên của file </summary>
     public string name { get; set; }
-    /// <summary>type of file</summary> 
+
+    /// <summary> Định dạng của file </summary> 
     public string contentType { get; set; }
+
+    /// <summary> Kích thước của file </summary> 
     public long size { get; set; }
+
+    /// <summary> Đường dẫn của file </summary> 
     public string filePath { get; set; }
+
+    /// <summary> Xác định icon </summary> 
     public string icon => FileHelper.GetIconForFileType(name);
 }
 
+
+/// <summary> Xác định tag mail ở trang home </summary> 
 public class TagMailModel
 {
+    /// <summary> Màu của tag </summary> 
     public string textColor { get; set; }
+
+    /// <summary> Background của atg </summary> 
     public string backgroundColor { get; set; }
+
+    /// <summary> Tên của tag </summary> 
     public string name { get; set; }
 }
 
-
+/// <summary> Dùng để lọc ở trang home </summary> 
 public class FilterModel
 {
     public int id { get; set; }
     public string name { get; set; }
 
+    /// <summary> ID của danh mục </summary> 
     public string categoryId { get; set; }
 
+    /// <summary> Ngày bắt đầu lọc </summary> 
     public string startTime { get; set; }
+
+    /// <summary> Ngày kết thúc lọc </summary> 
     public string endTime { get; set; }
+
+    /// <summary> Lọc đã đọc hay chưa </summary> 
     public int isRead { get; set; }
 
     public List<string> labelIds { get; set; }
 }
-public class TimeModel
-{
-    public string start { get; set; }
-    public string end { get; set; }
-}
 
+/// <summary> Dùng để xác định hành đông ở trang chi tiết </summary> 
 public class ActionModel
 {
+
+    /// <summary> ID mail </summary> 
     public string mail { get; set; }
+
+    /// <summary> Tên hành động </summary> 
     public string action { get; set; }
 }

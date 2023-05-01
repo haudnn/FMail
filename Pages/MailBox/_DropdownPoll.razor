@@ -14,8 +14,7 @@
 </div>
 
 @code{
-    [Parameter] 
-    public List<string> memberIds { get; set; }
+    [Parameter] public List<string> memberIds { get; set; }
     public List<MemberModel> members { get; set; } = new List<MemberModel>();
 
     protected override void OnAfterRender(bool firstRender)
@@ -26,10 +25,6 @@
                 InvokeAsync(StateHasChanged);
             }
         }
-
-
-
-
     
 }
 

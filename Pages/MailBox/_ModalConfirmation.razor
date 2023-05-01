@@ -3,7 +3,7 @@
     <div class="modal-card">
         <header class="modal-card-head">
             <p class="is_h5 is-primary-40">@nameModal</p>
-            <div class="wrapper-icon-24-rounded" @onclick='() => ToggleActiveModal(false)'>
+            <div class="wrapper-icon-24-rounded" @onclick='Toggle'>
                 <span class="icon">
                     <i class="material-icons-outlined has-text-white">close</i>
                 </span>
@@ -13,10 +13,10 @@
             <p class="is-secondary-40 is_body2">@contentModal</p>
         </section>
         <footer class="modal-card-foot delete-group">
-            <div class="wrapper-button" @onclick='() => ToggleActiveModal(false)'>
+            <div class="wrapper-button" @onclick='Toggle'>
                 <span class="is_button is-primary-40">Hủy</span>
             </div>
-            <div class="wrapper-button error-btn" @onclick="HandleConfirmationModal">
+            <div class="wrapper-button error-btn" @onclick="Confirmation">
                 <span class="icon">
                     <i class="material-icons-outlined has-text-white">delete</i>
                 </span>
@@ -35,13 +35,13 @@
     [Parameter] public EventCallback OnConfirmation { get; set; }
 
 
-    private void ToggleActiveModal(bool isActiveModal) 
+    private void Toggle() 
     {
-        OnToggleModal.InvokeAsync(isActiveModal);
+        OnToggleModal.InvokeAsync(false);
     }
     
     
-    private void HandleConfirmationModal() 
+    private void Confirmation() 
     {
         OnConfirmation.InvokeAsync();
     }

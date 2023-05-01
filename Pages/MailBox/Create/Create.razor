@@ -14,13 +14,13 @@
 @if(isLoading)
 {
     <section class="loading-section">
-        <button class="is-primary-40 button is-loading">Loading..</button>
+        <button class="is-primary-40 button is-loading">Loading...</button>
     </section>
 }
 
 <section class="is-padding-20">
     <div class="is-flex is-align-items-center is-justify-content-flex-start is-gap-20">
-        <a href="mail/inbox" class="is-flex is-align-items-center is-gap-8 is-pointer ">
+        <a @onclick="CancelCreate" class="is-flex is-align-items-center is-gap-8 is-pointer ">
             <span class="icon">
                 <i class="material-icons-outlined is-primary-40">arrow_back</i>
             </span>
@@ -266,10 +266,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await CategoryData.GetAllCategory();
-        labels = await LabelData.GetAllLabels(Layout.User.id);
+        categories = await CategoryData.GetList();
+        labels = await LabelData.GetList(Layout.User.id);
         currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
-        mail.signature = await SignatureData.GetDefaultSignature(Layout.User.id);
+        mail.signature = await SignatureData.GetDefault(Layout.User.id);
 
     }  
 
@@ -278,19 +278,19 @@
     {
         if(mailId != default)
         {
-            mail = await MailData.GetMailById(mailId);
+            mail = await MailData.Get(mailId);
             QuillHTMLContent = mail.body;
 
             membersSelected = InitDataFakeHelper.GetMembersById(mail.to);
             membersCCSelected = InitDataFakeHelper.GetMembersById(mail.cc);
             membersBCCSelected = InitDataFakeHelper.GetMembersById(mail.bcc);
 
-            currentCategory = await CategoryData.GetCategoryById(mail.category);
-            labelsSelected = await LabelData.FindLabelsByIds(mail.labels);
+            currentCategory = await CategoryData.Get(mail.category);
+            labelsSelected = await LabelData.GetLabelsById(mail.labels);
 
             if(!string.IsNullOrEmpty((mail.pollId)))
             {
-                poll = await PollData.GetPollById(mail.pollId);
+                poll = await PollData.Get(mail.pollId);
                 toggleCreatePoll.Toggle();
                 isDoneCreatePoll = true;
             }
@@ -536,13 +536,13 @@
         mail.isDeleted = false;
         mail.originalMailId = String.Empty;
         mail.created_at = DateTime.Now.Ticks;
-        mail.parentId = String.Empty;
+        mail.replyBody = String.Empty;
 
         // Kiểm tra có poll hay không và tạo
         if(!string.IsNullOrEmpty(poll.id)) 
         {
-            bool isCreatedPollSuccess = await PollData.CreatePoll(poll);
-            if(isCreatedPollSuccess) 
+            bool isSuccess = await PollData.Create(poll);
+            if(isSuccess) 
             {
                 mail.pollId = poll.id;
             };
@@ -553,7 +553,7 @@
         {
             // Nếu có mailid => gủi thư nháp
             isLoading = true;
-            await MailData.CreateMail(mail, false, mailId);
+            await MailData.CreateMail(mail,  mailId);
             isLoading = false;
             await JSRuntime.InvokeVoidAsync("tagline", true, "Tạo mail thành công!");  
         } 
@@ -583,14 +583,14 @@
 
 
 
-    // Hủy tạo
+    // Hủy tạo mail và quay về trang trước đó
     private async Task CancelCreate() 
     { 
         await JSRuntime.InvokeVoidAsync("history.back");
     }
 
 
-    // Cập nhật receiver
+    // Cập nhật danh sách người nhận
     // name dùng để phân biệt to cc bcc
     public void OnUpdateMembersSelected(MemberSelectedModel memberModel) 
     { 

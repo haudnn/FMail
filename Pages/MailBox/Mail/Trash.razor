@@ -163,7 +163,7 @@
     protected override async Task OnInitializedAsync()
     {
         // Các hàm get data từ database
-        labels = await LabelData.GetAllLabels(Layout.User.id);
+        labels = await LabelData.GetList(Layout.User.id);
         mails = await MailData.GetList("trash", Layout.User.id);
 
         // Clone mails gốc để filter
@@ -315,7 +315,7 @@
         // Kiểm tra thư chưa đọc hay đã đọc 1: đã đọc 2: chưa đọc
         int status = filter.isRead == 0 ? currrentStatusFilter : filter.isRead;
 
-        // Kiểm tra thời gian bắt đầu hay và kết thúc
+        // Kiểm tra thời gian bắt đầu và kết thúc
         string startTime = String.IsNullOrEmpty(filter.startTime) ? currrentStartTimeFilter : filter.startTime;
         string endTime = String.IsNullOrEmpty(filter.endTime) ? currrentEndTimeFilter : filter.endTime;
 

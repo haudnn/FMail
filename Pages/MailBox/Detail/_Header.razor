@@ -9,22 +9,22 @@
         <div class="is-flex is-align-items-center is-gap-8 is-pointer">
             @if(isImportantClone) 
             { 
-                <span class="icon is-small is-warning-20" @onclick="() => IsImportant(false)">
+                <span class="icon is-small is-warning-20" @onclick="() => OnImportant(false)">
                     <i class="material-icons-sharp" style="font-size: 12px;">star_purple500</i>
                 </span>
                 <span class="is_body2 is-secondary-40">Đánh dấu không quan trọng</span>
             }
             else 
             {
-                <span class="icon is-small is-warning-20" @onclick="() => IsImportant(true)">
+                <span class="icon is-small is-warning-20" @onclick="() => OnImportant(true)">
                     <i class="material-symbols-outlined "  style="font-size: 12px;">star</i>
                 </span>
                 <span class="is_body2 is-secondary-40">Đánh dấu quan trọng</span>
             }
 
         </div>
-        <div class="dropdown is-left @(toggleShowLabel.IsToggled ? "is-active" : "" )">
-            <div class="dropdown-trigger is-flex is-align-items-center is-gap-8 is-pointer" @onclick="HandelToggleShowLabel">
+        <div class="dropdown is-left @(toggle.IsToggled ? "is-active" : "" )">
+            <div class="dropdown-trigger is-flex is-align-items-center is-gap-8 is-pointer" @onclick="Toggle">
                 <span class="icon">
                     <i class="material-icons-outlined is-error-40">label</i>
                 </span>
@@ -39,13 +39,13 @@
                             <li class="dropdown-item filter is-flex is-align-items-center px-0 py-0 is-gap-8">
                                 @if(labelsSelected.Any(l => l.id == label.id))
                                 {
-                                    <span class="icon is-small" @onclick="() => HandelChooseLabel(label)">
+                                    <span class="icon is-small" @onclick="() => SetLabel(label)">
                                         <i class="material-icons-sharp is-secondary-40">check_box</i>
                                     </span>  
                                 }
                                 else 
                                 { 
-                                    <span class="icon is-small" @onclick="() => HandelChooseLabel(label)">
+                                    <span class="icon is-small" @onclick="() => SetLabel(label)">
                                         <i class="material-icons-outlined is-secondary-40">check_box_outline_blank</i>
                                     </span>
                                 }
@@ -66,7 +66,7 @@
             {
                 <li class="is-flex is-align-items-center is-gap-4" style="border-radius: 5px; padding: 5px ;background-color: @(label.color + "33")">
                     <span class="is_caption" style="color: @label.color">@label.name</span>
-                    <div class="wrapper-icon-24-rounded is-flex is-align-items-center is-justify-content-center" style="width: 16px; height: 16px;" @onclick="() => HandelChooseLabel(label)">
+                    <div class="wrapper-icon-24-rounded is-flex is-align-items-center is-justify-content-center" style="width: 16px; height: 16px;" @onclick="() => SetLabel(label)">
                         <span class="icon">
                             <i class="material-icons-outlined has-text-white" style="font-size: 9px;">close</i>
                         </span>
@@ -78,14 +78,14 @@
     <div class="is-flex is-align-items-center is-gap-8 is-pointer">
         @if(isReadMail) 
         { 
-            <span class="icon is-primary-40" @onclick="() => IsRead(false)">
+            <span class="icon is-primary-40" @onclick="() => OnRead(false)">
                 <i class="material-icons-outlined">drafts</i>
             </span>
             <span class="is_caption is-primary-40">Đánh dấu chưa đọc</span>
         }
         else 
         {
-            <span class="icon is-primary-40" @onclick="() => IsRead(true)">
+            <span class="icon is-primary-40" @onclick="() => OnRead(true)">
                 <i class="material-icons-outlined">email</i>
             </span>
             <span class="is_caption is-primary-40">Đánh dấu đã đọc</span>
@@ -95,61 +95,79 @@
 </header>
 
 @code{
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public MailModel mail { get; set; }
+
     public List<LabelModel> labels { get; set; } = new List<LabelModel>();
     public List<LabelModel> labelsSelected { get; set; } = new List<LabelModel>();
-    [Parameter] public MailModel mail { get; set; }
     public bool isImportantClone;
     public bool isReadMail = true;
-    private ToggleHelper toggleShowLabel = new ToggleHelper();
+    private ToggleHelper toggle = new ToggleHelper();
 
-    private void HandelToggleShowLabel() 
+    // Toggle việc thêm nhãn cho mail
+    private void Toggle() 
     { 
-        toggleShowLabel.Toggle();
+        toggle.Toggle();
     }
 
-    protected override async Task OnParametersSetAsync()
+
+    @* protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        labelsSelected  = await LabelData.FindLabelsByIds(mail.labels);
-        labels = await LabelData.GetAllLabels(Layout.User.id);
-    }
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if(firstRender)
+        if (firstRender)
         {
-            isImportantClone = mail.isImportant;
-        }
-    }
 
-    
-    private async Task IsImportant(bool isImportantMail ) 
+        }
+        else 
+        {
+            if (!string.IsNullOrEmpty(mail.id)) 
+            {
+                // Lấy danh sách labels mà user đã chọn trước đó
+                labelsSelected  = await LabelData.GetLabelsById(mail.labels);
+                // Lấy danh sách nhãn
+                labels = await LabelData.GetList(Layout.User.id);
+                isImportantClone = mail.isImportant;
+                isReadMail = mail.isRead;
+            }
+            }
+
+        StateHasChanged();
+    } *@
+
+    // Đánh dấu quan trọng mail
+    private async Task OnImportant(bool isImportantMail) 
     {
         await MailData.Important(mail.id, isImportantMail);
         isImportantClone = isImportantMail;
     }
 
-
-    private async Task IsRead(bool isRead )
+    // Đánh dấu đã đọc mail
+    private async Task OnRead(bool isRead)
     {
         await MailData.Read(mail.id, isRead);
         isReadMail = isRead;
     }
 
-
-    private async Task HandelChooseLabel(LabelModel label) 
+    // Cập nhật label cho mail
+    private async Task SetLabel(LabelModel label) 
     {
+        // Kiểm tra nếu có thì xóa không có thì thêm
+
+        // Xóa
         if (labelsSelected.Any(l => l.id == label.id))
         {
             await MailData.RemoveLabel(mail.id, label.id);
             labelsSelected.Remove(labelsSelected.FirstOrDefault(l => l.id == label.id));
-            StateHasChanged();
         }
+
+        // Thêm
         else
         {
             await MailData.AddLabel(mail.id, label.id);
             labelsSelected.Add(label);  
-                StateHasChanged();                   
         }
+        // labelsSelected  = await LabelData.GetLabelsById(mail.labels);
+        StateHasChanged();
+
     }
+
 }

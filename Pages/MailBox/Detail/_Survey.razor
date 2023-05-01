@@ -15,12 +15,9 @@
                     {
                         <_ChoiceItem
                             choice="choice"
-                            questionid="@question.id"
-                            isMultipleChoice="@question.isMultipleChoice"
-                            idChoice="@idChoice"
-                            IsVotePrevious="IsVotePrevious"
+                            question="question"
                             OnVote="Vote"
-                            isStopped="@isStopped"
+                            isStopped="isStopped"
                         />
                     }
                 </div>
@@ -30,50 +27,60 @@
     </ul>
 </div>
 @code{
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
-    [Parameter] 
-    public PollModel poll { get; set; } = new PollModel();
-    [Parameter]
-    public bool isStopped { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public PollModel poll { get; set; } = new PollModel();
+    [Parameter] public bool isStopped { get; set; }
+    [Parameter] public List<QuestionModel> questions { get; set; }
 
-        [Parameter] 
-    public List<QuestionModel> questions { get; set; }
-    public string idChoice { get; set; } = String.Empty;
     
 
-    public void IsVotePrevious(string id) {
-        idChoice = id;
-    }
-
+    // Hàm xử lý user chọn đáp án
     public async Task Vote(QuestionChoice question)
     {
-        // radio button
-        if(!question.isMultipleChoice) {
-            if (!question.isVotePrevious)
+        var choiceId = question.choiceId;
+        var questionId = question.id;
+        // Tìm câu hỏi được chọn
+        var foundQuestion = poll.questions.FirstOrDefault(q => q.id == questionId);
+        // Tìm đáp án được chọn
+        var foundChoice = foundQuestion.choices.FirstOrDefault(c => c.id == choiceId);
+
+
+        // Nếu đây là câu hỏi nhiều đáp án
+        if (foundQuestion.isMultipleChoice)
+        {
+            // Có thì xóa
+            if (foundChoice.voters.Contains(Layout.User.id))
             {
-                if (!String.IsNullOrEmpty(idChoice))
-                {
-                    await PollData.UnVote(poll.id, question.id, idChoice, Layout.User.id);
-                }
-                idChoice = question.choiceId;
-                await PollData.Vote(poll.id, question.id, idChoice, Layout.User.id);
-                @* MessagingCenter.Send<string>(idChoice,"vote"); *@
+                foundChoice.voters.Remove(Layout.User.id);
             }
-        }
-        // checkbox
-        else 
-        { 
-            idChoice = question.choiceId;
-            if(question.isVotePrevious) 
-            {
-                await PollData.UnVote(poll.id, question.id, idChoice, Layout.User.id); 
-            }
+            // Không có thì thêm
             else
-            { 
-                await PollData.Vote(poll.id, question.id, idChoice, Layout.User.id);
-            }    
+            {
+                foundChoice.voters.Add(Layout.User.id);
+            }
         }
 
+        // Nếu đây là câu hỏi 1 đáp án
+        else
+        {
+            // Xóa đáp án đã chọn trước đó và câp nhật
+            foreach (var choice in foundQuestion.choices)
+            {
+                if (choice.id == choiceId)
+                {
+                    if (!choice.voters.Contains(Layout.User.id))
+                    {
+                        choice.voters.Add(Layout.User.id);
+                    }
+                }
+                else
+                {
+                    choice.voters.Remove(Layout.User.id);
+                }
+            }
+        }
+        await PollData.Vote(poll);
     }
+
+
 }
