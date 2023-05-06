@@ -63,6 +63,13 @@
   <p>ConnectDB trong folder: Helpers/ConnectDB.cs, backup trong folder "backup", mỗi file .json là 1 model</p>
   <p>Đã thay đổi từ Mongo Local => Mongo Cloud</p>
 
+
+<strong>Tuần 7 + Tuần 8: 24/4/2023 - 6/5/2023</strong>
+  <h4>Công việc thực hiện được: </h4>
+  <p>Fix các lỗi trong sheet feedback ở tuần trước</p>
+  <p>Hoàn thành các chức năng</p>
+  <p>Clean code: Thêm comment, tái cấu trúc src code + chức nắng</p>
+  <p>Tài khoản dùng để test như ở trên</p>
     
     
   

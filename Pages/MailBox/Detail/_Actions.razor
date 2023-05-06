@@ -1,3 +1,6 @@
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+
 <ul class="is-flex is-align-items-center is-gap-10-y is-justify-content-flex-end is-full">
     <li class="is-flex is-align-items-center is-pointer">
         <span class="is_caption is-secondary-40">@sentDateTime.ToString("HH:mm")</span>
@@ -32,13 +35,7 @@
             </div>
             <div class="dropdown-menu" style="min-width: 240px;">
                 <div class="dropdown-content is-padding-20">
-                    <div class="is-pointer is-flex is-align-items-center is-gap-10-y is-mb-10">
-                        <span class="icon">
-                            <i class="material-icons-outlined is-secondary-40">mail</i>
-                        </span>
-                        <span class="is_sub2 is-secondary-40">Đánh dấu chưa đọc</span>
-                    </div>
-                    <div class="is-pointer is-flex is-align-items-center is-gap-10-y">
+                    <div class="is-pointer is-flex is-align-items-center is-gap-10-y"  @onclick="Trash">
                         <span class="icon">
                             <i class="material-icons-outlined is-error-40">delete</i>
                         </span>
@@ -53,7 +50,7 @@
 @code{
     // Dùng để callback action lên cha
     [Parameter] public EventCallback<ActionModel> SetCurrentAction { get; set; }
-    
+
     // Dùng để set ngày tháng
     [Parameter] public DateTime sentDateTime { get; set; }
     [Parameter] public string convertDate { get; set; }
@@ -61,6 +58,7 @@
     // Dùng để xác định đang thực hiên action lên mail nào
     [Parameter] public string mailId { get; set; }
 
+    private string currentMailId;
     private ToggleHelper toggle = new ToggleHelper();
 
     // Togglev việc thêm các chức nắng
@@ -69,9 +67,17 @@
         toggle.Toggle();
     }
     
+    protected override void OnParametersSet()
+    {  
+        if(currentMailId != mailId)
+        {
+            currentMailId = mailId;
+        }
+    }
+
     // Dùng để biết đang thực hiện action nào
     // reply / reply_all / forward
-    // trường mail dùng để xác định mail id nào
+    // trường mail dùng để xác định đang reply, reply all, hay forward lên mail nào?
     public void Action(string action)
     {
         ActionModel model =  
@@ -81,5 +87,14 @@
             };
         SetCurrentAction.InvokeAsync(model);
     }
+
+
+    // Đưa vào thùng rác
+    public async Task Trash()
+    {
+        await MailData.Trash(currentMailId);
+        navigation.NavigateTo("mail/inbox",true);
+    }
+
 }
 

@@ -21,7 +21,7 @@
         {
             if(firstRender)
             {
-                members = InitDataFakeHelper.GetMembersById(memberIds);
+                members = FakeDataHelper.GetMembersById(memberIds);
                 InvokeAsync(StateHasChanged);
             }
         }

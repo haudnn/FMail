@@ -51,6 +51,21 @@
                                    </div>
                                 </div>
                             </div>
+
+                            }
+                            @if(mail.attachments.Count > 0)
+                            { 
+                                <div style="margin-top: 40px;" >
+                                    <ul class="attachments-list mt-0">
+                                        @foreach (var attachment in mail.attachments)
+                                        {
+                                            <a target="_blank" href="@attachment.filePath" class="attachment-item">
+                                                <img style="width: 16px; height: 16px;" src="@string.Concat("images/", attachment.icon, ".png")">
+                                                <span>@attachment.name</span>
+                                            </a>
+                                        }
+                                    </ul>
+                                </div>
                             }
                         </div>
                     </div>
@@ -72,7 +87,7 @@
     {
         isShow = false;
         author = await UserData.Get(mail.from);
-        member = InitDataFakeHelper.GetMemberById(mail.from);
+        member = FakeDataHelper.GetMemberById(mail.from);
         sentDateTime = DateTime.Parse(mail.sentDate);
         convertDate = SharedHelper.ConvertDate(sentDateTime);
     }
@@ -83,15 +98,4 @@
         InvokeAsync(StateHasChanged);
     }
 
-
-
-    public void HandleClickAction(string action)
-    {
-        SetCurrentAction.InvokeAsync(
-            new ActionModel {
-                mail = mail.id,
-                action = action
-            }
-        );
-    }
 }

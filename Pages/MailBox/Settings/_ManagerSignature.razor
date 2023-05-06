@@ -90,7 +90,7 @@
                                 <span class="icon">
                                     <i class="material-icons-outlined is-primary-40">edit</i>
                                 </span>
-                                <span class="is_caption is-primary-40">Cập nhật</span>
+                                <span class="is_caption is-primary-40">Tạo mới</span>
                             </div>
                         }
                         else 
@@ -203,7 +203,7 @@
 
         SignatureModel signatureToCreate = new SignatureModel
         {
-            id = GenerateIDHelper.GenerateID("19012001"),
+            id = SharedHelperV2.GenerateID("19012001"),
             name = signatureName,
             body = await QuillHtml.GetHTML(),
             author = Layout.User.id,
@@ -217,7 +217,9 @@
             await JSRuntime.InvokeVoidAsync("tagline", false, "Tên chữ ký bạn chọn đã tồn tại trong hệ thống!");
             return;
         }
+    
 
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Tạo mới chữ ký thành công!");
 
         signatures.Add(signatureToCreate);
         await Reset();
@@ -229,6 +231,7 @@
     private async Task Delete() 
     { 
         await SignatureData.Delete(signatureCurrent.id);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Xóa chữ ký thành công!");
         signatures.RemoveAll(x => x.id == signatureCurrent.id);
         await Reset();
 
@@ -239,17 +242,17 @@
     {
         if (await QuillHtml.GetHTML() == "<p><br></p>") 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Nội dung chữ ký không được trống!");
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Nội dung chữ ký không được trống!");
             return false;
         }
         if(signatureName == String.Empty)
         { 
-            await JSRuntime.InvokeVoidAsync("alert", "Tên chữ ký không được trống!");
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên chữ ký không được trống!");
             return false;
         }
         if(signatureName.Length > 50)
         { 
-            await JSRuntime.InvokeVoidAsync("alert", "Tên chữ ký giới hạn 50 ký tự!");
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên chữ ký giới hạn 50 ký tự!");
             return false;
         }
         return true;
@@ -268,6 +271,7 @@
         signatureCurrent.name = signatureName;
         signatureCurrent.body = await QuillHtml.GetHTML();
         await SignatureData.Update(signatureCurrent);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Cập nhật chữ ký thành công!");
         await Reset();
         StateHasChanged();
     }
@@ -299,7 +303,7 @@
         {
             defaultSignature = signature;
         }
- 
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Cập nhật chữ ký mặc định thành công!");
         Toggle();
     }
 }

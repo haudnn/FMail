@@ -47,15 +47,15 @@
     [Parameter] public List<MemberModel> membersSelected {get; set;}
     [Parameter]  public EventCallback<MemberSelectedModel> OnUpdateMembersSelected { get; set;}
 
-    public List<MemberModel> originalMembers { get; set; } = new List<MemberModel>(); 
-    public List<GroupModel> groups { get; set; } = new List<GroupModel>();
-    public List<MemberModel> members { get; set; } = new List<MemberModel>();
+    public List<MemberModel> originalMembers { get; set; } = new(); 
+    public List<GroupModel> groups { get; set; } = new();
+    public List<MemberModel> members { get; set; } = new ();
 
     protected override async Task OnInitializedAsync()
     {
         // Khởi tạo groups và members
         groups = await GroupData.GetList(Layout.User.id);
-        originalMembers =  InitDataFakeHelper.InitMembers();
+        originalMembers =  FakeDataHelper.InitMembers();
         members = originalMembers.ToList();
     }
 
@@ -110,7 +110,7 @@
     {
         foreach (var group in groupsList)
         {
-            List<MemberModel> members = InitDataFakeHelper.GetMembersById(group.members);
+            List<MemberModel> members = FakeDataHelper.GetMembersById(group.members);
             foreach (var member in members)
             {
                 if (!membersSelected.Any(m => m.id == member.id))

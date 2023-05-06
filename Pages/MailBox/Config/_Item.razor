@@ -17,7 +17,7 @@
     <_ModalConfirmation
         nameModal="Xác nhận việc xóa danh mục"
         contentButton="Xóa"
-        contentModal="Thao tác này sẽ ảnh hưởng đến các thư nằm trong danh mục “Nhân sự”, bạn có chắc chắn muốn xóa không?"
+        contentModal=@($"Thao tác này sẽ ảnh hưởng đến các thư nằm trong danh mục {category.name}, bạn có chắc chắn muốn xóa không?")
         isShowModal="isConfirm"
         OnToggleModal="ToggleConfirm"
         OnConfirmation="ConfirmDelete"
@@ -78,13 +78,13 @@
     { 
         if(string.IsNullOrEmpty(name)) 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên danh mục!");
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Vui lòng nhập tên danh mục!");
             return false;
         }
 
         if( name.Length >  30) 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Tên danh mục tối đa 30 ký tự!");
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên danh mục tối đa 30 ký tự!");
             return false;
         }
         return true;

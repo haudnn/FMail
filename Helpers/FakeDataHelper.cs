@@ -4,26 +4,13 @@ using System;
 using Faker.Extensions;
 namespace Workdo.Helpers;
 using System.Linq;
-public class InitDataFakeHelper
+public class FakeDataHelper
 {
-    public static List<CategoryModel> InitCategories()
-    {
-        List<CategoryModel> categories = new List<CategoryModel>();
-        categories.Add(new CategoryModel() { id = "1", name = "Vận hành" });
-        categories.Add(new CategoryModel() { id = "2", name = "Nhân sự" });
-        categories.Add(new CategoryModel() { id = "3", name = "Kế toán" });
-        categories.Add(new CategoryModel() { id = "4", name = "Sales marketing" });
-        categories.Add(new CategoryModel() { id = "5", name = "Truyền thông" });
-        categories.Add(new CategoryModel() { id = "6", name = "Tổng công ty" });
-        return categories;
-    }
 
-    public static List<GroupModel> InitGroups()
-    {
-        List<GroupModel> groups = new List<GroupModel>();
-        return groups;
-    }
 
+    /// <summary>
+    /// Hàm dùng để chuyển đổi user thành member model
+    /// </summary>
 
     public static List<MemberModel> InitMembers()
     {
@@ -43,33 +30,10 @@ public class InitDataFakeHelper
         return members;
     }
 
-    public static List<MemberModel> InitMembersHasCondition(string userid)
-    {
-        List<MemberModel> members = new List<MemberModel>();
-        List<UserModel> users = InitUsers();
-        foreach (UserModel user in users)
-        {
-            if(user.id == userid) 
-            { 
-                continue;
-            }
-            else  
-            {
-                members.Add(new MemberModel
-                {
-                    id = user.id,
-                    avatar = user.avatar,
-                    email = user.email,
-                    name = $"{user.first_name} {user.last_name}",
-                    last_name = user.last_name
-                    
-                });
-            }
 
-        }
-        return members;
-    }
-
+    /// <summary>
+    /// Hàm dùng để khởi tạo danh sách user
+    /// </summary>
 
     public static List<UserModel> InitUsers() 
     {
@@ -89,6 +53,9 @@ public class InitDataFakeHelper
         return users;
     }
 
+    /// <summary>
+    /// Hàm dùng để random avatar cho user
+    /// </summary>
 
     public static string RandomAvatar() 
     {
@@ -96,6 +63,12 @@ public class InitDataFakeHelper
         int randomNumber = random.Next(1, 10001);
         return "https://avatars.dicebear.com/api/adventurer-neutral/" + randomNumber + ".svg";
     }
+
+
+
+    /// <summary>
+    /// Hàm dùng để chuyển đổi members id thành member model
+    /// </summary>
 
 
     public static List<MemberModel> GetMembersById(List<string> ids)
@@ -113,6 +86,11 @@ public class InitDataFakeHelper
         return matchingMembers;
     }
 
+
+
+    /// <summary>
+    /// Hàm dùng để chuyển đổi lấy label bằng ids
+    /// </summary>
     public static List<LabelModel> GetLabelsById(List<string> ids, List<LabelModel> labels)
     {
         List<LabelModel> matchingLabels = new List<LabelModel>();
@@ -151,5 +129,39 @@ public class InitDataFakeHelper
         List<MemberModel> members = InitMembers();
         return members.Where(m => m.id == id).FirstOrDefault();
     }
+
+
+    // Action name: Trả lời, trả lời tất cả, chuyển tiếp
+    public static string GetActionName(int action)
+    {
+        if (action == 1)
+            return "Trả lời";
+        if (action == 2)
+            return "Trả lời tất cả";
+        if (action == 3)
+            return "Chuyển tiếp";
+        return "";
+    }
+
+
+    public static List<FilterModel> InitFilterTimeHelper()
+    {
+        List<FilterModel> times = new List<FilterModel>();
+        times.Add(new FilterModel { id = 1, name = "Tuần này" });
+        times.Add(new FilterModel { id = 11, name = "Tuần trước" });
+        times.Add(new FilterModel { id = 2, name = "Tháng này" });
+        times.Add(new FilterModel { id = 22, name = "Tháng trước" });
+        times.Add(new FilterModel { id = 3, name = "Quý này" });
+        return times;
+    }
+
+    public static List<FilterModel> InitFilterStatusHelper()
+    {
+        List<FilterModel> status = new List<FilterModel>();
+        status.Add(new FilterModel { id = 1, name = "Thư đã đọc" });
+        status.Add(new FilterModel { id = 2, name = "Thư chưa đọc" });
+        return status;
+    }
+
 
 }

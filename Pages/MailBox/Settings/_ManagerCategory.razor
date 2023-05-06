@@ -1,11 +1,12 @@
-@using Plk.Blazor.DragDrop;
+
 @inject ProtectedLocalStorage storage;
+@using Plk.Blazor.DragDrop;
 
 <div class="container-manager">
     <div class="is-mb-20">
         <span class="is-uppercase is_h6 is-secondary-10">Quản lí danh mục</span>
     </div>
-    <Dropzone Items="categories">
+    <Dropzone InstantReplace="true" TItem="CategoryModel" OnItemDrop="((p)=> OnItemDrop(p))" Items="categories" OnReplacedItemDrop="@((p)=> OnReplacedItemDrop(p))">
         @if(@context.name != "Khác") 
         {
             <div class="is-flex is-align-items-center is-justify-content-space-between is-padding-10-y border-bottom">
@@ -18,21 +19,81 @@
             </div>
         }
     </Dropzone>
-
-
     <div class="is-flex is-align-items-center is-justify-content-space-between is-padding-10-y border-bottom">
         <span class="is_sub2 is-secondary-20">Khác</span>
     </div>
 
 </div>
 @code{
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
     public List<CategoryModel> categories { get; set;} = new();
+    public CategorySortedModel sortedUser { get; set;} = new();
+    public List<int> sortedDefault { get; set;} = new();
 
+
+    CategoryModel dropedItem = new ();
+    CategoryModel replacedItem = new ();
         
     protected override async Task OnInitializedAsync ()
     {
-
         categories = await CategoryData.GetList();
+        // Lấy danh sách danh mục đã được sorted
+        sortedUser = await CategoryData.GetSorted(Layout.User.id);
+
+        // Nếu bằng null tức user này chưa hề sắp xếp, nên sẽ giữ vị trí như ban đầu
+        if(string.IsNullOrEmpty(sortedUser.id))
+        {
+            sortedDefault = categories.OrderBy(x => x.position).Select(x => x.position).ToList();
+        }
+
+        // Nếu có, thì sẽ set danh sách  = thứ tự đã sắp xếp trước đó của user
+        else 
+        {
+            categories = categories.OrderBy(x => sortedUser.sorted.FindIndex(p => p == x.position)).ToList();
+            sortedDefault = sortedUser.sorted;
+        }
+        StateHasChanged();
+    } 
+    
+
+    // Hàm dùng đề lấy vị trí của item bị thay đổi
+    public void OnReplacedItemDrop(CategoryModel item)
+    {
+        // Lấy item bị thay dổi
+        replacedItem = item;
+        StateHasChanged();
     }
 
+
+    // Hàm xử lý việc swap vị trí của danh mục
+    public async Task OnItemDrop(CategoryModel item)
+    {
+        // Lấy item cần thay đổi
+        dropedItem = item;
+
+        // Tìm vị trí của 2 item cần thay đổi
+        var index1 = sortedDefault.IndexOf(dropedItem.position); 
+        var index2 = sortedDefault.IndexOf(replacedItem.position);
+
+        // Gắn biến tmp để swap
+        var temp = sortedDefault[index1];
+
+        // swap
+        sortedDefault[index1] = sortedDefault[index2];
+        sortedDefault[index2] = temp;
+
+        // Update lại danh sách được sorted mới
+        sortedUser.sorted = sortedDefault;
+        sortedUser.author = Layout.User.id;
+
+        // Tiến hành sort
+        await CategoryData.Sorted(sortedUser);
+
+        StateHasChanged();
+
+        replacedItem = new();
+        dropedItem = new();
+    }
+   
 }

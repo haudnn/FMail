@@ -60,12 +60,6 @@
 
                         </div>
                         <div class="is-flex is-align-items-center is-gap-8">
-                            <div class="wrapper-button is-justify-content-center is-inline-flex" style="padding: 9px 10px">
-                                <span class="icon">
-                                    <i class="material-icons-outlined is-primary-40">mail</i>
-                                </span>
-                                <span class="is_body2 is-primary-40">Lưu nháp</span>
-                            </div>
                             <div @onclick="Cancel" class="wrapper-button is-justify-content-center is-inline-flex error-btn" style="padding: 9px 10px">
                                 <span class="icon">
                                     <i class="material-icons-outlined">close</i>
@@ -114,6 +108,7 @@
     [Parameter] public EventCallback<MailModel> HandleCreate {get; set;}
     [Parameter] public string forwardBody { get; set;} = String.Empty;
     [Parameter] public string forwardMessage { get; set; }  = String.Empty;
+
     BlazoredTextEditor QuillHtml;
     private List<AttachmentModel> files =new List<AttachmentModel>();
     private long maxFileSize = 25 * 1024 * 1024; 
@@ -156,7 +151,7 @@
                 body = QuillHTMLContent,
                 attachments = files,
                 signature = currentSignature,
-                sentDate = DateTimeHelper.FormatDateTimeUTC(),
+                sentDate = SharedHelperV2.FormatDateTimeUTC(),
                 author = Layout.User.id,
                 shortBody = shortBody.Length > 150 ? shortBody.Substring(0, 150) : shortBody,
                 isDraft = false,
@@ -170,7 +165,7 @@
 
     }
 
-
+    // Xử lý việc hủy tạo
     public void Cancel()
     {
         SetCurrentAction.InvokeAsync(new ActionModel());
@@ -178,12 +173,13 @@
 
 
 
+    // Xử lý việc upload file
     private async Task UploadFile(InputFileChangeEventArgs e)
     {
         try {
             foreach (var file in e.GetMultipleFiles())
             {
-                if(!FileHelper.IsValidFileType(file)) 
+                if(!SharedHelperV2.IsValidFileType(file)) 
                 {
                     await JSRuntime.InvokeVoidAsync("alert", "Định dạng file hiện tại không cho phép. Chỉ PDF, PNG, JPG, JPEG, DOC, DOCX, XLS, and XLSX là các tệp mở rộng cho phép.");
                     return;
@@ -195,7 +191,7 @@
                 }
                 totalFileSize += file.Size;
                 var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
-                string filePath = await FileHelper.SaveFileAsync(fileContent, file.Name);
+                string filePath = await SharedHelperV2.SaveFileAsync(fileContent, file.Name);
                 await JSRuntime.InvokeVoidAsync("alert", "Upload thành công");
                 files.Add(new AttachmentModel {
                     id = Guid.NewGuid().ToString(),
@@ -212,9 +208,11 @@
     }
 
 
+    // Xử lý việc xóa file
+
     private void DeleteFile(AttachmentModel fileDelete) 
     {
-        FileHelper.DeleteFile(fileDelete.filePath);
+        SharedHelperV2.DeleteFile(fileDelete.filePath);
         AttachmentModel fileToDelete = files.FirstOrDefault(file => file.filePath == fileDelete.filePath);
         if (fileToDelete != null)
         {
@@ -223,6 +221,8 @@
         StateHasChanged();
     }
 
+
+    // Xư lý việc thay đổi chữ ký
     private void SetSignature(SignatureModel signature) 
     {
         currentSignature = signature;

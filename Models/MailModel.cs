@@ -78,6 +78,10 @@ public class MailModel
     /// <summary> Nội dung mail reply </summary> 
     public string replyBody { get; set; }
 
+
+    /// <summary> Kiểm tra trước đó là reply, replyall hay forward </summary> 
+    public string step_prev { get; set; } = String.Empty;
+
 }
 
 
@@ -98,7 +102,7 @@ public class AttachmentModel
     public string filePath { get; set; }
 
     /// <summary> Xác định icon </summary> 
-    public string icon => FileHelper.GetIconForFileType(name);
+    public string icon => SharedHelperV2.GetIconForFileType(name);
 }
 
 
@@ -133,6 +137,7 @@ public class FilterModel
     /// <summary> Lọc đã đọc hay chưa </summary> 
     public int isRead { get; set; }
 
+    /// <summary> Lọc theo nhãn </summary> 
     public List<string> labelIds { get; set; }
 }
 

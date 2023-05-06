@@ -75,17 +75,14 @@
     private int totalMembers = 0;
     private List<string> membersReceived { get; set; } = new();
 
-    private void HandleToggleViewVote(string idChoice)
-    { 
-        idToogleVote = idChoice; 
-        toggleViewVote.Toggle();
-    }
 
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+
+    protected override void OnAfterRender(bool firstRender)
     {
         if(firstRender)
         {
+            // Dùng để xử lý gộp tất cả những người nhận, dùng để xác những người chưa vote
             membersReceived = mail.to.Concat(mail.cc).Concat(mail.bcc).Distinct().ToList();
             membersReceived.Add(author);
             totalMembers = membersReceived.Count();
@@ -93,6 +90,15 @@
         }
     }
 
+
+    // Hàm dùng để bật tắt việc xem những người vote 
+    private void HandleToggleViewVote(string idChoice)
+    { 
+        idToogleVote = idChoice; 
+        toggleViewVote.Toggle();
+    }
+
+    // Hàm dùng để bật tắt việc xem những người unvote 
     private void HandleToggleViewUnvote(string idQuestion)
     {
         idToogleUnvote = idQuestion;
@@ -103,8 +109,12 @@
     // Lấy tất cả người đã vote và tất cả những ngươi nhận thư => người chưa vote
     public static List<string> GetMembersUnvote(QuestionModel question, List<string>  membersReceived)   
     {
+        // Dùng để lấy tất cả những người đã viết
         var allVoters = question.choices.SelectMany(c => c.voters).ToList();
+
+        // Dùng để lất tất cả những người chưa vote
         var unvotedMembers = membersReceived.Where(m => !allVoters.Contains(m)).ToList();
+        
         return unvotedMembers;
     }
 }

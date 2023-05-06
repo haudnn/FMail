@@ -1,4 +1,5 @@
 @inject IJSRuntime JSRuntime
+
 <div class="columns">
         <div class="column is-6">
             <div class="is-flex is-align-items-center is-gap-10-y">
@@ -12,26 +13,25 @@
                         <ul class="is-flex is-align-items-center is-gap-4 container-cc-list">
                             @foreach (var item in toList)
                             {
-                                
-                                <li>
-                                    <span class="is_caption is-secondary-40">@item.name</span>
+                                <li class="is-has-virgule">
+                                    <span class="is_caption is-secondary-40 ">@item.name</span>
                                 </li>
                             }
                             @foreach (var item in ccList)
                             {
                                 <li>
-                                    <span class="is_caption is-secondary-40">, cc:</span>
+                                    <span class="is_caption is-secondary-40">cc:</span>
                                 </li>
-                                <li>
-                                    <span class="is_caption is-secondary-40">@item.name</span>
+                                <li class="is-has-virgule">
+                                    <span class="is_caption is-secondary-40 is-has-virgule">@item.name</span>
                                 </li>
                             }
                             @foreach (var item in bccList)
                             {
-                                <li>
-                                    <span class="is_caption is-secondary-40">, bcc:</span>
+                                <li >
+                                    <span class="is_caption is-secondary-40">bcc:</span>
                                 </li>
-                                <li>
+                                <li class="is-has-virgule">
                                     <span class="is_caption is-secondary-40">@item.name</span>
                                 </li>
                             }
@@ -91,7 +91,14 @@
                                         <div class="is-flex">
                                         <p class="is_body2 is-secondary-10" style="width: 60px; white-space: nowrap;">Tiều đề:</p>
                                         <div class="is-flex-1">
-                                            <span style="line-height: 17px;" class="is-block is-has-virgule is_caption is-secondary-40">@mail.subject</span> 
+                                           @if(string.IsNullOrEmpty(mail.subject))
+                                           {
+                                                <span style="line-height: 17px;" class="is-block is-has-virgule is_caption is-secondary-40">Không có tiêu đề</span> 
+                                           }
+                                           else 
+                                           {
+                                                <span style="line-height: 17px;" class="is-block is-has-virgule is_caption is-secondary-40">@mail.subject</span> 
+                                           }
                                         </div>
                                     </div>
                                     <div class="is-flex is-align-items-center">
@@ -123,42 +130,47 @@
 
 
 @code {
+
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+
     // Xác định thông tin người gửi
     [Parameter] public UserModel author {get; set;} = new UserModel();
-    // Set các hành động: trả lời, trả lờ tất cả, chuyển tiếp
+
+    // Set các hành động: trả lời, trả lời tất cả, chuyển tiếp
     [Parameter] public EventCallback<ActionModel> SetCurrentAction { get; set; }
     [Parameter] public MailModel mail { get; set; } = new MailModel();
+
+    private string _currentUser;
     private ToggleHelper toggle = new ToggleHelper();
     
     // Danh sách to cc bcc
     public List<MemberModel> toList = new List<MemberModel>();
     public List<MemberModel> ccList = new List<MemberModel>();
     public List<MemberModel> bccList = new List<MemberModel>();
-    private bool shouldRender = false;
-        
+
     public DateTime sentDateTime;
     public string convertDate; 
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnParametersSet()
     {
-        if (firstRender)
-        {
-            await InvokeAsync(StateHasChanged);
-        }
-        else
-        {
-            if(!String.IsNullOrEmpty(mail.sentDate))
-            {
-                sentDateTime = DateTime.Parse(mail.sentDate);
-                convertDate = SharedHelper.ConvertDate(sentDateTime);
-                toList = InitDataFakeHelper.GetMembersById(mail.to);
-                ccList = InitDataFakeHelper.GetMembersById(mail.cc);
-                bccList = InitDataFakeHelper.GetMembersById(mail.bcc);
 
+        if (_currentUser != author.email)
+        {
+            _currentUser = author.email;
+            sentDateTime = DateTime.Parse(mail.sentDate);
+            convertDate = SharedHelper.ConvertDate(sentDateTime);
+
+            // Chuyển đổi danh sách to cc bcc từ id => member model
+            toList = FakeDataHelper.GetMembersById(mail.to);
+            ccList = FakeDataHelper.GetMembersById(mail.cc);
+
+            if(mail.bcc.Contains(Layout.User.id))
+            {
+                var newListBCC = new List<string>(); 
+                newListBCC.Add(Layout.User.id);
+                bccList = FakeDataHelper.GetMembersById(newListBCC);
             }
-             await InvokeAsync(StateHasChanged);
         }
- 
     }
 
 

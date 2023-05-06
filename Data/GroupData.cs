@@ -55,7 +55,7 @@ public class GroupData {
     public static async Task<GroupModelDetail> Get(string groupId)
     {
         var isFoundGroup = await groupCollection.Find(x => x.id == groupId).FirstOrDefaultAsync();
-        List<MemberModel> members = InitDataFakeHelper.GetMembersById(isFoundGroup.members);
+        List<MemberModel> members = FakeDataHelper.GetMembersById(isFoundGroup.members);
 
         GroupModelDetail groupUpdating = new GroupModelDetail{
             id = isFoundGroup.id,

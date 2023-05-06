@@ -58,6 +58,7 @@
     public async Task Delete(CategoryModel category)
     {
         await CategoryData.Delete(category);
+        await JSRuntime.InvokeVoidAsync("tagline", false, "Xóa danh mục thành công!");
         categories.Remove(categories.FirstOrDefault(x => x.id == category.id));
         StateHasChanged();
     }
@@ -71,11 +72,11 @@
 
         CategoryModel category = new CategoryModel
         { 
-            id = GenerateIDHelper.GenerateID("19012001"),
+            id = SharedHelperV2.GenerateID("19012001"),
             name = name,
         };
         await CategoryData.Create(category);
-
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Thêm danh mục thành công!");
         categories.Add(category);
         categoryName = String.Empty;
         isShow = !isShow;
@@ -86,6 +87,7 @@
     public async Task Update(CategoryModel category) 
     {
         await CategoryData.Update(category);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Cập nhật danh mục thành công!");
         StateHasChanged();
     }
 
@@ -95,13 +97,13 @@
     { 
         if(string.IsNullOrEmpty(name)) 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Vui lòng nhập tên danh mục!");
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Vui lòng nhập tên danh mục!");
             return false;
         }
 
         if( name.Length >  30) 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Tên danh mục tối đa 30 ký tự!");
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên danh mục tối đa 30 ký tự!");
             return false;
         }
         return true;

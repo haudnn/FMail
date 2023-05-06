@@ -1,6 +1,5 @@
 @page "/inbox/{id}"
 @layout LayoutMain
-@inject IJSRuntime JSRuntime
 @inject NavigationManager navigation
 @using Microsoft.AspNetCore.Components
 @using System.IO
@@ -16,6 +15,22 @@
                 </span>
                 <span class="is-primary-40 is_button">Trở về</span>
             </a>
+            @if(mail.isTrash)
+            {
+                <div class="is-flex is-align-items-center is-pointer mail__footer-drafs restore" @onclick="Restore">
+                    <span class="icon is-secondary-40">
+                        <i class="material-icons-outlined">mark_email_read</i>
+                    </span>
+                    <span class="is-secondary-40 is_caption">Khôi phục thư</span>
+                </div>
+                <div class="is-flex is-align-items-center is-pointer mail__footer-drafs" @onclick="PermanentlyDeleted">
+                    <span class="icon has-text-white">
+                        <i class="material-icons-outlined">delete_forever</i>
+                    </span>
+                    <span class="has-text-white is_caption">Xóa vĩnh viễn</span>
+                </div>
+            }
+
             <div class="is-flex is-align-items-center is-gap-8 is-pointer">
                 @if(mail.isImportant) 
                 { 
@@ -117,7 +132,6 @@
     <main class="is-padding-top-20">
         <p class="is-secondary-20 is_h6">@mail.subject</p>
         <div class="is-padding-top-20">
-            @* Thông tìn của mail *@
             <_Info author="author" mail="mail" SetCurrentAction="SetCurrentAction"/>
         </div>
         <div class="is-padding-top-20">
@@ -125,13 +139,10 @@
                 @((MarkupString)mail.body)
             </div>
 
-
-            @* Kiểm tra mail có khảo sát hay không? *@
             @if(!string.IsNullOrEmpty(mail.pollId))
             {
                 <div class="is-padding-top-20" style="margin-left: 40px;">
 
-                        @* Kiểm tra khảo sát đã được dừng hay chưa? *@
                         @if (poll.isStopped)
                         {
                             <div class="is-flex is-align-items-center is-gap-4" style="margin-bottom: 10px;">
@@ -171,7 +182,6 @@
                     </div>
                     <div class="is-padding-top-20">
                         <div class="is-flex is-align-items-center is-gap-4">
-                             @* Disabled: Nếu là chử khảo sát thì dừng rồi vẫn coi được *@
                             <button 
                                 disabled="@(poll.author == Layout.User.id ? false : isStopPoll)"
                                 class="wrapper-header-poll @(isStopPoll ? "stop-survey" : "" ) @(currentType == 0 ? "active" : "" ) is-pointer"
@@ -254,7 +264,7 @@
             </ul>
         </div>
 
-        @* Xác định đang ở action nào *@
+        @* Xác định đang ở reply hay reply_all hay forward *@
         @switch (currentAction)
             {
                 case "reply":
@@ -301,8 +311,8 @@
 @code {
     [CascadingParameter] public LayoutMain Layout { get; set; }
     [Parameter] public string id { get; set; }
-    public List<LabelModel> labels { get; set; } = new List<LabelModel>();
-    public List<LabelModel> labelsSelected { get; set; } = new List<LabelModel>();
+    public List<LabelModel> labels { get; set; } = new();
+    public List<LabelModel> labelsSelected { get; set; } = new();
     private ToggleHelper toggle = new ToggleHelper();
     public MailModel mail { get; set; } = new();
     public PollModel poll = new();
@@ -326,9 +336,12 @@
         mail = await MailData.Get(id);
 
         // Lấy phản hồi
+        // Kiểm tra có mail gốc có hay không? nếu không thì lấy mail hiện tại
         replies = await MailData.GetMailThread(mail.originalMailId != "" ? mail.originalMailId : id, Layout.User.id);
+
         // Lấy danh sách labels mà user đã chọn trước đó
         labelsSelected  = await LabelData.GetLabelsById(mail.labels);
+
         // Lấy danh sách nhãn
         labels = await LabelData.GetList(Layout.User.id);
         author = await UserData.Get(mail.from);
@@ -345,6 +358,7 @@
             StateHasChanged();
 
         }
+        StateHasChanged();
     }
 
 
@@ -380,7 +394,7 @@
             var mailToForward = mailFind == null ? mail : mailFind;
             if(mailToForward != null)
             {
-                var member = InitDataFakeHelper.GetMemberById(mailToForward.from);
+                var member = FakeDataHelper.GetMemberById(mailToForward.from);
 
                 // custom forwardMessage
                 forwardMessage += "<p style=\"margin: 20px 0;\"><p><span style=\"color: rgb(34, 34, 34);\">---------- Forwarded message ---------</span></p>";
@@ -416,18 +430,16 @@
     }
 
 
-    // Xử ly việc tạo các thư reply forward
+    // Xử lý việc tạo thư reply hoặc forward
     public async Task Create(MailModel mailToCreate)
     {
-        // Mail gốc là mail đang hiển thị  trang detail
-        mailToCreate.originalMailId = id;
 
         // Xác định mail đang được chọn
         var mailIdClicked = currentModelAction.mail;
         string subject = String.Empty;
 
         // Tìm mail để xác định đang reply - forward mail gốc hay mail reply
-        // Tìm trong list mail replies: Nếu có thì là reply - forward mail reply nếu không thì là mail gốc
+        // Tìm trong list mail replies: Nếu có thì là reply nếu không thì là mail gốc
         var findMail = replies.Where(x => x.id == mailIdClicked).FirstOrDefault();
 
         // Set lại tiêu đề
@@ -446,6 +458,7 @@
         {
 
             mailToCreate.subject = $"Re: {subject}";
+            mailToCreate.isReply = true;
             // Hàm Reply nhận vào 4 tham số: thông tin mail được tạo, mail gốc, mail đang được chọn, isReply mặc định là true) 
             await MailData.Reply(mailToCreate, id, mailIdClicked);
         }
@@ -453,6 +466,7 @@
         else
         {  
             mailToCreate.subject = $"Fwd: {subject}";
+            mailToCreate.isReply = false;
             // Hàm Reply nhận vào 4 tham số: thông tin mail được tạo, mail gốc, mail đang được chọn, isReply = false tức là forward) 
             await MailData.Reply(mailToCreate, id, mailIdClicked, false);
         }
@@ -544,7 +558,7 @@
     {
         await MailData.Read(mail.id, isRead);
         mail.isRead = isRead;
-         return;
+        return;
     }
 
 
@@ -568,13 +582,39 @@
         StateHasChanged();
 
     }
+
+    // Hàm dùng để bật tắt add labels
     private void Toggle() 
     { 
         toggle.Toggle();
     }
 
+
+    // Hàm dùng để quay lại trang trước đó
     private async Task GoBack() 
     { 
         await JSRuntime.InvokeVoidAsync("history.back");
     }
+
+
+    // Hàm dùng để phục hồi mail nếu là mai rác
+    public async Task Restore()
+    {
+        await MailData.RestoreMail(mail.id);
+        await JSRuntime.InvokeVoidAsync("tagline", true,  $"Khôi phục thư thành công!"); 
+        mail.isTrash = false;
+        
+    }
+
+
+    // Hàm dùng để xóa vĩnh viễn nếu là mail rác
+    public async Task PermanentlyDeleted()
+    {
+        await MailData.DeleteMail(mail.id);
+        await JSRuntime.InvokeVoidAsync("tagline", true,  $"Xóa vĩnh viễn thư thành công!");
+        await GoBack();
+  
+    }
+
+
 }

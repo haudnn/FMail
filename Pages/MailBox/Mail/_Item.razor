@@ -1,5 +1,5 @@
 @inject NavigationManager navigation
-<div class="mail-item @(mail.isDraft ? "drafts" : "") @(isRead ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px; box-sizing: border-box;">
+<div class="mail-item @(mail.isDraft ? "drafts" : "") @(mail.isRead ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px; box-sizing: border-box;">
     <div class="mail-td mail-checkbox">
         @if (isChecked)
             {
@@ -15,7 +15,7 @@
             }
     </div>
     <div class="mail-td">
-        @if (isImportant)
+        @if (mail.isImportant)
             { 
                 <span class="icon is-small is-warning-20" @onclick="() => Important(false)">
                     <i class="material-icons-sharp" style="font-size: 12px;">star_purple500</i>
@@ -29,7 +29,7 @@
             }
     </div>
     <div @onclick="ViewDetail" class="mail-td mail-from">
-        <span class="is_sub2 @(isRead ? "read" : "unread") text-ellipsis">
+        <span style="max-width: 160px" class="is_sub2 @(mail.isRead ? "read" : "unread") text-ellipsis">
             @if(currentPage == "sent")
             {
                 <span>Đến:</span>
@@ -40,28 +40,30 @@
             }
             else
             {
-                <span>
+                <span class="text-ellipsis">
+
+
                     @foreach (var item in toList)
                     {
-                        @item.last_name
-                        <span>,</span>                    
+                        <span class="is-has-virgule">@item.last_name</span>                    
                     }
+
+
                     @if(ccList.Count > 0)
                     {
                         <span>cc:</span> 
                         @foreach (var item in ccList)
                         {
-                           @item.last_name
-                            <span>,</span>                    
+                            <span class="is-has-virgule">@item.last_name</span>                    
                         }
                     }
+
                     @if(bccList.Count > 0)
                     {
                         <span>bcc:</span> 
                         @foreach (var item in bccList)
                         {
-                            @item.last_name
-                            <span>,</span>                    
+                            <span class="is-has-virgule">@item.last_name</span>                    
                         }
                     }
                 </span>
@@ -87,11 +89,18 @@
                     }
                 </div>
                 <div class="mail-subject">
-                    <span class="text-ellipsis is_sub2 @(isRead ? "read" : "unread")">
-                        @mail.subject
+                    <span class="text-ellipsis is_sub2 @(mail.isRead ? "read" : "unread")">
+                       @if(string.IsNullOrEmpty(mail.subject))
+                       {
+                            <span>(Không có chủ đề)</span>
+                       }
+                       else 
+                       {
+                        <span>@mail.subject</span>
+                       }
                     </span>
                 </div>
-                <span class="mx-1 is_body2 @(isRead ? "read" : "unread")">
+                <span class="mx-1 is_body2 @(mail.isRead ? "read" : "unread")">
                     -
                 </span>
                 <div class="mail-body">
@@ -120,11 +129,11 @@
     </div>
     <div class="mail-td">
         <div class="mail-actions is-align-content-center">
-            @if (isRead)
-                {
-                    <span class="icon is-pointer is-small" @onclick="() => Read(false)">
-                        <i class="material-icons-outlined"> drafts</i>
-                    </span>
+            @if (mail.isRead)
+            {
+                <span class="icon is-pointer is-small" @onclick="() => Read(false)">
+                    <i class="material-icons-outlined"> drafts</i>
+                </span>
                 }
             else
             { 
@@ -132,9 +141,13 @@
                     <i class="material-icons-outlined">mail</i>
                 </span>
             }
-                <span class="icon is-pointer is-small" @onclick="() => Trash()">
+            @if(!isTrashNav)
+            {
+                <span class="icon is-pointer is-small" @onclick="Trash">
                     <i class="material-icons-outlined">delete</i>
                 </span>
+            }
+          
         </div>
     </div>
     <div class="mail-td tags-list">
@@ -153,23 +166,23 @@
 
     </div>
     <div class="mail-td mail__item-datetime">
-        <span class="is-block @(isRead ? "read" : "unread")">@sentDate</span>
+        <span class="is-block @(mail.isRead ? "read" : "unread")">@sentDate</span>
     </div>
 </div>
 @code {
     [CascadingParameter] public LayoutMain Layout { get; set; }
     [Parameter] public string currentPage { get; set; }
-    [Parameter] public List<MailModel> mails { get; set; } = new List<MailModel>(); 
     [Parameter] public MailModel mail  { get; set; } = new ();
     [Parameter] public bool isChecked { get; set; }
     [Parameter] public EventCallback<SelectedModel> OnSelected { get; set; }
     [Parameter] public EventCallback<MailModel> OnTrashItem { get; set; }
     [Parameter] public List<LabelModel> labels { get; set; } = new List<LabelModel>();
+    [Parameter] public bool isTrashNav { get; set; } = false;
         
     public List<TagMailModel> tags { get; set; } = new List<TagMailModel>();
-    public bool isImportant { get; set; }
+
     public long replyCount{ get; set; } = 0;
-    public bool isRead { get; set; }
+
     public string sentDate { get; set; }
 
     public List<MemberModel> toList = new List<MemberModel>();
@@ -179,22 +192,18 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Phục vụ việc hiển thị
-        isImportant = mail.isImportant;
-        isRead = mail.isRead;
-        sentDate = DateTimeHelper.FormatDateTime(mail.sentDate);
+
+
+        sentDate = SharedHelperV2.FormatDateTime(mail.sentDate);
         replyCount = await MailData.RepliesCount(mail.id, Layout.User.id);
-        fromMember = InitDataFakeHelper.GetMemberById(mail.from);
-        toList = InitDataFakeHelper.GetMembersById(mail.to);
-        toList.Take(1);
-        ccList = InitDataFakeHelper.GetMembersById(mail.cc);
-        ccList.Take(1);
-        bccList = InitDataFakeHelper.GetMembersById(mail.bcc);
-        bccList.Take(1);
+        fromMember = FakeDataHelper.GetMemberById(mail.from);
+        toList = FakeDataHelper.GetMembersById(mail.to);
+        ccList = FakeDataHelper.GetMembersById(mail.cc);
+        bccList = FakeDataHelper.GetMembersById(mail.bcc);
 
         if(currentPage != "inbox")
         {
-            tags = MailHelper.TagsMailHelper(mail.pollId, mail.isDraft, replyCount);
+            tags = SharedHelperV2.TagsMailHelper(mail.pollId, mail.isDraft, replyCount);
         }
 
         // Lấy mail reply mới nhát để hiển thị
@@ -203,8 +212,8 @@
             var mailReplyNewest = await MailData.GetReply(mail.id, Layout.User.id);
             if(mailReplyNewest != null)
             {
-            sentDate =  DateTimeHelper.FormatDateTime(mailReplyNewest.sentDate);
-            mail.shortBody = mailReplyNewest.shortBody;
+                sentDate =  SharedHelperV2.FormatDateTime(mailReplyNewest.sentDate);
+                mail.shortBody = mailReplyNewest.shortBody;
             }
         }
 
@@ -226,16 +235,16 @@
     // Đánh dâu quan trọng
     private async Task Important(bool isImportantMail)
     {
-        isImportant = isImportantMail;
-        await MailData.Important(mail.id, isImportant);
+        mail.isImportant = isImportantMail;
+        await MailData.Important(mail.id, isImportantMail);
     }
 
 
     // Đánh dấu đã đọc
     private async Task Read(bool isReadMail)
     {
-        isRead = isReadMail;
-        await MailData.Read(mail.id, isRead);
+        mail.isRead = isReadMail;
+        await MailData.Read(mail.id, isReadMail);
     }  
 
 

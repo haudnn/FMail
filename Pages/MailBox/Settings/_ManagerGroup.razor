@@ -154,7 +154,7 @@
     protected override async Task OnInitializedAsync()
     {
         groups = await GroupData.GetList(Layout.User.id);
-        originalMembers =  InitDataFakeHelper.InitMembers();
+        originalMembers = FakeDataHelper.InitMembers();
         members = originalMembers.ToList();
     }
 
@@ -170,7 +170,7 @@
     {
         groupSelected = await GroupData.Get(groupId);
         // Lấy danh sách users ngoại trừ những người đã có
-        membersUnique = InitDataFakeHelper.GetMembersUnion(members, groupSelected.members);
+        membersUnique = FakeDataHelper.GetMembersUnion(members, groupSelected.members);
         // Chuyển sang trang chi tiết
         ChangeAction("detail");
     }
@@ -262,7 +262,7 @@
         {
             GroupModel groupToCreate = new GroupModel
             {
-                id = GenerateIDHelper.GenerateID("19012001"),
+                id = SharedHelperV2.GenerateID("19012001"),
                 name = groupName,
                 members = membersSelected.Select(m => m.id).ToList(),
                 author = Layout.User.id,
@@ -286,12 +286,12 @@
     {
         if(groupName == string.Empty) 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Tên nhóm không được trống!"); 
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên nhóm không được trống!");
             return false;
         }
         if(groupName.Length > 30) 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Tên nhóm tối đa 30 ký tự!"); 
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên nhóm tối đa 30 ký tự!");
             return false;
         }
         return true;

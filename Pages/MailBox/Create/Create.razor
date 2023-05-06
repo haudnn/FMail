@@ -265,15 +265,19 @@
     public MailModel mail = new MailModel();
 
     protected override async Task OnInitializedAsync()
-    {
+    {  
         categories = await CategoryData.GetList();
-        labels = await LabelData.GetList(Layout.User.id);
-        currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
-        mail.signature = await SignatureData.GetDefault(Layout.User.id);
 
+        labels = await LabelData.GetList(Layout.User.id);
+             
+        mail.signature = await SignatureData.GetDefault(Layout.User.id);
+        
+        // Mặc định là danh mục "Khác"
+        currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
+   
     }  
 
-    // Nếu là thư nháp
+    // Nếu là thư nháp thì set các giá trị của thư nháp
     protected override async Task OnParametersSetAsync()
     {
         if(mailId != default)
@@ -281,9 +285,9 @@
             mail = await MailData.Get(mailId);
             QuillHTMLContent = mail.body;
 
-            membersSelected = InitDataFakeHelper.GetMembersById(mail.to);
-            membersCCSelected = InitDataFakeHelper.GetMembersById(mail.cc);
-            membersBCCSelected = InitDataFakeHelper.GetMembersById(mail.bcc);
+            membersSelected = FakeDataHelper.GetMembersById(mail.to);
+            membersCCSelected = FakeDataHelper.GetMembersById(mail.cc);
+            membersBCCSelected = FakeDataHelper.GetMembersById(mail.bcc);
 
             currentCategory = await CategoryData.Get(mail.category);
             labelsSelected = await LabelData.GetLabelsById(mail.labels);
@@ -328,7 +332,7 @@
         {
             poll = new PollModel
             {
-                id = GenerateIDHelper.GenerateID("19012001"),
+                id = SharedHelperV2.GenerateID("19012001"),
                 title = "",
                 endDate = DateTime.Today.ToString("dd/MM/yyyy"),
                 endTime = DateTime.Today.ToString("23:59"),
@@ -338,14 +342,14 @@
                 {
                     new QuestionModel
                     {
-                        id = GenerateIDHelper.GenerateID("19012001"),
+                        id = SharedHelperV2.GenerateID("19012001"),
                         text = "",
                         isMultipleChoice = false,
                         choices  = new List<ChoiceModel> 
                             {
                                 new ChoiceModel 
                                 {
-                                    id = GenerateIDHelper.GenerateID("19012001"),
+                                    id = SharedHelperV2.GenerateID("19012001"),
                                     text = "",
                                     voters = new List<string>(),
                                 }
@@ -415,20 +419,20 @@
         try {
             foreach (var file in e.GetMultipleFiles())
             {
-                if(!FileHelper.IsValidFileType(file)) 
+                if(!SharedHelperV2.IsValidFileType(file)) 
                 {
                     await JSRuntime.InvokeVoidAsync("alert", "Định dạng file hiện tại không cho phép. Chỉ PDF, PNG, JPG, JPEG, DOC, DOCX, XLS, and XLSX là các tệp mở rộng cho phép.");
                     return;
                 }
                 if (totalFileSize + file.Size > maxFileSize)
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", "Tối đa 25MB cho tất cả các file!");
+                    await JSRuntime.InvokeVoidAsync("tagline", false, "Tối đa 25MB cho tất cả các file!");  
                     return;
                 }
                 totalFileSize += file.Size;
                 var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
-                string filePath = await FileHelper.SaveFileAsync(fileContent, file.Name);
-                await JSRuntime.InvokeVoidAsync("alert", "Upload thành công");
+                string filePath = await SharedHelperV2.SaveFileAsync(fileContent, file.Name);
+                await JSRuntime.InvokeVoidAsync("tagline", true, "Upload file thành công!");  
                 mail.attachments.Add(new AttachmentModel {
                     id = Guid.NewGuid().ToString(),
                     name = file.Name,
@@ -446,7 +450,7 @@
     // Xử lý việc xóa file
     private void DeleteAttachment(AttachmentModel fileDelete) 
     {
-        FileHelper.DeleteFile(fileDelete.filePath);
+        SharedHelperV2.DeleteFile(fileDelete.filePath);
         AttachmentModel fileToDelete = mail.attachments.FirstOrDefault(file => file.filePath == fileDelete.filePath);
         if (fileToDelete != null)
         {
@@ -466,20 +470,20 @@
     {
         if (string.IsNullOrEmpty(poll.title))
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Tên khảo sát không được trống!");
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên khảo sát không được trống!");  
             return false;
         }
         foreach (var question in poll.questions)
         {
             if (string.IsNullOrEmpty(question.text))
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Nội dung câu hỏi không được trống!");
+                await JSRuntime.InvokeVoidAsync("tagline", false, "Nội dung câu hỏi không được trống!");  
                 return false;
             }
 
             if (question.choices.Count == 0)
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Vui lòng thêm lựa chọn!");
+                await JSRuntime.InvokeVoidAsync("tagline", false, "Vui lòng thêm lựa chọn!");  
                 return false;
             }
 
@@ -487,7 +491,7 @@
             {
                 if (string.IsNullOrEmpty(choice.text))
                 {
-                    await JSRuntime.InvokeVoidAsync("alert", "Lựa chọn không được trống!");
+                    await JSRuntime.InvokeVoidAsync("tagline", false, "Lựa chọn không được trống!");  
                     return false;
                 }
             }
@@ -529,7 +533,7 @@
         mail.bcc = membersBCCSelected.Select(l => l.id).ToList();
         mail.isRead = false;
         mail.body = QuillHTMLContent;
-        mail.sentDate = DateTimeHelper.FormatDateTimeUTC();
+        mail.sentDate = SharedHelperV2.FormatDateTimeUTC();
         mail.author = Layout.User.id;
         mail.shortBody = shortBody.Length > 200 ? shortBody.Substring(0, 200) : shortBody;
         mail.isDraft = isDraft;
@@ -538,7 +542,7 @@
         mail.created_at = DateTime.Now.Ticks;
         mail.replyBody = String.Empty;
 
-        // Kiểm tra có poll hay không và tạo
+        // Kiểm tra có poll hay không?
         if(!string.IsNullOrEmpty(poll.id)) 
         {
             bool isSuccess = await PollData.Create(poll);
@@ -573,9 +577,9 @@
     // Validate mail
     private async Task<bool> IsValidMail() 
     {
-        if(membersSelected.Count == 0) 
+        if(membersSelected.Count == 0 && membersCCSelected.Count == 0 && membersBCCSelected.Count == 0) 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Danh sách người nhận không được trống!");   
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Danh sách người nhận không được trống!");
             return false;
         }
         return true;

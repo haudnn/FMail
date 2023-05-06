@@ -56,43 +56,49 @@
                             </div>
                         }
                         <div class="is-flex is-align-items-center is-justify-content-space-between is-flex-1" style="width: 100%; ">
-                            <_Category FilterMails="FilterMails" categories="categorise"/>
+                            <_Category FilterMails="FilterMails"/>
                         </div>
                     </div>
             </div>
             </div>
-            @if(mails.Count > 0) 
+            @if(isLoading)
             {
-                <div class="mail__content">
-                    <div class="mail-table" style="width: 100%;">
-                        <div class="mail-tbody" style="width: 100%;">
-                            @foreach (var mail in mails)
-                            {
-                                // Kiểm tra mail có được chọn
-                                var isChecked = selectedItems.Contains(mail.id);
-
-                                // Chuyển labels string thành label text
-                                var labelsConvert = InitDataFakeHelper.GetLabelsById(mail.labels, labels);
-                                
-                                <_Item
-                                    mail="mail"
-                                    currentPage="sent"
-                                    mails="mails"
-                                    isChecked="isChecked" 
-                                    OnSelected="Selected"
-                                    OnTrashItem="TrashItem"
-                                    labels="labelsConvert"
-                                />
-                            }
-                        </div>
-                    </div>
-                </div>
+                <div style="min-height: calc( 100vh - 115px);" class="is-flex is-align-content-center is-justify-content-center">Loading...</div>
             }
-            else 
+            else
             {
-                <p class="is_body2 is-secondary-40 is-flex is-align-items-center is-justify-content-center" style="min-height: calc( 100vh - 115px) ;">
-                   Không có bất kỳ thư nào trong hộp thư quan trọng.
-                </p>
+                @if(mails.Count > 0) 
+                {
+                    <div class="mail__content">
+                        <div class="mail-table" style="width: 100%;">
+                            <div class="mail-tbody" style="width: 100%;">
+                                @foreach (var mail in mails)
+                                {
+                                    // Kiểm tra mail có được chọn
+                                    var isChecked = selectedItems.Contains(mail.id);
+
+                                    // Chuyển labels string thành label text
+                                    var labelsConvert = FakeDataHelper.GetLabelsById(mail.labels, labels);
+                                    
+                                    <_Item
+                                        mail="mail"
+                                        currentPage="sent"
+                                        isChecked="isChecked" 
+                                        OnSelected="Selected"
+                                        OnTrashItem="TrashItem"
+                                        labels="labelsConvert"
+                                    />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                else 
+                {
+                    <p class="is_body2 is-secondary-40 is-flex is-align-items-center is-justify-content-center" style="min-height: calc( 100vh - 115px) ;">
+                    Không có bất kỳ thư nào trong hộp thư quan trọng.
+                    </p>
+                }
             }
         </div>
         @if(mails.Count > 0) {
@@ -100,7 +106,7 @@
                 @if (selectedItems.Count > 0)
                 {
                     var count = selectedItems.Count;
-                    <_Actions 
+                    <_MailActions
                         labels="labels" 
                         mailCount="count" 
                         CancelSelected="CancelSelected"
@@ -127,12 +133,13 @@
 @code {
     [CascadingParameter]
     public LayoutMain Layout { get; set; }
-    public List<CategoryModel> categorise = new();
+
     private List<LabelModel> labels = new();
     private List<MailModel> mails = new List<MailModel>();
-    private List<string> selectedItems = new List<string>();
+    public List<string> selectedItems = new List<string>();
     private List<MailModel> originalMails = new List<MailModel>();
     private bool isSelectedAll  = false;
+    public bool isLoading { get; set; } = true;
 
     // Phục vụ phân trang
     private int pageSize = 30; // default lấy 30 mails
@@ -152,12 +159,12 @@
     {
 
         // Các hàm get data từ database
-        categorise = await CategoryData.GetList();
         labels = await LabelData.GetList(Layout.User.id);
         mails = await MailData.GetList("important", Layout.User.id);
 
         // Clone mails gốc để filter
         originalMails = mails.ToList();
+        isLoading = false;
 
         // Phục vụ phân trang
         var pagesHelper = SharedHelper.Paging(mails.Count, 30);   
@@ -237,29 +244,39 @@
     }
 
 
-    // Đánh  đâu đã đọc / chưa đọc
+
+    // Đánh  đâu đã đọc / chưa đọc danh sách mail
     public async Task Read(bool isRead)
     {
         await MailData.ReadMails(selectedItems, isRead);
+
+        // Update UI
+        mails.Where(m => selectedItems.Contains(m.id)).ToList().ForEach(m => m.isRead = isRead);
 
         string message = isRead ? $"Đã đánh dấu {selectedItems.Count} cuộc trò chuyện là đã đọc!" 
                                 : $"Đã đánh dấu {selectedItems.Count} cuộc trò chuyện là chưa đọc!";
         await JSRuntime.InvokeVoidAsync("tagline", true, message);
 
+        StateHasChanged();
+
     }
 
 
 
-    // Đánh dấu quan trọng / không quan trọng  
+    // Đánh dấu quan trọng / không quan trọng danh sách mail
     public async Task OnImportant(bool isImportant)
     {
         await MailData.ImportantMails(selectedItems, isImportant);
 
-        string message = $"Đã đánh dấu {selectedItems.Count} cuộc trò chuyện là không quan trọng!";
+        // Update UI
+        mails.Where(m => selectedItems.Contains(m.id)).ToList().ForEach(m => m.isImportant = isImportant);
+
+        string message = isImportant ? $"Đã đánh dấu {selectedItems.Count} cuộc trò chuyện là quan trọng!" 
+                                : $"Đã đánh dấu {selectedItems.Count} cuộc trò chuyện là không quan trọng!";
         await JSRuntime.InvokeVoidAsync("tagline", true, message);
         
-
     }
+
 
     // Thêm nhãn
     public async Task UpdateLabels(List<string> labelIds)
@@ -269,10 +286,11 @@
         await JSRuntime.InvokeVoidAsync("tagline", true,  $"Đã đánh dấu {selectedItems.Count} thư vào các nhãn được chọn!");   
     }
 
+
     // Tìm kiếm
     public void Searching (string data)
     {
-        mails = MailHelper.SearchingHelper("sent", data, originalMails);
+        mails = SharedHelperV2.SearchingHelper("sent", data, originalMails);
     }
 
 
@@ -292,7 +310,7 @@
         string startTime = String.IsNullOrEmpty(filter.startTime) ? currrentStartTimeFilter : filter.startTime;
         string endTime = String.IsNullOrEmpty(filter.endTime) ? currrentEndTimeFilter : filter.endTime;
 
-        var filteredMails = MailHelper.FilterByTimeHelper(startTime, endTime, originalMails);
+        var filteredMails = SharedHelperV2.FilterByTimeHelper(startTime, endTime, originalMails);
 
         // Filter danh mục
         if (category != "all")

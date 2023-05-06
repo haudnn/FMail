@@ -11,6 +11,7 @@ public class CategoryData
 {
 
     public static IMongoCollection<CategoryModel> categoryCollection = ConnectDB<CategoryModel>.GetClient("mailbox", "category");
+    public static IMongoCollection<CategorySortedModel> sortedCollection = ConnectDB<CategorySortedModel>.GetClient("mailbox", "category_sorted");
 
 
     /// <summary>
@@ -23,10 +24,15 @@ public class CategoryData
             .ToListAsync()
             .ContinueWith(t => t.Result.Count > 0 ? t.Result[0].position : 0);
 
-        category.id = GenerateIDHelper.GenerateID("19012001");
+        category.id = SharedHelperV2.GenerateID("19012001");
         category.position = maxPosition + 1;
         category.created_at = DateTime.Now.Ticks;
         await categoryCollection.InsertOneAsync(category);
+
+        var filter = Builders<CategorySortedModel>.Filter.Empty;
+        var update = Builders<CategorySortedModel>.Update.Push(x => x.sorted, category.position);
+        await sortedCollection.UpdateManyAsync(filter, update);
+    
         return;
     }
 
@@ -37,9 +43,7 @@ public class CategoryData
     /// </summary>
     public static async Task<List<CategoryModel>> GetList() 
     {
-        var sorted = Builders<CategoryModel>.Sort.Descending("created_at");
-    
-        return await categoryCollection.Find(_ => true).Sort(sorted).ToListAsync();
+        return await categoryCollection.Find(_ => true).ToListAsync();
     }
 
     /// <summary>
@@ -50,6 +54,12 @@ public class CategoryData
     {
         var filter = Builders<CategoryModel>.Filter.Eq(x => x.id, category.id);
         await categoryCollection.DeleteOneAsync(filter);
+
+
+        var filterSorted = Builders<CategorySortedModel>.Filter.Empty;
+        var update = Builders<CategorySortedModel>.Update.Pull(x => x.sorted, category.position);
+        await sortedCollection.UpdateManyAsync(filterSorted, update);
+        
         return;
     }
 
@@ -72,6 +82,32 @@ public class CategoryData
     public static async Task<CategoryModel> Get(string id)
     {
         return await categoryCollection.Find(c => c.id == id).FirstOrDefaultAsync();
+    }
+
+
+    public static async Task Sorted(CategorySortedModel newSortedModel)
+    {
+        var isSorted = await sortedCollection.Find(x => x.author == newSortedModel.author).FirstOrDefaultAsync();
+        if (isSorted == null)
+        {
+            newSortedModel.id = SharedHelperV2.GenerateID("19012001");
+            await sortedCollection.InsertOneAsync(newSortedModel);
+            return;
+        }
+        var filter = Builders<CategorySortedModel>.Filter.Eq(x => x.author, newSortedModel.author);
+        await sortedCollection.ReplaceOneAsync(filter, newSortedModel);
+    }
+
+
+    public static async Task<CategorySortedModel> GetSorted(string author)
+    {
+        var isSorted =  await sortedCollection.Find(x => x.author == author).FirstOrDefaultAsync();
+
+        if( isSorted ==  null )
+        {
+            return new CategorySortedModel();
+        }
+        return isSorted;
     }
 
 

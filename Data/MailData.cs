@@ -190,7 +190,7 @@ public class MailData
         }
         else
         {
-            var id = GenerateIDHelper.GenerateID("19012001");
+            var id = SharedHelperV2.GenerateID("19012001");
             mail.id = id;
             await mailCollection.InsertOneAsync(mail);
         }
@@ -236,7 +236,7 @@ public class MailData
             bcc = mail.bcc,
             created_at = DateTime.Now.Ticks,
         };
-        recipientMail.id = GenerateIDHelper.GenerateID("19012001");
+        recipientMail.id = SharedHelperV2.GenerateID("19012001");
         recipientMail.author = recipient;
         return recipientMail;
     }
@@ -249,15 +249,11 @@ public class MailData
         string customHtml = "";
         DateTime datetime = DateTime.Parse(currentMailReply.sentDate);
         string output = datetime.ToString("dd 'thg' M',' yyyy 'vào lúc' HH:mm");
-        MemberModel member = InitDataFakeHelper.GetMemberById(currentMailReply.from);
+        MemberModel member = FakeDataHelper.GetMemberById(currentMailReply.from);
         if(String.IsNullOrEmpty(currentMailReply.replyBody))
         {
             if(isReplyMail)
             {
-                // customHtml += $"<p> Vào {output} {member.name} {member.email} đã viết: </p>";
-                // customHtml += $"<blockquote class='border-reply'> {currentMailReply.body} </blockquote>"  ;
-                // <p class='border-reply'> {currentMailReply.body} </p>
-
                 customHtml = "<div>" + "<div>" + "Vào" + " " + output + " " + member.name + " " + $"{member.email}" + " " + "đã viết:" + "<div class=\"border-reply\">" + currentMailReply.body + "</div>" + "</div>" + "</div>";
             }
         }
@@ -267,17 +263,36 @@ public class MailData
 
         }
         var mailReply = await mailCollection.Find(x => x.id == idMailToReply).FirstOrDefaultAsync();
-        mail.id = GenerateIDHelper.GenerateID("19012001"); ;
+        mail.id = SharedHelperV2.GenerateID("19012001"); ;
         mail.category = mailReply.category;
         mail.replyBody = customHtml;
         mail.originalMailId = mailReply.originalMailId != "" ? mailReply.originalMailId : idMailToReply;
 
         await mailCollection.InsertOneAsync(mail);
 
-        var recipients = mail.to;
+        // List<string> difference = mail.to.Except(currentMailReply.to).ToList();
+
+        // if(difference.Count > 0)
+        // {
+        //     foreach (var recipient in difference)
+        //     {
+        //         mail.id = SharedHelperV2.GenerateID("19012001");
+        //         mail.originalMailId = mailReply.originalMailId != "" ? mailReply.originalMailId : idMailToReply;
+        //         mail.category = mailReply.category;
+        //         mail.replyBody = customHtml;
+        //         mail.author =  recipient;
+        //         mail.to = mail.to;
+        //         mail.shortBody = customHtml;
+        //         mail.isReply = false;
+        //         await mailCollection.InsertOneAsync(mail);
+        //     }
+        // }
+
+        // List<string> recipients = mail.to.Where(x => !difference.Contains(x)).ToList();
+        List<string> recipients = mail.to; 
         foreach (var recipient in recipients)
         {
-            mail.id = GenerateIDHelper.GenerateID("19012001");
+            mail.id = SharedHelperV2.GenerateID("19012001");
             mail.originalMailId = mailReply.originalMailId != "" ? mailReply.originalMailId : idMailToReply;
             mail.category = mailReply.category;
             mail.replyBody = customHtml;
@@ -287,13 +302,42 @@ public class MailData
         }
     }
 
+
+    public static async Task ReplyDraft(MailModel mail, string idMailToReply, string mailIdClicked, bool isReplyMail = true)
+    {
+        var currentMailReply = await mailCollection.Find(x => x.id == mailIdClicked).FirstOrDefaultAsync();
+        string customHtml = "";
+        DateTime datetime = DateTime.Parse(currentMailReply.sentDate);
+        string output = datetime.ToString("dd 'thg' M',' yyyy 'vào lúc' HH:mm");
+        MemberModel member = FakeDataHelper.GetMemberById(currentMailReply.from);
+        if (String.IsNullOrEmpty(currentMailReply.replyBody))
+        {
+            if (isReplyMail)
+            {
+                customHtml = "<div>" + "<div>" + "Vào" + " " + output + " " + member.name + " " + $"{member.email}" + " " + "đã viết:" + "<div class=\"border-reply\">" + currentMailReply.body + "</div>" + "</div>" + "</div>";
+            }
+        }
+        else
+        {
+            customHtml = "<div>" + "<div>" + "Vào" + " " + output + " " + member.name + " " + $"{member.email}" + " " + "đã viết:" + "<div class=\"border-reply\">" + currentMailReply.body + currentMailReply.replyBody + "</div>" + "</div>" + "</div>";
+
+        }
+        var mailReply = await mailCollection.Find(x => x.id == idMailToReply).FirstOrDefaultAsync();
+        mail.id = SharedHelperV2.GenerateID("19012001"); ;
+        mail.category = mailReply.category;
+        mail.replyBody = customHtml;
+        mail.originalMailId = mailReply.originalMailId != "" ? mailReply.originalMailId : idMailToReply;
+
+        await mailCollection.InsertOneAsync(mail);
+    }
+
     public static async Task<List<MailModel>> GetMailThread(string originalMailId , string author)
     {
         var mails = await mailCollection.Find(x => 
             x.originalMailId == originalMailId && 
             x.author == author && 
+            x.isTrash == false &&
             x.isReply == true).ToListAsync();
-
         return mails;
         
     }
@@ -307,8 +351,6 @@ public class MailData
         await mailCollection.UpdateOneAsync(filter, update);
         return;
     }
-
-
 
 
 
@@ -353,7 +395,16 @@ public class MailData
             .Set("isTrash", true);
         await mailCollection.UpdateManyAsync(filter, update);
         return;
-    } 
+    }
+
+    public static async Task RestoreMail(string id)
+    {
+
+        var filter = Builders<MailModel>.Filter.Eq(x => x.id, id);
+        var update = Builders<MailModel>.Update.Set("isTrash", false);
+        await mailCollection.UpdateOneAsync(filter, update);
+        return;
+    }
 
     public static async Task RestoreMails(List<string> mailIds)
     {
@@ -364,6 +415,16 @@ public class MailData
         return;
     }
     
+    public static async Task DeleteMail(string id)
+    {
+
+        var filter = Builders<MailModel>.Filter.Eq(x => x.id, id);
+        var update = Builders<MailModel>.Update.Set("isTrash", true).Set("isDeleted", true);
+        await mailCollection.UpdateOneAsync(filter, update);
+        return;
+    }
+
+
     public static async Task DeleteMails(List<string> mailIds)
     {
         var filter = Builders<MailModel>.Filter.In("id", mailIds);
@@ -401,7 +462,7 @@ public class MailData
 
     public static async Task Draft(MailModel mail)
     {
-        var id = GenerateIDHelper.GenerateID("19012001");
+        var id = SharedHelperV2.GenerateID("19012001");
         mail.id = id;
         mail.isDeleted = false;
         mail.isRead = false;
@@ -442,10 +503,34 @@ public class MailData
     {
         Dictionary<string, int> count = new Dictionary<string, int>();
         var inboxs = await GetMailsInbox("all", author);
+        var sents = await GetMailsSent("all", author);
+        var impotants = await GetMailsImportant("all", author);
         var drafts = await GetMailsDraft("all", author);
+
+
         count.Add("inbox", inboxs.Count(mail => !mail.isRead));
+        count.Add("sent", sents.Count(mail => !mail.isRead));
+        count.Add("impotant", impotants.Count(mail => !mail.isRead));
         count.Add("draft", drafts.Count);
 
         return count;
-    } 
+    }
+
+
+    public static async Task ReadReply(string id)
+    {
+        var mail = await mailCollection.Find(x => x.id == id).FirstOrDefaultAsync();
+
+        // Check mail hiện tại có mail gốc
+        if(string.IsNullOrEmpty(mail.originalMailId))
+        {
+
+        }
+        var filter = Builders<MailModel>.Filter.Eq(x => x.id, id);
+        var update = Builders<MailModel>.Update.Set("isRead", true);
+        await mailCollection.UpdateOneAsync(filter, update);
+        return;
+    }
+
+
 }

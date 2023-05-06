@@ -90,13 +90,13 @@
     protected override void OnInitialized()
     {
         // Chuyển đổi từ user id sang member model từ list cha truyền xuống
-        var membersReceiver = InitDataFakeHelper.GetMembersById(toList);
+        var membersReceiver = FakeDataHelper.GetMembersById(toList);
 
         // Add vào list member đang được chọn
         membersSelected.AddRange(membersReceiver);
 
         // Chuyển đổi từ int action sang string action
-        actionName = MailHelper.GetActionName(action);
+        actionName = FakeDataHelper.GetActionName(action);
         
     }
 
@@ -109,14 +109,21 @@
     //  Hàm tạo thư
     public async Task Create(MailModel mailToCreate)
     {
+      
+        if (!await IsValidMail()) 
+        {
+            return;
+        }
         mailToCreate.to = membersSelected.Select(l => l.id).ToList();
         mailToCreate.cc = new List<string>();
         mailToCreate.bcc = new List<string>(); 
-        mailToCreate.isReply = true;
         mailToCreate.pollId = String.Empty;
         await OnCreate.InvokeAsync(mailToCreate);
     }
 
+
+
+    
 
     // Hàm dùng để update danh sách member nhận mail
     public void OnUpdateMembersSelected(MemberSelectedModel memberModel) 
@@ -132,7 +139,7 @@
     {
         if(membersSelected.Count == 0) 
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Danh sách người nhận không được trống!");   
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Danh sách người nhận không được trống!");
             return false;
         }
         return true;

@@ -1,66 +1,77 @@
 @inject IJSRuntime JSRuntime
 @inject ProtectedLocalStorage storage
 @inject NavigationManager navigation
+
+
 <nav class="mail__sidebar @(navLess ? "is_less" : "" )">
-    <div class="is-flex is-align-items-center is-pointer is-justify-content-center" @onclick="ToggleSidebar" style="width: 44px; height: 44px; margin-right: 10px;">
-        <span class="icon is-small">
-            <i class="material-icons-outlined">menu</i>
-        </span>
-    </div>
-    <div class="mail__sidebar-menu scrolly">
-        <div class="mail__sidebar-add" style="margin-right: 10px;">
-            <a href="create" class="is-flex is-align-items-center is-justify-content-center is-full">
-                <span class="icon">
-                    <i class="material-icons-outlined has-text-white">add</i>
-                </span>
-                <span class="has-text-weight-medium has-text-white">Tạo thư mới</span>
-            </a>
+    @if(isLoading)
+    {
+        <div class="is-flex is-align-items-center is-justify-content-center">
+            Loading...
         </div>
-        @foreach (var main in ListNav)
-        {
-            <div style="margin-right: 10px;" class="mail__sidebar-item is-flex is-justify-content-space-between @(main.active ? "active" : "")">
-                <a class="is-flex is-align-items-center is-gap-10-y" href="@main.link" @onclick="() => main.active = !main.active">
-                    <span class="icon is-secondary-40 is-small">
-                        <i class="material-icons-sharp">@main.icon</i>
-                    </span>
-                    <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@main.name</span>
-                </a>
-                @if (main.count > 0 && !navLess)
-                {
-                    <span class="is-flex is-align-items-center is-justify-content-center is-secondary-40 is_sub2">@main.count</span>
-                }
-            </div>
-        }
-        <div style="margin-right: 10px;" class="mail__sidebar-item border is-flex is-align-items-center is-gap-10-y">
-            <span class="icon">
-                <i class="material-icons-outlined">arrow_drop_down</i>
+    }
+    else
+    {
+        <div class="is-flex is-align-items-center is-pointer is-justify-content-center" @onclick="ToggleSidebar" style="width: 44px; height: 44px; margin-right: 10px;">
+            <span class="icon is-small">
+                <i class="material-icons-outlined">menu</i>
             </span>
-            <span class="is_sub2 is-secondary-40">Nhãn</span>
         </div>
-        <div class="labels-list">
-            @foreach (var label in labels)
+        <div class="mail__sidebar-menu scrolly">
+            <div class="mail__sidebar-add" style="margin-right: 10px;">
+                <a href="create" class="is-flex is-align-items-center is-justify-content-center is-full">
+                    <span class="icon">
+                        <i class="material-icons-outlined has-text-white">add</i>
+                    </span>
+                    <span class="has-text-weight-medium has-text-white">Tạo thư mới</span>
+                </a>
+            </div>
+            @foreach (var main in ListNav)
             {
-                <div class="label-item @(label.active ? "label-active" : "")">
-                    <a href="mail/label/@label.id" class="is-flex is-gap-10-y is-align-items-center" @onclick="() =>  label.active = !label.active">
-                        <span class="icon">
-                            <i class="material-icons-sharp" style="color: @label.color">label</i>
+                <div style="margin-right: 10px;" class="mail__sidebar-item is-flex is-justify-content-space-between @(main.active ? "active" : "")">
+                    <a class="is-flex is-align-items-center is-gap-10-y" href="@main.link" @onclick="() => main.active = !main.active">
+                        <span class="icon is-secondary-40 is-small">
+                            <i class="material-icons-sharp">@main.icon</i>
                         </span>
-                        <span class="text-ellipsis is_sub2 @(label.id == activeLabel ? "is-primary-40" : "is-secondary-40") ">@label.name</span>
+                        <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@main.name</span>
                     </a>
+                    @if (main.count > 0 && !navLess)
+                    {
+                        <span class="is-flex is-align-items-center is-justify-content-center is-secondary-40 is_sub2">@main.count</span>
+                    }
                 </div>
             }
+            <div style="margin-right: 10px;" class="mail__sidebar-item border is-flex is-align-items-center is-gap-10-y">
+                <span class="icon">
+                    <i class="material-icons-outlined">arrow_drop_down</i>
+                </span>
+                <span class="is_sub2 is-secondary-40">Nhãn</span>
+            </div>
+            <div class="labels-list">
+                @foreach (var label in labels)
+                {
+                    <div class="label-item @(label.active ? "label-active" : "")">
+                        <a href="mail/label/@label.id" class="is-flex is-gap-10-y is-align-items-center" @onclick="() =>  label.active = !label.active">
+                            <span class="icon">
+                                <i class="material-icons-sharp" style="color: @label.color">label</i>
+                            </span>
+                            <span class="text-ellipsis is_sub2 @(label.id == activeLabel ? "is-primary-40" : "is-secondary-40") ">@label.name</span>
+                        </a>
+                    </div>
+                }
 
+            </div>
         </div>
-    </div>
+        <div class="nav-settings">
+            <a href="settings" class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+            <span class="icon is_sub2 is-secondary-40">
+                    <i class="material-icons-sharp">settings</i>
+                </span>
+                <span class="is_sub2 is-secondary-40">Thiết lập</span>
+            </a>
+        </div>
+    }
 
-    <div class="nav-settings">
-        <a href="settings" class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
-           <span class="icon is_sub2 is-secondary-40">
-                <i class="material-icons-sharp">settings</i>
-            </span>
-            <span class="is_sub2 is-secondary-40">Thiết lập</span>
-        </a>
-    </div>
 
 </nav>
 
@@ -72,13 +83,14 @@
     private List<LabelModel> labels = new();
     public string activeLabel { get; set; }
 
-
+    public bool isLoading = true;
 
 
     protected override async Task OnInitializedAsync()
     {        
         await Navigation();
         labels = await LabelData.GetList(Layout.User.id);
+        isLoading = false;
 
     }
 
@@ -158,6 +170,7 @@
                 icon = "send",
                 link = "mail/sent",
                 active = false,
+                count = countMails["sent"],
             });
         ListNav.Add(new NavModel
             {
@@ -165,6 +178,7 @@
                 icon = "star",
                 link = "mail/important",
                 active = false,
+                count = countMails["impotant"],
             });
         ListNav.Add(new NavModel
             {
@@ -182,42 +196,6 @@
                 active = false,
             });
     }
-
-    
-
-
-    @* protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var relativePath = navigation.ToBaseRelativePath(navigation.Uri);
-
-            if (relativePath.StartsWith("mail/label/"))
-            {
-                var label = labels.FirstOrDefault(item => item.id == relativePath?.Split('/').Last());
-                activeLabel = label?.id;
-                return;
-            }
-            else
-            {
-                foreach (var item in ListNav.Values)
-                {
-                    if (item.link == relativePath)
-                    {
-                        item.active = true;
-                        prevActiveNavItem = item;
-                        return;
-                    }
-                }
-            }
-            StateHasChanged();
-        }
-    } *@
-
-@* 
-    private void HandleActiveLabel(LabelModel clickedLabel) {
-        activeLabel = clickedLabel.id;
-    } *@
 }
 
 
