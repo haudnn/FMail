@@ -10,7 +10,6 @@ namespace Workdo.Helpers
 {
     public class SharedHelper
     {
-        #region Các hàm liên quan đến String
 
         public static bool IsEmpty(string value)
         {
@@ -22,254 +21,25 @@ namespace Workdo.Helpers
         }
 
         /// <summary>
-        /// String to MD5
-        /// </summary>
-        public static string CreateMD5(string input)
-        {
-            // Use input string to calculate MD5 hash
-            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
-            {
-                byte[] inputBytes = Encoding.ASCII.GetBytes(input);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-                // Convert the byte array to hexadecimal string
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    sb.Append(hashBytes[i].ToString("X2"));
-                }
-                return sb.ToString();
-            }
-        }
-
-
-        /// <summary>
-        /// Đổi cách hiển thị tiền tệ
-        /// </summary>
-        public static string ConvertCurrency(double money)
-        {
-            string str = string.Empty;
-            if (money != 0)
-            {
-                bool isNegative = money < 0;
-                money = isNegative ? -money : money;
-
-                if (money >= 1000000000)
-                {
-                    str = string.Format(" {0:0,0.0}", money / 1000000000);
-                    str = str.Replace(" 0", "").Replace(".0", "");
-                    str += " tỷ";
-                }
-                else if (money >= 1000000)
-                {
-                    str = string.Format(" {0:0,0.0}", money / 1000000);
-                    str = str.Replace(" 0", "").Replace(".0", "");
-                    str += " triệu";
-                }
-                else if (money >= 100000)
-                {
-                    str = string.Format(" {0:0,0.0}", money / 100000);
-                    str = str.Replace(" 0", "").Replace(".0", "");
-                    str += " trăm";
-                }
-                else if (money >= 1000)
-                {
-                    str = string.Format(" {0:0,0}", money / 1000);
-                    str = str.Replace(" 0", "");
-                    str += " nghìn";
-                }
-                else
-                {
-                    str = string.Format(" {0:0,0}", money).Replace(" 0", "");
-                }
-
-                str = isNegative ? "-" + str : str;
-            }
-            else
-            {
-                str = "0";
-            }
-
-            return str;
-        }
-
-
-        /// <summary>
-        /// Đổi cách hiển thị số thành rút gọn
-        /// </summary>
-        public static string ConvertNumber(double number)
-        {
-            string str = string.Empty;
-            if (number != 0)
-            {
-                bool isNegative = number < 0;
-                number = isNegative ? -number : number;
-
-                if (number >= 1000000000)
-                {
-                    str = string.Format(" {0:0,0.0}", number / 1000000000);
-                    str = str.Replace(" 0", "").Replace(".0", "");
-                    str += "B";
-                }
-                else if (number >= 1000000)
-                {
-                    str = string.Format(" {0:0,0.0}", number / 1000000);
-                    str = str.Replace(" 0", "").Replace(".0", "");
-                    str += "M";
-                }
-                else if (number >= 1000)
-                {
-                    str = string.Format(" {0:0,0}", number / 1000);
-                    str = str.Replace(" 0", "");
-                    str += "K";
-                }
-                else if (number % 1 == 0)
-                {
-                    str = number.ToString();
-                }
-                else
-                {
-                    str = string.Format("{0:0.0}", number);
-                }
-
-                str = isNegative ? "-" + str : str;
-            }
-            else
-            {
-                str = "0";
-            }
-
-            return str;
-        }
-
-
-        /// <summary>
-        /// Chuyển List<string> thành string
-        /// </summary>
-        public static string ListToString(List<string> list)
-        {
-            if (list != null)
-                return string.Join(", ", list.ToArray());
-            else
-                return string.Empty;
-        }
-
-
-        /// <summary>
-        /// Kiểm tra nội dung có chưa từ khóa không ?
-        /// </summary>
-        public static bool SearchKeyword(string keyword, string content)
-        {
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                content = content.ToLower();
-                var keyChar = keyword.ToLower().Trim().Split(' ');
-                for (int i = 0; i < keyChar.Length; i++)
-                {
-                    if (!content.Contains(keyChar[i]))
-                        return false;
-                }
-
-                return true;
-            }
-            else
-                return true;
-        }
-
-
-        /// <summary>
-        /// Tối ưu link youtube
-        /// </summary>
-        /// <param name="link"></param>
-        public static string VideoLink(string link)
-        {
-            if (string.IsNullOrEmpty(link))
-                return string.Empty;
-
-            if (link.Contains("/watch?v="))
-                link = link.Replace("/watch?v=", "/embed/");
-            if (link.Contains("&"))
-                link = link.Substring(0, link.IndexOf("&"));
-            if (link.Contains("drive.google.com"))
-                link = link.Replace("/view", "/preview");
-
-            return link;
-        }
-
-
-        /// <summary>
-        /// Nhận diện link trong text
-        /// </summary>
-        public static string GetLinks(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-                return string.Empty;
-
-            string content = text;
-            content = content.Replace("<input", "&lt;input");
-
-            List<string> links = new List<string>();
-            Regex urlRx = new Regex(@"((https?|ftp|file)\://|www.)[A-Za-z0-9\.\-]+(/[A-Za-z0-9\?\&\=;\+!'\(\)\*\-\._~%]*)*", RegexOptions.IgnoreCase);
-
-            MatchCollection matches = urlRx.Matches(text);
-            foreach (Match match in matches)
-            {
-                links.Add(match.Value);
-            }
-
-            links = links.Distinct().ToList();
-
-            foreach (var item in links)
-                content = content.Replace(item, "<a href=\"" + item + "\" target=\"_blank\">" + item + "</a>");
-
-            content = content.Replace("\n", "<br>");
-
-            return content;
-        }
-
-
-        /// <summary>
-        /// Chuyển TEXT thành HTML
-        /// </summary>
-        public static string TextToHtml(string text)
-        {
-            return GetLinks(text);
-        }
-
-
-        /// <summary>
-        /// Chuyển HTML thành TEXT
-        /// </summary>
-        // public static string HtmlToText(string html)
-        // {
-        //     if (string.IsNullOrEmpty(html))
-        //         return string.Empty;
-
-        //     var htmlDoc = new HtmlDocument();
-        //     htmlDoc.LoadHtml(html);
-
-        //     return htmlDoc.DocumentNode.InnerText;
-        // }
-
-
-        /// <summary>
         /// Dữ liệu màu sắc
         /// </summary>
         public static List<string> ColorList()
         {
-            return new List<string> {
-       "#DC787E", "#F59E6C", "#986CF5", "#6CB4F5", "#F5D76C",
-       "#485fc7", "#3e8ed0", "#48c78e", "#ffe08a", "#f14668",
-       "#FF6633", "#FFB399", "#FF33FF", "#FFFF99", "#00B3E6",
-       "#E6B333", "#3366E6", "#999966", "#99FF99", "#B34D4D",
-       "#80B300", "#809900", "#E6B3B3", "#6680B3", "#66991A",
-       "#FF99E6", "#CCFF1A", "#FF1A66", "#E6331A", "#33FFCC",
-       "#66994D", "#B366CC", "#4D8000", "#B33300", "#CC80CC",
-       "#66664D", "#991AFF", "#E666FF", "#4DB3FF", "#1AB399",
-       "#E666B3", "#33991A", "#CC9999", "#B3B31A", "#00E680",
-       "#4D8066", "#809980", "#E6FF80", "#1AFF33", "#999933",
-       "#FF3380", "#CCCC00", "#66E64D", "#4D80CC", "#9900B3",
-       "#E64D66", "#4DB380", "#FF4D4D", "#99E6E6", "#6666FF" };
+            return new List<string>
+            {
+            "#DC787E", "#F59E6C", "#986CF5", "#6CB4F5", "#F5D76C",
+            "#485fc7", "#3e8ed0", "#48c78e", "#ffe08a", "#f14668",
+            "#FF6633", "#FFB399", "#FF33FF", "#FFFF99", "#00B3E6",
+            "#E6B333", "#3366E6", "#999966", "#99FF99", "#B34D4D",
+            "#80B300", "#809900", "#E6B3B3", "#6680B3", "#66991A",
+            "#FF99E6", "#CCFF1A", "#FF1A66", "#E6331A", "#33FFCC",
+            "#66994D", "#B366CC", "#4D8000", "#B33300", "#CC80CC",
+            "#66664D", "#991AFF", "#E666FF", "#4DB3FF", "#1AB399",
+            "#E666B3", "#33991A", "#CC9999", "#B3B31A", "#00E680",
+            "#4D8066", "#809980", "#E6FF80", "#1AFF33", "#999933",
+            "#FF3380", "#CCCC00", "#66E64D", "#4D80CC", "#9900B3",
+            "#E64D66", "#4DB380", "#FF4D4D", "#99E6E6", "#6666FF"
+            };
         }
 
 
@@ -291,11 +61,6 @@ namespace Workdo.Helpers
             return list[index];
         }
 
-
-        #endregion
-
-
-        #region Các hàm liên quan đến số
 
 
         private static readonly Random random = new Random();
@@ -342,16 +107,6 @@ namespace Workdo.Helpers
             return color;
         }
 
-        /// <summary>
-        /// Tính số sao đánh giá
-        /// </summary>
-        public static double Review(double point, int count)
-        {
-            if (count > 0)
-                return point / count;
-            else
-                return 0;
-        }
 
         /// <summary>
         /// Hàm tính phân trang
@@ -367,30 +122,6 @@ namespace Workdo.Helpers
             else
                 col = total / size;
             return col;
-        }
-
-
-        #endregion
-
-
-        #region Các hàm liên quan tới thời gian
-
-
-        // <summary>
-        /// Chuyển mốc thời gian trong ngày về đầu ngày
-        /// </summary>
-        public static DateTime DateToDay(DateTime date)
-        {
-            return Convert.ToDateTime(date.ToString("yyyy-MM-dd"));
-        }
-
-
-        /// <summary>
-        /// Chuyển mốc thời gian trong ngày về đầu tháng
-        /// </summary>
-        public static DateTime DateToMonth(DateTime date)
-        {
-            return Convert.ToDateTime(date.ToString("yyyy-MM-01"));
         }
 
 
@@ -474,28 +205,6 @@ namespace Workdo.Helpers
             return postTime;
         }
 
-        /// <summary>
-        /// Đổi cách hiển thị thời gian, có tuần
-        /// </summary>
-        public static string ConvertDateWeek(long tick)
-        {
-            var date = new DateTime(tick).ToString("ddd - dd/MM/yyyy");
-
-            if (date.Contains("Mon"))
-                return date.Replace("Mon", "T2");
-            else if (date.Contains("Tue"))
-                return date.Replace("Tue", "T3");
-            else if (date.Contains("Wed"))
-                return date.Replace("Wed", "T4");
-            else if (date.Contains("Thu"))
-                return date.Replace("Thu", "T5");
-            else if (date.Contains("Fri"))
-                return date.Replace("Fri", "T6");
-            else if (date.Contains("Sat"))
-                return date.Replace("Sat", "T7");
-            else
-                return date.Replace("Sun", "CN");
-        }
 
 
         /// <summary>
@@ -576,55 +285,9 @@ namespace Workdo.Helpers
             }
         }
 
-        /// <summary>
-        /// Mốc giờ
-        /// </summary>
-        public static List<StaticModel> TimeList(int min, int max)
-        {
-            var list = new List<StaticModel>();
-
-            for (int i = min; i <= max; i++)
-            {
-                for (int m = 0; m < 60; m += 10)
-                {
-                    list.Add(new StaticModel
-                    {
-                        id = i * 10 + m,
-                        name = string.Format("{0:00}:{1:00}", i, m),
-                    });
-                }
-            }
-
-            return list;
-        }
-
-        /// <summary>
-        /// Mốc giờ: mặc định từ 7 đến 20 giờ
-        /// </summary>
-        public static List<StaticModel> TimeList()
-        {
-            return TimeList(7, 23);
-        }
 
 
-        /// <summary>
-        /// Buổi trang này
-        /// </summary>
-        public static string DateSession()
-        {
-            var time = "sáng";
-            if (DateTime.Now.Hour > 18)
-                time = "tối";
-            else if (DateTime.Now.Hour > 12)
-                time = "chiều";
-            return time;
-        }
 
-
-        #endregion
-
-
-        #region Các hàm khác
 
 
         public static bool DeviceMobile(string userAgent)
@@ -637,17 +300,6 @@ namespace Workdo.Helpers
             return isMobile;
         }
 
-        #endregion
-
-
-        #region Các hàm liên quan đến Object
-
-        // public static T Clone<T>(T self)
-        // {
-        //     var serialized = JsonConvert.SerializeObject(self);
-        //     return JsonConvert.DeserializeObject<T>(serialized);
-        // }
-
-        #endregion
     }
+
 }

@@ -211,6 +211,7 @@
     navigation.NavigateTo("/logout", true);
   }
 
+  /*
   private void Navigation()
   {
     ListNav = new();
@@ -220,7 +221,7 @@
         link = "home",
         icon = "home"
       });
-      ListNav.Add(new NavModel
+    ListNav.Add(new NavModel
       {
         name = "Hòm thư",
         link = "mail/inbox",
@@ -344,5 +345,16 @@
         link = "user/info",
         icon = "account_circle"
       });
+  }
+  */
+  private void Navigation()
+  {
+    ListNav = new();
+    ListNav.Add(new NavModel
+    {
+      name = "Hòm thư",
+      link = "mail/inbox",
+      icon = "mail"
+    });
   }
 }

@@ -53,6 +53,7 @@
                                 {
                                     <p @onclick="() => FilterTime(item)" class="dropdown-item is_body2 is-secondary-20">@item.name</p>
                                 }
+                                <p @onclick="() => FilterTime(null)" class="dropdown-item is_body2 is-secondary-20">Thời gian</p>
                             </div>
                         </div>
                     </div>
@@ -256,6 +257,7 @@
 
     }
 
+    // Hàm dùng để lọc theo thời gian
     // Hàm dùng để lọc theo thời gian
     public void FilterTime(FilterModel time)
     {   
