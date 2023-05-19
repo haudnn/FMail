@@ -123,6 +123,7 @@
     }
 
     // Xóa nhãn
+
     private async Task Delete(LabelModel label) 
     {
         await LabelData.Delete(label);
@@ -131,8 +132,17 @@
         StateHasChanged();
     }
 
-	  // Tạo nhãn
-		private async Task Create() 
+
+    // Hủy tạo
+    private void CancelEdit() 
+    { 
+        isEditLabel = false;
+        Reset();
+    }
+
+
+    // Tạo nhãn
+    private async Task Create() 
     {
         // validation
         if(string.IsNullOrEmpty(labelName)) 
@@ -160,12 +170,6 @@
     }
 
 
-    // Hủy tạo
-    private void CancelEdit() 
-    { 
-        isEditLabel = false;
-        Reset();
-    }
 
     // Đổi màu label
     private void ChangeColor(ChangeEventArgs e) 

@@ -1,24 +1,24 @@
-@page "/mail/inbox"
+@page "/mail/label/{id}"
 @layout LayoutMain
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigation
 @using System.Collections.Generic;
 @using Microsoft.AspNetCore.Components
 
-<PageTitle>Hộp thư đến </PageTitle>
+<PageTitle>Thư theo nhãn </PageTitle>
 <div class="mail-wrapper">
     <MailSideBar/>
     <div class="mail__main" >
         <HeaderMain />
         <div class="mail__container">
-            <div style="position: sticky; top: 56px; background-color: #fff; z-index: 19;">
+            <div style="position: sticky; top: 56px; background-color: #fff; z-index: 20;">
                 <_Header 
-                    name="Hộp thư đến" 
-                    placehoder="Tiêu đề, nội dung, người gửi" 
-                    quantityColumnFirst="6"
-                    quantityColumnSecond="6" 
-                    isShowStatus=true 
-                    isShowLabel=true
+                    name="Thư đã gửi" 
+                    placehoder="Tiêu đề, nội dung, người nhận" 
+                    quantityColumnFirst="7"
+                    quantityColumnSecond="5" 
+                    isShowStatus=false 
+                    isShowLabel=false
                     labels="labels" 
                     FilterMails="FilterMails"
                     Searching="Searching"
@@ -82,7 +82,7 @@
                                     
                                     <_Item
                                         mail="mail"
-                                        currentPage="inbox"
+                                        currentPage="sent"
                                         isChecked="isChecked" 
                                         OnSelected="Selected"
                                         OnTrashItem="TrashItem"
@@ -96,10 +96,11 @@
                 else 
                 {
                     <p class="is_body2 is-secondary-40 is-flex is-align-items-center is-justify-content-center" style="min-height: calc( 100vh - 115px) ;">
-                    Không có bất kỳ thư nào được gửi đến.
+                    Không có bất kỳ thư nào.
                     </p>
                 }
             }
+
         </div>
         @if(mails.Count > 0) {
             <div class="mail__footer @(selectedItems.Count > 0 ? "actions" : "" )">
@@ -130,13 +131,15 @@
 </div>
 
 @code {
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public string id { get; set; }
+
     private List<LabelModel> labels = new();
-    private List<MailModel> mails = new List<MailModel>();
-    private List<string> selectedItems = new List<string>();
-    private List<MailModel> originalMails = new List<MailModel>();
+    private List<MailModel> mails = new ();
+    private List<string> selectedItems = new ();
+    private List<MailModel> originalMails = new ();
     private bool isSelectedAll  = false;
+    public bool isLoading { get; set; } = true;
 
     // Phục vụ phân trang
     private int pageSize = 30; // default lấy 30 mails
@@ -144,13 +147,25 @@
     public int pages;
 
     // Các giá trị hiện tại phục vụ filter
-    public List<string> currentLabelsFilter{ get; set;} = new List<string>();
-    public string currentCategoryFilter { get; set;} = "all";
-    public int currrentStatusFilter{ get; set;} = 0;
-    public string currrentStartTimeFilter{ get; set;} = String.Empty;
-    public string currrentEndTimeFilter{ get; set;} = String.Empty;
 
-    public bool isLoading { get; set; } = true;
+    public List<string> currentLabels { get; set;} = new ();
+    public string currentCategory { get; set;} = "all";
+    public int currrentStatus { get; set;} = 0;
+    public string currrentStartTime { get; set;} = String.Empty;
+    public string currrentEndTime { get; set;} = String.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        mails = await MailData.GetMailsByLabel(id, Layout.User.id);
+        originalMails = mails.ToList();
+        isLoading = false;
+
+        var pagesHelper = SharedHelper.Paging(mails.Count, 30);   
+        pages = pagesHelper == 0 ? 1 : pagesHelper;
+        
+        Pagination(page);    
+        StateHasChanged();
+    }
 
 
     protected override async Task OnInitializedAsync()
@@ -158,26 +173,17 @@
 
         // Các hàm get data từ database
         labels = await LabelData.GetList(Layout.User.id);
-        mails = await MailData.GetList("inbox", Layout.User.id);
-        isLoading = false;
 
-        // Clone mails gốc để filter
-        originalMails = mails.ToList();
-
-        // Phục vụ phân trang
-        var pagesHelper = SharedHelper.Paging(mails.Count, 30);   
-        pages = pagesHelper == 0 ? 1 : pagesHelper;
 
         // Khởi tạo thời gian bắt đầu và kết thúc
         DateTime start = DateTime.Now;
         DateTime end = DateTime.Now;
         SharedHelper.GetTimeSpan(1, out start , out end);
-        currrentStartTimeFilter = start.ToString("yyyy/MM/dd");
-        currrentEndTimeFilter = end.ToString("yyyy/MM/dd");
+        currrentStartTime = start.ToString("yyyy/MM/dd");
+        currrentEndTime = end.ToString("yyyy/MM/dd");
 
-        // Phân trang
-        Pagination(page);    
     }
+
 
 
     // Phân trang
@@ -203,6 +209,8 @@
         isSelectedAll = selectedItems.Count == mails.Count;
     }
 
+
+    // Hàm dùng để chọn 1 mail
     private void Selected(SelectedModel selected)
     {
         if (selected.isChecked)
@@ -219,18 +227,19 @@
         isSelectedAll = selectedItems.Count == mails.Count;
     }
 
+    // Hủy chọn
     public void CancelSelected()
     {
         selectedItems.Clear();
         isSelectedAll = false;
     }
 
-
-    
     // Đưa vào thùng rác nhiều mail
     public async Task Trash()
     {
         await MailData.TrashMails(selectedItems);
+
+        // Update UI
         mails.RemoveAll(m => selectedItems.Contains(m.id));
     }
 
@@ -239,8 +248,12 @@
     public async Task TrashItem(MailModel mailTrash)
     {
         await MailData.Trash(mailTrash.id);
+
+        // Update UI
         MailModel mail = mails.Where(m => m.id == mailTrash.id).FirstOrDefault();
         mails.Remove(mail);
+
+        StateHasChanged();
     }
 
 
@@ -294,19 +307,18 @@
     // Filter mail
     public void FilterMails(FilterModel filter)
     {
-
         // Kiểm tra filter labels ids có sự thay đổi hay không? 
-        List<string> labelIds = filter.labelIds ?? currentLabelsFilter;
+        List<string> labelIds = filter.labelIds ?? currentLabels ;
 
         // Kiểm tra danh mục có khác với danh mục hiện tại hay không?
-        string category = String.IsNullOrEmpty(filter.categoryId) ? currentCategoryFilter : filter.categoryId;
+        string category = String.IsNullOrEmpty(filter.categoryId) ? currentCategory : filter.categoryId;
 
         // Kiểm tra thư chưa đọc hay đã đọc 1: đã đọc 2: chưa đọc
-        int status = filter.isRead == 0 ? currrentStatusFilter : filter.isRead;
+        int status = filter.isRead == 0 ? currrentStatus : filter.isRead;
 
         // Kiểm tra thời gian bắt đầu hay và kết thúc
-        string startTime = String.IsNullOrEmpty(filter.startTime) ? currrentStartTimeFilter : filter.startTime;
-        string endTime = String.IsNullOrEmpty(filter.endTime) ? currrentEndTimeFilter : filter.endTime;
+        string startTime = String.IsNullOrEmpty(filter.startTime) ? currrentStartTime : filter.startTime;
+        string endTime = String.IsNullOrEmpty(filter.endTime) ? currrentEndTime : filter.endTime;
 
         var filteredMails = SharedHelperV2.FilterByTimeHelper(startTime, endTime, originalMails);
 
@@ -314,43 +326,46 @@
         if (category != "all")
         {
             filteredMails = filteredMails.Where(item => item.category == category).ToList();
-            currentCategoryFilter = category;
+            currentCategory = category;
         }
         else
         {
-            currentCategoryFilter = "all";
+            currentCategory = "all";
         }
 
         // Filter nhãn
         if (labelIds != null && labelIds.Any())
         {
             filteredMails = filteredMails.Where(item => item.labels.Any(label => labelIds.Contains(label))).ToList();
-            currentLabelsFilter = labelIds;
+            currentLabels = labelIds;
         }
         else
         {
-            currentLabelsFilter = new List<string>();
+            currentLabels = new List<string>();
         }
 
         // Filter status
         if (status != 0)
         {
+            // 1: read  - 2: unread
             var isRead = status == 1 ? true : false;
             filteredMails = filteredMails.Where(item => item.isRead == isRead).ToList();
-            currrentStatusFilter = status;
+            currrentStatus = status;
         }
         else
         {
-            currrentStatusFilter = 0;
+
+            // 0: ở trạng thái mặc định
+            currrentStatus = 0;
         }
 
-        currrentStartTimeFilter = startTime;
-        currrentEndTimeFilter = endTime;
+        currrentStartTime = startTime;
+        currrentEndTime = endTime;
 
-        // Gọi chức năng phân trang
+        // gọi chức năng phân trang
         var pagesHelper = SharedHelper.Paging(filteredMails.Count, 30); 
         pages = pagesHelper == 0 ? 1 : pagesHelper;  
-
+        
         mails = filteredMails;
 
         StateHasChanged();

@@ -1,20 +1,20 @@
-@page "/mail/inbox"
+@page "/mail/important"
 @layout LayoutMain
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigation
 @using System.Collections.Generic;
 @using Microsoft.AspNetCore.Components
 
-<PageTitle>Hộp thư đến </PageTitle>
+<PageTitle>Hộp thư quan trọng</PageTitle>
 <div class="mail-wrapper">
     <MailSideBar/>
     <div class="mail__main" >
         <HeaderMain />
         <div class="mail__container">
-            <div style="position: sticky; top: 56px; background-color: #fff; z-index: 19;">
+            <div style="position: sticky; top: 56px; background-color: #fff; z-index: 20;">
                 <_Header 
-                    name="Hộp thư đến" 
-                    placehoder="Tiêu đề, nội dung, người gửi" 
+                    name="Thư đã gửi" 
+                    placehoder="Tiêu đề, nội dung, người gửi, người nhận" 
                     quantityColumnFirst="6"
                     quantityColumnSecond="6" 
                     isShowStatus=true 
@@ -82,7 +82,7 @@
                                     
                                     <_Item
                                         mail="mail"
-                                        currentPage="inbox"
+                                        currentPage="sent"
                                         isChecked="isChecked" 
                                         OnSelected="Selected"
                                         OnTrashItem="TrashItem"
@@ -96,7 +96,7 @@
                 else 
                 {
                     <p class="is_body2 is-secondary-40 is-flex is-align-items-center is-justify-content-center" style="min-height: calc( 100vh - 115px) ;">
-                    Không có bất kỳ thư nào được gửi đến.
+                    Không có bất kỳ thư nào trong hộp thư quan trọng.
                     </p>
                 }
             }
@@ -112,8 +112,9 @@
                         CancelSelected="CancelSelected"
                         OnTrash="Trash"
                         OnRead="Read"
-                        OnImportant="Important"
+                        OnImportant="OnImportant"
                         OnUpdateLabels="UpdateLabels"
+                        isImportantMails = "true"
                     />
                 }
                 else
@@ -132,11 +133,13 @@
 @code {
     [CascadingParameter]
     public LayoutMain Layout { get; set; }
+
     private List<LabelModel> labels = new();
     private List<MailModel> mails = new List<MailModel>();
-    private List<string> selectedItems = new List<string>();
+    public List<string> selectedItems = new List<string>();
     private List<MailModel> originalMails = new List<MailModel>();
     private bool isSelectedAll  = false;
+    public bool isLoading { get; set; } = true;
 
     // Phục vụ phân trang
     private int pageSize = 30; // default lấy 30 mails
@@ -150,7 +153,6 @@
     public string currrentStartTimeFilter{ get; set;} = String.Empty;
     public string currrentEndTimeFilter{ get; set;} = String.Empty;
 
-    public bool isLoading { get; set; } = true;
 
 
     protected override async Task OnInitializedAsync()
@@ -158,11 +160,11 @@
 
         // Các hàm get data từ database
         labels = await LabelData.GetList(Layout.User.id);
-        mails = await MailData.GetList("inbox", Layout.User.id);
-        isLoading = false;
+        mails = await MailData.GetList("important", Layout.User.id);
 
         // Clone mails gốc để filter
         originalMails = mails.ToList();
+        isLoading = false;
 
         // Phục vụ phân trang
         var pagesHelper = SharedHelper.Paging(mails.Count, 30);   
@@ -225,8 +227,6 @@
         isSelectedAll = false;
     }
 
-
-    
     // Đưa vào thùng rác nhiều mail
     public async Task Trash()
     {
@@ -242,6 +242,7 @@
         MailModel mail = mails.Where(m => m.id == mailTrash.id).FirstOrDefault();
         mails.Remove(mail);
     }
+
 
 
     // Đánh  đâu đã đọc / chưa đọc danh sách mail
@@ -263,7 +264,7 @@
 
 
     // Đánh dấu quan trọng / không quan trọng danh sách mail
-    public async Task Important(bool isImportant)
+    public async Task OnImportant(bool isImportant)
     {
         await MailData.ImportantMails(selectedItems, isImportant);
 
@@ -276,6 +277,7 @@
         
     }
 
+
     // Thêm nhãn
     public async Task UpdateLabels(List<string> labelIds)
     {
@@ -283,6 +285,7 @@
          
         await JSRuntime.InvokeVoidAsync("tagline", true,  $"Đã đánh dấu {selectedItems.Count} thư vào các nhãn được chọn!");   
     }
+
 
     // Tìm kiếm
     public void Searching (string data)
@@ -294,7 +297,6 @@
     // Filter mail
     public void FilterMails(FilterModel filter)
     {
-
         // Kiểm tra filter labels ids có sự thay đổi hay không? 
         List<string> labelIds = filter.labelIds ?? currentLabelsFilter;
 
@@ -335,6 +337,7 @@
         // Filter status
         if (status != 0)
         {
+            // 1: read  - 2: unread
             var isRead = status == 1 ? true : false;
             filteredMails = filteredMails.Where(item => item.isRead == isRead).ToList();
             currrentStatusFilter = status;
@@ -347,10 +350,10 @@
         currrentStartTimeFilter = startTime;
         currrentEndTimeFilter = endTime;
 
-        // Gọi chức năng phân trang
+        // gọi chức năng phân trang
         var pagesHelper = SharedHelper.Paging(filteredMails.Count, 30); 
         pages = pagesHelper == 0 ? 1 : pagesHelper;  
-
+        
         mails = filteredMails;
 
         StateHasChanged();

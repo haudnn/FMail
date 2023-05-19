@@ -3,69 +3,57 @@
 @inject NavigationManager navigation
 
 <section id="header" class="header_main">
-  <ul class="columns is-mobile is-vcentered is-variable is-1 is-flex is-justify-content-space-between">
+  <ul class="columns is-mobile is-vcentered is-variable is-1 is-justify-content-flex-end">
 		<li class="column is-narrow">
-      <div class="is-noti">
-        <div class="is-flex is-align-items-center">
+			<div class="is-noti">
+        <a href="settings" class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+          <span class="icon is_sub2 is-secondary-40">
+              <i class="material-icons-sharp">settings</i>
+            </span>
+          </a>
+      </div>
+		</li>
+	  <li class="column is-narrow">
+      <div class="is-noti dropdown is-right @(toggle.IsToggled ? "is-active" : "" )">
+        <div class="dropdown-trigger is-flex is-align-items-center" @onclick="Toggle">
 					<div class="icon-text">
 						<span class="icon image is-36x36 is-rounded">
-							<img src="/images/favicon.png">
+							<img src="@Layout.User.avatar">
 						</span>
 					</div>
+					<span class="icon is-secondary-20">
+            <i class="material-symbols-outlined is-secondary-10">
+              arrow_drop_down
+            </i>
+          </span>
+        </div>
+				<div class="dropdown-menu" style="width: 180px; top: 40px; z-index: 100;">
+          <div class="dropdown-content px-2" >
+          	<div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 10px; padding: 5px; border-bottom: 1px solid #C0C6DC; border-radius: unset;">
+							<div class="icon-text" style="min-width: 50px;">
+								<span class="icon image is-36x36 is-rounded">
+									<img src="@Layout.User.avatar">
+								</span>
+							</div>
+							<span class="is-secondary-20">
+								@Layout.User.FullName
+							</span>
+						</div>
+						<a @onclick="Logout" title="Đăng xuất" class="dropdown-item is-flex is-align-items-center" style="gap: 10px; padding: 5px;">
+							<span style="min-width: 50px; justify-content: unset;" class="icon is-secondary-20">
+								<i class="material-symbols-outlined is-secondary-10">
+									logout
+								</i>
+							</span>
+							<span class="is-secondary-20">
+								Đăng xuất
+							</span>
+						</a>
+          </div>
         </div>
       </div>
     </li>
-		<div class="is-flex is-align-items-center">
-			<li style="margin-right: 5px;" class="column is-narrow">
-				<div class="is-noti">
-					<a href="settings" class="is-flex is-align-items-center" style="width: 100%;">
-						<span class="icon is_sub2 is-secondary-40" style="font-size: 24px;">
-								<i class="material-icons-sharp">settings</i>
-							</span>
-						</a>
-				</div>
-			</li>
-			<li class="column is-narrow">
-				<div class="is-noti dropdown is-right @(toggle.IsToggled ? "is-active" : "" )">
-					<div class="dropdown-trigger is-flex is-align-items-center" @onclick="Toggle">
-						<div class="icon-text">
-							<span class="icon image is-36x36 is-rounded">
-								<img src="@Layout.User.avatar">
-							</span>
-						</div>
-						<span class="icon is-secondary-20">
-							<i class="material-symbols-outlined is-secondary-10">
-								arrow_drop_down
-							</i>
-						</span>
-					</div>
-					<div class="dropdown-menu" style="width: 180px; top: 40px; z-index: 100;">
-						<div class="dropdown-content px-2" >
-							<div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 10px; padding: 5px; border-bottom: 1px solid #C0C6DC; border-radius: unset;">
-								<div class="icon-text" style="min-width: 50px;">
-									<span class="icon image is-36x36 is-rounded">
-										<img src="@Layout.User.avatar">
-									</span>
-								</div>
-								<span class="is-secondary-20">
-									@Layout.User.FullName
-								</span>
-							</div>
-							<a @onclick="Logout" title="Đăng xuất" class="dropdown-item is-flex is-align-items-center" style="gap: 10px; padding: 5px;">
-								<span style="min-width: 50px; justify-content: unset;" class="icon is-secondary-20">
-									<i class="material-symbols-outlined is-secondary-10">
-										logout
-									</i>
-								</span>
-								<span class="is-secondary-20">
-									Đăng xuất
-								</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</li>
-		</div>
+
   </ul>
 </section>
 

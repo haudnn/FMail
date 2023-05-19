@@ -1,0 +1,115 @@
+@inject IJSRuntime JSRuntime
+@inject ProtectedLocalStorage storage
+@inject NavigationManager navigation
+
+<section id="header" class="header_main">
+  <ul class="columns is-mobile is-vcentered is-variable is-1 is-justify-content-flex-end">
+	  <li class="column is-narrow">
+      <div class="is-noti dropdown is-right is-active">
+        <div class="dropdown-trigger is-flex is-align-items-center">
+					<div class="icon-text">
+						<span class="icon image is-36x36 is-rounded">
+							<img src="@Layout.User.avatar">
+						</span>
+					</div>
+					<span class="icon is-secondary-20">
+            <i class="material-symbols-outlined is-secondary-10">
+              arrow_drop_down
+            </i>
+          </span>
+        </div>
+				<div class="dropdown-menu" style="width: 180px; top: 40px; z-index: 100;">
+          <div class="dropdown-content px-2" >
+          	<div class="dropdown-item unhover is-flex is-align-items-center" style="gap: 10px; padding: 5px; border-bottom: 1px solid #C0C6DC;">
+							<div class="icon-text" style="min-width: 50px;">
+								<span class="icon image is-36x36 is-rounded">
+									<img src="@Layout.User.avatar">
+								</span>
+							</div>
+							<span class="is-secondary-20">
+								@Layout.User.FullName
+							</span>
+						</div>
+						<div class="dropdown-item is-flex is-align-items-center" style="gap: 10px; padding: 5px;">
+							<span style="min-width: 50px; justify-content: unset;" class="icon is-secondary-20">
+								<i class="material-symbols-outlined is-secondary-10">
+									logout
+								</i>
+							</span>
+							<span class="is-secondary-20">
+								Đăng xuất
+							</span>
+						</div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+@code {
+  [CascadingParameter]
+  public LayoutMain Layout { get; set; }
+  private string toggleActive = string.Empty;
+  private int count_mail = 0;
+  private int count_blogs = 0;
+  private int count_okrs = 0;
+  private int count_plan = 0;
+  private int count_educate = 0;
+  private int count_other = 0;
+  private List<NotifyModel> database = new();
+  private List<NotifyModel> dataList = new();
+
+  protected override async Task OnParametersSetAsync()
+  {
+    toggleActive = string.Empty;
+    await GetAllData();
+  }
+
+  private async Task GetAllData()
+  {
+    await Task.Delay(100);
+    count_mail = 0;
+    count_blogs = database.Where(x => !x.read && x.type == 9).Count();;
+    count_okrs = database.Where(x => !x.read && x.type >= 500 && x.type <= 550).Count();
+    count_educate = database.Where(x => !x.read && x.type >= 600 && x.type <= 650).Count();
+    count_plan = database.Where(x => !x.read && x.type >= 700 && x.type <= 750).Count();
+    count_other = database.Where(x => !x.read && x.type >= 10 && x.type <= 350).Count();
+    NotiList();
+  }
+
+  private void NotiList()
+  {
+    dataList = new();
+    if(!SharedHelper.IsEmpty(toggleActive))
+    {
+      if(toggleActive == "blogs")
+        dataList = database.Where(x => x.type == 9).ToList();
+      if(toggleActive == "okrs")
+        dataList = database.Where(x => x.type >= 500 && x.type <= 550).ToList();
+      else if(toggleActive == "educate")
+        dataList = database.Where(x => x.type >= 600 && x.type <= 650).ToList();
+      else if(toggleActive == "plan")
+        dataList = database.Where(x => x.type >= 700 && x.type <= 750).ToList();
+      else if(toggleActive == "other")
+        dataList = database.Where(x => x.type >= 10 && x.type <= 350).ToList();
+    }
+  }
+
+  private async Task Toggle(string type)
+  {
+    if(SharedHelper.IsEmpty(toggleActive))
+      toggleActive = type;
+    else if(toggleActive != type)
+      toggleActive = type;
+    else if(toggleActive == type)
+      toggleActive = string.Empty;
+    await GetAllData();
+  }
+
+  private async Task Close()
+  {
+    toggleActive = string.Empty;
+    await GetAllData();
+  }
+}

@@ -89,6 +89,7 @@
     // Tạo mới danh mục
     public async Task Add(string name)
     {
+
         bool isValid = await IsValidCategory(name);
         if(!isValid) return;
 

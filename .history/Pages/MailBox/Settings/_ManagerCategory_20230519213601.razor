@@ -89,6 +89,7 @@
     // Tạo mới danh mục
     public async Task Add(string name)
     {
+
         bool isValid = await IsValidCategory(name);
         if(!isValid) return;
 
@@ -123,7 +124,7 @@
             return false;
         }
 
-        if(name.Length > 30) 
+        if( name.Length >  30) 
         {
             await JSRuntime.InvokeVoidAsync("tagline", false, "Tên danh mục tối đa 30 ký tự!");
             return false;

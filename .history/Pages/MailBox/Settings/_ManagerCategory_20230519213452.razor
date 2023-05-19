@@ -1,7 +1,7 @@
 @inject IJSRuntime JSRuntime
 @layout LayoutMain
 
-<div>
+<div class="is-padding-20">
     <div class="container-manager is-config">
         <div class="is-flex is-align-items-center">
             <span class="is-flex-1 is-uppercase is_h6 is-secondary-10">Quản lí danh mục</span>
@@ -12,6 +12,7 @@
                 <span class="has-text-white is_button">Thêm danh mục</span>
             </div>
         </div>
+        <p class="is-padding-20-x is_body1 is-secondary-20">Danh sách hạng mục</p>
 
     <Dropzone InstantReplace="true" TItem="CategoryModel" OnItemDrop="((p)=> OnItemDrop(p))" Items="categories" OnReplacedItemDrop="@((p)=> OnReplacedItemDrop(p))">
         @if(@context.name != "Khác") 
@@ -89,6 +90,7 @@
     // Tạo mới danh mục
     public async Task Add(string name)
     {
+
         bool isValid = await IsValidCategory(name);
         if(!isValid) return;
 
@@ -123,7 +125,7 @@
             return false;
         }
 
-        if(name.Length > 30) 
+        if( name.Length >  30) 
         {
             await JSRuntime.InvokeVoidAsync("tagline", false, "Tên danh mục tối đa 30 ký tự!");
             return false;

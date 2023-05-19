@@ -2861,9 +2861,9 @@ button.dropdown-item {
 .mail__sidebar.is_less {
   min-width: 60px;
 }
-.mail__sidebar.is_less + .mail__main {
+.mail__sidebar.is_less + .mail__main{
   margin-left: 73px;
-  width: calc(100% - 73px);
+  width: calc( 100% - 73px);
 }
 .mail__sidebar.is_less span:not(.icon) {
   display: none;
@@ -2880,7 +2880,7 @@ button.dropdown-item {
   flex-direction: column;
   gap: 10px 0;
   transition: all 0.2s ease;
-  max-height: calc(100vh - 100px);
+  max-height: calc( 100vh - 100px );
 }
 .icon_mail {
   display: flex;
@@ -2895,7 +2895,7 @@ button.dropdown-item {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.mail__sidebar-item.border {
+.mail__sidebar-item.border{
   border-top: 1px solid var(--color-secondary-60);
   border-radius: unset;
 }
@@ -2910,6 +2910,7 @@ button.dropdown-item {
 .mail__sidebar-item.active {
   background-color: #ecf0ff;
   transition: all 0.2s ease;
+
 }
 .mail__sidebar-item.active .mail__sidebar-item-text {
   color: var(--color-primary-40);
@@ -2943,6 +2944,7 @@ button.dropdown-item {
   transition: all 0.2s ease;
   width: calc(100% - 220px);
   margin-left: 220px;
+  
 }
 .mail__container {
   padding: 20px 20px 0 20px;
@@ -2965,7 +2967,7 @@ button.dropdown-item {
 .divide-dropdown {
   border-bottom: 1px solid var(--color-secondary-80);
 }
-.container-items-dropdown {
+.container-items-dropdown{
   max-height: 230px;
   min-height: 230px;
   overflow-y: auto;
@@ -3082,7 +3084,7 @@ button.dropdown-item {
 }
 .mail__content {
   padding-top: 20px;
-  min-height: calc(100vh - 152px);
+    min-height: calc(100vh - 152px);
 }
 .category__list {
   max-height: 37px;
@@ -3130,6 +3132,7 @@ button.dropdown-item {
 }
 .mail-item.read {
   background: #fbfbfb;
+  
 }
 .mail-item.unread {
   background-color: var(--white-color);
@@ -3224,7 +3227,7 @@ button.dropdown-item {
   gap: 0 7px;
   white-space: nowrap;
 }
-.attachment-item > span {
+.attachment-item > span { 
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3246,12 +3249,12 @@ button.dropdown-item {
   letter-spacing: normal;
   min-width: 0;
 }
-.container-item-mail {
+.container-item-mail{
   flex: 1 1 auto;
   white-space: nowrap;
   overflow: hidden;
 }
-.body-mail {
+.body-mail{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3366,9 +3369,12 @@ button.dropdown-item {
 .mail-item:hover {
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+
+
 }
 .mail-item:hover .mail-actions {
   display: flex;
+  
 }
 .mail-item:hover .tags-list {
   display: none;
@@ -3417,14 +3423,14 @@ button.dropdown-item {
   right: 20px;
   left: 20px;
 }
-.mail__footer.pagination {
+.mail__footer.pagination{
   position: sticky;
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
+ align-items: center;
+ justify-content: center;
 }
 .mail__sidebar.is_less .mail__main .mail__footer .mail-actions {
   background: #000;
@@ -3552,7 +3558,9 @@ button.dropdown-item {
   border-radius: 8px;
   border: 1px solid var(--color-secondary-80);
 }
-
+.container-manager.is-config {
+  min-height: calc(100vh - 56px);
+}
 .container-group-item {
   padding: 7px 0px 7px 10px;
 }
@@ -3621,7 +3629,7 @@ button.dropdown-item {
   min-height: unset !important;
   overflow: unset;
 }
-.container-signature-zone .ql-container.ql-snow .ql-editor {
+.container-signature-zone .ql-container.ql-snow .ql-editor{
   min-height: unset;
 }
 .group-member-item {
@@ -3755,7 +3763,7 @@ button.dropdown-item {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.mail__template-table {
+.mail__template-table{
   table-layout: fixed;
   width: 100%;
   border-spacing: 0;
@@ -3763,11 +3771,11 @@ button.dropdown-item {
   display: block;
   border-collapse: collapse;
 }
-.mail-tbody {
+.mail-tbody{
   display: block;
   border-color: inherit;
 }
-.mail-td {
+.mail-td{
   empty-cells: show;
   outline: none;
   padding: 0;
@@ -3779,20 +3787,20 @@ button.dropdown-item {
   order: 1;
   padding: 0;
 }
-.mail-checkbox {
+.mail-checkbox{
   background: none;
   order: 0;
   position: relative;
   width: 20px;
   align-items: unset;
 }
-.mail-star {
+.mail-star{
   padding: 0 10px 0 0;
   order: 0;
   width: 20px;
   align-items: unset;
 }
-.mail-from {
+.mail-from{
   display: flex;
   flex-basis: 160px;
   max-width: 160px;
@@ -3802,7 +3810,7 @@ button.dropdown-item {
   overflow: hidden;
   align-items: unset;
 }
-.mail-from > span {
+.mail-from > span{ 
   align-items: baseline;
   display: flex;
   box-flex: 1;
@@ -3811,7 +3819,7 @@ button.dropdown-item {
   overflow: hidden;
   width: 100%;
 }
-.mail-main {
+.mail-main{
   display: flex;
   flex: 1 1 auto;
   height: auto;
@@ -3820,24 +3828,24 @@ button.dropdown-item {
   flex-wrap: wrap;
 }
 .mail-main > div {
-  flex: 1 1 auto;
+  flex: 1 1 auto;    
   white-space: nowrap;
   overflow: hidden;
 }
-.mail-main-content {
+.mail-main-content{
   white-space: nowrap;
   overflow: hidden;
   display: flex;
   align-items: baseline;
 }
-.mail-subject {
+.mail-subject{
   flex-shrink: 1;
   align-items: baseline;
   display: inline-flex;
   white-space: nowrap;
   overflow: hidden;
 }
-.mail-body {
+.mail-body{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3855,7 +3863,7 @@ button.dropdown-item {
   max-width: 240px !important;
   transition: all 0.2s ease-in-out;
 }
-.mailtag-item {
+.mailtag-item{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3864,7 +3872,7 @@ button.dropdown-item {
   border-radius: 4px;
 }
 
-.container-body-forward {
+.container-body-forward{ 
   display: flex;
   align-items: center;
   justify-content: center;

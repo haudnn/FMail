@@ -115,7 +115,7 @@
                     <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập nội dung thư">
                             <EditorContent></EditorContent> 
                         <ToolbarContent>
-                            <div class="toolbar-create" style="left: 20px;">
+                            <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? "80" : "220" )px">
                                 <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
                                     style="padding: 10px 40px;" @onclick="() => CreateMail()">
                                     <span class="is-font-14">Gửi</span>
