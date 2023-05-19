@@ -14,10 +14,11 @@ public class UserData
 {
 
 	public static IMongoCollection<UserModel> userCollection = ConnectDB<UserModel>.GetClient("mailbox", "users");
-
   public static async Task<UserModel> Get(string id)
   {
-      var isFoundUser = userCollection.Find(u => u.id == id).FirstOrDefault();
+      List<UserModel> users = FakeDataHelper.InitUsers();
+      UserModel user = new();
+      var isFoundUser = users.Find(u => u.id == id);
       if(isFoundUser == null)
       {
           return null;
@@ -27,16 +28,34 @@ public class UserData
 
 
 
-  public static async Task<UserModel> Login(string username, string password)
-  {
-;
-    var isFoundUser = userCollection.Find(u => u.email == username && u.password == password).FirstOrDefault();
-    if(isFoundUser == null) 
+    /// <summary>
+    /// Hàm đăng nhập
+    /// </summary>
+    public static async Task<UserModel> Login(string username, string password)
     {
-        return null; 
+      var user = await GetbyEmail(username);
+      if (user != null)
+      {
+
+        if (user.password == password)
+          return user;
+      }
+
+      return null;
     }
-    return isFoundUser;
-  }
+
+		public static async Task<UserModel> GetbyEmail(string email)
+    {
+      if(string.IsNullOrEmpty(email))
+        return null;
+      else
+         email = email.Trim().ToLower();
+
+
+      return await userCollection.Find(x => !x.delete && x.email.ToLower() == email).FirstOrDefaultAsync();
+    }
+
+
 
 	public static async Task<string> Register(UserModel model)
 	{

@@ -1,0 +1,117 @@
+@page "/register"
+@layout LayoutLogin
+@inject IJSRuntime JSRuntime
+@inject ProtectedLocalStorage storage
+@inject NavigationManager navigation
+
+<div class="card p-5">
+ <h1 class="title is-5 has-text-info is-uppercase">
+      Đăng ký hệ thống
+  </h1>
+  <form @onsubmit="HandleRegister">
+			<div class="field">
+        <label class="label">Họ*</label>
+        <div class="control has-icons-left">
+          <input @bind="firstName" type="text" class="input" placeholder="Nhập họ..." />
+          <span class="icon is-left">
+            <span class="material-icons-outlined is-size-5">
+              account_circle
+            </span>
+          </span>
+        </div>
+      </div>
+			<div class="field">
+        <label class="label">Tên đệm*</label>
+        <div class="control has-icons-left">
+          <input @bind="lastName" type="text" class="input" placeholder="Nhập tên đệm..." />
+          <span class="icon is-left">
+            <span class="material-icons-outlined is-size-5">
+              account_circle
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Tên đăng nhập*</label>
+        <div class="control has-icons-left">
+          <input @bind="username" type="text" class="input" placeholder="Nhập email..." />
+          <span class="icon is-left">
+            <span class="material-icons-outlined is-size-5">
+              account_circle
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Mật khẩu*</label>
+        <div class="control has-icons-left">
+          <input @bind="password" type="password" class="input" placeholder="Nhập password..." />
+          <span class="icon is-left">
+            <span class="material-icons-outlined is-size-5">
+              lock
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="field is-grouped is-vcentered mt-5">
+        <div class="control is-expanded is-flex is-justify-content-space-between is-align-items-center">
+          <button class="button is-link" @onclick="HandleRegister">
+            <span class="icon">
+              <i class="material-icons-outlined is-size-6">login</i>
+            </span>
+            <span>Đăng ký</span>
+          </button>
+					<a href="/" style="text-decoration: underline;" class="has-text-link">Đăng nhập</a>
+        </div>
+      </div>
+  </form>
+</div>
+
+@code {
+  private bool _loaded = false;
+	private string _message = String.Empty;
+  private string username = String.Empty;
+  private string password = String.Empty;
+	private string firstName = String.Empty;
+	private string lastName = String.Empty;
+
+
+
+  private async Task HandleRegister()
+  {	
+		if(await IsValid()) 
+		{
+			_loaded = true;
+			string response = await UserData.Register(new UserModel {
+				email = username,
+				first_name = firstName,
+				last_name = lastName,
+				password = password
+			});
+			await TagLine(response, true);
+			_loaded = false;
+		}
+  }
+
+	private async Task<bool> IsValid()
+	{
+		bool type = false;
+		
+		if(String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(firstName) || String.IsNullOrEmpty(lastName))
+		{
+			_message = "Vui lòng nhập đầy đủ các trường yêu cầu!";
+			await TagLine(_message, type);
+			return false;
+		}
+
+		return true;
+	}
+
+
+	private async Task TagLine(string message, bool type)
+	{
+	 	await JSRuntime.InvokeVoidAsync("tagline", type, message);
+		_message = String.Empty;
+	}
+
+}

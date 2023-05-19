@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/register"
 @layout LayoutLogin
 @inject IJSRuntime JSRuntime
 @inject ProtectedLocalStorage storage
@@ -8,9 +8,31 @@
   @if (user == null)
   {
     <h1 class="title is-5 has-text-info is-uppercase">
-      Đăng nhập hệ thống
+      Đăng ký hệ thống
     </h1>
     <form @onsubmit="SignIn">
+			<div class="field">
+        <label class="label">Họ</label>
+        <div class="control has-icons-left">
+          <input @bind="username" type="text" class="input" placeholder="Nhập họ..." />
+          <span class="icon is-left">
+            <span class="material-icons-outlined is-size-5">
+              account_circle
+            </span>
+          </span>
+        </div>
+      </div>
+			<div class="field">
+        <label class="label">Tên đệm</label>
+        <div class="control has-icons-left">
+          <input @bind="username" type="text" class="input" placeholder="Nhập email..." />
+          <span class="icon is-left">
+            <span class="material-icons-outlined is-size-5">
+              account_circle
+            </span>
+          </span>
+        </div>
+      </div>
       <div class="field">
         <label class="label">Tên đăng nhập</label>
         <div class="control has-icons-left">
@@ -34,14 +56,13 @@
         </div>
       </div>
       <div class="field is-grouped is-vcentered mt-5">
-        <div class="control is-expanded is-flex is-justify-content-space-between is-align-items-center">
+        <div class="control is-expanded">
           <button class="button is-link" @onclick="SignIn">
             <span class="icon">
               <i class="material-icons-outlined is-size-6">login</i>
             </span>
             <span>Đăng nhập</span>
           </button>
-					<a href="/register" style="text-decoration: underline;" class="has-text-link">Đăng ký</a>
         </div>
       </div>
     </form>
@@ -76,8 +97,8 @@
 
 @code {
   private bool _loaded = false;
-  private string username = String.Empty;
-  private string password = String.Empty;
+  private string username = "admin1@gmail.com";
+  private string password = "admin1";
   private UserModel user = null;
 
   protected override async Task OnAfterRenderAsync(bool firstRender)

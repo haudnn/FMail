@@ -1,0 +1,362 @@
+@page "/"
+@layout LayoutMain
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@using System.Collections.Generic;
+@using Microsoft.AspNetCore.Components
+
+<PageTitle>Hộp thư quan trọng</PageTitle>
+<div class="mail-wrapper">
+    <MailSideBar/>
+    <div class="mail__main" >
+        <HeaderMain />
+        <div class="mail__container">
+            <div style="position: sticky; top: 56px; z-index: 20; background-color: #fff;">
+                <_Header 
+                    name="Thư đã gửi" 
+                    placehoder="Tiêu đề, nội dung, người gửi, người nhận" 
+                    quantityColumnFirst="6"
+                    quantityColumnSecond="6" 
+                    isShowStatus=true 
+                    isShowLabel=true
+                    labels="labels" 
+                    FilterMails="FilterMails"
+                    Searching="Searching"
+                />
+            <div class="mail__bar">
+                <div class="mail__content-header is-flex is-align-items-center is-padding-top-20"  style="gap: 0 40px; padding: 0 10px;">
+                        @if(selectedItems.Count > 0) 
+                        {
+                            @if(isSelectedAll) 
+                            {
+                                <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="SelectedAll">
+                                    <span class="icon is-small">
+                                        <i class="material-icons-sharp is-secondary-20">check_box</i>
+                                    </span>
+                                    <label class="is-pointer is_body2 is-secondary-40">Hủy chọn tất cả</label>
+                                </div>
+                            }
+                            else 
+                            {
+                                <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="CancelSelected">
+                                    <span class="icon is-small" >
+                                        <i class="material-icons-outlined is-secondary-40">indeterminate_check_box</i>
+                                    </span>
+                                    <label class="is-pointer is_body2 is-secondary-20">Hủy chọn </label>
+                                </div>
+                            }
+                        }
+                        else
+                        { 
+                            <div class="is-flex is-align-items-center is-pointer" style="gap: 0 10px;" @onclick="SelectedAll">
+                                <span class="icon is-small">
+                                    <i class="material-icons-sharp is-secondary-40">check_box_outline_blank</i>
+                                </span>
+                                <label class="is-pointer is_body2 is-secondary-40">Chọn tất cả</label>
+                            </div>
+                        }
+                        <div class="is-flex is-align-items-center is-justify-content-space-between is-flex-1" style="width: 100%; ">
+                            <_Category FilterMails="FilterMails"/>
+                        </div>
+                    </div>
+            </div>
+            </div>
+            @if(isLoading)
+            {
+                <div style="min-height: calc( 100vh - 115px);" class="is-flex is-align-content-center is-justify-content-center">Loading...</div>
+            }
+            else
+            {
+                @if(mails.Count > 0) 
+                {
+                    <div class="mail__content">
+                        <div class="mail-table" style="width: 100%;">
+                            <div class="mail-tbody" style="width: 100%;">
+                                @foreach (var mail in mails)
+                                {
+                                    // Kiểm tra mail có được chọn
+                                    var isChecked = selectedItems.Contains(mail.id);
+
+                                    // Chuyển labels string thành label text
+                                    var labelsConvert = FakeDataHelper.GetLabelsById(mail.labels, labels);
+                                    
+                                    <_Item
+                                        mail="mail"
+                                        currentPage="sent"
+                                        isChecked="isChecked" 
+                                        OnSelected="Selected"
+                                        OnTrashItem="TrashItem"
+                                        labels="labelsConvert"
+                                    />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                else 
+                {
+                    <p class="is_body2 is-secondary-40 is-flex is-align-items-center is-justify-content-center" style="min-height: calc( 100vh - 115px) ;">
+                    Không có bất kỳ thư nào trong hộp thư quan trọng.
+                    </p>
+                }
+            }
+        </div>
+        @if(mails.Count > 0) {
+            <div class="mail__footer @(selectedItems.Count > 0 ? "actions" : "" )">
+                @if (selectedItems.Count > 0)
+                {
+                    var count = selectedItems.Count;
+                    <_MailActions
+                        labels="labels" 
+                        mailCount="count" 
+                        CancelSelected="CancelSelected"
+                        OnTrash="Trash"
+                        OnRead="Read"
+                        OnImportant="OnImportant"
+                        OnUpdateLabels="UpdateLabels"
+                        isImportantMails = "true"
+                    />
+                }
+                else
+                {
+                    <_Pagination 
+                        page="page" 
+                        pages="pages"
+                        Pagination="Pagination"
+                    />
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
+
+    private List<LabelModel> labels = new();
+    private List<MailModel> mails = new List<MailModel>();
+    public List<string> selectedItems = new List<string>();
+    private List<MailModel> originalMails = new List<MailModel>();
+    private bool isSelectedAll  = false;
+    public bool isLoading { get; set; } = true;
+
+    // Phục vụ phân trang
+    private int pageSize = 30; // default lấy 30 mails
+    private int page = 1;
+    public int pages;
+
+    // Các giá trị hiện tại phục vụ filter
+    public List<string> currentLabelsFilter{ get; set;} = new List<string>();
+    public string currentCategoryFilter { get; set;} = "all";
+    public int currrentStatusFilter{ get; set;} = 0;
+    public string currrentStartTimeFilter{ get; set;} = String.Empty;
+    public string currrentEndTimeFilter{ get; set;} = String.Empty;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        // Các hàm get data từ database
+        labels = await LabelData.GetList(Layout.User.id);
+        mails = await MailData.GetList("important", Layout.User.id);
+
+        // Clone mails gốc để filter
+        originalMails = mails.ToList();
+        isLoading = false;
+
+        // Phục vụ phân trang
+        var pagesHelper = SharedHelper.Paging(mails.Count, 30);   
+        pages = pagesHelper == 0 ? 1 : pagesHelper;
+
+        // Khởi tạo thời gian bắt đầu và kết thúc
+        DateTime start = DateTime.Now;
+        DateTime end = DateTime.Now;
+        SharedHelper.GetTimeSpan(1, out start , out end);
+        currrentStartTimeFilter = start.ToString("yyyy/MM/dd");
+        currrentEndTimeFilter = end.ToString("yyyy/MM/dd");
+
+        // Phân trang
+        Pagination(page);    
+    }
+
+
+    // Phân trang
+    public void Pagination(int currentPage)
+    {
+        int start = (currentPage - 1) * pageSize;
+        page = currentPage;
+        mails = mails.Skip(start).Take(pageSize).ToList();
+        StateHasChanged();
+    }
+
+    // Chọn tất cả các mail
+    private void SelectedAll()
+    {
+        if (!isSelectedAll)
+        {
+            selectedItems.AddRange(mails.Select(mail => mail.id));
+        }
+        else
+        {
+            selectedItems.Clear();
+        }
+        isSelectedAll = selectedItems.Count == mails.Count;
+    }
+
+    private void Selected(SelectedModel selected)
+    {
+        if (selected.isChecked)
+        {
+            if (!selectedItems.Contains(selected.itemId))
+            {
+                selectedItems.Add(selected.itemId);
+            }
+        }
+        else
+        {
+            selectedItems.Remove(selected.itemId);
+        }
+        isSelectedAll = selectedItems.Count == mails.Count;
+    }
+
+    public void CancelSelected()
+    {
+        selectedItems.Clear();
+        isSelectedAll = false;
+    }
+
+    // Đưa vào thùng rác nhiều mail
+    public async Task Trash()
+    {
+        await MailData.TrashMails(selectedItems);
+        mails.RemoveAll(m => selectedItems.Contains(m.id));
+    }
+
+
+    // Đưa vào thùng rác 1 mail
+    public async Task TrashItem(MailModel mailTrash)
+    {
+        await MailData.Trash(mailTrash.id);
+        MailModel mail = mails.Where(m => m.id == mailTrash.id).FirstOrDefault();
+        mails.Remove(mail);
+    }
+
+
+
+    // Đánh  đâu đã đọc / chưa đọc danh sách mail
+    public async Task Read(bool isRead)
+    {
+        await MailData.ReadMails(selectedItems, isRead);
+
+        // Update UI
+        mails.Where(m => selectedItems.Contains(m.id)).ToList().ForEach(m => m.isRead = isRead);
+
+        string message = isRead ? $"Đã đánh dấu {selectedItems.Count} cuộc trò chuyện là đã đọc!" 
+                                : $"Đã đánh dấu {selectedItems.Count} cuộc trò chuyện là chưa đọc!";
+        await JSRuntime.InvokeVoidAsync("tagline", true, message);
+
+        StateHasChanged();
+
+    }
+
+
+
+    // Đánh dấu quan trọng / không quan trọng danh sách mail
+    public async Task OnImportant(bool isImportant)
+    {
+        await MailData.ImportantMails(selectedItems, isImportant);
+
+        // Update UI
+        mails.Where(m => selectedItems.Contains(m.id)).ToList().ForEach(m => m.isImportant = isImportant);
+
+        string message = isImportant ? $"Đã đánh dấu {selectedItems.Count} cuộc trò chuyện là quan trọng!" 
+                                : $"Đã đánh dấu {selectedItems.Count} cuộc trò chuyện là không quan trọng!";
+        await JSRuntime.InvokeVoidAsync("tagline", true, message);
+        
+    }
+
+
+    // Thêm nhãn
+    public async Task UpdateLabels(List<string> labelIds)
+    {
+        await MailData.UpdateLabels(selectedItems, labelIds);
+         
+        await JSRuntime.InvokeVoidAsync("tagline", true,  $"Đã đánh dấu {selectedItems.Count} thư vào các nhãn được chọn!");   
+    }
+
+
+    // Tìm kiếm
+    public void Searching (string data)
+    {
+        mails = SharedHelperV2.SearchingHelper("sent", data, originalMails);
+    }
+
+
+    // Filter mail
+    public void FilterMails(FilterModel filter)
+    {
+        // Kiểm tra filter labels ids có sự thay đổi hay không? 
+        List<string> labelIds = filter.labelIds ?? currentLabelsFilter;
+
+        // Kiểm tra danh mục có khác với danh mục hiện tại hay không?
+        string category = String.IsNullOrEmpty(filter.categoryId) ? currentCategoryFilter : filter.categoryId;
+
+        // Kiểm tra thư chưa đọc hay đã đọc 1: đã đọc 2: chưa đọc
+        int status = filter.isRead == 0 ? currrentStatusFilter : filter.isRead;
+
+        // Kiểm tra thời gian bắt đầu hay và kết thúc
+        string startTime = String.IsNullOrEmpty(filter.startTime) ? currrentStartTimeFilter : filter.startTime;
+        string endTime = String.IsNullOrEmpty(filter.endTime) ? currrentEndTimeFilter : filter.endTime;
+
+        var filteredMails = SharedHelperV2.FilterByTimeHelper(startTime, endTime, originalMails);
+
+        // Filter danh mục
+        if (category != "all")
+        {
+            filteredMails = filteredMails.Where(item => item.category == category).ToList();
+            currentCategoryFilter = category;
+        }
+        else
+        {
+            currentCategoryFilter = "all";
+        }
+
+        // Filter nhãn
+        if (labelIds != null && labelIds.Any())
+        {
+            filteredMails = filteredMails.Where(item => item.labels.Any(label => labelIds.Contains(label))).ToList();
+            currentLabelsFilter = labelIds;
+        }
+        else
+        {
+            currentLabelsFilter = new List<string>();
+        }
+
+        // Filter status
+        if (status != 0)
+        {
+            // 1: read  - 2: unread
+            var isRead = status == 1 ? true : false;
+            filteredMails = filteredMails.Where(item => item.isRead == isRead).ToList();
+            currrentStatusFilter = status;
+        }
+        else
+        {
+            currrentStatusFilter = 0;
+        }
+
+        currrentStartTimeFilter = startTime;
+        currrentEndTimeFilter = endTime;
+
+        // gọi chức năng phân trang
+        var pagesHelper = SharedHelper.Paging(filteredMails.Count, 30); 
+        pages = pagesHelper == 0 ? 1 : pagesHelper;  
+        
+        mails = filteredMails;
+
+        StateHasChanged();
+    }
+
+}

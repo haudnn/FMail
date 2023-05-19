@@ -86,21 +86,12 @@
     {
       if (firstRender)
       {
-        var userStorage = await storage.GetAsync<string>("user");
-        if (userStorage.Success && !string.IsNullOrEmpty(userStorage.Value))
-        {
-          user = await UserData.Get(userStorage.Value);
-          if (user == null)
-            await JSRuntime.InvokeVoidAsync("localStorage.clear");
-        }
-        _loaded = true;
-        StateHasChanged();
+				await JSRuntime.InvokeVoidAsync("localStorage.clear");
       }
     }
     catch (Exception ex)
     {
-      await JSRuntime.InvokeVoidAsync("localStorage.clear");
-      await JSRuntime.InvokeAsync<string>("console.log", ex.Message);
+     	await JSRuntime.InvokeVoidAsync("localStorage.clear");
     }
   }
 

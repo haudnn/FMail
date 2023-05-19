@@ -14,10 +14,11 @@ public class UserData
 {
 
 	public static IMongoCollection<UserModel> userCollection = ConnectDB<UserModel>.GetClient("mailbox", "users");
-
   public static async Task<UserModel> Get(string id)
   {
-      var isFoundUser = userCollection.Find(u => u.id == id).FirstOrDefault();
+      List<UserModel> users = FakeDataHelper.InitUsers();
+      UserModel user = new();
+      var isFoundUser = users.Find(u => u.id == id);
       if(isFoundUser == null)
       {
           return null;
@@ -35,6 +36,7 @@ public class UserData
     {
         return null; 
     }
+    await Task.Delay(100);
     return isFoundUser;
   }
 

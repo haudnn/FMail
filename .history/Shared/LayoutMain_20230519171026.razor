@@ -7,6 +7,9 @@
   <main id="main" class="columns is-gapless is-multiline">
     @if (User != null)
     {
+      @* <aside class="column is-narrow">
+        <Sidebar HandleToggleSidebar="HandleToggleSidebar"/>
+      </aside> *@
       <section id="content" class="column">          
         @{
           var relativePath = navigation.ToBaseRelativePath(navigation.Uri);

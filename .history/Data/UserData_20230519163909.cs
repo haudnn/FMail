@@ -17,6 +17,8 @@ public class UserData
 
   public static async Task<UserModel> Get(string id)
   {
+
+      UserModel user = new();
       var isFoundUser = userCollection.Find(u => u.id == id).FirstOrDefault();
       if(isFoundUser == null)
       {
@@ -35,6 +37,7 @@ public class UserData
     {
         return null; 
     }
+    await Task.Delay(100);
     return isFoundUser;
   }
 

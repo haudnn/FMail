@@ -5,36 +5,16 @@
 <section id="header" class="header_main">
   <ul class="columns is-mobile is-vcentered is-variable is-1 is-justify-content-flex-end">
 	  <li class="column is-narrow">
-      <div class="is-noti dropdown is-right is-active">
-        <div class="dropdown-trigger is-flex is-align-items-center">
+      <div class="is-noti dropdown is-right @(toggleActive == "mail" ? "is-active" : "")">
+        <div class="dropdown-trigger">
 					<div class="icon-text">
 						<span class="icon image is-36x36 is-rounded">
 							<img src="@Layout.User.avatar">
 						</span>
 					</div>
-					<span class="icon is-secondary-20">
-            <i class="material-symbols-outlined is-secondary-10">
-              arrow_drop_down
-            </i>
-          </span>
-        </div>
-				<div class="dropdown-menu" style="width: 180px; top: 40px; z-index: 100;">
-          <div class="dropdown-content px-2">
-          	<div class="dropdown-item is-flex is-align-items-center">
-							<div class="icon-text">
-							<span class="icon image is-36x36 is-rounded">
-								<img src="@Layout.User.avatar">
-							</span>
-						</div>
-						<span class="icon is-secondary-20">
-							@Layout.User.FullName
-						</span>
-						</div>
-          </div>
         </div>
       </div>
     </li>
-
 
   </ul>
 </section>
