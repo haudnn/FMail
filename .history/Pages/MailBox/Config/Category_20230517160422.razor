@@ -21,11 +21,17 @@
             <_Item category="context" OnDelete="Delete" OnUpdate="Update"/>
         }
     </Dropzone>
+        <!-- <ul>
+            @foreach (var category in categories.Where(c => c.name != "Khác"))
+            {
+                <_Item category="category" OnDelete="Delete" OnUpdate="Update"/>
+            }
+        </ul> -->
         <li class="is-flex is-align-items-center is-justify-content-space-between is-padding-10-y border-bottom">
-            <div class="is-flex is-align-items-center is-gap-10-y">
-                <span class="is_sub2 is-secondary-20">Khác</span>
-            </div>
-        </li>
+                <div class="is-flex is-align-items-center is-gap-10-y">
+                    <span class="is_sub2 is-secondary-20">Khác</span>
+                </div>
+            </li>
     </div>
     <!-- Modal thêm danh mục  -->
     <_ModalData
@@ -38,22 +44,16 @@
     />
 </div>
 @code{
-    [CascadingParameter]
-    public LayoutMain Layout { get; set; }
     public List<CategoryModel> categories = new List<CategoryModel>();
     public CategorySortedModel sortedUser { get; set;} = new();
     public List<int> sortedDefault { get; set;} = new();
     public bool isShow = false;
     public string categoryName = String.Empty;
 
-
-    CategoryModel dropedItem = new ();
-    CategoryModel replacedItem = new ();
-
     // Get list danh mục
     protected override async Task OnInitializedAsync()
     {   
-        categories = await CategoryData.GetList();
+                categories = await CategoryData.GetList();
         // Lấy danh sách danh mục đã được sorted
         sortedUser = await CategoryData.GetSorted(Layout.User.id);
 
@@ -135,7 +135,7 @@
     }
 
 
-    // Hàm dùng đề lấy vị trí của item bị thay đổi
+        // Hàm dùng đề lấy vị trí của item bị thay đổi
     public void OnReplacedItemDrop(CategoryModel item)
     {
         // Lấy item bị thay dổi

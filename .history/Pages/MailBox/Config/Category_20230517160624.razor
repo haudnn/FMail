@@ -21,11 +21,17 @@
             <_Item category="context" OnDelete="Delete" OnUpdate="Update"/>
         }
     </Dropzone>
+        <!-- <ul>
+            @foreach (var category in categories.Where(c => c.name != "Khác"))
+            {
+                <_Item category="category" OnDelete="Delete" OnUpdate="Update"/>
+            }
+        </ul> -->
         <li class="is-flex is-align-items-center is-justify-content-space-between is-padding-10-y border-bottom">
-            <div class="is-flex is-align-items-center is-gap-10-y">
-                <span class="is_sub2 is-secondary-20">Khác</span>
-            </div>
-        </li>
+                <div class="is-flex is-align-items-center is-gap-10-y">
+                    <span class="is_sub2 is-secondary-20">Khác</span>
+                </div>
+            </li>
     </div>
     <!-- Modal thêm danh mục  -->
     <_ModalData
@@ -135,11 +141,11 @@
     }
 
 
-    // Hàm dùng đề lấy vị trí của item bị thay đổi
+        // Hàm dùng đề lấy vị trí của item bị thay đổi
     public void OnReplacedItemDrop(CategoryModel item)
     {
         // Lấy item bị thay dổi
-        replacedItem = item;
+        c = item;
         StateHasChanged();
     }
 
