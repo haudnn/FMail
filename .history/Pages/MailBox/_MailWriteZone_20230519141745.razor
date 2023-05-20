@@ -1,0 +1,232 @@
+@inject IJSRuntime JSRuntime
+
+<div class="create__main-container">
+        <div>
+            <BlazoredTextEditor @ref="@QuillHtml" Placeholder="">
+                <EditorContent >
+                </EditorContent>
+                <ToolbarContent>
+                    <div class="toolbar-create" style="left: @(Layout.isToogleSideBar ? " 80" : "220" )px">
+                        <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
+                            style="padding: 10px 40px;" @onclick="Create">
+                            <span class="is-font-14">Gửi</span>
+                        </div>
+                        <div class="is-flex-1">
+                            <span class="ql-formats">
+                                <select class="ql-font">
+                                    <option value=""></option>
+                                    <option value="serif"></option>
+                                    <option value="monospace"></option>
+                                </select>
+                                <select class="ql-size">
+                                    <option value="small"></option>
+                                    <option selected=""></option>
+                                    <option value="large"></option>
+                                    <option value="huge"></option>
+                                </select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                <button class="ql-strike"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-color"></select>
+                                <select class="ql-background"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                                <button class="ql-indent" value="-1"></button>
+                                <button class="ql-indent" value="+1"></button>
+                                <button class="ql-blockquote"></button>
+                                <select class="ql-align">
+                                    <option selected=""></option>
+                                    <option value="center"></option>
+                                    <option value="right"></option>
+                                    <option value="justify"></option>
+                                </select>
+                            </span>
+                            <span class="ql-formats">
+                                <button>
+                                    <label for="fileInput">
+                                        <i class="material-icons-outlined">link</i>
+                                    </label>
+                                </button>
+                                <button class="ql-link"></button>
+                                <button class="ql-image"></button>
+                            </span>
+
+                        </div>
+                        <div class="is-flex is-align-items-center is-gap-8">
+                            <div @onclick="Cancel" class="wrapper-button is-justify-content-center is-inline-flex error-btn" style="padding: 9px 10px">
+                                <span class="icon">
+                                    <i class="material-icons-outlined">close</i>
+                                </span>
+                                <span class="is-font-14">Hủy tạo</span>
+                            </div>
+                        </div>
+                    </div>
+                </ToolbarContent>
+            </BlazoredTextEditor>
+            <InputFile 
+                multiple id="fileInput" 
+                style="display:none;" 
+                OnChange="@UploadFile" 
+                accept="application/pdf,
+                        image/png,
+                        image/jpg,
+                        image/jpeg,
+                        application/msword,
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                        application/vnd.ms-excel,
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" 
+            />
+        </div>
+        <div style="padding: 40px 0px 20px 0px">
+            <ul class="attachments-list mt-0">
+                @foreach (var file in files)
+                {
+                    <li class="attachment-item">
+                        <img style="width: 16px; height: 16px;" src="@string.Concat(" images/", file.icon, ".png" )">
+                        <span>@file.name</span>
+                        <span class="icon is-pointer" @onclick="() => DeleteFile(file)">
+                            <i class="material-icons-outlined">close</i>
+                        </span>
+                    </li>
+                }
+            </ul>
+        </div>
+</div>
+<_SignatureZone OnSetSignature="SetSignature"/>
+
+@code{
+
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public EventCallback<ActionModel> SetCurrentAction {get; set;}
+    [Parameter] public EventCallback<MailModel> HandleCreate {get; set;}
+    [Parameter] public string forwardBody { get; set;} = String.Empty;
+    [Parameter] public string forwardMessage { get; set; }  = String.Empty;
+
+    BlazoredTextEditor QuillHtml;
+    private List<AttachmentModel> files =new List<AttachmentModel>();
+    private long maxFileSize = 25 * 1024 * 1024; 
+    private long totalFileSize;
+    string QuillHTMLContent;
+    private SignatureModel currentSignature = new SignatureModel();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        currentSignature = await SignatureData.GetDefault(Layout.User.id);
+    }
+
+
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+
+        }
+        else if(!String.IsNullOrEmpty(forwardBody) || !String.IsNullOrEmpty(forwardMessage) )
+        {
+            QuillHTMLContent = forwardMessage + forwardBody;
+            await QuillHtml.LoadHTMLContent(QuillHTMLContent);
+        }
+
+    }
+
+    
+    public async Task Create()
+    {
+        QuillHTMLContent = await QuillHtml.GetHTML();
+        string shortBody = await QuillHtml.GetText();
+        MailModel mailToCreate = new MailModel
+            {
+                from = Layout.User.id,
+                isImportant = false,
+                labels = new List<string>(),
+                body = QuillHTMLContent,
+                attachments = files,
+                signature = currentSignature,
+                sentDate = SharedHelperV2.FormatDateTimeUTC(),
+                author = Layout.User.id,
+                shortBody = shortBody.Length > 150 ? shortBody.Substring(0, 150) : shortBody,
+                isDraft = false,
+                isDeleted = false,
+                isTrash = false,
+                isRead = false,
+                pollId = String.Empty,
+                created_at = DateTime.Now.Ticks,
+            };
+        await HandleCreate.InvokeAsync(mailToCreate);
+
+    }
+
+    // Xử lý việc hủy tạo
+    public void Cancel()
+    {
+        SetCurrentAction.InvokeAsync(new ActionModel());
+    }
+
+
+
+    // Xử lý việc upload file
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        try {
+            foreach (var file in e.GetMultipleFiles())
+            {
+                if(!SharedHelperV2.IsValidFileType(file)) 
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Định dạng file hiện tại không cho phép. Chỉ PDF, PNG, JPG, JPEG, DOC, DOCX, XLS, and XLSX là các tệp mở rộng cho phép.");
+                    return;
+                }
+                if (totalFileSize + file.Size > maxFileSize)
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Tối đa 25MB cho tất cả các file!");
+                    return;
+                }
+                totalFileSize += file.Size;
+                var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+                string filePath = await SharedHelperV2.SaveFileAsync(fileContent, file.Name);
+                await JSRuntime.InvokeVoidAsync("alert", "Upload thành công");
+                files.Add(new AttachmentModel {
+                    id = Guid.NewGuid().ToString(),
+                    name = file.Name,
+                    size = file.Size,
+                    contentType = file.ContentType,
+                    filePath = filePath,
+                });
+            }
+        }
+        catch(Exception ex) {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+
+    // Xử lý việc xóa file
+
+    private void DeleteFile(AttachmentModel fileDelete) 
+    {
+        SharedHelperV2.DeleteFile(fileDelete.filePath);
+        AttachmentModel fileToDelete = files.FirstOrDefault(file => file.filePath == fileDelete.filePath);
+        if (fileToDelete != null)
+        {
+            files.Remove(fileToDelete);
+        }
+        StateHasChanged();
+    }
+
+
+    // Xư lý việc thay đổi chữ ký
+    private void SetSignature(SignatureModel signature) 
+    {
+        currentSignature = signature;
+    }
+
+}
+

@@ -1,0 +1,163 @@
+@using System.Collections.Generic;
+@inject IJSRuntime JSRuntime
+<div class="container-actions is-padding-20-x">
+    <div class="is-flex is-align-items-center" style="gap: 0 12px">
+        <figure class="image is-32x32">
+            <img style="min-width: 32px; min-height:  32px;" class="is-rounded" src="@Layout.User.avatar">
+        </figure>
+        <div class="is-flex is-flex-direction-column" style="gap: 5px 0">
+            <p class="is_sub2 is-secondary-10">@Layout.User.FullName</p>
+            <div class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 10px 20px">
+                <div class="dropdown is-left @(toggle.IsToggled ? " is-active" : "" )">
+                    <div class="dropdown-trigger" @onclick="Toggle">
+                        <div class="is_flex is-flex-wrap-wrap is-gap-10-y">
+                            <div class="is-flex is-align-items-center is-pointer">
+                                <div class="is-flex is-align-items-center" style="gap: 0 5px">
+                                    <span class="icon is-small is-secondary-40">
+                                        <i class="material-icons-outlined">@iconName</i>
+                                    </span>
+                                    <span class="is-secondary-40 is_caption"
+                                        style="line-height: 16px;">@actionName</span>
+                                </div>
+                                <span class="icon is-small">
+                                    <i class="material-icons-outlined is_caption">arrow_drop_down</i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu" style="min-width: 220px;">
+                        <div class="dropdown-content is-padding-20 is-flex is-flex-direction-column" style="gap: 10px 0">
+                            <div class="is-flex is-align-items-center is-pointer" @onclick='() => SetAction("reply")'>
+                                <span class="icon is-secondary-40">
+                                    <i class="material-icons-outlined">reply</i>
+                                </span>
+                                <span class="is-secondary-40 is_sub2">Trả lời</span>
+                            </div>
+                            <div class="is-flex is-align-items-center is-pointer" @onclick='() => SetAction("reply_all")'>
+                                <span class="icon is-secondary-40">
+                                    <i class="material-icons-outlined">reply_all</i>
+                                </span>
+                                <span class="is-secondary-40 is_sub2">Trả lời tất cả</span>
+                            </div>
+                            <div class="is-flex is-align-items-center is-pointer" @onclick='() => SetAction("forward")'>
+                                <span class="icon is-secondary-40">
+                                    <i class="material-icons-outlined">forward</i>
+                                </span>
+                                <span class="is-secondary-40 is_sub2">Chuyển tiếp</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if(isShowTextTo)
+                {
+                    <p class="is_caption is-secondary-40">Đến:</p>
+                }
+                        <_AddReceiver
+                            nameReceiver="To"
+                            membersSelected="membersSelected"
+                            OnUpdateMembersSelected="OnUpdateMembersSelected"
+                        />
+        </div>
+
+        </div>
+
+    </div>
+    <div class="write-zone">
+        <_MailWriteZone 
+            forwardMessage="@forwardMessage" 
+            forwardBody="@forwardBody" 
+            HandleCreate="Create" 
+            SetCurrentAction="SetCurrentAction"
+        />
+    </div>
+</div>
+@code {
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public string iconName { get; set; }
+    [Parameter] public int action { get; set; }
+    [Parameter] public EventCallback<ActionModel> SetCurrentAction {get; set;}
+    [Parameter] public EventCallback<MailModel> OnCreate {get; set;}
+    [Parameter] public bool isShowTextTo { get; set; }
+    [Parameter] public string mail { get; set; }
+    [Parameter] public List<string> toList { get; set; } = new();
+    [Parameter] public string forwardMessage { get; set; }
+    [Parameter] public string forwardBody { get; set; }
+    private List<MemberModel> membersSelected = new();
+    private ToggleHelper toggle = new ToggleHelper();
+    public string actionName = String.Empty;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Chuyển đổi từ user id sang member model từ list cha truyền xuống
+        var membersReceiver = await UserService.GetMembersById(toList);
+
+        // Add vào list member đang được chọn
+        membersSelected.AddRange(membersReceiver);
+
+        // Chuyển đổi từ int action sang string action
+        actionName = FakeDataHelper.GetActionName(action);
+        
+    }
+
+    // Toggle thay đổi action
+    private void Toggle()
+    {
+        toggle.Toggle();
+    }
+
+    //  Hàm tạo thư
+    public async Task Create(MailModel mailToCreate)
+    {
+      
+        if (!await IsValidMail()) 
+        {
+            return;
+        }
+        mailToCreate.to = membersSelected.Select(l => l.id).ToList();
+        mailToCreate.cc = new List<string>();
+        mailToCreate.bcc = new List<string>(); 
+        mailToCreate.pollId = String.Empty;
+        await OnCreate.InvokeAsync(mailToCreate);
+    }
+
+
+
+    
+
+    // Hàm dùng để update danh sách member nhận mail
+    public void OnUpdateMembersSelected(MemberSelectedModel memberModel) 
+    { 
+        if(memberModel.name == "To")
+        { 
+            membersSelected = memberModel.members;
+        }
+    }
+
+    // Validate mail
+    private async Task<bool> IsValidMail() 
+    {
+        if(membersSelected.Count == 0) 
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Danh sách người nhận không được trống!");
+            return false;
+        }
+        return true;
+    }
+
+    // Hàm dùng để cập nhật hành động
+    public void SetAction(string action)
+    {
+
+        ActionModel model =
+            new ActionModel
+                {
+                    mail = mail,
+                    action = action
+                };
+        SetCurrentAction.InvokeAsync(model);
+        StateHasChanged();
+
+    }
+}
+

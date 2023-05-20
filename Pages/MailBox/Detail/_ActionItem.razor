@@ -87,10 +87,10 @@
     public string actionName = String.Empty;
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         // Chuyển đổi từ user id sang member model từ list cha truyền xuống
-        var membersReceiver = FakeDataHelper.GetMembersById(toList);
+        var membersReceiver = await UserService.GetMembersById(toList);
 
         // Add vào list member đang được chọn
         membersSelected.AddRange(membersReceiver);

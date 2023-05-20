@@ -1,0 +1,322 @@
+@inject IJSRuntime JSRuntime
+<div class="container-manager">
+		@if(groups.Count == 0)
+		{
+			<div>
+				<span class="is-secondary-60 is_caption is-italic">Hiện bạn đang chưa có nhóm nào!</span>
+			</div>
+		}
+    @switch (nameAction)
+    {
+    // main view
+    case "static":
+            <div class="is-flex is-align-items-center is-mb-20">
+                <span class="is-flex-1 is-uppercase is_h6 is-secondary-10">Quản lí nhóm</span>
+                <div class="wrapper-button primary-btn" style="display: inline-flex;" @onclick='() => ChangeAction("add")'>
+                    <span class="icon">
+                        <i class="material-icons-outlined">add</i>
+                    </span>
+                    <span class="is_caption">Thêm nhóm</span>
+                </div>
+            </div>
+            <ul class="is-flex is-flex-direction-column">
+                @foreach (var group in groups)
+                {
+                    <_GroupItem
+                        group="group"
+                        OnView="ViewGroup"
+                        OnDelete="ConfirmationDeleteGroup"
+                    />
+                }
+            </ul>
+        break;
+    // view detail group
+    case "detail":
+            <div class="is-mb-20">
+                <div class="is-flex is-align-items-center is-justify-content-space-between is-mb-20 ">
+                    <div class="wrapper-button btn-outlined" @onclick='GoBack'>
+                        <span class="icon">
+                            <i class="material-icons-outlined is-secondary-40">arrow_back_ios</i>
+                        </span>
+                        <span class="is_button is-secondary-40">Quay lại</span>
+                    </div>
+                         <_AddMember 
+                            members="membersUnique" 
+                            directionDropdown="is-right"
+                            OnSelectedMember="SelectedMember" 
+                            SearchMembers="SearchMembers"
+                        />
+                </div>
+                <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Tên nhóm</p>
+                @if(!isEditGroup) 
+                {
+                    <div class="is-flex is-align-items-center is-gap-4 is-pointer">
+                        <span class="is_sub2 is-secondary-20">Nhóm @groupSelected.name</span>
+                        <span class="icon" @onclick="EditName">
+                            <i class="material-icons-outlined is-primary-40">edit</i>
+                        </span>
+                    </div>
+                }
+                else 
+                { 
+                    <div class="is-flex is-align-items-center">
+                        <div class="input-container is-flex-1 is-flex is-align-items-center">
+                            <span class="input-icon left is_body2 is-secondary-60">Nhóm</span>
+                            <input class="input-zone is_body2 is-secondary-20" type="text" @bind="@groupName">
+                        </div>
+                        <div class="is-flex is-align-items-center">
+                            <div class="wrapper-icon is-pointer" @onclick="SaveGroup">
+                                <span class="icon">
+                                    <i class="material-icons-outlined is-primary-40">done</i>
+                                </span>
+                            </div>
+                            <div class="wrapper-icon is-pointer" @onclick="EditName">
+                                <span class="icon">
+                                    <i class="material-icons-outlined is-error-60">close</i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div>
+                <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Thành viên</p>
+                <ul class="is-flex is-flex-direction-column">
+                    @foreach (var member in groupSelected.members)
+                    {
+                        <_MemberItem 
+                            member="member"
+                            OnDeleteMember="DeleteMember"
+                        />
+                    }
+                </ul>
+            </div>
+        break;
+    // Tạo nhóm
+    case "add":
+            <div>
+                <div class="is-mb-20">
+                    <div class="wrapper-button btn-outlined is-inline-flex" @onclick='GoBack'>
+                        <span class="icon">
+                            <i class="material-icons-outlined is-secondary-40">arrow_back_ios</i>
+                        </span>
+                        <span class="is_button is-secondary-40">Quay lại</span>
+                    </div>
+                </div>
+                <div class="is-mb-20">
+                    <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Tên nhóm</p>
+                    <div class="input-container is-flex-1 is-flex is-align-items-center">
+                        <span class="input-icon left is_body2 is-secondary-60">Nhóm</span>
+                        <input class="input-zone is_body2 is-secondary-20" type="text" placeholder="Nhập tên nhóm" @bind="@groupName">
+                        <span class="input-icon right">
+                            <i class="material-icons-outlined is-secondary-40">edit</i>
+                        </span>
+                    </div>
+                </div>
+                <div class="is-mb-20">
+                    <p class="is_sub2 is-secondary-40" style="margin-bottom: 5px;">Thành viên</p>
+                    <ul class="is-flex is-flex-direction-column" style="margin-bottom: 5px;">
+                        @foreach (var member in membersSelected)
+                            {
+                                <_MemberItem 
+                                    member="member"
+                                    OnDeleteMember="DeleteMember"
+                                />
+                            }
+                    </ul>
+                    <div style="margin-left: -7px;">
+                        <_AddMember members="members" directionDropdown="is-left" OnSelectedMember="SelectedMember"/>   
+                    </div>
+                </div>
+                <div class="is-flex is-align-items-center is-justify-content-flex-end is-gap-10-y">
+                    <p class="is_caption is-error-60 is-pointer" @onclick='GoBack'>Hủy</p>
+                    <div class="wrapper-button primary-btn" @onclick="SaveGroup">
+                        <span class="icon">
+                            <i class="material-icons-outlined">done</i>
+                        </span>
+                        <span class="is_caption">Cập nhật</span>
+                    </div>
+                </div>
+            </div>
+        break;
+    default:
+      break;
+    }
+</div>
+@code {
+    [CascadingParameter]
+    public LayoutMain Layout { get; set; }
+    private List<GroupModel> groups = new List<GroupModel>();
+    private List<MemberModel> members = new List<MemberModel>();
+    private string groupName = String.Empty;
+    private bool isEditGroup = false;
+    public string nameAction = "static";
+    public GroupModelDetail groupSelected = new();
+    public List<MemberModel> membersUnique = new();
+    private List<MemberModel> membersSelected = new();
+    public List<MemberModel> originalMembers { get; set; } = new List<MemberModel>(); 
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        groups = await GroupData.GetList(Layout.User.id);
+        originalMembers = await UserData.GetList();
+        members = originalMembers.ToList();
+    }
+
+    // Chỉnh sửa tên nhóm
+    private void EditName() 
+    { 
+        isEditGroup = !isEditGroup;
+        groupName = groupSelected.name;
+    }
+
+    // Xem chi tiết nhóm
+    private async Task ViewGroup(string groupId) 
+    {
+        groupSelected = await GroupData.Get(groupId);
+        // Lấy danh sách users ngoại trừ những người đã có
+        membersUnique = FakeDataHelper.GetMembersUnion(members, groupSelected.members);
+        // Chuyển sang trang chi tiết
+        ChangeAction("detail");
+    }
+
+    // Thay đổi màn hình
+    private void ChangeAction(string action)
+    {
+        nameAction = action;
+        StateHasChanged();
+    }
+
+
+    // Xác nhận xóa nhóm
+    private async Task ConfirmationDeleteGroup(string groupId)
+    {
+        await GroupData.Delete(groupId);
+        await JSRuntime.InvokeVoidAsync("tagline", true, "Xóa nhóm thành công!");
+        await GoBack();
+    }
+
+
+
+    // Add thành viên vào nhóm
+    private async Task SelectedMember(List<MemberModel> membersList) 
+    { 
+        membersSelected.AddRange(membersList);
+        if (groupSelected != null && membersList.Any()) 
+        {
+            groupSelected.members.AddRange(membersList);
+            await GroupData.AddMembers(groupSelected.id, membersList.Select(m => m.id).ToList());
+            StateHasChanged();
+        }
+    }
+
+
+
+    // Xử lý việc quay lại
+    private async Task GoBack() 
+    {
+        isEditGroup = false;
+        groupSelected = new();
+        membersSelected = new();
+        groupName = String.Empty;
+        ChangeAction("static");
+        groups = await GroupData.GetList(Layout.User.id);
+        StateHasChanged();
+    }
+
+    // Xóa members khỏi nhóm
+    private async Task DeleteMember(MemberModel member)
+    {
+        if (groupSelected != null)
+        {
+            await GroupData.DeleteMember(groupSelected.id, member.id);
+            groupSelected.members.Remove(member);
+        }
+        else if (membersSelected.Remove(member))
+        {
+            membersUnique.Add(member);
+        }
+        StateHasChanged();
+    }
+
+
+    private async Task SaveGroup()
+    {
+        // Vaalidate nhóm
+        bool isValidGroup = await IsValidGroup();
+        if (!isValidGroup)
+        {
+            return;
+        }
+
+        // edit nhóm
+        if (isEditGroup)
+        {
+            groupSelected.name = groupName;
+            // check Tên nhóm đã tồn tại trong db hay chưa?
+            bool isValidGroupName = await GroupData.Update(groupName, groupSelected.id, Layout.User.id);
+
+            string message = isValidGroupName ? "Cập nhật nhóm thành công!" : "Tên nhóm bạn chọn đã tồn tại trong hệ thống!";
+            await JSRuntime.InvokeVoidAsync("tagline", isValidGroupName, message);
+
+            isEditGroup = false;
+        }
+
+        // Tạo mới nhóm
+        else
+        {
+            GroupModel groupToCreate = new GroupModel
+            {
+                id = SharedHelperV2.GenerateID("19012001"),
+                name = groupName,
+                members = membersSelected.Select(m => m.id).ToList(),
+                author = Layout.User.id,
+            };
+            // check Tên nhóm đã tồn tại trong db hay chưa?
+            bool isValidGroupName = await GroupData.Create(groupToCreate);
+
+            string message = isValidGroupName ? "Tạo nhóm thành công!" : "Tên nhóm bạn chọn đã tồn tại trong hệ thống!";
+            await JSRuntime.InvokeVoidAsync("tagline", isValidGroupName, message);
+
+            groupName = string.Empty;
+            membersSelected.Clear();
+        }
+    }
+
+
+
+
+    // Validate nhóm
+    private async Task<bool> IsValidGroup() 
+    {
+        if(groupName == string.Empty) 
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên nhóm không được trống!");
+            return false;
+        }
+        if(groupName.Length > 30) 
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên nhóm tối đa 30 ký tự!");
+            return false;
+        }
+        return true;
+    }
+
+
+    // Tìm kiếm member
+    private void SearchMembers(string memberName)
+    {
+        string normalizedInput = memberName.ToLower();
+        if (!string.IsNullOrEmpty(normalizedInput))
+        {
+            members = originalMembers
+                .Where(member => member.name.ToLower().Contains(normalizedInput))
+                .ToList();
+        }
+        else
+        {
+            members = originalMembers.ToList();
+        }
+    }
+}

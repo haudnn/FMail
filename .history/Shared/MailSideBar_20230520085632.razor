@@ -1,0 +1,188 @@
+@inject IJSRuntime JSRuntime
+@inject ProtectedLocalStorage storage
+@inject NavigationManager navigation
+
+
+<nav class="mail__sidebar @(navLess ? "is_less" : "" )">
+    @if(isLoading)
+    {
+        <div class="is-flex is-align-items-center is-justify-content-center">
+            Loading...
+        </div>
+    }
+    else
+    {
+        <div class="is-flex is-align-items-center is-pointer is-justify-content-center" @onclick="ToggleSidebar" style="width: 44px; height: 44px; margin-right: 10px;">
+            <span class="icon is-small">
+                <i class="material-icons-outlined">menu</i>
+            </span>
+        </div>
+        <div class="mail__sidebar-menu scrolly">
+            <div class="mail__sidebar-add" style="margin-right: 10px;">
+                <a href="create" class="is-flex is-align-items-center is-justify-content-center is-full">
+                    <span class="icon">
+                        <i class="material-icons-outlined has-text-white">add</i>
+                    </span>
+                    <span class="has-text-weight-medium has-text-white">Tạo thư mới</span>
+                </a>
+            </div>
+            @foreach (var main in ListNav)
+            {
+                <div style="margin-right: 10px;" class="mail__sidebar-item is-flex is-justify-content-space-between @(main.active ? "active" : "")">
+                    <a class="is-flex is-align-items-center is-gap-10-y" href="@main.link" @onclick="() => main.active = !main.active">
+                        <span class="icon is-secondary-40 is-small">
+                            <i class="material-icons-sharp">@main.icon</i>
+                        </span>
+                        <span class="is_sub2 is-secondary-40 mail__sidebar-item-text">@main.name</span>
+                    </a>
+                    @if (main.count > 0 && !navLess)
+                    {
+                        <span class="is-flex is-align-items-center is-justify-content-center is-secondary-40 is_sub2">@main.count</span>
+                    }
+                </div>
+            }
+            <div style="margin-right: 10px;" class="mail__sidebar-item border is-flex is-align-items-center is-gap-10-y">
+                <span class="icon">
+                    <i class="material-icons-outlined">arrow_drop_down</i>
+                </span>
+                <span class="is_sub2 is-secondary-40">Nhãn</span>
+            </div>
+            <div class="labels-list">
+                @foreach (var label in labels)
+                {
+                    <div class="label-item @(label.active ? "label-active" : "")">
+                        <a href="mail/label/@label.id" class="is-flex is-gap-10-y is-align-items-center" @onclick="() =>  label.active = !label.active">
+                            <span class="icon">
+                                <i class="material-icons-sharp" style="color: @label.color">label</i>
+                            </span>
+                            <span class="text-ellipsis is_sub2 @(label.id == activeLabel ? "is-primary-40" : "is-secondary-40") ">@label.name</span>
+                        </a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    }
+
+
+</nav>
+
+@code{
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public EventCallback<bool> Toggle { get; set; }
+    private List<NavModel> ListNav = new();
+    private bool navLess = false;
+    private List<LabelModel> labels = new();
+    public string activeLabel { get; set; }
+
+    public bool isLoading = true;
+
+
+    protected override async Task OnInitializedAsync()
+    {        
+        await Navigation();
+        labels = await LabelData.GetList(Layout.User.id);
+        isLoading = false;
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            if (firstRender)
+            {
+                var navStorage = await storage.GetAsync<string>("navLessMail");
+                if (navStorage.Success && !string.IsNullOrEmpty(navStorage.Value))
+                navLess = Convert.ToBoolean(navStorage.Value);
+                await Toggle.InvokeAsync(navLess);
+                StateHasChanged();
+            }
+        }
+        catch (Exception)
+        {
+            return;
+        }
+    }
+
+    private async Task ToggleSidebar()
+    {
+        navLess = !navLess;
+        await storage.SetAsync("navLessMail", navLess.ToString());
+        await Toggle.InvokeAsync(navLess);
+    }
+    
+    protected override void OnParametersSet()
+    {
+        var url = navigation.Uri.Replace(navigation.BaseUri, "");
+        
+        if (url.StartsWith("mail/label/"))
+        {
+            foreach (var label in labels)
+            {
+                label.active = url.EndsWith(label.id);
+            }
+            
+            foreach (var main in ListNav)
+            {
+                main.active = false;
+            }
+        }
+        else
+        {
+            foreach (var main in ListNav)
+            {
+                main.active = url.StartsWith(main.link.Replace("#", ""));
+            }
+            foreach (var label in labels)
+            {
+                label.active = false;
+            }
+        }
+    }
+
+
+
+
+    private async Task Navigation() 
+    {
+        ListNav = new();
+        ListNav.Add(new NavModel
+            {
+                name = "Thư đã nhận",
+                icon = "inbox",
+                link = "mail/inbox",
+                active = false,
+            });
+        ListNav.Add(new NavModel
+            {
+                name = "Thư đã gửi",
+                icon = "send",
+                link = "mail/sent",
+                active = false,
+            });
+        ListNav.Add(new NavModel
+            {
+                name = "Thư quan trọng",
+                icon = "star",
+                link = "mail/important",
+                active = false,
+            });
+        ListNav.Add(new NavModel
+            {
+                name = "Thư nháp",
+                icon = "drafts",
+                link = "mail/drafts",
+                active = false,
+            });
+        ListNav.Add(new NavModel
+            {
+                name = "Thùng rác ",
+                icon = "delete",
+                link = "mail/trash",
+                active = false,
+            });
+    }
+}
+
+

@@ -1,0 +1,30 @@
+<div class="dropdown-content is-padding-20">
+    <p class="is_sub2 is-secondary-10 is-padding-bottom-20">Danh sách</p>
+    <ul class="is-flex is-flex-direction-column is-gap-10-x">
+        @foreach (var member in members)
+        {
+            <li class="is-flex is-align-items-center" style="gap: 0 12px">
+                <figure class="image is-24x24 is-rounded">
+                    <img src="@member.avatar">
+                </figure>
+                <span class="is_body2 is-secondary-10">@member.name</span>
+            </li>
+        }
+    </ul>
+</div>
+
+@code{
+    [Parameter] public List<string> memberIds { get; set; }
+    public List<MemberModel> members { get; set; } = new List<MemberModel>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if(firstRender)
+            {
+                members = await UserService.GetMembersById(memberIds);
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+    
+}
+

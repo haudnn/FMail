@@ -2,6 +2,8 @@ using Workdo.Models;
 using System.Collections.Generic;
 using System;
 using Faker.Extensions;
+using Workdo.Data;
+using System.Threading.Tasks;
 namespace Workdo.Helpers;
 using System.Linq;
 public class FakeDataHelper
@@ -71,10 +73,10 @@ public class FakeDataHelper
     /// </summary>
 
 
-    public static List<MemberModel> GetMembersById(List<string> ids)
+    public static async Task<List<MemberModel>> GetMembersById(List<string> ids)
     {
         List<MemberModel> matchingMembers = new List<MemberModel>();
-        List<MemberModel> members = InitMembers();
+        List<MemberModel> members = await UserData.GetList();
         foreach (string id in ids)
         {
             MemberModel member = members.Find(m => m.id == id);

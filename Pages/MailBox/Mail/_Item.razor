@@ -196,10 +196,11 @@
 
         sentDate = SharedHelperV2.FormatDateTime(mail.sentDate);
         replyCount = await MailData.RepliesCount(mail.id, Layout.User.id);
-        fromMember = FakeDataHelper.GetMemberById(mail.from);
-        toList = FakeDataHelper.GetMembersById(mail.to);
-        ccList = FakeDataHelper.GetMembersById(mail.cc);
-        bccList = FakeDataHelper.GetMembersById(mail.bcc);
+				fromMember = UserService.ConvertToMember( await UserData.Get(mail.from));
+
+        toList = await UserService.GetMembersById(mail.to);
+        ccList = await UserService.GetMembersById(mail.cc);
+        bccList = await UserService.GetMembersById(mail.bcc);
 
         if(currentPage != "inbox")
         {

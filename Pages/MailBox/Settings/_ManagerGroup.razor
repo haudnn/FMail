@@ -13,6 +13,12 @@
                     <span class="is_caption">Thêm nhóm</span>
                 </div>
             </div>
+						@if(groups.Count == 0)
+						{
+							<div>
+								<span class="is-secondary-60 is_caption is-italic">Hiện bạn đang chưa có nhóm nào!</span>
+							</div>
+						}
             <ul class="is-flex is-flex-direction-column">
                 @foreach (var group in groups)
                 {
@@ -134,7 +140,7 @@
             </div>
         break;
     default:
-        break;
+      break;
     }
 </div>
 @code {
@@ -154,7 +160,7 @@
     protected override async Task OnInitializedAsync()
     {
         groups = await GroupData.GetList(Layout.User.id);
-        originalMembers = FakeDataHelper.InitMembers();
+        originalMembers = await UserData.GetList();
         members = originalMembers.ToList();
     }
 

@@ -58,30 +58,5 @@ namespace Workdo.Services
         }
         return members;
     }
-
-		/// <summary>
-    /// Hàm dùng để chuyển đổi members id thành member model
-    /// </summary>
-
-
-    public static async Task<List<MemberModel>> GetMembersById(List<string> ids)
-    {
-        List<MemberModel> matchingMembers = new List<MemberModel>();
-        List<MemberModel> members = await UserData.GetList();
-        foreach (string id in ids)
-        {
-            MemberModel member = members.Find(m => m.id == id);
-            if (member != null)
-            {
-                matchingMembers.Add(member);
-            }
-        }
-        return matchingMembers;
-    }
-
-
   }
-	
-
-	
 }

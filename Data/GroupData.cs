@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Workdo.Services;
 
 
 public class GroupData {
@@ -55,7 +56,7 @@ public class GroupData {
     public static async Task<GroupModelDetail> Get(string groupId)
     {
         var isFoundGroup = await groupCollection.Find(x => x.id == groupId).FirstOrDefaultAsync();
-        List<MemberModel> members = FakeDataHelper.GetMembersById(isFoundGroup.members);
+        List<MemberModel> members = await UserService.GetMembersById(isFoundGroup.members);
 
         GroupModelDetail groupUpdating = new GroupModelDetail{
             id = isFoundGroup.id,

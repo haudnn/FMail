@@ -1,0 +1,272 @@
+@inject NavigationManager navigation
+<div class="mail-item @(mail.isDraft ? "drafts" : "") @(mail.isRead ? "read" : "unread") @(isChecked ? "is-selected" : "" )" style="gap: 0 10px; box-sizing: border-box;">
+    <div class="mail-td mail-checkbox">
+        @if (isChecked)
+            {
+                <span class="icon is-small" @onclick="OnSelectedMail">
+                    <i class="material-icons-sharp is-secondary-60">check_box</i>
+                </span>  
+            }
+        else
+            {
+                <span class="icon is-small" @onclick="OnSelectedMail">
+                    <i class="material-icons-outlined is-secondary-60">check_box_outline_blank</i>
+                </span>
+            }
+    </div>
+    <div class="mail-td">
+        @if (mail.isImportant)
+            { 
+                <span class="icon is-small is-warning-20" @onclick="() => Important(false)">
+                    <i class="material-icons-sharp" style="font-size: 12px;">star_purple500</i>
+                </span>
+            }
+        else
+            { 
+                <span class="icon is-small is-warning-20" @onclick="() => Important(true)">
+                    <i class="material-symbols-outlined "  style="font-size: 12px;">star</i>
+                </span>
+            }
+    </div>
+    <div @onclick="ViewDetail" class="mail-td mail-from">
+        <span style="max-width: 160px" class="is_sub2 @(mail.isRead ? "read" : "unread") text-ellipsis">
+            @if(currentPage == "sent")
+            {
+                <span>Đến:</span>
+            }
+            @if(mail.from != Layout.User.id)
+            {
+                <span class="text-ellipsis">@fromMember.name</span>
+            }
+            else
+            {
+                <span class="text-ellipsis">
+
+
+                    @foreach (var item in toList)
+                    {
+                        <span class="is-has-virgule">@item.last_name</span>                    
+                    }
+
+
+                    @if(ccList.Count > 0)
+                    {
+                        <span>cc:</span> 
+                        @foreach (var item in ccList)
+                        {
+                            <span class="is-has-virgule">@item.last_name</span>                    
+                        }
+                    }
+
+                    @if(bccList.Count > 0)
+                    {
+                        <span>bcc:</span> 
+                        @foreach (var item in bccList)
+                        {
+                            <span class="is-has-virgule">@item.last_name</span>                    
+                        }
+                    }
+                </span>
+            }
+            @if(replyCount > 0)
+            {
+                <span class="is-secondary-60" style="margin-left: 6px;">@replyCount</span>
+            }
+        </span>
+    </div>
+    <div class="mail-td mail-main" @onclick="ViewDetail">
+        <div>
+            <div class="mail-main-content" style="gap: 0 10px">
+                <div class="is-flex is-align-items-center" style="gap: 0 5px">
+
+                    @foreach (var item in tags)
+                    {
+                        <div style="background-color: @item.backgroundColor ;" class="mailtag-item">
+                            <span style="color: @item.textColor ;">
+                               @item.name
+                            </span>
+                        </div>
+                    }
+                </div>
+                <div class="mail-subject">
+                    <span class="text-ellipsis is_sub2 @(mail.isRead ? "read" : "unread")">
+                       @if(string.IsNullOrEmpty(mail.subject))
+                       {
+                            <span>(Không có chủ đề)</span>
+                       }
+                       else 
+                       {
+                        <span>@mail.subject</span>
+                       }
+                    </span>
+                </div>
+                <span class="mx-1 is_body2 @(mail.isRead ? "read" : "unread")">
+                    -
+                </span>
+                <div class="mail-body">
+                    @mail.shortBody
+                </div>
+            </div>    
+        </div>
+        @if(mail.attachments.Count > 0)
+        {
+            <ul class="attachments-list">
+                @foreach (var attachment in mail.attachments.Take(3))
+                    {
+                        <li class="attachment-item">
+                            <img style="width: 16px; height: 16px;" src="@string.Concat("images/", attachment.icon, ".png")">
+                            <span>@attachment.name</span>
+                        </li>
+                    }
+                @if (mail.attachments.Count() > 2)
+                {
+                    <li class="attachment-item count">
+                        <span class="is_sub2 is-secondary-40">+@(mail.attachments.Count() - 3)</span>
+                    </li>
+                 }
+            </ul>
+        }
+    </div>
+    <div class="mail-td">
+        <div class="mail-actions is-align-content-center">
+            @if (mail.isRead)
+            {
+                <span class="icon is-pointer is-small" @onclick="() => Read(false)">
+                    <i class="material-icons-outlined"> drafts</i>
+                </span>
+                }
+            else
+            { 
+                <span class="icon is-pointer is-small" @onclick="() => Read(true)">
+                    <i class="material-icons-outlined">mail</i>
+                </span>
+            }
+            @if(!isTrashNav)
+            {
+                <span class="icon is-pointer is-small" @onclick="Trash">
+                    <i class="material-icons-outlined">delete</i>
+                </span>
+            }
+          
+        </div>
+    </div>
+    <div class="mail-td tags-list">
+        @foreach (var label in labels.Take(2))
+            {
+                <div style="background-color: @(label.color + "33")" class="tag-item">
+                    <span style="color: @label.color;" class="is_caption">@label.name</span>
+                </div>
+            }
+            @if (labels.Count() > 2)
+            {
+                <div class="tag-item count">
+                    <span class="is_sub2 is-secondary-40">+@(labels.Count() - 2)</span>
+                </div>
+            }
+
+    </div>
+    <div class="mail-td mail__item-datetime">
+        <span class="is-block @(mail.isRead ? "read" : "unread")">@sentDate</span>
+    </div>
+</div>
+@code {
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public string currentPage { get; set; }
+    [Parameter] public MailModel mail  { get; set; } = new ();
+    [Parameter] public bool isChecked { get; set; }
+    [Parameter] public EventCallback<SelectedModel> OnSelected { get; set; }
+    [Parameter] public EventCallback<MailModel> OnTrashItem { get; set; }
+    [Parameter] public List<LabelModel> labels { get; set; } = new List<LabelModel>();
+    [Parameter] public bool isTrashNav { get; set; } = false;
+        
+    public List<TagMailModel> tags { get; set; } = new List<TagMailModel>();
+
+    public long replyCount{ get; set; } = 0;
+
+    public string sentDate { get; set; }
+
+    public List<MemberModel> toList = new List<MemberModel>();
+    public List<MemberModel> ccList = new List<MemberModel>();
+    public List<MemberModel> bccList = new List<MemberModel>();
+    public MemberModel fromMember = new MemberModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+
+        sentDate = SharedHelperV2.FormatDateTime(mail.sentDate);
+        replyCount = await MailData.RepliesCount(mail.id, Layout.User.id);
+				fromMember = UserService.ConvertToMember( await UserData.Get(mail.from));
+        toList = FakeDataHelper.GetMembersById(mail.to);
+        ccList = FakeDataHelper.GetMembersById(mail.cc);
+        bccList = FakeDataHelper.GetMembersById(mail.bcc);
+
+        if(currentPage != "inbox")
+        {
+            tags = SharedHelperV2.TagsMailHelper(mail.pollId, mail.isDraft, replyCount);
+        }
+
+        // Lấy mail reply mới nhát để hiển thị
+        if(replyCount > 0)
+        {
+            var mailReplyNewest = await MailData.GetReply(mail.id, Layout.User.id);
+            if(mailReplyNewest != null)
+            {
+                sentDate =  SharedHelperV2.FormatDateTime(mailReplyNewest.sentDate);
+                mail.shortBody = mailReplyNewest.shortBody;
+            }
+        }
+
+    }
+
+
+    // Chọn Mail
+    private async Task OnSelectedMail()
+    {
+        var selected = new SelectedModel
+            {
+                isChecked = !isChecked,
+                itemId = mail.id,
+            };
+        await  OnSelected.InvokeAsync(selected);
+    }
+
+
+    // Đánh dâu quan trọng
+    private async Task Important(bool isImportantMail)
+    {
+        mail.isImportant = isImportantMail;
+        await MailData.Important(mail.id, isImportantMail);
+    }
+
+
+    // Đánh dấu đã đọc
+    private async Task Read(bool isReadMail)
+    {
+        mail.isRead = isReadMail;
+        await MailData.Read(mail.id, isReadMail);
+    }  
+
+
+    // Xem chi tiết mail
+    private void ViewDetail() 
+    {
+        if(!mail.isDraft)
+        {
+            navigation.NavigateTo("inbox/" + mail.id, true);   
+        }
+        else
+        {
+            navigation.NavigateTo($"create/{mail.id}");
+        }
+        
+    }
+
+
+    //  Đưa vào thùng rác
+    private void Trash()
+    {
+        OnTrashItem.InvokeAsync(mail);
+    }   
+
+}

@@ -1,0 +1,617 @@
+@page "/create"
+@page "/create/{mailId}"
+@layout LayoutMain
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigation
+@using Blazored.TextEditor
+@using System.IO;
+@using System;
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Forms
+@inject ProtectedLocalStorage storage
+
+<PageTitle>Tạo thư mới</PageTitle>
+@if(isLoading)
+{
+    <section class="loading-section">
+        <button class="is-primary-40 button is-loading">Loading...</button>
+    </section>
+}
+
+<section class="is-padding-20">
+    <div class="is-flex is-align-items-center is-justify-content-flex-start is-gap-20">
+        <a @onclick="CancelCreate" class="is-flex is-align-items-center is-gap-8 is-pointer ">
+            <span class="icon">
+                <i class="material-icons-outlined is-primary-40">arrow_back</i>
+            </span>
+            <span class="is-primary-40 is_button">Trở về</span>
+        </a>
+        <div class="is-flex is-align-items-center is-gap-10-y">
+            <span class="is_body2 is-secondary-40">
+                Danh mục:
+            </span>
+            <div class="dropdown is-right @(toogleShowCategories.IsToggled ? "is-active" : "" )">
+                <div class="dropdown-trigger is-hover drop-border is-flex is-align-items-center" style="padding: 0 8px;" @onclick="ShowCategories">
+                    <span class="is-secondary-20 is_caption" style="line-height: 24px;">@currentCategory.name</span>
+                    <span class="icon is-secondary-20">
+                        <i class="material-icons-sharp">arrow_drop_down</i>
+                    </span>
+                </div>
+                <div class="dropdown-menu is-small">
+                    <ul class="dropdown-content" style="padding: 8px">
+                        @foreach (var category in categories.Where(c => c.name != "Khác"))
+                        {
+                            <li class="dropdown-item" style="padding: 4px 8px;" @onclick="() => SetCategory(category)">
+                                <span class="is_caption is-secondary-20">@category.name</span>
+                            </li>
+                        }
+                            <li class="dropdown-item" style="padding: 4px 8px;" @onclick="() => SetCategory(null)">
+                                <span class="is_caption is-secondary-20">Khác</span>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <_ImportantMail isImportant="@mail.isImportant" OnImportant="Important" />
+        <_SelectedLabels labels="labels" labelsSelected="labelsSelected" OnSetLabel="SetLabel"/>
+    </div>
+
+    <main class="create">
+        <div class="is-flex is-flex-direction-column is-gap-10-x is-padding-20-x">
+            <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                    <p class="is-secondary-40 is-font-14" style="width: 60px;">To</p>
+                    <div class="textarea-mail is-flex-1 is-flex" style="height: 100%; gap: 8px">
+                        <div class="is-flex is-flex-1 is-align-items-center is-gap-10-y is-flex-wrap-wrap">
+                            <_AddReceiver
+                                nameReceiver="To"
+                                membersSelected="membersSelected"
+                                OnUpdateMembersSelected="OnUpdateMembersSelected"
+                            />
+                        </div>
+
+                    </div>
+                </div>
+                @if(!toggleAddCC) 
+                {
+                    <div class="is-flex is-align-items-center is-justify-content-center is-gap-10-y" style="height: 100%;">
+                        <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">CC</span>
+                        <span @onclick="ToggleAddCC" class="is-font-12 is-primary-40 is-pointer">BCC</span>
+                    </div>
+                }
+            </div>
+
+            @if(toggleAddCC) 
+            {  
+                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                    <p class="is-secondary-40 is-font-14" style="width: 60px;">CC</p>
+                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
+                        <_AddReceiver
+                            nameReceiver="CC"
+                            membersSelected="membersCCSelected"
+                            OnUpdateMembersSelected="OnUpdateMembersSelected"
+                        />
+                    </div>
+                </div>
+
+                <div class="is-flex is-align-items-center is-gap-10-y" style="width: 100%;">
+                    <p class="is-secondary-40 is-font-14" style="width: 60px;">BCC</p>
+                    <div class="textarea-mail is-flex-1 is-flex is-align-items-center is-flex-wrap-wrap" style="height: 100%; gap: 8px">
+                    <_AddReceiver
+                        nameReceiver="BCC"
+                        membersSelected="membersBCCSelected"
+                        OnUpdateMembersSelected="OnUpdateMembersSelected"
+                    />
+                    </div>
+                </div>
+            }
+            <div class="is-flex is-align-items-center is-gap-10-y">
+                <p class="is-secondary-40 is-font-14" style="width: 60px;">Tiêu đề</p>
+                <textarea placeholder="Tiêu đề thư" class="textarea-mail" @bind="@mail.subject"></textarea>
+            </div>
+        </div>
+        <div class="create__main-container">
+            <div>
+                    <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Nhập nội dung thư">
+                            <EditorContent></EditorContent> 
+                        <ToolbarContent>
+                            <div class="toolbar-create" style="left: 20px;">
+                                <div class="wrapper-button is-justify-content-center is-inline-flex primary-btn"
+                                    style="padding: 10px 40px;" @onclick="() => CreateMail()">
+                                    <span class="is-font-14">Gửi</span>
+                                </div>
+                                <div class="is-flex-1">
+                                    <span class="ql-formats">
+                                        <select class="ql-font">
+                                            <option value=""></option>
+                                            <option value="serif"></option>
+                                            <option value="monospace"></option>
+                                        </select>
+                                        <select class="ql-size">
+                                            <option value="small"></option>
+                                            <option selected=""></option>
+                                            <option value="large"></option>
+                                            <option value="huge"></option>
+                                        </select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-underline"></button>
+                                        <button class="ql-strike"></button>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <select class="ql-color"></select>
+                                        <select class="ql-background"></select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button class="ql-list" value="ordered"></button>
+                                        <button class="ql-list" value="bullet"></button>
+                                        <button class="ql-indent" value="-1"></button>
+                                        <button class="ql-indent" value="+1"></button>
+                                        <button class="ql-blockquote"></button>
+                                        <select class="ql-align">
+                                            <option selected=""></option>
+                                            <option value="center"></option>
+                                            <option value="right"></option>
+                                            <option value="justify"></option>
+                                        </select>
+                                    </span>
+                                    <span class="ql-formats">
+                                        <button>
+                                            <label for="fileInput">
+                                                <i class="material-icons-outlined">link</i>
+                                            </label>
+                                        </button>
+                                        <button class="ql-link"></button>
+                                        <button class="ql-image"></button>
+                                    </span>
+                                
+                                </div>
+                                <div class="is-flex is-align-items-center is-gap-8">
+                                    <div @onclick="() => CreateMail(true)" class="wrapper-button is-justify-content-center is-inline-flex" style="padding: 9px 10px">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined is-primary-40">mail</i>
+                                        </span>
+                                        <span class="is_body2 is-primary-40">Lưu nháp</span>
+                                    </div>
+                                    <div @onclick="CancelCreate" class="wrapper-button is-justify-content-center is-inline-flex error-btn"
+                                        style="padding: 9px 10px">
+                                        <span class="icon">
+                                            <i class="material-icons-outlined">close</i>
+                                        </span>
+                                        <span class="is-font-14">Hủy tạo</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ToolbarContent>
+                    </BlazoredTextEditor>
+                <InputFile 
+                    multiple 
+                    id="fileInput" 
+                    style="display:none;"
+                    OnChange="@UploadFile" 
+                    accept="
+                        application/pdf,
+                        image/png,
+                        image/jpg,
+                        image/jpeg,
+                        application/msword,
+                        application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                        application/vnd.ms-excel,
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                <div style="padding: 40px 0px 20px 0px">
+                    <ul class="attachments-list mt-0">
+                        @foreach (var attachment in mail.attachments)
+                        {
+                            <li class="attachment-item">
+                                <img style="width: 16px; height: 16px;" src="@string.Concat("images/", attachment.icon, ".png")">
+                                <span>@attachment.name</span>
+                                <span class="icon is-pointer" @onclick="() => DeleteAttachment(attachment)">
+                                    <i class="material-icons-outlined">close</i>    
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+                @if(!toggleCreatePoll.IsToggled) 
+                {
+                    <div class="wrapper-button primary-btn is-bg-main is-pointer"
+                        style="display: inline-flex; margin-bottom: 20px;" @onclick="() => InitPoll(true)">
+                        <span class="icon has-text-white">
+                            <i class="material-icons-outlined">poll</i>
+                        </span>
+                        <span class="has-text-white is-font-12">Tạo khảo sát</span>
+                    </div>
+                }
+                else
+                {
+                    @if(!isDoneCreatePoll)
+                    {
+                        <_Poll poll="poll" OnInitPoll="InitPoll" OnCreate="CreatePoll"/>
+                    }
+                    else
+                    { 
+                        <_ContentPoll poll="poll" OnEditPoll="EditPoll"/>
+                    }
+                 
+                }
+            </div>
+        </div>
+            <_SignatureZone OnSetSignature="SetSignature" />
+    </main>
+</section>
+@code {
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public string mailId { get; set; }
+    private CategoryModel currentCategory = new CategoryModel();
+    public ToggleHelper toggleCreatePoll = new ToggleHelper();
+    private ToggleHelper toogleShowCategories = new ToggleHelper();
+    private List<LabelModel> labelsSelected = new List<LabelModel>();
+    private List<MemberModel> membersSelected = new List<MemberModel>();
+    private List<MemberModel> membersCCSelected = new List<MemberModel>();
+    private List<MemberModel> membersBCCSelected = new List<MemberModel>();
+    public List<CategoryModel> categories = new List<CategoryModel>();
+    public List<LabelModel> labels = new List<LabelModel>();
+    public PollModel poll = new();
+    public bool isLoading = false;
+    private long maxFileSize = 25 * 1024 * 1024; 
+    private long totalFileSize;
+    private bool toggleAddCC = false;
+    private bool isDoneCreatePoll = false;
+    BlazoredTextEditor QuillHtml;
+    string QuillHTMLContent;
+    public MailModel mail = new MailModel();
+
+    protected override async Task OnInitializedAsync()
+    {  
+        categories = await CategoryData.GetList();
+
+        labels = await LabelData.GetList(Layout.User.id);
+             
+        mail.signature = await SignatureData.GetDefault(Layout.User.id);
+        
+        // Mặc định là danh mục "Khác"
+        currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
+   
+    }  
+
+    // Nếu là thư nháp thì set các giá trị của thư nháp
+    protected override async Task OnParametersSetAsync()
+    {
+        if(mailId != default)
+        {
+            mail = await MailData.Get(mailId);
+            QuillHTMLContent = mail.body;
+
+            membersSelected = await UserService.GetMembersById(mail.to);
+            membersCCSelected = await UserService.GetMembersById(mail.cc);
+            membersBCCSelected = await UserService.GetMembersById(mail.bcc);
+
+            currentCategory = await CategoryData.Get(mail.category);
+            labelsSelected = await LabelData.GetLabelsById(mail.labels);
+
+            if(!string.IsNullOrEmpty((mail.pollId)))
+            {
+                poll = await PollData.Get(mail.pollId);
+                toggleCreatePoll.Toggle();
+                isDoneCreatePoll = true;
+            }
+            StateHasChanged();
+        }
+    }
+
+    // Load content nếu là thư nháp
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+
+
+        }
+        else
+        {
+            if (!String.IsNullOrEmpty(mailId))
+            {
+                await QuillHtml.LoadHTMLContent(QuillHTMLContent);
+            }
+        }
+    }
+
+    private void ShowCategories() 
+    {
+        toogleShowCategories.Toggle();
+    }
+
+
+    // Khởi tạo poll
+    private void InitPoll(bool isInit) 
+    {
+        if(isInit)
+        {
+            poll = new PollModel
+            {
+                id = SharedHelperV2.GenerateID("19012001"),
+                title = "",
+                endDate = DateTime.Today.ToString("dd/MM/yyyy"),
+                endTime = DateTime.Today.ToString("23:59"),
+                isStopped = false,
+                author= Layout.User.id,
+                questions = new List<QuestionModel>
+                {
+                    new QuestionModel
+                    {
+                        id = SharedHelperV2.GenerateID("19012001"),
+                        text = "",
+                        isMultipleChoice = false,
+                        choices  = new List<ChoiceModel> 
+                            {
+                                new ChoiceModel 
+                                {
+                                    id = SharedHelperV2.GenerateID("19012001"),
+                                    text = "",
+                                    voters = new List<string>(),
+                                }
+                            },
+                    }
+                }
+            };
+        }
+        else 
+        {
+            poll = new PollModel();
+        }
+
+        toggleCreatePoll.Toggle();
+    }
+
+
+    // Thêm cc + bcc
+    private void ToggleAddCC()
+    {
+        toggleAddCC = true;
+    }
+
+
+    // Đánh dấu quan trọng
+    private void Important(bool isImportantMail)
+    {
+        mail.isImportant = isImportantMail;
+        StateHasChanged();
+    }
+
+    // Xử lý user chọn nhãn
+    private void SetLabel(LabelModel label) 
+    {
+        if (labelsSelected.Contains(label))
+        {
+            labelsSelected.Remove(label);
+        }
+        else
+        {
+            labelsSelected.Add(label);
+        }
+    }
+
+    // Xử ly việc user thay đổi chữ ký
+    private void SetSignature(SignatureModel signature) 
+    {
+        mail.signature = signature;
+    }
+
+    public async Task CreatePoll() 
+    {
+        bool isValidPoll = await IsValidPoll();
+        if (!isValidPoll)
+        { 
+            return;
+        }
+        isDoneCreatePoll = true;
+        StateHasChanged();
+    }
+
+
+
+    // Xử lý việc upload file
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        try {
+            foreach (var file in e.GetMultipleFiles())
+            {
+                if(!SharedHelperV2.IsValidFileType(file)) 
+                {
+                    await JSRuntime.InvokeVoidAsync("alert", "Định dạng file hiện tại không cho phép. Chỉ PDF, PNG, JPG, JPEG, DOC, DOCX, XLS, and XLSX là các tệp mở rộng cho phép.");
+                    return;
+                }
+                if (totalFileSize + file.Size > maxFileSize)
+                {
+                    await JSRuntime.InvokeVoidAsync("tagline", false, "Tối đa 25MB cho tất cả các file!");  
+                    return;
+                }
+                totalFileSize += file.Size;
+                var fileContent = new StreamContent(file.OpenReadStream(maxFileSize));
+                string filePath = await SharedHelperV2.SaveFileAsync(fileContent, file.Name);
+                await JSRuntime.InvokeVoidAsync("tagline", true, "Upload file thành công!");  
+                mail.attachments.Add(new AttachmentModel {
+                    id = Guid.NewGuid().ToString(),
+                    name = file.Name,
+                    size = file.Size,
+                    contentType = file.ContentType,
+                    filePath = filePath,
+                });
+            }
+        }
+        catch(Exception ex) {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+
+    // Xử lý việc xóa file
+    private void DeleteAttachment(AttachmentModel fileDelete) 
+    {
+        SharedHelperV2.DeleteFile(fileDelete.filePath);
+        AttachmentModel fileToDelete = mail.attachments.FirstOrDefault(file => file.filePath == fileDelete.filePath);
+        if (fileToDelete != null)
+        {
+            mail.attachments.Remove(fileToDelete);
+        }
+        StateHasChanged();
+    }
+
+
+    private void EditPoll()
+    {
+        isDoneCreatePoll = false;
+    }
+
+    // Validate poll
+    private async Task<bool> IsValidPoll()
+    {
+        if (string.IsNullOrEmpty(poll.title))
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Tên khảo sát không được trống!");  
+            return false;
+        }
+        foreach (var question in poll.questions)
+        {
+            if (string.IsNullOrEmpty(question.text))
+            {
+                await JSRuntime.InvokeVoidAsync("tagline", false, "Nội dung câu hỏi không được trống!");  
+                return false;
+            }
+
+            if (question.choices.Count == 0)
+            {
+                await JSRuntime.InvokeVoidAsync("tagline", false, "Vui lòng thêm lựa chọn!");  
+                return false;
+            }
+
+            foreach (var choice in question.choices)
+            {
+                if (string.IsNullOrEmpty(choice.text))
+                {
+                    await JSRuntime.InvokeVoidAsync("tagline", false, "Lựa chọn không được trống!");  
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Xử lý việc user chọn danh mục
+    private void SetCategory(CategoryModel categorySelected)
+    {
+        if (categorySelected == null)
+        {
+            currentCategory = categories.FirstOrDefault(c => c.name == "Khác");
+        }
+        else
+        {
+            currentCategory = categorySelected;
+        }
+
+        toogleShowCategories.ToggleFalse();
+    }
+
+    // Xử lý việc tạo mới + lưu nháp
+    // default là tạo, nếu isDraft = true thì là thư nháp
+    public async Task CreateMail(bool isDraft = false) 
+    {
+        QuillHTMLContent = await QuillHtml.GetHTML();
+        string shortBody = await QuillHtml.GetText();
+
+        if (!isDraft && !await IsValidMail()) 
+        {
+            return;
+        }
+        mail.from = Layout.User.id;
+        mail.labels = labelsSelected.Select(l => l.id).ToList();
+        mail.category = currentCategory.id;
+        mail.to = membersSelected.Select(l => l.id).ToList();
+        mail.cc = membersCCSelected.Select(l => l.id).ToList();
+        mail.bcc = membersBCCSelected.Select(l => l.id).ToList();
+        mail.isRead = false;
+        mail.body = QuillHTMLContent;
+        mail.sentDate = SharedHelperV2.FormatDateTimeUTC();
+        mail.author = Layout.User.id;
+        mail.shortBody = shortBody.Length > 200 ? shortBody.Substring(0, 200) : shortBody;
+        mail.isDraft = isDraft;
+        mail.isDeleted = false;
+        mail.originalMailId = String.Empty;
+        mail.created_at = DateTime.Now.Ticks;
+        mail.replyBody = String.Empty;
+
+        // Kiểm tra có poll hay không?
+        if(!string.IsNullOrEmpty(poll.id)) 
+        {
+            bool isSuccess = await PollData.Create(poll);
+            if(isSuccess) 
+            {
+                mail.pollId = poll.id;
+            };
+        }
+
+        // Tạo mới
+        if (!isDraft)
+        {
+            // Nếu có mailid => gủi thư nháp
+            isLoading = true;
+            await MailData.CreateMail(mail,  mailId);
+            isLoading = false;
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Tạo mail thành công!");  
+        } 
+
+        // Lưu nháp
+        else 
+        {
+            isLoading = true;
+            await MailData.Draft(mail);
+            isLoading = false;
+            await JSRuntime.InvokeVoidAsync("tagline", true, "Lưu nháp thành công");
+        }
+        await JSRuntime.InvokeVoidAsync("history.back");
+
+    }
+
+    // Validate mail
+    private async Task<bool> IsValidMail() 
+    {
+        if(membersSelected.Count == 0 && membersCCSelected.Count == 0 && membersBCCSelected.Count == 0) 
+        {
+            await JSRuntime.InvokeVoidAsync("tagline", false, "Danh sách người nhận không được trống!");
+            return false;
+        }
+        return true;
+    }
+
+
+
+    // Hủy tạo mail và quay về trang trước đó
+    private async Task CancelCreate() 
+    { 
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+
+
+    // Cập nhật danh sách người nhận
+    // name dùng để phân biệt to cc bcc
+		public void OnUpdateMembersSelected(MemberSelectedModel memberModel)
+		{
+				switch (memberModel.name)
+				{
+						case "To":
+								membersSelected = memberModel.members;
+								break;
+						case "CC":
+								membersCCSelected = memberModel.members;
+								break;
+						case "BCC":
+								membersBCCSelected = memberModel.members;
+								break;
+						default:
+								break;
+				}
+		}
+
+}

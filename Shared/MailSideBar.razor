@@ -147,14 +147,12 @@
     private async Task Navigation() 
     {
         ListNav = new();
-        Dictionary<string, int> countMails = await MailData.CountMail(Layout.User.id);
         ListNav.Add(new NavModel
             {
                 name = "Thư đã nhận",
                 icon = "inbox",
                 link = "mail/inbox",
                 active = false,
-                count = countMails["inbox"],
             });
         ListNav.Add(new NavModel
             {
@@ -162,7 +160,6 @@
                 icon = "send",
                 link = "mail/sent",
                 active = false,
-                count = countMails["sent"],
             });
         ListNav.Add(new NavModel
             {
@@ -170,7 +167,6 @@
                 icon = "star",
                 link = "mail/important",
                 active = false,
-                count = countMails["impotant"],
             });
         ListNav.Add(new NavModel
             {
@@ -178,7 +174,6 @@
                 icon = "drafts",
                 link = "mail/drafts",
                 active = false,
-                count = countMails["draft"],
             });
         ListNav.Add(new NavModel
             {

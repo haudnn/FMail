@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Workdo.Helpers;
 using Workdo.Models;
-using Workdo.Services;
 using System.Collections.Generic;
 using MongoDB.Driver;
 using System;
@@ -76,9 +75,5 @@ public class UserData
     }
 
 
-	public static async Task<List<MemberModel>> GetList()
-	{
-		var users =  await userCollection.Find(_ => true).ToListAsync();
-		return UserService.ConvertToMembers(users);
-	}
+	public async Task<List<>>
 }

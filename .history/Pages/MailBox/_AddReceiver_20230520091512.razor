@@ -1,0 +1,139 @@
+        @if(membersSelected.Count > 0)
+        {
+            <ul class="is-flex is-align-items-center" style="flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+                @foreach (var member in membersSelected)
+                {
+                    <li class="is-flex is-align-items-center container-to">
+                        <figure class="image is-16x16">
+                            <img class="is-rounded" src="@member.avatar">
+                        </figure>
+                        <span class="is-inline-block  is-secondary-10 is_label2" style="line-height: 16px; margin: 0 4px;">
+                            @member.name
+                        </span>
+                        <span class="icon is-pointer is-small" @onclick="() => DeleteMember(member)">
+                            <i class="material-icons-outlined is-secondary-10" style="font-size: 16px;">
+                                close
+                            </i>
+                        </span>
+                    </li>
+                }
+            </ul>
+        }
+        <div class="is-flex is-gap-8 is-flex-1 is-justify-content-end">
+            <_AddMember 
+                SearchMembers="SearchMembers" 
+                members="members" 
+                directionDropdown="is-left"
+                OnSelectedMember="SelectedMember" 
+            />
+            <_AddGroupMember 
+                groups="groups" 
+                directionDropdown="is-left" 
+                HandleSelectedGroup="SelectedGroup" 
+            />
+            <div style="white-space:nowrap; cursor: pointer;" class="is-flex is-align-content-center is-gap-10-y" @onclick="DeleteAllMembers">
+                <span class="icon is-error-40 is-small">
+                    <i class="material-icons-outlined">
+                        close
+                    </i>
+                 </span>
+                <p class="is-error-40 is_caption" style="line-height: 16px;">Xóa tất cả</p>
+            </div>
+        </div>
+
+@code {
+    [CascadingParameter] public LayoutMain Layout { get; set; }
+    [Parameter] public string nameReceiver {get; set;}
+    [Parameter] public List<MemberModel> membersSelected {get; set;}
+    [Parameter]  public EventCallback<MemberSelectedModel> OnUpdateMembersSelected { get; set;}
+
+    public List<MemberModel> originalMembers { get; set; } = new(); 
+    public List<GroupModel> groups { get; set; } = new();
+    public List<MemberModel> members { get; set; } = new ();
+		
+		
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Khởi tạo groups và members
+        groups = await GroupData.GetList(Layout.User.id);
+        originalMembers = await UserData.GetList();
+        members = originalMembers.ToList();
+    }
+
+    
+    // Xóa thành viên
+    private void DeleteMember(MemberModel member) 
+    {
+        membersSelected.Remove(member);
+        members.Add(member);        
+        OnUpdateMembersSelected.InvokeAsync(
+            new MemberSelectedModel {
+                name = nameReceiver,
+                members = membersSelected
+            }
+        );
+    }
+
+    private void SelectedMember(List<MemberModel> membersList) 
+    { 
+        foreach (var member in membersList)
+        {
+            if (!membersSelected.Any(m => m.id == member.id))
+            {
+                membersSelected.Add(member);
+            }
+        }
+
+        OnUpdateMembersSelected.InvokeAsync(
+            new MemberSelectedModel {
+                name = nameReceiver,
+                members = membersSelected
+            }
+        );
+    }
+
+    private void SearchMembers(string memberName)
+    {
+        string normalizedInput = memberName.ToLower();
+        if (!string.IsNullOrEmpty(normalizedInput))
+        {
+            members = originalMembers
+                .Where(member => member.name.ToLower().Contains(normalizedInput))
+                .ToList();
+        }
+        else
+        {
+            members = originalMembers.ToList();
+        }
+    }
+
+    private async Task SelectedGroup(List<GroupModel> groupsList) 
+    {
+        foreach (var group in groupsList)
+        {
+            List<MemberModel> members = await UserService.GetMembersById(group.members);
+            foreach (var member in members)
+            {
+                if (!membersSelected.Any(m => m.id == member.id))
+                {
+                    membersSelected.Add(member);
+                }
+            }
+        }
+    }
+
+
+    private void DeleteAllMembers()
+    {
+        members.AddRange(membersSelected);
+        membersSelected.Clear();
+        OnUpdateMembersSelected.InvokeAsync(new MemberSelectedModel {
+            name = nameReceiver,
+            members = membersSelected
+        });
+        StateHasChanged();
+    }
+
+}
+

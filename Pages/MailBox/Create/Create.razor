@@ -285,9 +285,9 @@
             mail = await MailData.Get(mailId);
             QuillHTMLContent = mail.body;
 
-            membersSelected = FakeDataHelper.GetMembersById(mail.to);
-            membersCCSelected = FakeDataHelper.GetMembersById(mail.cc);
-            membersBCCSelected = FakeDataHelper.GetMembersById(mail.bcc);
+            membersSelected = await UserService.GetMembersById(mail.to);
+            membersCCSelected = await UserService.GetMembersById(mail.cc);
+            membersBCCSelected = await UserService.GetMembersById(mail.bcc);
 
             currentCategory = await CategoryData.Get(mail.category);
             labelsSelected = await LabelData.GetLabelsById(mail.labels);
@@ -596,22 +596,22 @@
 
     // Cập nhật danh sách người nhận
     // name dùng để phân biệt to cc bcc
-    public void OnUpdateMembersSelected(MemberSelectedModel memberModel) 
-    { 
-        if(memberModel.name == "To")
-        { 
-            membersSelected = memberModel.members;
-            return;
-        }
-        if(memberModel.name == "CC")
-        { 
-            membersCCSelected = memberModel.members;
-            return;
-        }
-        if(memberModel.name == "BCC")
-        { 
-            membersBCCSelected = memberModel.members;
-            return;
-        }
-    }
+		public void OnUpdateMembersSelected(MemberSelectedModel memberModel)
+		{
+				switch (memberModel.name)
+				{
+						case "To":
+								membersSelected = memberModel.members;
+								break;
+						case "CC":
+								membersCCSelected = memberModel.members;
+								break;
+						case "BCC":
+								membersBCCSelected = memberModel.members;
+								break;
+						default:
+								break;
+				}
+		}
+
 }

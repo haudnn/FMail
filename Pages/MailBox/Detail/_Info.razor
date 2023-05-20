@@ -59,7 +59,7 @@
                                             <div class="is-flex-1">
                                                 @foreach (var item in toList)
                                                 {
-                                                    <span style="line-height: 17px;" class="is-has-virgule is_caption is-secondary-40">@item.name</span>
+                                                    <span style="line-height: 17px;" class="is-has-virgule is_caption is-secondary-40">@item.email</span>
                                                 }
                                             </div>
                                         </div>
@@ -71,7 +71,7 @@
                                             <div class="is-flex-1">
                                                 @foreach (var item in ccList)
                                                 {  
-                                                    <span style="line-height: 17px;" class="is-has-virgule is_caption is-secondary-40">@item.name</span> 
+                                                    <span style="line-height: 17px;" class="is-has-virgule is_caption is-secondary-40">@item.email</span> 
                                                 }
                                             </div>
                                         </div>
@@ -83,7 +83,7 @@
                                             <div class="is-flex-1">
                                                 @foreach (var item in bccList)
                                                 {  
-                                                    <span style="line-height: 17px;" class="is-has-virgule is_caption is-secondary-40">@item.name</span> 
+                                                    <span style="line-height: 17px;" class="is-has-virgule is_caption is-secondary-40">@item.email</span> 
                                                 }
                                             </div>
                                         </div>
@@ -151,7 +151,7 @@
     public DateTime sentDateTime;
     public string convertDate; 
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
 
         if (_currentUser != author.email)
@@ -161,14 +161,14 @@
             convertDate = SharedHelper.ConvertDate(sentDateTime);
 
             // Chuyển đổi danh sách to cc bcc từ id => member model
-            toList = FakeDataHelper.GetMembersById(mail.to);
-            ccList = FakeDataHelper.GetMembersById(mail.cc);
+            toList = await UserService.GetMembersById(mail.to);
+            ccList = await UserService.GetMembersById(mail.cc);
 
             if(mail.bcc.Contains(Layout.User.id))
             {
                 var newListBCC = new List<string>(); 
                 newListBCC.Add(Layout.User.id);
-                bccList = FakeDataHelper.GetMembersById(newListBCC);
+                bccList = await UserService.GetMembersById(newListBCC);
             }
         }
     }

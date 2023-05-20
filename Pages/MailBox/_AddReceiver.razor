@@ -50,12 +50,14 @@
     public List<MemberModel> originalMembers { get; set; } = new(); 
     public List<GroupModel> groups { get; set; } = new();
     public List<MemberModel> members { get; set; } = new ();
+		
+		
 
     protected override async Task OnInitializedAsync()
     {
         // Khởi tạo groups và members
         groups = await GroupData.GetList(Layout.User.id);
-        originalMembers =  FakeDataHelper.InitMembers();
+        originalMembers = await UserData.GetList();
         members = originalMembers.ToList();
     }
 
@@ -106,11 +108,12 @@
         }
     }
 
-    private void SelectedGroup(List<GroupModel> groupsList) 
+    private async Task SelectedGroup(List<GroupModel> groupsList) 
     {
         foreach (var group in groupsList)
         {
-            List<MemberModel> members = FakeDataHelper.GetMembersById(group.members);
+            List<MemberModel> members = await UserService.GetMembersById(group.members);
+
             foreach (var member in members)
             {
                 if (!membersSelected.Any(m => m.id == member.id))
@@ -118,6 +121,7 @@
                     membersSelected.Add(member);
                 }
             }
+						StateHasChanged();
         }
     }
 

@@ -17,12 +17,12 @@
     [Parameter] public List<string> memberIds { get; set; }
     public List<MemberModel> members { get; set; } = new List<MemberModel>();
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if(firstRender)
             {
-                members = FakeDataHelper.GetMembersById(memberIds);
-                InvokeAsync(StateHasChanged);
+                members = await UserService.GetMembersById(memberIds);
+                await InvokeAsync(StateHasChanged);
             }
         }
     
